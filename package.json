@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "echo \"Error: no start specified\" && exit 1",
-    "build": "npm run clean && npm run build:dir && npm run build:assets && npm run build:js && npm run build:sass",
+    "start": "parallelshell 'supervisor server.js' 'npm run watch'",
+    "build": "npm run clean && npm run build:dir && parallelshell 'npm run build:assets' 'npm run build:js' 'npm run build:sass'",
     "build:dir": "mkdirp public/css public/js",
     "build:assets": "ncp assets public",
     "build:js": "browserify -e src/js/client.js -o public/js/client.bundle.js -t [ babelify ]",
