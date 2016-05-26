@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router";
 
 class Landing extends Component {
   render() {
     return (
       <div>
-        <a href="#">Login</a>
+        <Link to="/login">Login</Link>
       </div>
     );
   }

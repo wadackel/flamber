@@ -13,7 +13,7 @@ import { match, RouterContext, createMemoryHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
 import configureStore from "./store/configureStore";
-import routes from "./routes";
+import getRoutes from "./routes";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -54,12 +54,12 @@ app.use(express.static(path.resolve(__dirname, "../../public")));
 
 // Basic routes
 app.use((req, res) => {
-  const initialState = {};
+  const initialState = { auth: { authenticated: false } };
   const memoryHistory = createMemoryHistory(req.url);
   const store = configureStore(memoryHistory, initialState);
   const history = syncHistoryWithStore(memoryHistory, store);
 
-  match({history, routes, location: req.url}, (error, redirectLocation, renderProps) => {
+  match({ history, routes: getRoutes(store), location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
       res.status(500).send(error.message);
 

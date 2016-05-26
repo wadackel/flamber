@@ -3,7 +3,6 @@ import { routerMiddleware } from "react-router-redux";
 import createLogger from "redux-logger";
 import rootReducer from "../reducers";
 
-
 export default function configureStore(history, initialState) {
   const logger = createLogger();
 
