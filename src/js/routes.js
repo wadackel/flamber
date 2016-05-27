@@ -17,9 +17,17 @@ class UserOnly extends Component {
 }
 
 export default function getRoutes(store) {
-  const requireAuth = (nextState, replace, cb) => {
-    const { auth: { authenticated } } = store.getState();
+  const { auth: { authenticated } } = store.getState();
+
+  const userOnly = (nextState, replace, cb) => {
     if (!authenticated) {
+      replace("/");
+    }
+    cb();
+  };
+
+  const guestOnly = (nextState, replace, cb) => {
+    if (authenticated) {
       replace("/");
     }
     cb();
@@ -29,11 +37,13 @@ export default function getRoutes(store) {
     <Route path="/">
       <IndexRoute component={Landing} />
 
-      <Route onEnter={requireAuth}>
+      <Route onEnter={userOnly}>
         <Route path="/user" component={UserOnly}></Route>
       </Route>
 
-      <Route path="/login" component={Login} />
+      <Route onEnter={guestOnly}>
+        <Route path="/login" component={Login} />
+      </Route>
     </Route>
   );
 

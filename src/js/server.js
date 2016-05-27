@@ -1,3 +1,5 @@
+import "babel-polyfill";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -13,6 +15,8 @@ import { match, RouterContext, createMemoryHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
 import configureStore from "./store/configureStore";
+import authMiddleware from "./middleware/auth";
+import authRoutes from "./routes/auth";
 import getRoutes from "./routes";
 
 const PORT = process.env.PORT || 3000;
@@ -51,10 +55,17 @@ app.use(methodOverride("X-HTTP-Method-Override"));
 app.use(methodOverride("X-Method-Override"));
 app.use(express.static(path.resolve(__dirname, "../../public")));
 
+app.use(authMiddleware);
+app.use("/auth", authRoutes);
+
 
 // Basic routes
 app.use((req, res) => {
-  const initialState = { auth: { authenticated: false } };
+  const { authenticated, authenticateURL } = req;
+  const initialState = {
+    auth: { authenticated, authenticateURL }
+  };
+
   const memoryHistory = createMemoryHistory(req.url);
   const store = configureStore(memoryHistory, initialState);
   const history = syncHistoryWithStore(memoryHistory, store);
