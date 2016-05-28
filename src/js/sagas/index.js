@@ -1,6 +1,7 @@
 "use strict";
 
 import Cookies from "js-cookie";
+import { push } from "react-router-redux";
 import { fork, take, put, call } from "redux-saga/effects";
 import * as C from "../constants/cookie";
 import { authenticate } from "../api/auth";
@@ -35,8 +36,27 @@ export function* handleAuthRequest() {
   }
 }
 
+
+export function* handleAuthComplete() {
+  while (true) {
+    yield take(AUTH_COMPLETE);
+    yield put(push("/"));
+  }
+}
+
+
+export function* handleAuthError() {
+  while (true) {
+    yield take(AUTH_ERROR);
+    yield put(push("/login"));
+  }
+}
+
+
 export default function* rootSaga() {
   yield [
-    fork(handleAuthRequest)
+    fork(handleAuthRequest),
+    fork(handleAuthComplete),
+    fork(handleAuthError)
   ];
 }
