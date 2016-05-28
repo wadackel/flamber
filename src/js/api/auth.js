@@ -1,9 +1,9 @@
-import fetch from "isomorphic-fetch";
 import queryString from "query-string";
+import fetch from "../utils/fetch";
 import openPopup from "../utils/popup";
-import checkStatus from "../utils/check-status";
 
 export const AUTH_VALIDATE_ENDPOINT = "/auth/validate";
+export const AUTH_REVOKE_ENDPOINT = "/auth/revoke";
 
 
 function listenForCredentials(popup, resolve, reject) {
@@ -15,11 +15,8 @@ function listenForCredentials(popup, resolve, reject) {
 
   if (params.code) {
     popup.close();
-    fetch(`${AUTH_VALIDATE_ENDPOINT}?code=${params.code}`, {
-        credentials: "include"
-      })
-      .then(checkStatus)
-      .then(res => res.json())
+
+    fetch(`${AUTH_VALIDATE_ENDPOINT}?code=${params.code}`)
       .then(res => {
         if (res.status === "ok") {
           resolve(res.token);
@@ -43,5 +40,19 @@ export function authenticate(url) {
   return new Promise((resolve, reject) => {
     const popup = openPopup(url, "googleauthpopup");
     listenForCredentials(popup, resolve, reject);
+  });
+}
+
+export function revokeCredentials() {
+  return new Promise((resolve, reject) => {
+    fetch(AUTH_REVOKE_ENDPOINT)
+      .then(res => {
+        if (res.status === "ok") {
+          resolve();
+        } else {
+          reject({error: res.err});
+        }
+      })
+      .catch(error => reject({error}));
   });
 }

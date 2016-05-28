@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import path from "path";
+import assign from "object-assign";
 import express from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -18,6 +19,7 @@ import configureStore from "./store/configureStore";
 import authMiddleware from "./middleware/auth";
 import authRoutes from "./routes/auth";
 import getRoutes from "./routes";
+import { initialState as authInitialState } from "./reducers/auth";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -61,9 +63,11 @@ app.use("/auth", authRoutes);
 
 // Basic routes
 app.use((req, res) => {
-  const { authenticated, authenticateURL } = req;
   const initialState = {
-    auth: { authenticated, authenticateURL }
+    auth: assign({}, authInitialState, {
+      authenticated: req.authenticated,
+      authenticateURL: req.authenticateURL
+    })
   };
 
   const memoryHistory = createMemoryHistory(req.url);
