@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { authRequest } from "../actions/auth";
+import { loginRequest } from "../actions/auth";
 
 class Login extends Component {
   handleLoginClick(e) {
     e.preventDefault();
     const { authenticateURL } = this.props.auth;
-    this.props.dispatch(authRequest(authenticateURL));
+    this.props.dispatch(loginRequest(authenticateURL));
   }
 
   render() {

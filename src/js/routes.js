@@ -16,18 +16,22 @@ class UserOnly extends Component {
   }
 }
 
-export default function getRoutes(store) {
+function getAuthenticated(store) {
   const { auth: { authenticated } } = store.getState();
+  return authenticated;
+}
+
+export default function getRoutes(store) {
 
   const userOnly = (nextState, replace, cb) => {
-    if (!authenticated) {
+    if (!getAuthenticated(store)) {
       replace("/");
     }
     cb();
   };
 
   const guestOnly = (nextState, replace, cb) => {
-    if (authenticated) {
+    if (getAuthenticated(store)) {
       replace("/");
     }
     cb();

@@ -1,5 +1,3 @@
-"use strict";
-
 import fetch from "isomorphic-fetch";
 import queryString from "query-string";
 import openPopup from "../utils/popup";

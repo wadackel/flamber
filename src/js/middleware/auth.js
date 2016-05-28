@@ -1,5 +1,3 @@
-"use strict";
-
 import Google from "googleapis";
 import GoogleAuth from "google-auth-library";
 import * as C from "../constants/cookie";

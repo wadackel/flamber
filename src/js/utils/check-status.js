@@ -1,5 +1,3 @@
-"use strict";
-
 export default function checkStatus(res) {
   if (res.status >= 200 && res.status < 300) {
     return res;

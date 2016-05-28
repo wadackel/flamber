@@ -1,23 +1,21 @@
-"use strict";
-
 import Cookies from "js-cookie";
 import { push } from "react-router-redux";
 import { fork, take, put, call } from "redux-saga/effects";
 import * as C from "../constants/cookie";
 import { authenticate } from "../api/auth";
 import {
-  AUTH_REQUEST,
-  AUTH_COMPLETE,
-  AUTH_ERROR,
-  authRequest,
-  authComplete,
-  authError
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  loginRequest,
+  loginSuccess,
+  loginFailure
 } from "../actions/auth";
 
 
-export function* handleAuthRequest() {
+export function* handleLoginRequest() {
   while (true) {
-    const action = yield take(AUTH_REQUEST);
+    const action = yield take(LOGIN_REQUEST);
 
     try {
       const token = yield call(authenticate, action.payload);
@@ -28,26 +26,26 @@ export function* handleAuthRequest() {
         expires: new Date(token.expiry_date)
       });
 
-      yield put(authComplete(token));
+      yield put(loginSuccess(token));
 
     } catch (err) {
-      yield put(authError(err));
+      yield put(loginFailure(err));
     }
   }
 }
 
 
-export function* handleAuthComplete() {
+export function* handleLoginSuccess() {
   while (true) {
-    yield take(AUTH_COMPLETE);
+    yield take(LOGIN_SUCCESS);
     yield put(push("/"));
   }
 }
 
 
-export function* handleAuthError() {
+export function* handleLoginFailure() {
   while (true) {
-    yield take(AUTH_ERROR);
+    yield take(LOGIN_FAILURE);
     yield put(push("/login"));
   }
 }
@@ -55,8 +53,8 @@ export function* handleAuthError() {
 
 export default function* rootSaga() {
   yield [
-    fork(handleAuthRequest),
-    fork(handleAuthComplete),
-    fork(handleAuthError)
+    fork(handleLoginRequest),
+    fork(handleLoginSuccess),
+    fork(handleLoginFailure)
   ];
 }

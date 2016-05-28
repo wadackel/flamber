@@ -1,10 +1,8 @@
-"use strict";
-
 import assign from "object-assign";
 import {
-  AUTH_COMPLETE,
-  AUTH_REQUEST,
-  AUTH_ERROR
+  LOGIN_SUCCESS,
+  LOGIN_REQUEST,
+  LOGIN_FAILURE
 } from "../actions/auth";
 
 const initialState = {
@@ -15,18 +13,18 @@ const initialState = {
 
 export default function auth(state = initialState, action) {
   switch (action.type) {
-    case AUTH_REQUEST:
+    case LOGIN_REQUEST:
       return assign({}, state, {
         isFetching: true
       });
 
-    case AUTH_COMPLETE:
+    case LOGIN_SUCCESS:
       return assign({}, state, {
         isFetching: false,
         authenticated: true
       });
 
-    case AUTH_ERROR:
+    case LOGIN_FAILURE:
       return assign({}, state, {
         isFetching: false,
         authenticated: false
