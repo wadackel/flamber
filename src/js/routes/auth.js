@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as C from "../constants/cookie";
-import { verifyAuth } from "../utils/auth";
+import verifyAuth from "../utils/verify-auth";
 
 const router = Router();
 

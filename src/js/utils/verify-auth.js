@@ -33,7 +33,7 @@ export function fetchToken(oauth2Client, code) {
   });
 }
 
-export function verifyAuth(oauth2Client, code) {
+export default function verifyAuth(oauth2Client, code) {
   return new Promise((resolve, reject) => {
     let token;
 
