@@ -21,7 +21,15 @@ export function* handleLoginRequest() {
       // save token
       Cookies.set(C.CREDS_KEY, token, {
         path: C.PATH,
-        expires: new Date(token.expiry_date)
+        expires: C.EXPIRES
+      });
+
+      // save config
+      Cookies.set(C.CONFIG_KEY, {
+        expiry_date: new Date(token.expiry_date)
+      }, {
+        path: C.PATH,
+        expires: C.EXPIRES
       });
 
       yield put(loginSuccess(user));
@@ -58,6 +66,11 @@ export function* handleLogoutRequest() {
 
       // destroy token
       Cookies.remove(C.CREDS_KEY, {
+        path: C.PATH
+      });
+
+      // destroy config
+      Cookies.remove(C.CONFIG_KEY, {
         path: C.PATH
       });
 
