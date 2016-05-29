@@ -11,7 +11,8 @@ import {
 export const initialState = {
   isFetching: false,
   authenticated: false,
-  authenticateURL: ""
+  authenticateURL: "",
+  user: null
 };
 
 export default function auth(state = initialState, action) {
@@ -25,13 +26,15 @@ export default function auth(state = initialState, action) {
     case LOGIN_SUCCESS:
       return assign({}, state, {
         isFetching: false,
-        authenticated: true
+        authenticated: true,
+        user: action.payload
       });
 
     case LOGIN_FAILURE:
       return assign({}, state, {
         isFetching: false,
-        authenticated: false
+        authenticated: false,
+        user: null
       });
 
     // Logout
@@ -43,7 +46,8 @@ export default function auth(state = initialState, action) {
     case LOGOUT_SUCCESS:
       return assign({}, state, {
         isFetching: false,
-        authenticated: false
+        authenticated: false,
+        user: null
       });
 
     case LOGOUT_FAILURE:

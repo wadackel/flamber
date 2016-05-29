@@ -19,7 +19,7 @@ function listenForCredentials(popup, resolve, reject) {
     fetch(`${AUTH_VALIDATE_ENDPOINT}?code=${params.code}`)
       .then(res => {
         if (res.status === "ok") {
-          resolve(res.token);
+          resolve(res);
         } else {
           reject({error: res.err});
         }

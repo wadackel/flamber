@@ -16,7 +16,7 @@ export function* handleLoginRequest() {
     const action = yield take(LOGIN_REQUEST);
 
     try {
-      const token = yield call(authenticate, action.payload);
+      const { token, user } = yield call(authenticate, action.payload);
 
       // save token
       Cookies.set(C.CREDS_KEY, token, {
@@ -24,7 +24,7 @@ export function* handleLoginRequest() {
         expires: new Date(token.expiry_date)
       });
 
-      yield put(loginSuccess(token));
+      yield put(loginSuccess(user));
 
     } catch (err) {
       yield put(loginFailure(err));

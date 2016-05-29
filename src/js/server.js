@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import path from "path";
-import assign from "object-assign";
 import express from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -64,9 +63,10 @@ app.use("/auth", authRoutes);
 // Basic routes
 app.use((req, res) => {
   const initialState = {
-    auth: assign({}, authInitialState, {
+    auth: Object.assign({}, authInitialState, {
       authenticated: req.authenticated,
-      authenticateURL: req.authenticateURL
+      authenticateURL: req.authenticateURL,
+      user: req.user
     })
   };
 
