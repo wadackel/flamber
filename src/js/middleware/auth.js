@@ -1,23 +1,6 @@
 import * as C from "../constants/cookie";
 import { getOauth2Client, getAuthUrl, getDrive } from "../utils/drive";
-import { fetchUser } from "../utils/verify-auth";
-
-function refreshAccessToken(oauth2Client, expiryDate) {
-  return new Promise((resolve, reject) => {
-    if (!expiryDate || new Date() <= new Date(expiryDate)) {
-      resolve();
-      return;
-    }
-
-    oauth2Client.refreshAccessToken((err, tokens) => {
-      if (err) {
-        return reject(err);
-      }
-
-      resolve(tokens);
-    });
-  });
-}
+import { fetchUser, refreshAccessToken } from "../utils/verify-auth";
 
 export default function authMiddleware(req, res, next) {
   const token = req.cookies[C.CREDS_KEY];

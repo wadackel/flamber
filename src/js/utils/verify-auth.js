@@ -1,7 +1,6 @@
 import fetch from "../utils/fetch";
 import { getDrive } from "./drive";
 
-
 export function fetchUser(oauth2Client, token) {
   return new Promise((resolve, reject) => {
     const drive = getDrive(oauth2Client, token);
@@ -46,5 +45,22 @@ export default function verifyAuth(oauth2Client, code) {
         resolve({user, token});
       })
       .catch(err => reject({error: err}));
+  });
+}
+
+export function refreshAccessToken(oauth2Client, expiryDate) {
+  return new Promise((resolve, reject) => {
+    if (!expiryDate || new Date() <= new Date(expiryDate)) {
+      resolve();
+      return;
+    }
+
+    oauth2Client.refreshAccessToken((err, tokens) => {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(tokens);
+    });
   });
 }
