@@ -4,16 +4,16 @@ import { fork, take, put, call } from "redux-saga/effects";
 import * as C from "../constants/cookie";
 import { authenticate, revokeCredentials } from "../api/auth";
 import {
-  LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,
-  LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE,
-  loginRequest, loginSuccess, loginFailure,
-  logoutRequest, logoutSuccess, logoutFailure
+  SIGN_IN_REQUEST, SIGN_IN_SUCCESS, SIGN_IN_FAILURE,
+  SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE,
+  signInRequest, signInSuccess, signInFailure,
+  signOutRequest, signOutSuccess, signOutFailure
 } from "../actions/auth";
 
 
-export function* handleLoginRequest() {
+export function* handleSignInRequest() {
   while (true) {
-    const action = yield take(LOGIN_REQUEST);
+    const action = yield take(SIGN_IN_REQUEST);
 
     try {
       const { token, user } = yield call(authenticate, action.payload);
@@ -32,34 +32,34 @@ export function* handleLoginRequest() {
         expires: C.EXPIRES
       });
 
-      yield put(loginSuccess(user));
+      yield put(signInSuccess(user));
 
     } catch (err) {
-      yield put(loginFailure(err));
+      yield put(signInFailure(err));
     }
   }
 }
 
 
-export function* handleLoginSuccess() {
+export function* handleSignInSuccess() {
   while (true) {
-    yield take(LOGIN_SUCCESS);
+    yield take(SIGN_IN_SUCCESS);
     yield put(replace("/"));
   }
 }
 
 
-export function* handleLoginFailure() {
+export function* handleSignInFailure() {
   while (true) {
-    yield take(LOGIN_FAILURE);
-    yield put(replace("/login"));
+    yield take(SIGN_IN_FAILURE);
+    yield put(replace("/signin"));
   }
 }
 
 
-export function* handleLogoutRequest() {
+export function* handleSignOutRequest() {
   while (true) {
-    yield take(LOGOUT_REQUEST);
+    yield take(SIGN_OUT_REQUEST);
 
     try {
       yield call(revokeCredentials);
@@ -74,25 +74,25 @@ export function* handleLogoutRequest() {
         path: C.PATH
       });
 
-      yield put(logoutSuccess());
+      yield put(signOutSuccess());
 
     } catch (err) {
-      yield put(logoutFailure(err));
+      yield put(signOutFailure(err));
     }
   }
 }
 
 
-export function* handleLogoutSuccess() {
+export function* handleSignOutSuccess() {
   while (true) {
-    yield take(LOGOUT_SUCCESS);
-    yield put(replace("/login"));
+    yield take(SIGN_OUT_SUCCESS);
+    yield put(replace("/signin"));
   }
 }
 
-export function* handleLogoutFailure() {
+export function* handleSignOutFailure() {
   while (true) {
-    yield take(LOGOUT_FAILURE);
+    yield take(SIGN_OUT_FAILURE);
     yield put(replace("/"));
   }
 }
@@ -100,11 +100,11 @@ export function* handleLogoutFailure() {
 
 export default function* rootSaga() {
   yield [
-    fork(handleLoginRequest),
-    fork(handleLoginSuccess),
-    fork(handleLoginFailure),
-    fork(handleLogoutRequest),
-    fork(handleLogoutSuccess),
-    fork(handleLogoutFailure)
+    fork(handleSignInRequest),
+    fork(handleSignInSuccess),
+    fork(handleSignInFailure),
+    fork(handleSignOutRequest),
+    fork(handleSignOutSuccess),
+    fork(handleSignOutFailure)
   ];
 }

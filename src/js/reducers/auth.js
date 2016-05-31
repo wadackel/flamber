@@ -1,11 +1,11 @@
 import assign from "object-assign";
 import {
-  LOGIN_SUCCESS,
-  LOGIN_REQUEST,
-  LOGIN_FAILURE,
-  LOGOUT_REQUEST,
-  LOGOUT_SUCCESS,
-  LOGOUT_FAILURE
+  SIGN_IN_SUCCESS,
+  SIGN_IN_REQUEST,
+  SIGN_IN_FAILURE,
+  SIGN_OUT_REQUEST,
+  SIGN_OUT_SUCCESS,
+  SIGN_OUT_FAILURE
 } from "../actions/auth";
 
 export const initialState = {
@@ -17,40 +17,40 @@ export const initialState = {
 
 export default function auth(state = initialState, action) {
   switch (action.type) {
-    // Login
-    case LOGIN_REQUEST:
+    // Sign in
+    case SIGN_IN_REQUEST:
       return assign({}, state, {
         isFetching: true
       });
 
-    case LOGIN_SUCCESS:
+    case SIGN_IN_SUCCESS:
       return assign({}, state, {
         isFetching: false,
         authenticated: true,
         user: action.payload
       });
 
-    case LOGIN_FAILURE:
+    case SIGN_IN_FAILURE:
       return assign({}, state, {
         isFetching: false,
         authenticated: false,
         user: null
       });
 
-    // Logout
-    case LOGOUT_REQUEST:
+    // Sign out
+    case SIGN_OUT_REQUEST:
       return assign({}, state, {
         isFetching: true
       });
 
-    case LOGOUT_SUCCESS:
+    case SIGN_OUT_SUCCESS:
       return assign({}, state, {
         isFetching: false,
         authenticated: false,
         user: null
       });
 
-    case LOGOUT_FAILURE:
+    case SIGN_OUT_FAILURE:
       return assign({}, state, {
         isFetching: false
       });

@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginRequest } from "../actions/auth";
+import { signInRequest } from "../actions/auth";
 
-class Login extends Component {
-  handleLoginClick(e) {
+class SignIn extends Component {
+  handleSignInClick(e) {
     e.preventDefault();
     const { authenticateURL } = this.props.auth;
-    this.props.dispatch(loginRequest(authenticateURL));
+    this.props.dispatch(signInRequest(authenticateURL));
   }
 
   render() {
     return (
       <div>
         <h1>Login</h1>
-        <button onClick={::this.handleLoginClick}>Visit Google</button>
+        <button onClick={::this.handleSignInClick}>Visit Google</button>
       </div>
     );
   }
@@ -21,4 +21,4 @@ class Login extends Component {
 
 export default connect(state => ({
   auth: state.auth
-}))(Login);
+}))(SignIn);

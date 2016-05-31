@@ -1,21 +1,21 @@
 import { createAction } from "redux-actions";
 
 
-// Login
-export const LOGIN_REQUEST = "LOGIN_REQUEST";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAILURE = "LOGIN_FAILURE";
+// Sign in
+export const SIGN_IN_REQUEST = "SIGN_IN_REQUEST";
+export const SIGN_IN_SUCCESS = "SIGN_IN_SUCCESS";
+export const SIGN_IN_FAILURE = "SIGN_IN_FAILURE";
 
-export const loginRequest = createAction(LOGIN_REQUEST);
-export const loginSuccess = createAction(LOGIN_SUCCESS);
-export const loginFailure = createAction(LOGIN_FAILURE);
+export const signInRequest = createAction(SIGN_IN_REQUEST);
+export const signInSuccess = createAction(SIGN_IN_SUCCESS);
+export const signInFailure = createAction(SIGN_IN_FAILURE);
 
 
-// Logout
-export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
-export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
-export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
+// Sign out
+export const SIGN_OUT_REQUEST = "SIGN_OUT_REQUEST";
+export const SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS";
+export const SIGN_OUT_FAILURE = "SIGN_OUT_FAILURE";
 
-export const logoutRequest = createAction(LOGOUT_REQUEST);
-export const logoutSuccess = createAction(LOGOUT_SUCCESS);
-export const logoutFailure = createAction(LOGOUT_FAILURE);
+export const signOutRequest = createAction(SIGN_OUT_REQUEST);
+export const signOutSuccess = createAction(SIGN_OUT_SUCCESS);
+export const signOutFailure = createAction(SIGN_OUT_FAILURE);

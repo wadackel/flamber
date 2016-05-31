@@ -27,6 +27,7 @@ router.get("/validate", (req, res) => {
 
 router.get("/revoke", (req, res) => {
   const token = JSON.parse(req.cookies[C.CREDS_KEY] || "");
+  console.log(token);
 
   req.oauth2Client.revokeToken(token.access_token, err => {
     if (err) {

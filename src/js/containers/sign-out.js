@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { logoutRequest } from "../actions/auth";
+import { signOutRequest } from "../actions/auth";
 
-class Logout extends Component {
+class SignOut extends Component {
   componentDidMount() {
     if (!this.props.auth.isFetching) {
-      this.props.dispatch(logoutRequest());
+      this.props.dispatch(signOutRequest());
     }
   }
 
@@ -16,4 +16,4 @@ class Logout extends Component {
 
 export default connect(state => ({
   auth: state.auth
-}))(Logout);
+}))(SignOut);

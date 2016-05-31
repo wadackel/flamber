@@ -22,8 +22,8 @@ class Landing extends Component {
     return (
       <div>
         {this.renderUser()}
-        <Link to="/login">Login</Link><br />
-        <Link to="/logout">Logout</Link><br />
+        <Link to="/signin">SignIn</Link><br />
+        <Link to="/signout">SignOut</Link><br />
         <Link to="/user">User only</Link>
       </div>
     );

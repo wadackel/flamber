@@ -1,8 +1,8 @@
 import React from "react";
 import { Router, Route, IndexRoute } from "react-router";
 import {
-  Login,
-  Logout,
+  SignIn,
+  SignOut,
   Landing
 } from "./containers";
 
@@ -43,12 +43,12 @@ export default function getRoutes(store) {
       <IndexRoute component={Landing} />
 
       <Route onEnter={userOnly}>
-        <Route path="/logout" component={Logout} />
+        <Route path="/signout" component={SignOut} />
         <Route path="/user" component={UserOnly}></Route>
       </Route>
 
       <Route onEnter={guestOnly}>
-        <Route path="/login" component={Login} />
+        <Route path="/signin" component={SignIn} />
       </Route>
     </Route>
   );
