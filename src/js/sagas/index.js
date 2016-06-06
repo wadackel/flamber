@@ -11,7 +11,7 @@ import {
 } from "../actions/auth";
 
 
-export function* handleSignInRequest() {
+export function *handleSignInRequest() {
   while (true) {
     const action = yield take(SIGN_IN_REQUEST);
 
@@ -41,7 +41,7 @@ export function* handleSignInRequest() {
 }
 
 
-export function* handleSignInSuccess() {
+export function *handleSignInSuccess() {
   while (true) {
     yield take(SIGN_IN_SUCCESS);
     yield put(replace("/"));
@@ -49,7 +49,7 @@ export function* handleSignInSuccess() {
 }
 
 
-export function* handleSignInFailure() {
+export function *handleSignInFailure() {
   while (true) {
     yield take(SIGN_IN_FAILURE);
     yield put(replace("/signin"));
@@ -57,7 +57,7 @@ export function* handleSignInFailure() {
 }
 
 
-export function* handleSignOutRequest() {
+export function *handleSignOutRequest() {
   while (true) {
     yield take(SIGN_OUT_REQUEST);
 
@@ -83,14 +83,14 @@ export function* handleSignOutRequest() {
 }
 
 
-export function* handleSignOutSuccess() {
+export function *handleSignOutSuccess() {
   while (true) {
     yield take(SIGN_OUT_SUCCESS);
     yield put(replace("/signin"));
   }
 }
 
-export function* handleSignOutFailure() {
+export function *handleSignOutFailure() {
   while (true) {
     yield take(SIGN_OUT_FAILURE);
     yield put(replace("/"));
@@ -98,7 +98,7 @@ export function* handleSignOutFailure() {
 }
 
 
-export default function* rootSaga() {
+export default function *rootSaga() {
   yield [
     fork(handleSignInRequest),
     fork(handleSignInSuccess),

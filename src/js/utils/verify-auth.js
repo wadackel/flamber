@@ -42,9 +42,9 @@ export default function verifyAuth(oauth2Client, code) {
         return fetchUser(oauth2Client, token);
       })
       .then(user => {
-        resolve({user, token});
+        resolve({ user, token });
       })
-      .catch(err => reject({error: err}));
+      .catch(err => reject({ error: err }));
   });
 }
 

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import bem from "../../../helpers/bem";
 
 const b = bem("button");
 
-export default class Button extends Component {
+export default class Button extends React.Component {
   render() {
     return (
       <div>
