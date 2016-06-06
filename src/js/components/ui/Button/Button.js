@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import bem from "../../helpers/bem";
+import bem from "../../../helpers/bem";
 
 const b = bem("button");
 

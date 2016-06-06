@@ -16,7 +16,9 @@
     "clean": "rimraf public",
     "uglify": "uglifyjs public/js/client.bundle.js -o public/js/client.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src/js/**/*.js .eslintrc.js --no-ignore"
+    "lint": "eslint src/js/**/*.js .eslintrc.js --no-ignore",
+    "styleguide-server": "styleguidist server",
+    "styleguide-build": "styleguidist build"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^6.0.4",
+    "babel-plugin-react-transform": "^2.0.2",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
@@ -45,7 +48,10 @@
     "onchange": "^2.4.0",
     "parallelshell": "^2.0.0",
     "postcss-cli": "^2.5.2",
+    "react-styleguidist": "^2.3.0",
+    "react-transform-hmr": "^1.0.4",
     "rimraf": "^2.5.2",
+    "sass-loader": "^3.2.0",
     "supervisor": "^0.10.0",
     "uglify-js": "^2.6.2",
     "watchify": "^3.7.0"
