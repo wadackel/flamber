@@ -1,0 +1,17 @@
+@mixin transition($props, $duration: normal, $easing: $transition-easing, $delay: 0) {
+  @if $duration == normal {
+    $duration: $transition-duration-normal;
+
+  } @else if $duration == slow {
+    $duration: $transition-duration-slow;
+
+  } @else if $duration == fast {
+    $duration: $transition-duration-fast;
+
+  }
+
+  transition-delay: $delay;
+  transition-duration: $duration;
+  transition-property: $props;
+  transition-timing-function: $easing;
+}

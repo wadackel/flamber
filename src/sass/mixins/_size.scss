@@ -1,0 +1,8 @@
+@mixin size($size, $line-height: false) {
+  width: $size;
+  height: $size;
+
+  @if $line-height == true {
+    line-height: $size;
+  }
+}

@@ -1,0 +1,24 @@
+@mixin position($type, $top: auto, $right: auto, $bottom: auto, $left: auto, $z-index: auto) {
+  position: $type;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  z-index: $z-index;
+}
+
+@mixin fixed($top: auto, $right: auto, $bottom: auto, $left: auto, $z-index: auto) {
+  @include position(fixed, $top, $right, $bottom, $left, $z-index);
+}
+
+@mixin absolute($top: auto, $right: auto, $bottom: auto, $left: auto, $z-index: auto) {
+  @include position(absolute, $top, $right, $bottom, $left, $z-index);
+}
+
+@mixin relative($top: auto, $right: auto, $bottom: auto, $left: auto, $z-index: auto) {
+  @include position(relative, $top, $right, $bottom, $left, $z-index);
+}
+
+@mixin static() {
+  @include position(static, auto, auto, auto, auto, auto);
+}

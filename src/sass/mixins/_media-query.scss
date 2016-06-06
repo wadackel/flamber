@@ -1,0 +1,72 @@
+@function breakpoint-prev($name) {
+  $names: map-keys($grid-breakpoints);
+  $n: index($names, $name);
+  @return if($n > 1, nth($names, $n - 1), null);
+}
+
+@function breakpoint-next($name) {
+  $names: map-keys($grid-breakpoints);
+  $n: index($names, $name);
+  @return if($n < length($names), nth($names, $n + 1), null);
+}
+
+@function breakpoint-min($name) {
+  $min: map-get($grid-breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+@function breakpoint-max($name) {
+  $next: breakpoint-next($name);
+  @return if($next, breakpoint-min($next) - 1px, null);
+}
+
+
+@mixin mq-breakpoint-up($name) {
+  $min: breakpoint-min($name);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin mq-breakpoint-down($name) {
+  $max: breakpoint-max($name);
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin mq-breakpoint-only($name) {
+  @include mq-breakpoint-up($name) {
+    @include mq-breakpoint-down($name) {
+      @content;
+    }
+  }
+}
+
+@mixin mq-breakpoint-between($lower, $upper) {
+  @include mq-breakpoint-up($lower) {
+    @include mq-breakpoint-down($upper) {
+      @content;
+    }
+  }
+}
+
+@mixin mq-retina-only($min: $retina-pixel-ratio-min) {
+  @media (min-device-pixel-ratio: $min), (min-resolution: #{$min}dppx) {
+  @content;
+  }
+}
+
+@mixin mq-non-retina-only($max: $retina-pixel-ratio-max) {
+  @media (max-device-pixel-ratio: $max), (max-resolution: #{$max}dppx) {
+  @content;
+  }
+}
