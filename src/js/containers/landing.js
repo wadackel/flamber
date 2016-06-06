@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 
+import Button from "../components/ui/Button";
+
+
 class Landing extends Component {
   renderUser() {
     const { user } = this.props.auth;
@@ -25,6 +28,9 @@ class Landing extends Component {
         <Link to="/signin">SignIn</Link><br />
         <Link to="/signout">SignOut</Link><br />
         <Link to="/user">User only</Link>
+        <div>
+          <Button>Button</Button>
+        </div>
       </div>
     );
   }

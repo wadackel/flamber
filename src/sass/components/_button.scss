@@ -1,0 +1,13 @@
+.button {
+  display: inline-block;
+  margin: 0;
+  padding: 15px 20px;
+  border: 0;
+  background: transparent;
+  user-select: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}

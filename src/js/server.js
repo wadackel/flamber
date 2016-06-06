@@ -36,6 +36,7 @@ const HTML = ({content, store}) => {
         {head.link.toComponent()}
         {head.title.toComponent()}
         {head.style.toComponent()}
+        <link rel="stylesheet" href="/css/style.css" />
       </head>
       <body>
         <div id="app" dangerouslySetInnerHTML={{__html: content}} />
