@@ -21,13 +21,13 @@ function listenForCredentials(popup, resolve, reject) {
         if (res.status === "ok") {
           resolve(res);
         } else {
-          reject({error: res.err});
+          reject({ error: res.err });
         }
       })
-      .catch(error => reject({error}));
+      .catch(error => reject({ error }));
 
   } else if (popup.closed) {
-    reject({error: "cancel"});
+    reject({ error: "cancel" });
 
   } else {
     setTimeout(() => {
@@ -50,9 +50,9 @@ export function revokeCredentials() {
         if (res.status === "ok") {
           resolve();
         } else {
-          reject({error: res.err});
+          reject({ error: res.err });
         }
       })
-      .catch(error => reject({error}));
+      .catch(error => reject({ error }));
   });
 }

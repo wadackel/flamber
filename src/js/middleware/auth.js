@@ -13,6 +13,7 @@ export default function authMiddleware(req, res, next) {
 
   if (!token) {
     req.authenticated = false;
+
     return next();
   }
 

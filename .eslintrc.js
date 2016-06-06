@@ -3,20 +3,33 @@ module.exports = {
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 6,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
-  "extends": "eslint:recommended",
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "mocha": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
     // Possible Errors
     "comma-dangle": "error",
     "no-cond-assign": "error",
     "no-console": "error",
-    "no-constant-condition": "error",
+    "no-constant-condition": "off",
     "no-control-regex": "error",
     "no-debugger": "error",
     "no-dupe-args": "error",
     "no-dupe-keys": "error",
     "no-duplicate-case": "error",
+    "no-empty": ["error", { "allowEmptyCatch": true }],
     "no-func-assign": "error",
     "no-inner-declarations": "error",
     "no-invalid-regexp": "error",
@@ -55,7 +68,7 @@ module.exports = {
     "no-useless-concat": "error",
     "no-useless-escape": "error",
     "no-void": "error",
-    "no-warning-comments": "error",
+    "no-warning-comments": "warn",
     "radix": "error",
     "vars-on-top": "error",
     "wrap-iife": "error",
@@ -87,14 +100,13 @@ module.exports = {
     "key-spacing": "error",
     "keyword-spacing": "error",
     "linebreak-style": ["error", "unix"],
-    "lines-around-comment": "error",
+    "lines-around-comment": "off",
     "max-depth": ["error", 4],
-    "max-len": ["error", 100],
+    "max-len": ["error", 120],
     "max-nested-callbacks": ["error", 3],
     "max-params": ["error", 5],
     "max-statements": ["off"],
-    "max-statements-per-line": ["error", { max: 1 }],
-    "new-cap": "error",
+    "max-statements-per-line": ["error", { max: 2 }],
     "new-parens": "error",
     "newline-before-return": "error",
     "no-array-constructor": "error",
@@ -112,7 +124,6 @@ module.exports = {
     "one-var": ["error", "never"],
     "operator-assignment": "error",
     "operator-linebreak": "error",
-    "padded-blocks": ["error", "never"],
     "quote-props": ["error", "as-needed"],
     "quotes": ["error", "double"],
     "semi": "error",
@@ -147,12 +158,12 @@ module.exports = {
     "prefer-rest-params": "error",
     "prefer-spread": "error",
     "prefer-template": "error",
-    "template-curly-spacing": "error"
-  },
-  "env": {
-    "es6": true,
-    "browser": true,
-    "node": true,
-    "mocha": true
+    "template-curly-spacing": "error",
+
+    // React
+    "react/jsx-uses-vars": "error",
+    "react/no-is-mounted": "error",
+    "react/prop-types": "warn",
+    "react/jsx-curly-spacing": "error"
   }
 };

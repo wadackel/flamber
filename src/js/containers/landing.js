@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 
-
-class Landing extends Component {
+class Landing extends React.Component {
   renderUser() {
     const { user } = this.props.auth;
     if (!user) return null;
+
     return (
       <dl>
         <dt>Photo</dt>
@@ -32,5 +32,5 @@ class Landing extends Component {
 }
 
 export default connect(
-  state => ({auth: state.auth})
+  state => ({ auth: state.auth })
 )(Landing);

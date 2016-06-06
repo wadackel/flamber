@@ -9,7 +9,7 @@ router.get("/validate", (req, res) => {
   const { oauth2Client } = req;
 
   verifyAuth(oauth2Client, req.query.code)
-    .then(({token, user}) => {
+    .then(({ token, user }) => {
       res.json({
         status: "ok",
         token,
@@ -29,6 +29,7 @@ router.get("/revoke", (req, res) => {
   const { oauth2Client, cookies } = req;
   const configObj = JSON.parse(cookies[C.CONFIG_KEY] || "{}");
 
+  /* eslint-disable no-console */
   function errorResponse(err) {
     console.log(err);
     res.json({
@@ -36,6 +37,7 @@ router.get("/revoke", (req, res) => {
       err
     });
   }
+  /* eslint-enable no-console */
 
   refreshAccessToken(oauth2Client, configObj.expiry_date)
     .then(token => {
@@ -44,7 +46,7 @@ router.get("/revoke", (req, res) => {
           return errorResponse(err);
         }
 
-        res.json({status: "ok"});
+        res.json({ status: "ok" });
       });
     })
     .catch(err => errorResponse(err));

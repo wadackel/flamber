@@ -6,12 +6,12 @@ import { authenticate, revokeCredentials } from "../api/auth";
 import {
   SIGN_IN_REQUEST, SIGN_IN_SUCCESS, SIGN_IN_FAILURE,
   SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE,
-  signInRequest, signInSuccess, signInFailure,
-  signOutRequest, signOutSuccess, signOutFailure
+  signInSuccess, signInFailure,
+  signOutSuccess, signOutFailure
 } from "../actions/auth";
 
 
-export function* handleSignInRequest() {
+export function *handleSignInRequest() {
   while (true) {
     const action = yield take(SIGN_IN_REQUEST);
 
@@ -25,12 +25,14 @@ export function* handleSignInRequest() {
       });
 
       // save config
+      /* eslint-disable camelcase */
       Cookies.set(C.CONFIG_KEY, {
         expiry_date: new Date(token.expiry_date)
       }, {
         path: C.PATH,
         expires: C.EXPIRES
       });
+      /* eslint-enable camelcase */
 
       yield put(signInSuccess(user));
 
@@ -41,7 +43,7 @@ export function* handleSignInRequest() {
 }
 
 
-export function* handleSignInSuccess() {
+export function *handleSignInSuccess() {
   while (true) {
     yield take(SIGN_IN_SUCCESS);
     yield put(replace("/"));
@@ -49,7 +51,7 @@ export function* handleSignInSuccess() {
 }
 
 
-export function* handleSignInFailure() {
+export function *handleSignInFailure() {
   while (true) {
     yield take(SIGN_IN_FAILURE);
     yield put(replace("/signin"));
@@ -57,7 +59,7 @@ export function* handleSignInFailure() {
 }
 
 
-export function* handleSignOutRequest() {
+export function *handleSignOutRequest() {
   while (true) {
     yield take(SIGN_OUT_REQUEST);
 
@@ -83,14 +85,14 @@ export function* handleSignOutRequest() {
 }
 
 
-export function* handleSignOutSuccess() {
+export function *handleSignOutSuccess() {
   while (true) {
     yield take(SIGN_OUT_SUCCESS);
     yield put(replace("/signin"));
   }
 }
 
-export function* handleSignOutFailure() {
+export function *handleSignOutFailure() {
   while (true) {
     yield take(SIGN_OUT_FAILURE);
     yield put(replace("/"));
@@ -98,7 +100,7 @@ export function* handleSignOutFailure() {
 }
 
 
-export default function* rootSaga() {
+export default function *rootSaga() {
   yield [
     fork(handleSignInRequest),
     fork(handleSignInSuccess),
