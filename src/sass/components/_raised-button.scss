@@ -2,7 +2,18 @@
   display: inline-block;
   position: relative;
 
+  &:hover {
+    .raised-button__body {
+      box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+    }
+
+    &.raised-button--default .raised-button__body {
+      background: darken(#fff, 10%);
+    }
+  }
+
   &__body {
+    @include transition(all);
     display: block;
     margin: 0;
     padding: 12px 20px;

@@ -29,6 +29,7 @@ export default class RaisedButton extends React.Component {
   }
 
   handleClick(e) {
+    console.log(e.pageX, e.pageY, e.clientX, e.clientY);
     // TODO: Ripple effect
   }
 
