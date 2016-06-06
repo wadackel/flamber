@@ -18,7 +18,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npm run lint:sass && npm run lint:js",
     "lint:js": "eslint src/js/**/*.js .eslintrc.js --no-ignore",
-    "lint:sass": "sass-lint -c .sass-lint.yml 'src/sass/**/*.scss' -i 'src/sass/vendor/**/*' -v",
+    "lint:sass": "sass-lint -c .sass-lint.yml 'src/sass/**/*.scss' -i 'src/sass/vendors/**/*' -v",
     "styleguide": "styleguidist server"
   },
   "repository": {

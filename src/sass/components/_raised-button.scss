@@ -1,14 +1,17 @@
-.button {
+.raised-button {
   display: inline-block;
   margin: 0;
   padding: 12px 20px;
   border: none;
-  background: #000;
+  background: #fff;
   color: #fff;
   cursor: pointer;
   user-select: none;
 
   &:focus {
     outline: none;
+  }
+
+  &--primary {
   }
 }
