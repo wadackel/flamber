@@ -1,4 +1,3 @@
-import fetch from "../utils/fetch";
 import { getDrive } from "./drive";
 
 export function fetchUser(oauth2Client, token) {
@@ -10,6 +9,7 @@ export function fetchUser(oauth2Client, token) {
     }, (err, res) => {
       if (err) {
         reject(err);
+
         return;
       }
 
@@ -21,11 +21,15 @@ export function fetchUser(oauth2Client, token) {
 export function fetchToken(oauth2Client, code) {
   return new Promise((resolve, reject) => {
     oauth2Client.getToken(code, (err, token) => {
+
+      /* eslint-disable no-console */
       if (err) {
         console.log("Error while trying to retrieve access token", err);
         reject(err);
+
         return;
       }
+      /* eslint-enable no-console */
 
       resolve(token);
     });
@@ -34,11 +38,12 @@ export function fetchToken(oauth2Client, code) {
 
 export default function verifyAuth(oauth2Client, code) {
   return new Promise((resolve, reject) => {
-    let token;
+    let token = null;
 
     fetchToken(oauth2Client, code)
       .then(_token => {
         token = _token;
+
         return fetchUser(oauth2Client, token);
       })
       .then(user => {
@@ -52,6 +57,7 @@ export function refreshAccessToken(oauth2Client, expiryDate) {
   return new Promise((resolve, reject) => {
     if (!expiryDate || new Date() <= new Date(expiryDate)) {
       resolve();
+
       return;
     }
 

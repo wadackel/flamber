@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { signInRequest } from "../actions/auth";
 
-class SignIn extends Component {
+class SignIn extends React.Component {
   handleSignInClick(e) {
     e.preventDefault();
     const { authenticateURL } = this.props.auth;

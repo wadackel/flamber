@@ -6,8 +6,8 @@ import { authenticate, revokeCredentials } from "../api/auth";
 import {
   SIGN_IN_REQUEST, SIGN_IN_SUCCESS, SIGN_IN_FAILURE,
   SIGN_OUT_REQUEST, SIGN_OUT_SUCCESS, SIGN_OUT_FAILURE,
-  signInRequest, signInSuccess, signInFailure,
-  signOutRequest, signOutSuccess, signOutFailure
+  signInSuccess, signInFailure,
+  signOutSuccess, signOutFailure
 } from "../actions/auth";
 
 
@@ -25,12 +25,14 @@ export function *handleSignInRequest() {
       });
 
       // save config
+      /* eslint-disable camelcase */
       Cookies.set(C.CONFIG_KEY, {
         expiry_date: new Date(token.expiry_date)
       }, {
         path: C.PATH,
         expires: C.EXPIRES
       });
+      /* eslint-enable camelcase */
 
       yield put(signInSuccess(user));
 

@@ -1,6 +1,5 @@
 import Google from "googleapis";
 import GoogleAuth from "google-auth-library";
-import * as C from "../constants/cookie";
 import {
   VERSION,
   CLIENT_ID,
@@ -22,10 +21,13 @@ export function getOauth2Client() {
 }
 
 export function getAuthUrl(oauth2Client) {
+
+  /* eslint-disable camelcase */
   return oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope: SCOPES
   });
+  /* eslint-enable camelcase */
 }
 
 export function getDrive(oauth2Client, token) {

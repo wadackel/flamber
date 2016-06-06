@@ -25,7 +25,8 @@ const app = express();
 
 
 // Layout
-const HTML = ({content, store}) => {
+/* eslint-disable react/no-danger, react/prop-types */
+function HTML({ content, store }) {
   const head = Helmet.rewind();
   const attrs = head.htmlAttributes.toComponent();
 
@@ -39,18 +40,19 @@ const HTML = ({content, store}) => {
         <link rel="stylesheet" href="/css/style.css" />
       </head>
       <body>
-        <div id="app" dangerouslySetInnerHTML={{__html: content}} />
+        <div id="app" dangerouslySetInnerHTML={{ __html: content }} />
         <script id="initial-state" type="text/plain" data-json={JSON.stringify(store.getState())}></script>
         <script src="/js/client.bundle.js"></script>
       </body>
     </html>
   );
-};
+}
+/* eslint-enable react/no-danger, react/prop-types */
 
 
 // Express middleware
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride("X-HTTP-Method"));
 app.use(methodOverride("X-HTTP-Method-Override"));
@@ -99,6 +101,8 @@ app.use((req, res) => {
 
 
 // Listen
+/* eslint-disable no-console */
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
+/* eslint-enable no-console */
