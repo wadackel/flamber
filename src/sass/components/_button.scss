@@ -1,12 +1,12 @@
 .button {
   display: inline-block;
   margin: 0;
-  padding: 15px 20px;
-  border: 0;
+  padding: 12px 20px;
+  border: none;
   background: #000;
   color: #fff;
-  user-select: none;
   cursor: pointer;
+  user-select: none;
 
   &:focus {
     outline: none;

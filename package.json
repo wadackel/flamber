@@ -16,9 +16,10 @@
     "clean": "rimraf public",
     "uglify": "uglifyjs public/js/client.bundle.js -o public/js/client.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src/js/**/*.js .eslintrc.js --no-ignore",
-    "styleguide-server": "styleguidist server",
-    "styleguide-build": "styleguidist build"
+    "lint": "npm run lint:sass && npm run lint:js",
+    "lint:js": "eslint src/js/**/*.js .eslintrc.js --no-ignore",
+    "lint:sass": "sass-lint -c .sass-lint.yml 'src/sass/**/*.scss' -i 'src/sass/vendor/**/*' -v",
+    "styleguide": "styleguidist server"
   },
   "repository": {
     "type": "git",
@@ -51,6 +52,7 @@
     "react-styleguidist": "^2.3.0",
     "react-transform-hmr": "^1.0.4",
     "rimraf": "^2.5.2",
+    "sass-lint": "^1.7.0",
     "sass-loader": "^3.2.0",
     "supervisor": "^0.10.0",
     "uglify-js": "^2.6.2",
