@@ -39,4 +39,29 @@ $button-size: 40px;
       fill: currentColor;
     }
   }
+
+  &__tooltip {
+    @include transition(all, 250ms);
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+
+    &__label {
+      display: inline-block;
+      padding: .4em 1.2em;
+      border-radius: 2px;
+      background: rgba(#000, .9);
+      color: #fff;
+      font-size: .75rem;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    &--show {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
 }

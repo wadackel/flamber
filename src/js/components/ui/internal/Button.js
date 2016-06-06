@@ -8,6 +8,7 @@ import randomId from "../../../helpers/random-id";
 
 export default class Button extends React.Component {
   static propTypes = {
+    children: PropTypes.node,
     className: PropTypes.string,
     baseClassName: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -16,12 +17,16 @@ export default class Button extends React.Component {
     label: PropTypes.node,
     icon: PropTypes.element,
     iconRight: PropTypes.element,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func
   };
 
   static defaultProps = {
     type: "default",
-    onClick: () => {}
+    onClick: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {}
   };
 
   constructor(props) {
@@ -32,14 +37,9 @@ export default class Button extends React.Component {
     };
 
     bindHandlers([
-      "handleClick",
       "handleMouseDown",
       "handleRippleHide"
     ], this);
-  }
-
-  handleClick(e) {
-    this.props.onClick(e);
   }
 
   handleMouseDown(e) {
@@ -96,6 +96,7 @@ export default class Button extends React.Component {
 
   render() {
     const {
+      children,
       baseClassName,
       className,
       type,
@@ -103,7 +104,10 @@ export default class Button extends React.Component {
       target,
       label,
       icon,
-      iconRight
+      iconRight,
+      onClick,
+      onMouseEnter,
+      onMouseLeave
     } = this.props;
 
     const { ripples } = this.state;
@@ -122,10 +126,13 @@ export default class Button extends React.Component {
         className={mergeClassNames(b(modifier), className)}
         ref="element"
         onMouseDown={this.handleMouseDown}
-        onClick={this.handleClick}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
         <div className={b("ripple-container")}>{ripples}</div>
         {bodyElement}
+        {children}
       </div>
     );
   }
