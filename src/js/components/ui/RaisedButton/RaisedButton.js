@@ -1,24 +1,45 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
+import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("raised-button");
 
 export default class RaisedButton extends React.Component {
   static propTypes = {
+    type: PropTypes.string.isRequired, // "default"|"primary"|"secondary"|"success"|"info"|"danger"|"warning"
     children: PropTypes.element,
     href: PropTypes.string,
-    onClick: PropTypes.func,
-    type: PropTypes.string.isRequired
+    target: PropTypes.string,
+    onClick: PropTypes.func
   };
 
   static defaultProps = {
-    type: "default"
+    type: "default",
+    onClick: () => {}
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+
+    bindHandlers([
+      "handleClick"
+    ], this);
+  }
+
+  handleClick(e) {
+    // TODO: Ripple effect
+  }
+
   render() {
+    const body = this.props.href
+      ? <a className={b("body")} href={this.props.href} target={this.props.target}>{this.props.children}</a>
+      : <button className={b("body")}>{this.props.children}</button>;
+
     return (
-      <div className={b()}>
-        <button className={b("body")}>{this.props.children}</button>
+      <div className={b({ [this.props.type]: true })} onClick={this.handleClick}>
+        {body}
       </div>
     );
   }

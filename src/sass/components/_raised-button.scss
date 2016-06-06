@@ -1,17 +1,33 @@
 .raised-button {
   display: inline-block;
-  margin: 0;
-  padding: 12px 20px;
-  border: none;
-  background: #fff;
-  color: #fff;
-  cursor: pointer;
-  user-select: none;
+  position: relative;
 
-  &:focus {
-    outline: none;
+  &__body {
+    display: block;
+    margin: 0;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 2px;
+    text-decoration: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .4);
+    cursor: pointer;
+    user-select: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &--default {
+    .raised-button__body {
+      background: #fff;
+    }
   }
 
   &--primary {
+    .raised-button__body {
+      background: $brand-primary;
+      color: #fff;
+    }
   }
 }
