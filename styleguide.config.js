@@ -1,4 +1,5 @@
 const path = require("path");
+const jsonImporter = require("node-sass-json-importer");
 
 module.exports = {
   title: "dripup - Styleguide",
@@ -37,6 +38,10 @@ module.exports = {
         loader: "style!css!sass"
       }
     );
+
+    webpackConfig.sassLoader = {
+      importer: jsonImporter
+    };
 
     return webpackConfig;
   }
