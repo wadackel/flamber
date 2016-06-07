@@ -1,38 +1,53 @@
 @keyframes ripple-effect {
   0% {
     transform: scale(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: .1;
+  }
+
+  60% {
+    opacity: .8;
   }
 
   100% {
     transform: scale(1);
+    opacity: 0;
   }
 }
 
 .raised-button {
+  @include transition(all);
   display: inline-block;
   position: relative;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .4);
+  overflow: hidden;
 
   &:hover {
-    .raised-button__body {
-      box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .3);
+
+    &.raised-button--default {
+      background: darken(#fff, 10%);
     }
 
-    &.raised-button--default .raised-button__body {
-      background: darken(#fff, 10%);
+    &.raised-button--primary {
+      background: darken($brand-primary, 5%);
     }
   }
 
   &__body {
-    @include transition(all);
     display: block;
     margin: 0;
     padding: 12px 20px;
     border: none;
-    border-radius: 2px;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
     text-decoration: none;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .4);
     cursor: pointer;
-    overflow: hidden;
     user-select: none;
 
     &:focus {
@@ -40,28 +55,33 @@
     }
   }
 
+  &__label {
+    position: relative;
+    z-index: 1;
+  }
+
   &__ripple {
     position: absolute;
     transform: scale(0);
     border-radius: 50%;
-    opacity: .7;
-    animation: ripple-effect 1500ms ease-in-out;
+    z-index: 0;
+    animation: ripple-effect #{$ripple-duration}ms $ease-out-quad;
   }
 
   &--default {
-    .raised-button__body {
-      background: #fff;
-    }
+    background: #fff;
 
     .raised-button__ripple {
-      background: #eee;
+      background: darken(#fff, 2%);
     }
   }
 
   &--primary {
-    .raised-button__body {
-      background: $brand-primary;
-      color: #fff;
+    background: $brand-primary;
+    color: #fff;
+
+    .raised-button__ripple {
+      background: lighten($brand-primary, 3%);
     }
   }
 }

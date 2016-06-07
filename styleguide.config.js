@@ -28,6 +28,11 @@ module.exports = {
         loader: "babel"
       },
       {
+        test: /\.json$/,
+        include,
+        loader: "json"
+      },
+      {
         test: /\.css$/,
         include,
         loader: "style!css?importLoaders=1"

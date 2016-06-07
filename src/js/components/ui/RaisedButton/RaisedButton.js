@@ -1,9 +1,10 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
+import shareConfig from "../../../../share-config.json";
 
 const b = bem("raised-button");
-const RIPPLE_DURATION = 1500; //TODO
+const RIPPLE_DURATION = shareConfig["ripple-duration"];
 
 class RippleEffect extends React.Component {
   static propTypes = {
@@ -34,9 +35,17 @@ class RippleEffect extends React.Component {
     this.timer = setTimeout(this.handleTimeout, RIPPLE_DURATION);
   }
 
-  handleTimeout() {
-    this.setState({ show: false });
+  componentWillUnmount() {
     clearTimeout(this.timer);
+    this.timer = null;
+    this.setState({ show: true });
+  }
+
+  handleTimeout() {
+    clearTimeout(this.timer);
+    this.timer = null;
+    this.setState({ show: false });
+    this.props.onRequestHide();
   }
 
   render() {
@@ -80,7 +89,8 @@ export default class RaisedButton extends React.Component {
     };
 
     bindHandlers([
-      "handleClick"
+      "handleClick",
+      "handleRippleHide"
     ], this);
   }
 
@@ -107,9 +117,18 @@ export default class RaisedButton extends React.Component {
 
     this.setState({
       ripples: this.state.ripples.concat([
-        <RippleEffect className={b("ripple")} style={style} />
+        <RippleEffect
+          key={Math.random()}
+          className={b("ripple")}
+          style={style}
+          onRequestHide={this.handleRippleHide}
+        />
       ])
     });
+  }
+
+  handleRippleHide() {
+    this.setState({ ripples: this.state.ripples.slice(1) });
   }
 
   render() {
@@ -138,7 +157,9 @@ export default class RaisedButton extends React.Component {
     bodyProps.ref = "body";
     bodyProps.className = b("body", modifier);
 
-    const body = React.createElement(isAnchor ? "a" : "button", bodyProps, [ripples, children]);
+    const label = <span className={b("label", modifier)} ref="label">{children}</span>;
+
+    const body = React.createElement(isAnchor ? "a" : "button", bodyProps, [ripples, label]);
 
     return (
       <div className={b(modifier)} onClick={this.handleClick} ref="element">
