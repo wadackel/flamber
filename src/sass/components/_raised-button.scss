@@ -1,3 +1,13 @@
+@keyframes ripple-effect {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 .raised-button {
   display: inline-block;
   position: relative;
@@ -22,6 +32,7 @@
     text-decoration: none;
     box-shadow: 0 3px 6px rgba(0, 0, 0, .4);
     cursor: pointer;
+    overflow: hidden;
     user-select: none;
 
     &:focus {
@@ -29,9 +40,21 @@
     }
   }
 
+  &__ripple {
+    position: absolute;
+    transform: scale(0);
+    border-radius: 50%;
+    opacity: .7;
+    animation: ripple-effect 1500ms ease-in-out;
+  }
+
   &--default {
     .raised-button__body {
       background: #fff;
+    }
+
+    .raised-button__ripple {
+      background: #eee;
     }
   }
 
