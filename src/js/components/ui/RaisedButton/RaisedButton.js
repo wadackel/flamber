@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
+import randomId from "../../../helpers/random-id";
 import shareConfig from "../../../../share-config.json";
 
 const b = bem("raised-button");
@@ -90,13 +91,12 @@ export default class RaisedButton extends React.Component {
 
     bindHandlers([
       "handleClick",
-      "handleRippleHide"
+      "handleRippleHide",
+      "handleMouseDown"
     ], this);
   }
 
-  getRippleStyle(x, y, w, h) {
-    const size = Math.max(w, h);
-
+  getRippleStyle(x, y, size) {
     return {
       top: y - size / 2,
       left: x - size / 2,
@@ -105,21 +105,14 @@ export default class RaisedButton extends React.Component {
     };
   }
 
-  handleClick(e) {
-    const { element } = this.refs;
-    const { top, left, width, height } = element.getBoundingClientRect();
-    const style = this.getRippleStyle(
-      e.pageX - (left + window.pageXOffset),
-      e.pageY - (top + window.pageYOffset),
-      width,
-      height
-    );
+  addRippleElement(x, y, size) {
+    const style = this.getRippleStyle(x, y, size);
 
     this.setState({
       ripples: this.state.ripples.concat([
         <RippleEffect
-          key={Math.random()}
-          className={b("ripple")}
+          key={randomId()}
+          className={b("ripple", { [this.props.type]: true })}
           style={style}
           onRequestHide={this.handleRippleHide}
         />
@@ -127,8 +120,24 @@ export default class RaisedButton extends React.Component {
     });
   }
 
+  handleMouseDown(e) {
+    const { top, left, width, height } = this.refs.element.getBoundingClientRect();
+
+    this.addRippleElement(
+      e.pageX - (left + window.pageXOffset),
+      e.pageY - (top + window.pageYOffset),
+      Math.max(width, height) * 1.5
+    );
+  }
+
   handleRippleHide() {
     this.setState({ ripples: this.state.ripples.slice(1) });
+  }
+
+  handleClick(e) {
+    if (this.props.onClick(e)) {
+      this.props.onClick(e);
+    }
   }
 
   render() {
@@ -139,30 +148,22 @@ export default class RaisedButton extends React.Component {
       target
     } = this.props;
 
-    const {
-      ripples
-    } = this.state;
-
+    const { ripples } = this.state;
     const modifier = { [type]: true };
-    const isAnchor = !!href;
-    const bodyProps = isAnchor
-      ? {
-        href,
-        target
-      }
-      : {
-        type: "button"
-      };
-
-    bodyProps.ref = "body";
-    bodyProps.className = b("body", modifier);
-
     const label = <span className={b("label", modifier)} ref="label">{children}</span>;
-
-    const body = React.createElement(isAnchor ? "a" : "button", bodyProps, [ripples, label]);
+    const bodyClass = b("body", modifier);
+    const body = !href
+      ? <button className={bodyClass} type="button" ref="body">{label}</button>
+      : <a className={bodyClass} href={href} target={target} ref="body">{label}</a>;
 
     return (
-      <div className={b(modifier)} onClick={this.handleClick} ref="element">
+      <div
+        className={b(modifier)}
+        ref="element"
+        onMouseDown={this.handleMouseDown}
+        onClick={this.handleClick}
+      >
+        <div className={b("ripple-container")}>{ripples}</div>
         {body}
       </div>
     );

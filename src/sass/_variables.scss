@@ -10,7 +10,7 @@ $brand-secondary: #000; //TODO
 $brand-success: #00897a;
 $brand-info: #0180aa;
 $brand-warning: #f9a42b;
-$brand-danger: #d9534f;
+$brand-danger: #f04;
 
 
 //=== Retina
@@ -39,17 +39,16 @@ $container-max-widths: (
 
 
 //=== Transitions
-$transition-duration-base: .32s;
+$transition-duration-base: .45s;
 $transition-duration-slow: $transition-duration-base * 2;
 $transition-duration-normal: $transition-duration-base * 1;
 $transition-duration-fast: $transition-duration-base * .5;
 
-$transition-easing: $ease-out-quart;
+$transition-easing: $ease-out-cubic;
 
 
 //=== Typography
-$font-family-sans-serif: "Avenir Next", Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "游ゴシック", "Yu Gothic", "メイリオ", Meiryo, Osaka, sans-serif;
-// $font-family-accent: "Josefin Sans", sans-serif;
+$font-family-sans-serif: "Roboto", "Avenir Next", Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "游ゴシック", "Yu Gothic", "メイリオ", Meiryo, Osaka, sans-serif;
 $font-family-base: $font-family-sans-serif;
 
 $font-size-root: 16px;

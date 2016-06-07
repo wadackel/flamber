@@ -1,15 +1,47 @@
+$button-colors: (
+  default: (
+    default: (
+      color: $gray-dark,
+      background: #fff
+    ),
+    hover: (
+      color: $gray-dark,
+      background: darken(#fff, 8%)
+    )
+  ),
+
+  primary: (
+    default: (
+      color: #fff,
+      background: $brand-primary
+    ),
+    hover: (
+      color: #fff,
+      background: darken($brand-primary, 8%)
+    )
+  ),
+
+  danger: (
+    default: (
+      color: #fff,
+      background: $brand-danger
+    ),
+    hover: (
+      color: #fff,
+      background: darken($brand-danger, 8%)
+    )
+  ),
+);
+
+
 @keyframes ripple-effect {
   0% {
     transform: scale(0);
     opacity: 0;
   }
 
-  10% {
-    opacity: .1;
-  }
-
   60% {
-    opacity: .8;
+    opacity: .7;
   }
 
   100% {
@@ -18,35 +50,48 @@
   }
 }
 
+
 .raised-button {
+  $shadow-color: rgba(0, 0, 0, .11);
+
   @include transition(all);
   display: inline-block;
   position: relative;
   border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, .4);
-  overflow: hidden;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px $shadow-color, 0 2px 4px $shadow-color;
+  cursor: pointer;
+  user-select: none;
 
   &:hover {
-    box-shadow: 0 2px 2px rgba(0, 0, 0, .3);
+    box-shadow: 0 1px 4px $shadow-color, 0 1px 2px $shadow-color;
+  }
 
-    &.raised-button--default {
-      background: darken(#fff, 10%);
-    }
+  &__ripple-container {
+    @include absolute(0, 0, 0, 0, 0);
+    overflow: hidden;
+  }
 
-    &.raised-button--primary {
-      background: darken($brand-primary, 5%);
-    }
+  &__ripple {
+    position: absolute;
+    transform: scale(0);
+    border-radius: 50%;
+    opacity: 0;
+    animation: ripple-effect #{$ripple-duration}ms $ease-out-cubic;
   }
 
   &__body {
     display: block;
     margin: 0;
-    padding: 12px 20px;
+    padding: 12px 25px;
     border: none;
     border-radius: 0;
     background: transparent;
     color: inherit;
+    font-size: inherit;
+    line-height: 1;
     text-decoration: none;
+    white-space: nowrap;
     cursor: pointer;
     user-select: none;
 
@@ -60,28 +105,23 @@
     z-index: 1;
   }
 
-  &__ripple {
-    position: absolute;
-    transform: scale(0);
-    border-radius: 50%;
-    z-index: 0;
-    animation: ripple-effect #{$ripple-duration}ms $ease-out-quad;
-  }
+  @each $type, $values in $button-colors {
+    &--#{$type} {
+      @each $modifier, $values in $values {
+        @if $modifier == default {
+          background-color: map-get($values, background);
+          color: map-get($values, color);
+        } @else {
+          &:#{$modifier} {
+            background-color: map-get($values, background);
+            color: map-get($values, color);
+          }
+        }
+      }
 
-  &--default {
-    background: #fff;
-
-    .raised-button__ripple {
-      background: darken(#fff, 2%);
-    }
-  }
-
-  &--primary {
-    background: $brand-primary;
-    color: #fff;
-
-    .raised-button__ripple {
-      background: lighten($brand-primary, 3%);
+      .raised-button__ripple {
+        background: darken(map-deep-get($values, hover, background), 5%);
+      }
     }
   }
 }
