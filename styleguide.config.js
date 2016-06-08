@@ -1,4 +1,5 @@
 const path = require("path");
+const glob = require("glob");
 const jsonImporter = require("node-sass-json-importer");
 
 module.exports = {
@@ -7,8 +8,20 @@ module.exports = {
   template: path.join(__dirname, "styleguide/index.html"),
 
   sections: [
-    { name: "UI Components", components: "src/js/components/ui/**/*.js" },
-    { name: "SVG Icon Components", components: "src/js/components/svg-icons/**/*.js" }
+    {
+      name: "UI Components",
+      components() {
+        return glob.sync(path.resolve(__dirname, "src/js/components/ui/**/*.js")).filter(module => {
+          if (/\/internal\//.test(module)) return false;
+
+          return /\/[A-Z]\w*\.js$/.test(module);
+        });
+      }
+    },
+    {
+      name: "SVG Icon Components",
+      components: "src/js/components/svg-icons/**/*.js"
+    }
   ],
 
   assetsDir: path.join(__dirname, "public"),
