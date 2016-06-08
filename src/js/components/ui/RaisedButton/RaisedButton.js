@@ -12,6 +12,8 @@ export default class RaisedButton extends React.Component {
     children: PropTypes.element,
     href: PropTypes.string,
     target: PropTypes.string,
+    icon: PropTypes.element,
+    iconRight: PropTypes.element,
     onClick: PropTypes.func
   };
 
@@ -59,6 +61,10 @@ export default class RaisedButton extends React.Component {
     });
   }
 
+  createIcon(icon, className) {
+    return icon ? <span className={className}>{icon}</span> : null;
+  }
+
   handleMouseDown(e) {
     const { top, left, width, height } = this.refs.element.getBoundingClientRect();
 
@@ -90,10 +96,12 @@ export default class RaisedButton extends React.Component {
     const { ripples } = this.state;
     const modifier = { [type]: true };
     const label = <span className={b("label", modifier)} ref="label">{children}</span>;
+    const icon = this.createIcon(this.props.icon, b("icon"));
+    const iconRight = this.createIcon(this.props.iconRight, b("icon", { right: true }));
     const bodyClass = b("body", modifier);
     const body = !href
-      ? <button className={bodyClass} type="button" ref="body">{label}</button>
-      : <a className={bodyClass} href={href} target={target} ref="body">{label}</a>;
+      ? <button className={bodyClass} type="button" ref="body">{icon}{label}{iconRight}</button>
+      : <a className={bodyClass} href={href} target={target} ref="body">{icon}{label}{iconRight}</a>;
 
     return (
       <div

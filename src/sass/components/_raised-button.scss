@@ -105,6 +105,24 @@ $button-colors: (
     z-index: 1;
   }
 
+  &__icon {
+    $icon-margin: 8px;
+
+    display: inline-block;
+    margin: 0 $icon-margin 0 0;
+    vertical-align: middle;
+
+    svg {
+      @include size(1rem);
+      vertical-align: baseline;
+    }
+
+    &--right {
+      margin-right: 0;
+      margin-left: $icon-margin;
+    }
+  }
+
   @each $type, $values in $button-colors {
     &--#{$type} {
       @each $modifier, $values in $values {
@@ -121,6 +139,10 @@ $button-colors: (
 
       .raised-button__ripple {
         background: darken(map-deep-get($values, hover, background), 5%);
+      }
+
+      .raised-button__icon svg {
+        fill: map-deep-get($values, default, color);
       }
     }
   }

@@ -22,8 +22,24 @@ Basic:
 Link:
 
 ```
+<RaisedButton href="#">Click me</RaisedButton>
+```
+
+
+Icons:
+
+```
 <div>
-  <RaisedButton href="#">Click me</RaisedButton>
-  <RaisedButton href="#">Click me</RaisedButton>
+  <RaisedButton icon={<PencilIcon />}>Edit</RaisedButton>
+  {" "}
+  <RaisedButton icon={<PencilIcon />} type="primary">Edit</RaisedButton>
+  {" "}
+  <RaisedButton icon={<PencilIcon />} type="danger">Edit</RaisedButton>
+  <div style={{ marginBottom: 10 }} />
+  <RaisedButton iconRight={<GithubIcon />}>GitHub</RaisedButton>
+  {" "}
+  <RaisedButton iconRight={<GithubIcon />} type="primary">GitHub</RaisedButton>
+  {" "}
+  <RaisedButton iconRight={<GithubIcon />} type="danger">GitHub</RaisedButton>
 </div>
 ```
