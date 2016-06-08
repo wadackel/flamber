@@ -6,9 +6,14 @@ module.exports = {
 
   template: path.join(__dirname, "styleguide/index.html"),
 
+  sections: [
+    { name: "UI Components", components: "src/js/components/ui/**/*.js" },
+    { name: "SVG Icon Components", components: "src/js/components/svg-icons/**/*.js" }
+  ],
+
   assetsDir: path.join(__dirname, "public"),
 
-  components: "src/js/components/**/*.js",
+  defaultExample: true,
 
   getExampleFilename: componentpath => {
     const dirname = path.dirname(componentpath);
