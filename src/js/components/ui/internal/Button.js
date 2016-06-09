@@ -8,6 +8,7 @@ import randomId from "../../../helpers/random-id";
 export default class Button extends React.Component {
   static propTypes = {
     className: PropTypes.string.isRequired,
+    baseClassName: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     href: PropTypes.string,
     target: PropTypes.string,
@@ -46,9 +47,9 @@ export default class Button extends React.Component {
   }
 
   addRippleElement(x, y, size) {
-    const { className, type } = this.props;
+    const { baseClassName, type } = this.props;
     const { ripples } = this.state;
-    const b = bem(className);
+    const b = bem(baseClassName);
     const style = this.getRippleStyle(x, y, size);
 
     this.setState({
@@ -88,6 +89,7 @@ export default class Button extends React.Component {
 
   render() {
     const {
+      baseClassName,
       className,
       type,
       href,
@@ -98,7 +100,7 @@ export default class Button extends React.Component {
     } = this.props;
 
     const { ripples } = this.state;
-    const b = bem(className);
+    const b = bem(baseClassName);
     const modifier = { [type]: true };
     const labelElement = label ? <span className={b("label", modifier)}>{label}</span> : null;
     const iconElement = this.createIcon(icon, b("icon", modifier));
@@ -110,7 +112,7 @@ export default class Button extends React.Component {
 
     return (
       <div
-        className={b(modifier)}
+        className={b(modifier) + (className ? className : "")}
         ref="element"
         onMouseDown={this.handleMouseDown}
         onClick={this.handleClick}

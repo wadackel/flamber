@@ -3,6 +3,7 @@ import Button from "../internal/Button";
 
 export default class RaisedButton extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     type: PropTypes.string.isRequired,
     children: PropTypes.node,
     href: PropTypes.string,
@@ -23,7 +24,7 @@ export default class RaisedButton extends React.Component {
     } = this.props;
 
     return <Button
-      className="raised-button"
+      baseClassName="raised-button"
       label={children}
       {...props}
       />;

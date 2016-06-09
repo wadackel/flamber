@@ -3,6 +3,7 @@ import Button from "../internal/Button";
 
 export default class FloatingButton extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     type: PropTypes.string.isRequired,
     href: PropTypes.string,
     target: PropTypes.string,
@@ -16,7 +17,7 @@ export default class FloatingButton extends React.Component {
 
   render() {
     return <Button
-      className="floating-button"
+      baseClassName="floating-button"
       {...this.props}
       />;
   }

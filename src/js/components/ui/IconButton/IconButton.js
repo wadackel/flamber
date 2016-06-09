@@ -3,6 +3,7 @@ import Button from "../internal/Button";
 
 export default class IconButton extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     type: PropTypes.string.isRequired,
     href: PropTypes.string,
     target: PropTypes.string,
@@ -16,7 +17,7 @@ export default class IconButton extends React.Component {
 
   render() {
     return <Button
-      className="icon-button"
+      baseClassName="icon-button"
       {...this.props}
       />;
   }

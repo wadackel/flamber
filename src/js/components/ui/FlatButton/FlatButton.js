@@ -3,6 +3,7 @@ import Button from "../internal/Button";
 
 export default class FlatButton extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     type: PropTypes.string.isRequired,
     children: PropTypes.node,
     href: PropTypes.string,
@@ -23,7 +24,7 @@ export default class FlatButton extends React.Component {
     } = this.props;
 
     return <Button
-      className="flat-button"
+      baseClassName="flat-button"
       label={children}
       {...props}
       />;
