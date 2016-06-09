@@ -1,9 +1,9 @@
 //=== Colors
-$gray-dark: #000;
-$gray: #333;
-$gray-light: #b6b6b6;
-$gray-lighter: #eaeaea;
-$gray-lightest: #f3f3f3;
+$gray-dark: #1a1a1a;
+$gray: #212121;
+$gray-light: #2d2d2d;
+$gray-lighter: #929292;
+$gray-lightest: #bfbfbf;
 
 $brand-primary: #00adb5;
 $brand-secondary: #000; //TODO
@@ -49,6 +49,7 @@ $transition-easing: cubic-bezier(0, 0, .2, 1);
 
 
 //=== Typography
+$color-root: $gray-lightest;
 $font-family-sans-serif: "Roboto", "Avenir Next", Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "游ゴシック", "Yu Gothic", "メイリオ", Meiryo, Osaka, sans-serif;
 $font-family-base: $font-family-sans-serif;
 

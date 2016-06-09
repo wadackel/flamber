@@ -1,0 +1,20 @@
+@charset "utf-8";
+
+.ReactStyleguidist-colors__base,
+.ReactStyleguidist-Props__heading,
+.ReactStyleguidist-Props__cellHeading,
+.ReactStyleguidist-Layout__heading {
+  color: #b9b9b9;
+}
+
+.ReactStyleguidist-colors__border {
+  border-color: #484848;
+}
+
+.ReactStyleguidist-colors__base-bg {
+  background: #1a1a1a;
+}
+
+.ReactStyleguidist-Layout__sidebar {
+  background: #1a1a1a;
+}

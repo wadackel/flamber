@@ -28,6 +28,8 @@ module.exports = {
 
   defaultExample: true,
 
+  highlightTheme: "material",
+
   getExampleFilename: componentpath => {
     const dirname = path.dirname(componentpath);
 
@@ -38,6 +40,7 @@ module.exports = {
     const include = path.join(__dirname, "src");
 
     webpackConfig.entry.push(path.join(__dirname, "src/sass/style.scss"));
+    webpackConfig.entry.push(path.join(__dirname, "styleguide/style.css"));
 
     webpackConfig.module.loaders.push(
       {
@@ -52,7 +55,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include,
+        include: [include, path.join(__dirname, "styleguide")],
         loader: "style!css?importLoaders=1"
       },
       {
