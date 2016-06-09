@@ -1,0 +1,82 @@
+$button-size: 60px;
+
+$button-colors: (
+  default: (
+    default: (
+      color: $gray-dark,
+      background: #fff
+    ),
+    hover: (
+      color: $gray-dark,
+      background: darken(#fff, 8%)
+    )
+  ),
+
+  primary: (
+    default: (
+      color: #fff,
+      background: $button-color-primary
+    ),
+    hover: (
+      color: #fff,
+      background: darken($button-color-primary, 8%)
+    )
+  ),
+
+  danger: (
+    default: (
+      color: #fff,
+      background: $button-color-danger
+    ),
+    hover: (
+      color: #fff,
+      background: darken($button-color-danger, 8%)
+    )
+  ),
+);
+
+
+.floating-button {
+  @include button-extend-all;
+
+  border-radius: 50%;
+
+  &__ripple-container {
+    border-radius: 50%;
+  }
+
+  &__body {
+    @include size($button-size);
+    padding: 0;
+  }
+
+  &__icon {
+    margin: 0;
+
+    svg {
+      fill: $color-root;
+    }
+  }
+
+  @each $type, $values in $button-colors {
+    &--#{$type} {
+      @each $modifier, $values in $values {
+        @if $modifier == default {
+          background-color: map-get($values, background);
+        } @else {
+          &:#{$modifier} {
+            background-color: map-get($values, background);
+          }
+        }
+      }
+    }
+
+    &__ripple--#{$type} {
+      background: darken(map-deep-get($values, hover, background), 5%);
+    }
+
+    &__icon--#{$type} svg {
+      fill: map-deep-get($values, default, color);
+    }
+  }
+}

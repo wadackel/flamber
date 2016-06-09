@@ -4,10 +4,15 @@ $button-size: 40px;
 .icon-button {
   @include button-extend-all;
 
+  border-radius: 50%;
   box-shadow: none;
 
   &:hover {
     box-shadow: none;
+
+    .icon-button__body {
+      opacity: .6;
+    }
   }
 
   &__ripple-container {
@@ -27,6 +32,7 @@ $button-size: 40px;
 
   &__body {
     @include size($button-size);
+    @include transition(all);
     padding: 0;
   }
 
