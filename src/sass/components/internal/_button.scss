@@ -8,11 +8,11 @@ $button-icon-margin: 8px;
 @keyframes ripple-effect {
   0% {
     transform: scale(0);
-    opacity: 0;
+    opacity: .5;
   }
 
   60% {
-    opacity: .7;
+    opacity: .8;
   }
 
   100% {
@@ -51,7 +51,7 @@ $button-icon-margin: 8px;
   transform: scale(0);
   border-radius: 50%;
   opacity: 0;
-  animation: ripple-effect #{$ripple-duration}ms $ease-out-cubic;
+  animation: ripple-effect #{$ripple-duration}ms $transition-easing;
 }
 
 

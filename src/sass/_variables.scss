@@ -39,12 +39,12 @@ $container-max-widths: (
 
 
 //=== Transitions
-$transition-duration-base: .45s;
+$transition-duration-base: 400ms;
 $transition-duration-slow: $transition-duration-base * 2;
 $transition-duration-normal: $transition-duration-base * 1;
 $transition-duration-fast: $transition-duration-base * .5;
 
-$transition-easing: $ease-out-cubic;
+$transition-easing: cubic-bezier(.4, 0, .2, 1);
 
 
 //=== Typography
