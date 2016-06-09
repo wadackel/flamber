@@ -44,12 +44,15 @@ $transition-duration-slow: $transition-duration-base * 2;
 $transition-duration-normal: $transition-duration-base * 1;
 $transition-duration-fast: $transition-duration-base * .5;
 
-// $transition-easing: cubic-bezier(.4, 0, .2, 1);
 $transition-easing: cubic-bezier(0, 0, .2, 1);
 
 
-//=== Typography
+//=== Base
 $color-root: $gray-lightest;
+$background-root: $gray;
+
+
+//=== Typography
 $font-family-sans-serif: "Roboto", "Avenir Next", Verdana, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "游ゴシック", "Yu Gothic", "メイリオ", Meiryo, Osaka, sans-serif;
 $font-family-base: $font-family-sans-serif;
 

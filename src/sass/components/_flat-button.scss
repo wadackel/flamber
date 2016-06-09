@@ -1,5 +1,5 @@
 $button-colors: (
-  default: $gray-dark,
+  default: $color-root,
   primary: $button-color-primary,
   secondary: $button-color-secondary,
   danger: $button-color-danger
@@ -12,12 +12,12 @@ $button-colors: (
   box-shadow: none;
 
   &:hover {
-    background: darken(#fff, 8%);
+    background: lighten($background-root, 8%);
     box-shadow: none;
   }
 
   &__ripple {
-    background: darken(#fff, 12%);
+    background: lighten($background-root, 12%);
   }
 
   @each $modifier, $color in $button-colors {
