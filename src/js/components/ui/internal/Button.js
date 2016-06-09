@@ -1,3 +1,4 @@
+import assign from "object-assign";
 import React, { PropTypes } from "react";
 import Ripple from "./Ripple";
 import bem from "../../../helpers/bem";
@@ -100,8 +101,8 @@ export default class Button extends React.Component {
     const b = bem(className);
     const modifier = { [type]: true };
     const labelElement = label ? <span className={b("label", modifier)}>{label}</span> : null;
-    const iconElement = this.createIcon(icon, b("icon"));
-    const iconRightElement = this.createIcon(iconRight, b("icon", { right: true }));
+    const iconElement = this.createIcon(icon, b("icon", modifier));
+    const iconRightElement = this.createIcon(iconRight, b("icon", assign(modifier, { right: true })));
     const bodyClass = b("body", modifier);
     const bodyElement = !href
       ? <button className={bodyClass}>{iconElement}{labelElement}{iconRightElement}</button>

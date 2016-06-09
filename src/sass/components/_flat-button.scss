@@ -1,0 +1,32 @@
+$button-colors: (
+  default: $gray-dark,
+  primary: $button-color-primary,
+  secondary: $button-color-secondary,
+  danger: $button-color-danger
+);
+
+
+.flat-button {
+  @include button-extend-all;
+
+  box-shadow: none;
+
+  &:hover {
+    background: darken(#fff, 8%);
+    box-shadow: none;
+  }
+
+  &__ripple {
+    background: darken(#fff, 12%);
+  }
+
+  @each $modifier, $color in $button-colors {
+    &--#{$modifier} {
+      color: $color;
+    }
+
+    &__icon--#{$modifier} svg {
+      fill: $color;
+    }
+  }
+}
