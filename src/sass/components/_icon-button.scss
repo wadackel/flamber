@@ -1,0 +1,43 @@
+$button-colors: (
+  default: $gray-dark,
+  primary: $button-color-primary,
+  secondary: $button-color-secondary,
+  danger: $button-color-danger
+);
+
+$button-size: 40px;
+
+
+.icon-button {
+  @include button-extend-all;
+
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  &__ripple-container {
+    overflow: visible;
+  }
+
+  &__ripple {
+    $size: round($button-size * 1.2);
+    top: 50% !important;
+    left: 50% !important;
+    width: $size !important;
+    height: $size !important;
+    margin-top: -$size / 2;
+    margin-left: -$size / 2;
+    background: darken(#fff, 8%);
+  }
+
+  &__body {
+    @include size($button-size);
+    padding: 0;
+  }
+
+  &__icon {
+    margin: 0;
+  }
+}

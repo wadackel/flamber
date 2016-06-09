@@ -44,7 +44,8 @@ $transition-duration-slow: $transition-duration-base * 2;
 $transition-duration-normal: $transition-duration-base * 1;
 $transition-duration-fast: $transition-duration-base * .5;
 
-$transition-easing: cubic-bezier(.4, 0, .2, 1);
+// $transition-easing: cubic-bezier(.4, 0, .2, 1);
+$transition-easing: cubic-bezier(0, 0, .2, 1);
 
 
 //=== Typography
