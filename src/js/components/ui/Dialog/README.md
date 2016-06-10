@@ -1,27 +1,6 @@
 Basic:
 
 ```
-<Dialog
-  width={400}
-  title="Add board"
-  titleIcon={<BoardIcon />}
-  actions={[
-    <FlatButton type="primary">OK</FlatButton>,
-    <FlatButton type="primary">Cancel</FlatButton>
-  ]}
-  modal={false}
-  open={true}
->
-  <p>Content</p>
-  <p>Content</p>
-  <p>Content</p>
-</Dialog>
-```
-
-
-Usage:
-
-```
 class DialogExample extends React.Component {
   constructor(props) {
     super(props);
@@ -45,6 +24,7 @@ class DialogExample extends React.Component {
             <FlatButton type="primary">OK</FlatButton>,
             <FlatButton type="primary">Cancel</FlatButton>
           ]}
+          open={this.state.open}
           onRequestClose={this.handleClose}
         >
           <p>Content</p>

@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
+import RenderToLayer from "../internal/RenderToLayer";
 import Overlay from "../internal/Overlay";
 import { IconButton } from "../";
 import CloseIcon from "../../svg-icons/CloseIcon";
@@ -15,14 +16,12 @@ export default class Dialog extends React.Component {
     titleIcon: PropTypes.element,
     actions: PropTypes.node,
     open: PropTypes.bool.isRequired,
-    modal: PropTypes.bool,
     onRequestClose: PropTypes.func.isRequired
   };
 
   static defaultProps = {
     width: 450,
     open: false,
-    modal: true,
     onRequestClose: () => {}
   };
 
@@ -32,7 +31,9 @@ export default class Dialog extends React.Component {
     this.state = {};
 
     bindHandlers([
-      "handleCloseClick"
+      "renderLayer",
+      "handleCloseClick",
+      "handleOverlayClick"
     ], this);
   }
 
@@ -42,8 +43,13 @@ export default class Dialog extends React.Component {
     this.props.onRequestClose();
   }
 
+  handleOverlayClick() {
+    this.props.onRequestClose();
+  }
+
   renderHeader() {
     const {
+      open,
       title,
       titleIcon
     } = this.props;
@@ -53,7 +59,7 @@ export default class Dialog extends React.Component {
     const titleIconElement = titleIcon ? <span className={b("icon")}>{titleIcon}</span> : null;
 
     return (
-      <div className={b("header")}>
+      <div className={b("header", { open })}>
         <h3 className={b("title")}>{titleIconElement}{title}</h3>
         <IconButton
           className={b("close")}
@@ -65,7 +71,10 @@ export default class Dialog extends React.Component {
   }
 
   renderActions() {
-    const { actions } = this.props;
+    const {
+      open,
+      actions
+    } = this.props;
 
     if (!actions) return null;
 
@@ -74,34 +83,40 @@ export default class Dialog extends React.Component {
     );
 
     return (
-      <div className={b("actions")}>
+      <div className={b("actions", { open })}>
         {actionElements}
       </div>
     );
   }
 
-  render() {
+  renderLayer() {
     const {
       children,
-      width,
-      open,
-      modal
+      open
     } = this.props;
 
+    const modifier = { open };
+
     return (
-      <div
-        className={b({ open })}
-        style={{
-          width
-        }}
-      >
-        {this.renderHeader()}
-        <div className={b("body")}>
-          {children}
+      <div>
+        <div className={b(modifier)}>
+          <div className={b("container")}>
+            {this.renderHeader()}
+            <div className={b("body", modifier)}>
+              {children}
+            </div>
+            {this.renderActions()}
+          </div>
         </div>
-        {this.renderActions()}
-        {modal ? <Overlay /> : null}
+        <Overlay
+          show={open}
+          onClick={this.handleOverlayClick}
+        />
       </div>
     );
+  }
+
+  render() {
+    return <RenderToLayer render={this.renderLayer} open={true} useLayerForClickAway={false} />;
   }
 }

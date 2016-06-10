@@ -1,0 +1,12 @@
+.overlay {
+  @include fixed(0, 0, 0, 0, 999);
+  @include transition(all);
+  background: rgba(0, 0, 0, .8);
+  opacity: 0;
+  visibility: hidden;
+
+  &--show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
