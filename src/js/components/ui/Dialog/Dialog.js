@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
-// import bindHandlers from "../../../helpers/bind-handlers";
+import bindHandlers from "../../../helpers/bind-handlers";
 import { IconButton } from "../";
 import CloseIcon from "../../svg-icons/CloseIcon";
 
@@ -12,6 +12,7 @@ export default class Dialog extends React.Component {
     width: PropTypes.number.isRequired,
     title: PropTypes.string,
     titleIcon: PropTypes.element,
+    actions: PropTypes.node,
     open: PropTypes.bool.isRequired,
     onRequestClose: PropTypes.func.isRequired
   };
@@ -26,6 +27,16 @@ export default class Dialog extends React.Component {
     super(props);
 
     this.state = {};
+
+    bindHandlers([
+      "handleCloseClick"
+    ], this);
+  }
+
+  handleCloseClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.onRequestClose();
   }
 
   renderHeader() {
@@ -41,28 +52,50 @@ export default class Dialog extends React.Component {
     return (
       <div className={b("header")}>
         <h3 className={b("title")}>{titleIconElement}{title}</h3>
-        <IconButton className={b("close")} icon={<CloseIcon />} />
+        <IconButton
+          className={b("close")}
+          icon={<CloseIcon />}
+          onClick={this.handleCloseClick}
+        />
       </div>
     );
   }
 
-  // TODO:
-  renderFooter() {
+  renderActions() {
+    const { actions } = this.props;
+
+    if (!actions) return null;
+
+    const actionElements = actions.map((action, i) =>
+      React.cloneElement(action, { key: i })
+    );
+
     return (
-      <div></div>
+      <div className={b("actions")}>
+        {actionElements}
+      </div>
     );
   }
 
   render() {
     const {
-      children
+      children,
+      width,
+      open
     } = this.props;
 
     return (
-      <div className={b()}>
+      <div
+        className={b({ open })}
+        style={{
+          width
+        }}
+      >
         {this.renderHeader()}
-        {children}
-        {this.renderFooter()}
+        <div className={b("body")}>
+          {children}
+        </div>
+        {this.renderActions()}
       </div>
     );
   }

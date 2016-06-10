@@ -7,7 +7,7 @@ import randomId from "../../../helpers/random-id";
 
 export default class Button extends React.Component {
   static propTypes = {
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
     baseClassName: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     href: PropTypes.string,

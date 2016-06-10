@@ -1,4 +1,68 @@
 .dialog {
   display: block;
   max-width: 100%;
+
+  &__header {
+    position: relative;
+    padding: 40px 20px;
+    background: $brand-primary;
+    color: #fff;
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: normal;
+    line-height: 30px;
+  }
+
+  &__icon {
+    vertical-align: middle;
+
+    svg {
+      @include size(30px);
+      margin: 0 5px 0 0;
+      vertical-align: top;
+      fill: darken($brand-primary, 12%);
+    }
+  }
+
+  &__close {
+    @include absolute(10px, 10px);
+
+    svg {
+      opacity: .5;
+      fill: #fff !important;
+    }
+
+    .icon-button__ripple {
+      background: lighten($brand-primary, 5%);
+    }
+  }
+
+  &__body {
+    padding: 20px;
+    background: #fff;
+  }
+
+  &__actions {
+    padding: 10px 20px;
+    background: #fff;
+    text-align: right;
+
+    .flat-button {
+      &:hover {
+        background-color: darken(#fff, 8%);
+      }
+
+      & + .flat-button {
+        margin-left: 10px;
+      }
+    }
+
+    .flat-button__ripple {
+      background: darken(#fff, 12%);
+    }
+  }
 }
