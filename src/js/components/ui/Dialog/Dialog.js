@@ -32,7 +32,7 @@ export default class Dialog extends React.Component {
 
     bindHandlers([
       "handleCloseClick",
-      "handleBeforeClose"
+      "handleOverlayClose"
     ], this);
   }
 
@@ -42,9 +42,9 @@ export default class Dialog extends React.Component {
     this.props.onRequestClose();
   }
 
-  /* eslint-disable no-unused-vars */
-  handleBeforeClose(DOMNode, removeFromDOM) {}
-  /* eslint-enable no-unused-vars */
+  handleOverlayClose() {
+    this.props.onRequestClose();
+  }
 
   renderHeader() {
     const {
@@ -101,6 +101,7 @@ export default class Dialog extends React.Component {
       <Overlay
         open={open}
         className={b("overlay", modifier)}
+        onRequestClose={this.handleOverlayClose}
       >
         <Motion
           style={{

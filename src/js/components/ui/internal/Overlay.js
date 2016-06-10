@@ -1,35 +1,40 @@
 import React, { PropTypes } from "react";
-import Portal from "react-portal";
+import Portal from "../internal/Portal";
+// import bindHandlers from "../../../helpers/bind-handlers";
 
 export default class Overlay extends React.Component {
   static propTypes = {
     children: PropTypes.node,
     open: PropTypes.bool,
-    className: PropTypes.string
+    className: PropTypes.string,
+    onRequestClose: PropTypes.func
   };
 
   static defaultProps = {
-    open: false
+    open: false,
+    onRequestClose: () => {}
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.className !== this.props.className) {
-      this.refs.portal.className = nextProps.className;
-    }
+    console.log(nextProps.className); // eslint-disable-line
+    // if (nextProps.className !== this.props.className) {
+    //   this.refs.portal.className = nextProps.className;
+    // }
   }
 
   render() {
     const {
-      open,
       children,
-      className
+      open,
+      className,
+      onRequestClose
     } = this.props;
 
     return (
       <Portal
-        ref="portal"
         className={className}
-        isOpened={open}
+        open={open}
+        onRequestClose={onRequestClose}
       >
         {children}
       </Portal>
