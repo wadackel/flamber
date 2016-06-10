@@ -1,40 +1,69 @@
 import React, { PropTypes } from "react";
-import Portal from "../internal/Portal";
 import bem from "../../../helpers/bem";
+import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("overlay");
 
 export default class Overlay extends React.Component {
   static propTypes = {
-    children: PropTypes.node,
-    open: PropTypes.bool,
-    className: PropTypes.string,
-    onRequestClose: PropTypes.func
+    show: PropTypes.bool,
+    onClick: PropTypes.func
   };
 
   static defaultProps = {
-    open: false,
-    onRequestClose: () => {}
+    show: false,
+    onClick: () => {}
   };
 
+  constructor(props) {
+    super(props);
+
+    bindHandlers([
+      "handleClick"
+    ], this);
+  }
+
+  componentDidMount() {
+    this.updateScrollLock(this.props.show);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.show !== this.props.show) {
+      this.updateScrollLock(nextProps.show);
+    }
+  }
+
+  componentWillUnmount() {
+    this.unScrollLock();
+  }
+
+  handleClick(e) {
+    e.stopPropagation();
+    this.props.onClick();
+  }
+
+  updateScrollLock(isShow) {
+    if (isShow) {
+      this.scrollLock();
+    } else {
+      this.unScrollLock();
+    }
+  }
+
+  scrollLock() {
+    document.body.style.overflow = "hidden";
+  }
+
+  unScrollLock() {
+    document.body.style.overflow = "";
+  }
+
   render() {
-    const {
-      children,
-      open,
-      className,
-      onRequestClose
-    } = this.props;
+    const { show } = this.props;
 
-    const baseClassName = b({ open });
-
-    return (
-      <Portal
-        className={`${baseClassName} ${className ? className : ""}`}
-        open={open}
-        onRequestClose={onRequestClose}
-      >
-        {children}
-      </Portal>
-    );
+    return <div
+      className={b({ show })}
+      onClick={this.handleClick}
+    />;
   }
 }

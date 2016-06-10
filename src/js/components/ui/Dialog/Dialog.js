@@ -1,8 +1,8 @@
 import React, { PropTypes } from "react";
-import { Motion, spring } from "react-motion";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import RenderToLayer from "../internal/RenderToLayer";
+import Overlay from "../internal/Overlay";
 import { IconButton } from "../";
 import CloseIcon from "../../svg-icons/CloseIcon";
 
@@ -31,8 +31,9 @@ export default class Dialog extends React.Component {
     this.state = {};
 
     bindHandlers([
+      "renderLayer",
       "handleCloseClick",
-      "handleOverlayClose"
+      "handleOverlayClick"
     ], this);
   }
 
@@ -42,7 +43,7 @@ export default class Dialog extends React.Component {
     this.props.onRequestClose();
   }
 
-  handleOverlayClose() {
+  handleOverlayClick() {
     this.props.onRequestClose();
   }
 
@@ -88,43 +89,34 @@ export default class Dialog extends React.Component {
     );
   }
 
-  render() {
+  renderLayer() {
     const {
       children,
-      width,
       open
     } = this.props;
 
     const modifier = { open };
 
     return (
-      <Overlay
-        open={open}
-        onRequestClose={this.handleOverlayClose}
-      >
-        <Motion
-          style={{
-            x: spring(open ? width : 0)
-          }}
-        >
-        {({ x }) =>
-          <div
-            className={b(modifier)}
-            style={{
-              width: x
-            }}
-          >
-            <div className={b("container")}>
-              {this.renderHeader()}
-              <div className={b("body", modifier)}>
-                {children}
-              </div>
-              {this.renderActions()}
+      <div>
+        <div className={b(modifier)}>
+          <div className={b("container")}>
+            {this.renderHeader()}
+            <div className={b("body", modifier)}>
+              {children}
             </div>
+            {this.renderActions()}
           </div>
-        }
-        </Motion>
-      </Overlay>
+        </div>
+        <Overlay
+          show={open}
+          onClick={this.handleOverlayClick}
+        />
+      </div>
     );
+  }
+
+  render() {
+    return <RenderToLayer render={this.renderLayer} open={true} useLayerForClickAway={false} />;
   }
 }

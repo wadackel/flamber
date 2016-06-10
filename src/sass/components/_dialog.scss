@@ -1,20 +1,21 @@
 .dialog {
   @include fixed(50%, auto, auto, 50%, 1000);
+  @include transition(all, 200ms);
   display: block;
+  width: 400px;
   max-width: 100%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -45%) scale(1.1, 1.1);
+  border-radius: 3px;
+  background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
+  opacity: 0;
+  overflow: hidden;
+  visibility: hidden;
 
-  &__overlay {
-    @include fixed(0, 0, 0, 0, 999);
-    background: rgba(0, 0, 0, .8);
-    opacity: 0;
-    visibility: hidden;
-
-    &--open {
-      opacity: 1;
-      visibility: visible;
-    }
+  &--open {
+    transform: translate(-50%, -50%) scale(1, 1);
+    opacity: 1;
+    visibility: visible;
   }
 
   &__container {
@@ -24,7 +25,6 @@
   &__header {
     position: relative;
     padding: 40px 20px;
-    border-radius: 3px 3px 0 0;
     background: $brand-primary;
     color: #fff;
     text-align: center;
@@ -63,13 +63,10 @@
 
   &__body {
     padding: 20px;
-    background: #fff;
   }
 
   &__actions {
     padding: 10px 20px;
-    border-radius: 0 0 3px 3px;
-    background: #fff;
     text-align: right;
 
     .flat-button {
