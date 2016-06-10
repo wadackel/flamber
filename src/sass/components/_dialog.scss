@@ -1,7 +1,25 @@
 .dialog {
+  @include fixed(50%, auto, auto, 50%, 1000);
   display: block;
   max-width: 100%;
+  transform: translate(-50%, -50%);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
+
+  &__overlay {
+    @include fixed(0, 0, 0, 0, 999);
+    background: rgba(0, 0, 0, .8);
+    opacity: 0;
+    visibility: hidden;
+
+    &--open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__container {
+    position: relative;
+  }
 
   &__header {
     position: relative;

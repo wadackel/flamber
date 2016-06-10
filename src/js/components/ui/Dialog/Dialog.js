@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import { Motion, spring } from "react-motion";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import Overlay from "../internal/Overlay";
@@ -15,14 +16,12 @@ export default class Dialog extends React.Component {
     titleIcon: PropTypes.element,
     actions: PropTypes.node,
     open: PropTypes.bool.isRequired,
-    modal: PropTypes.bool,
     onRequestClose: PropTypes.func.isRequired
   };
 
   static defaultProps = {
     width: 450,
     open: false,
-    modal: true,
     onRequestClose: () => {}
   };
 
@@ -32,7 +31,8 @@ export default class Dialog extends React.Component {
     this.state = {};
 
     bindHandlers([
-      "handleCloseClick"
+      "handleCloseClick",
+      "handleBeforeClose"
     ], this);
   }
 
@@ -42,8 +42,13 @@ export default class Dialog extends React.Component {
     this.props.onRequestClose();
   }
 
+  /* eslint-disable no-unused-vars */
+  handleBeforeClose(DOMNode, removeFromDOM) {}
+  /* eslint-enable no-unused-vars */
+
   renderHeader() {
     const {
+      open,
       title,
       titleIcon
     } = this.props;
@@ -53,7 +58,7 @@ export default class Dialog extends React.Component {
     const titleIconElement = titleIcon ? <span className={b("icon")}>{titleIcon}</span> : null;
 
     return (
-      <div className={b("header")}>
+      <div className={b("header", { open })}>
         <h3 className={b("title")}>{titleIconElement}{title}</h3>
         <IconButton
           className={b("close")}
@@ -65,7 +70,10 @@ export default class Dialog extends React.Component {
   }
 
   renderActions() {
-    const { actions } = this.props;
+    const {
+      open,
+      actions
+    } = this.props;
 
     if (!actions) return null;
 
@@ -74,7 +82,7 @@ export default class Dialog extends React.Component {
     );
 
     return (
-      <div className={b("actions")}>
+      <div className={b("actions", { open })}>
         {actionElements}
       </div>
     );
@@ -84,24 +92,39 @@ export default class Dialog extends React.Component {
     const {
       children,
       width,
-      open,
-      modal
+      open
     } = this.props;
 
+    const modifier = { open };
+
     return (
-      <div
-        className={b({ open })}
-        style={{
-          width
-        }}
+      <Overlay
+        open={open}
+        className={b("overlay", modifier)}
       >
-        {this.renderHeader()}
-        <div className={b("body")}>
-          {children}
-        </div>
-        {this.renderActions()}
-        {modal ? <Overlay /> : null}
-      </div>
+        <Motion
+          style={{
+            x: spring(open ? width : 0)
+          }}
+        >
+        {({ x }) =>
+          <div
+            className={b(modifier)}
+            style={{
+              width: x
+            }}
+          >
+            <div className={b("container")}>
+              {this.renderHeader()}
+              <div className={b("body", modifier)}>
+                {children}
+              </div>
+              {this.renderActions()}
+            </div>
+          </div>
+        }
+        </Motion>
+      </Overlay>
     );
   }
 }
