@@ -2,7 +2,7 @@ import React, { PropTypes } from "react";
 import { Motion, spring } from "react-motion";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
-import Overlay from "../internal/Overlay";
+import RenderToLayer from "../internal/RenderToLayer";
 import { IconButton } from "../";
 import CloseIcon from "../../svg-icons/CloseIcon";
 
@@ -100,7 +100,6 @@ export default class Dialog extends React.Component {
     return (
       <Overlay
         open={open}
-        className={b("overlay", modifier)}
         onRequestClose={this.handleOverlayClose}
       >
         <Motion

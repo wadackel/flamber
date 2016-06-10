@@ -38,20 +38,27 @@ export default class Portal extends React.Component {
   }
 
   componentDidMount() {
+    document.addEventListener("keydown", this.handleKeydown, false);
+    document.addEventListener("click", this.handleOutsideClick, false);
     this.openPortal();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.open) {
-      if (this.state.active) {
-        this.renderPortal(nextProps);
-      } else {
-        this.openPortal(nextProps);
-      }
-    }
+    if (typeof nextProps.open !== "undefined") {
+      if (nextProps.open) {
+        if (this.state.active) {
+          this.renderPortal(nextProps);
+        } else {
+          this.openPortal(nextProps);
+        }
 
-    if (!nextProps.open && this.state.active) {
-      this.closePortal();
+        if (!nextProps.open && this.state.active) {
+          this.closePortal();
+        }
+      }
+
+    } else if (this.state.active) {
+      this.renderPortal(nextProps);
     }
   }
 
@@ -76,8 +83,6 @@ export default class Portal extends React.Component {
   }
 
   openPortal(props = this.props) {
-    document.addEventListener("keydown", this.handleKeydown, false);
-    document.addEventListener("click", this.handleOutsideClick, false);
     this.setState({ active: true });
     this.renderPortal(props);
   }
@@ -89,8 +94,6 @@ export default class Portal extends React.Component {
       document.body.removeChild(this.node);
     }
 
-    document.removeEventListener("keydown", this.handleKeydown, false);
-    document.removeEventListener("click", this.handleOutsideClick, false);
     this.portal = null;
     this.node = null;
     if (!isUnmounted) {
@@ -101,9 +104,10 @@ export default class Portal extends React.Component {
   renderPortal(props) {
     if (!this.node) {
       this.node = document.createElement("div");
-      this.node.className = props.className;
       document.body.appendChild(this.node);
     }
+
+    this.node.className = props.className;
 
     this.portal = ReactDOM.unstable_renderSubtreeIntoContainer(
       this,

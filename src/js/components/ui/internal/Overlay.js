@@ -1,6 +1,8 @@
 import React, { PropTypes } from "react";
 import Portal from "../internal/Portal";
-// import bindHandlers from "../../../helpers/bind-handlers";
+import bem from "../../../helpers/bem";
+
+const b = bem("overlay");
 
 export default class Overlay extends React.Component {
   static propTypes = {
@@ -15,13 +17,6 @@ export default class Overlay extends React.Component {
     onRequestClose: () => {}
   };
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps.className); // eslint-disable-line
-    // if (nextProps.className !== this.props.className) {
-    //   this.refs.portal.className = nextProps.className;
-    // }
-  }
-
   render() {
     const {
       children,
@@ -30,9 +25,11 @@ export default class Overlay extends React.Component {
       onRequestClose
     } = this.props;
 
+    const baseClassName = b({ open });
+
     return (
       <Portal
-        className={className}
+        className={`${baseClassName} ${className ? className : ""}`}
         open={open}
         onRequestClose={onRequestClose}
       >
