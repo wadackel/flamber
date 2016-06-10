@@ -1,10 +1,12 @@
 .dialog {
   display: block;
   max-width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
 
   &__header {
     position: relative;
     padding: 40px 20px;
+    border-radius: 3px 3px 0 0;
     background: $brand-primary;
     color: #fff;
     text-align: center;
@@ -48,6 +50,7 @@
 
   &__actions {
     padding: 10px 20px;
+    border-radius: 0 0 3px 3px;
     background: #fff;
     text-align: right;
 

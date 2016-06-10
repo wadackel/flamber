@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
+import Overlay from "../internal/Overlay";
 import { IconButton } from "../";
 import CloseIcon from "../../svg-icons/CloseIcon";
 
@@ -14,12 +15,14 @@ export default class Dialog extends React.Component {
     titleIcon: PropTypes.element,
     actions: PropTypes.node,
     open: PropTypes.bool.isRequired,
+    modal: PropTypes.bool,
     onRequestClose: PropTypes.func.isRequired
   };
 
   static defaultProps = {
     width: 450,
     open: false,
+    modal: true,
     onRequestClose: () => {}
   };
 
@@ -81,7 +84,8 @@ export default class Dialog extends React.Component {
     const {
       children,
       width,
-      open
+      open,
+      modal
     } = this.props;
 
     return (
@@ -96,6 +100,7 @@ export default class Dialog extends React.Component {
           {children}
         </div>
         {this.renderActions()}
+        {modal ? <Overlay /> : null}
       </div>
     );
   }
