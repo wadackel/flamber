@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import RenderToLayer from "../internal/RenderToLayer";
@@ -7,6 +8,12 @@ import { IconButton } from "../";
 import CloseIcon from "../../svg-icons/CloseIcon";
 
 const b = bem("dialog");
+
+function FirstChild(props) {
+  const children = React.Children.toArray(props.children);
+
+  return children[0] || null;
+}
 
 export default class Dialog extends React.Component {
   static propTypes = {
@@ -99,19 +106,29 @@ export default class Dialog extends React.Component {
 
     return (
       <div>
-        <div className={b(modifier)}>
-          <div className={b("container")}>
-            {this.renderHeader()}
-            <div className={b("body", modifier)}>
-              {children}
+        <ReactCSSTransitionGroup
+          component={FirstChild}
+          transitionName="open"
+          transitionEnterTimeout={400}
+          transitionLeaveTimeout={400}
+        >
+          {open ? <div className={b("wrapper", modifier)}>
+            <div className={b(modifier)}>
+              <div className={b("container", modifier)}>
+                {this.renderHeader()}
+                <div className={b("body", modifier)}>
+                  {children}
+                </div>
+                {this.renderActions()}
+              </div>
             </div>
-            {this.renderActions()}
-          </div>
-        </div>
-        <Overlay
-          show={open}
-          onClick={this.handleOverlayClick}
-        />
+            <Overlay
+              className={b("overlay", modifier)}
+              show={open}
+              onClick={this.handleOverlayClick}
+            />
+          </div> : null}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }

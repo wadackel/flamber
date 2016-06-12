@@ -1,25 +1,104 @@
 .dialog {
-  @include fixed(50%, auto, auto, 50%, 1000);
-  @include transition(all, 200ms);
+  @include relative(auto, auto, auto, auto, 1000);
+  @include transition(all, 200ms, $ease-out-back);
   display: block;
   width: 400px;
   max-width: 100%;
-  transform: translate(-50%, -45%) scale(1.1, 1.1);
+  margin: auto;
+  transform: scale(.88, .88);
   border-radius: 3px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
   opacity: 0;
   overflow: hidden;
-  visibility: hidden;
+
+  .open-enter & {
+    transform: scale(.88, .88);
+    opacity: .01;
+  }
+
+  .open-enter-active & {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+
+  .open-leave & {
+    transform: translateY(0);
+    transition-delay: 150ms;
+    transition-timing-function: $ease-out-sine;
+    opacity: 1;
+  }
+
+  .open-leave-active & {
+    transform: translateY(25px);
+    opacity: .01;
+  }
 
   &--open {
-    transform: translate(-50%, -50%) scale(1, 1);
+    transform: scale(1, 1);
     opacity: 1;
-    visibility: visible;
+  }
+
+  &__wrapper {
+    @include fixed(0, 0, 0, 0, 999);
+    @include transition(all, 200ms);
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+
+    &--open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__overlay {
+    .open-enter & {
+      opacity: .01;
+    }
+
+    .open-enter-active & {
+      opacity: 1;
+    }
+
+    .open-leave & {
+      opacity: 1;
+    }
+
+    .open-leave-active & {
+      opacity: .01;
+    }
   }
 
   &__container {
+    @include transition(all, 200ms);
     position: relative;
+    opacity: 0;
+
+    .open-enter & {
+      transition-delay: 150ms;
+      opacity: .01;
+    }
+
+    .open-enter-active & {
+      opacity: 1;
+    }
+
+    .open-leave & {
+      opacity: 1;
+    }
+
+    .open-leave-active & {
+      opacity: .01;
+    }
+
+    &--open {
+      opacity: 1;
+    }
   }
 
   &__header {
@@ -63,6 +142,7 @@
 
   &__body {
     padding: 20px;
+    text-align: left;
   }
 
   &__actions {

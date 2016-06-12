@@ -22,7 +22,7 @@ class DialogExample extends React.Component {
           titleIcon={<BoardIcon />}
           actions={[
             <FlatButton type="primary">OK</FlatButton>,
-            <FlatButton type="primary">Cancel</FlatButton>
+            <FlatButton type="primary" onClick={this.handleClose}>Cancel</FlatButton>
           ]}
           open={this.state.open}
           onRequestClose={this.handleClose}

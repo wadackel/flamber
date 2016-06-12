@@ -6,6 +6,7 @@ const b = bem("overlay");
 
 export default class Overlay extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     show: PropTypes.bool,
     onClick: PropTypes.func
   };
@@ -59,10 +60,13 @@ export default class Overlay extends React.Component {
   }
 
   render() {
-    const { show } = this.props;
+    const {
+      className,
+      show
+    } = this.props;
 
     return <div
-      className={b({ show })}
+      className={b({ show }) + (className ? ` ${className}` : "")}
       onClick={this.handleClick}
     />;
   }
