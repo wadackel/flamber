@@ -1,0 +1,89 @@
+$text-field-duration: 180ms;
+
+.text-field {
+  position: relative;
+  width: 100%;
+
+  &::after {
+    @include absolute(100%, 0, auto, 0, 3);
+    @include transition(all, $text-field-duration);
+    display: block;
+    margin-top: -1px;
+    border-bottom: 2px solid $gray-light;
+    content: "";
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &--is-focused {
+    &::after {
+      border-color: $brand-primary;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__label,
+  &__placeholder {
+    @include transition(all, $text-field-duration);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__label {
+    position: relative;
+    transform: translate(0, 1.8rem) scale(1);
+    transform-origin: top left;
+    color: darken($color-root, 30%);
+    line-height: 1;
+    z-index: 2;
+
+    &--is-focused,
+    &--has-value {
+      transform: translate(0, 0) scale(.75);
+    }
+
+    &--is-focused {
+      color: $brand-primary;
+    }
+  }
+
+  &__placeholder {
+    @include absolute(.6rem, auto, auto, auto, 2);
+    color: $gray-light;
+    opacity: 1;
+
+    .text-field--has-label & {
+      top: 1.6rem;
+
+      &:not(.text-field__placeholder--is-focused) {
+        opacity: 0;
+      }
+    }
+
+    &--has-value {
+      opacity: 0;
+    }
+  }
+
+  &__control {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: .5rem 0;
+    border-width: 0 0 1px;
+    border-color: $gray-light;
+    background: transparent;
+    color: $color-root;
+    font-size: 1rem;
+    line-height: 1.4;
+    overflow: hidden;
+    vertical-align: bottom;
+    z-index: 3;
+    resize: vertical;
+
+    &--is-focused {
+      outline: none;
+    }
+  }
+}
