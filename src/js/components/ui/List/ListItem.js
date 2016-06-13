@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
@@ -13,7 +12,7 @@ export default class ListItem extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     text: PropTypes.string,
-    index: PropTypes.number.isRequired,
+    index: PropTypes.number,
     value: PropTypes.any,
     editable: PropTypes.bool,
     placeholder: PropTypes.string,
@@ -116,7 +115,13 @@ export default class ListItem extends React.Component {
       <div
         className={`${b({ editable, "is-editing": isEditing })} ${className ? className : ""}`}
       >
-        {editable && <IconButton className={b("icon", { edit: true })} icon={<PencilIcon />} onClick={this.handleEditClick} />}
+        {editable &&
+          <IconButton
+            className={b("icon", { edit: true })}
+            icon={<PencilIcon />}
+            onClick={this.handleEditClick}
+          />
+        }
         {isEditing
           ? <TextField
               ref="control"
@@ -132,7 +137,13 @@ export default class ListItem extends React.Component {
               onClick={onClick}
             />
         }
-        {editable && <IconButton className={b("icon", { trash: true })} icon={<TrashIcon />} onClick={this.handleTrashClick} />}
+        {editable &&
+          <IconButton
+            className={b("icon", { trash: true })}
+            icon={<TrashIcon />}
+            onClick={this.handleTrashClick}
+          />
+        }
       </div>
     );
   }
