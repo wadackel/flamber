@@ -69,7 +69,7 @@ export default class TextField extends React.Component {
 
   handleChange(e) {
     this.setState({ hasValue: isValid(e.target.value) });
-    this.props.onChange(e);
+    this.props.onChange(e, e.target.value);
   }
 
   handleFocus(e) {
@@ -80,6 +80,11 @@ export default class TextField extends React.Component {
   handleBlur(e) {
     this.setState({ isFocused: false });
     this.props.onBlur(e);
+  }
+
+  focus() {
+    const { control } = this.refs;
+    if (control) control.focus();
   }
 
   render() {
@@ -113,7 +118,7 @@ export default class TextField extends React.Component {
     });
 
     const textProps = {
-      className: `${b("control", textModifier)} ${className ? className : ""}`,
+      className: b("control", textModifier),
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
@@ -127,7 +132,7 @@ export default class TextField extends React.Component {
     };
 
     return (
-      <div className={b(assign({}, modifier, { "has-label": !!label }))}>
+      <div className={`${b(assign({}, modifier, { "has-label": !!label }))} ${className ? className : ""}`}>
         {label
           ? <div className={b("label", modifier)}>{label}</div>
           : null
@@ -137,8 +142,8 @@ export default class TextField extends React.Component {
           : null
         }
         {multiLine
-          ? <textarea {...textProps} rows={rows} />
-          : <input {...textProps} type={type} />
+          ? <textarea ref="control" {...textProps} rows={rows} />
+          : <input ref="control" {...textProps} type={type} />
         }
       </div>
     );
