@@ -45,6 +45,10 @@ $button-colors: (
     border-radius: 50%;
   }
 
+  &__ripple {
+    background: rgba(#000, .2);
+  }
+
   &__body {
     @include size($button-size);
     padding: 0;
@@ -69,10 +73,6 @@ $button-colors: (
           }
         }
       }
-    }
-
-    &__ripple--#{$type} {
-      background: darken(map-deep-get($values, hover, background), 5%);
     }
 
     &__icon--#{$type} svg {

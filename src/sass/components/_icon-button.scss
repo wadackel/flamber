@@ -20,14 +20,10 @@ $button-size: 40px;
   }
 
   &__ripple {
-    $size: round($button-size * 1.1);
     top: 50% !important;
     left: 50% !important;
-    width: $size !important;
-    height: $size !important;
-    margin-top: -$size / 2;
-    margin-left: -$size / 2;
-    background: lighten($background-root, 8%);
+    width: 100% !important;
+    height: 100% !important;
   }
 
   &__body {

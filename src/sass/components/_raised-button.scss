@@ -37,6 +37,10 @@ $button-colors: (
 .raised-button {
   @include button-extend-all;
 
+  &__ripple {
+    background: rgba(#000, .2);
+  }
+
   @each $type, $values in $button-colors {
     &--#{$type} {
       @each $modifier, $values in $values {
@@ -50,10 +54,6 @@ $button-colors: (
           }
         }
       }
-    }
-
-    &__ripple--#{$type} {
-      background: darken(map-deep-get($values, hover, background), 5%);
     }
 
     &__icon--#{$type} {

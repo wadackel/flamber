@@ -37,20 +37,20 @@ export default class Button extends React.Component {
     ], this);
   }
 
-  getRippleStyle(x, y, size) {
+  getRippleStyle(top, left, size) {
     return {
-      top: y - size / 2,
-      left: x - size / 2,
       width: size,
-      height: size
+      height: size,
+      top,
+      left
     };
   }
 
-  addRippleElement(x, y, size) {
+  addRippleElement(top, left, size) {
     const { baseClassName, type } = this.props;
     const { ripples } = this.state;
     const b = bem(baseClassName);
-    const style = this.getRippleStyle(x, y, size);
+    const style = this.getRippleStyle(top, left, size);
 
     this.setState({
       ripples: ripples.concat([
@@ -78,9 +78,9 @@ export default class Button extends React.Component {
     const { top, left, width, height } = this.refs.element.getBoundingClientRect();
 
     this.addRippleElement(
-      e.pageX - (left + window.pageXOffset),
       e.pageY - (top + window.pageYOffset),
-      Math.max(width, height) * 1.5
+      e.pageX - (left + window.pageXOffset),
+      Math.sqrt(width * width + height * height) * 1.8
     );
   }
 

@@ -16,10 +16,6 @@ $button-colors: (
     box-shadow: none;
   }
 
-  &__ripple {
-    background: lighten($background-root, 12%);
-  }
-
   @each $modifier, $color in $button-colors {
     &--#{$modifier} {
       color: $color;
