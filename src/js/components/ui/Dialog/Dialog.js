@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import bem from "../../../helpers/bem";
+import shareConfig from "../../../../share-config.json";
 import bindHandlers from "../../../helpers/bind-handlers";
 import RenderToLayer from "../internal/RenderToLayer";
 import Overlay from "../internal/Overlay";
@@ -109,8 +110,8 @@ export default class Dialog extends React.Component {
         <ReactCSSTransitionGroup
           component={FirstChild}
           transitionName="open"
-          transitionEnterTimeout={400}
-          transitionLeaveTimeout={400}
+          transitionEnterTimeout={shareConfig["dialog-enter-duration"]}
+          transitionLeaveTimeout={shareConfig["dialog-leave-duration"]}
         >
           {open ? <div className={b("wrapper", modifier)}>
             <div className={b(modifier)}>
