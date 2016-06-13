@@ -73,6 +73,8 @@ export default class Button extends React.Component {
   }
 
   handleMouseDown(e) {
+    e.stopPropagation();
+
     const { top, left, width, height } = this.refs.element.getBoundingClientRect();
 
     this.addRippleElement(
