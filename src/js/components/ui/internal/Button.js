@@ -114,7 +114,7 @@ export default class Button extends React.Component {
 
     return (
       <div
-        className={b(modifier) + (className ? className : "")}
+        className={`${b(modifier)} ${className ? className : ""}`}
         ref="element"
         onMouseDown={this.handleMouseDown}
         onClick={this.handleClick}
