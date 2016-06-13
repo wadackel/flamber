@@ -15,8 +15,11 @@ export default class List extends React.Component {
       className
     } = this.props;
 
-    const cloneChildren = children.map(item =>
-      React.cloneElement(item, { key: item.props.text })
+    const cloneChildren = children.map((item, index) =>
+      React.cloneElement(item, {
+        key: item.props.text,
+        index
+      })
     );
 
     return (

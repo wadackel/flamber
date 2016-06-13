@@ -1,29 +1,107 @@
 .list-item {
-  @include button-extend-all;
   display: block;
-  border-radius: 0;
-  background: #fff;
-  color: $gray-dark;
-  box-shadow: none;
+  position: relative;
 
   & + & {
     border-top: 1px solid darken(#fff, 8%);
   }
 
-  &:hover {
-    background: darken(#fff, 8%);
-    box-shadow: none;
+  &:hover,
+  &--is-editing {
+    .list-item__icon {
+      opacity: 1;
+    }
   }
 
-  &__ripple {
-    background: darken(#fff, 14%);
+  &--is-editing {
+    // TODO
   }
 
-  &__body {
+  &__icon {
+    @include transition(all);
+    position: absolute;
+    top: 50%;
+    margin-top: -13px;
+    color: lighten($gray-dark, 45%);
+    opacity: 0;
+    z-index: 5;
+
+    .icon-button__body {
+      @include size(26px);
+
+      svg {
+        @include size(14px);
+      }
+    }
+
+    .icon-button__ripple {
+      background: rgba(darken(#fff, 55%), .2);
+    }
+
+    &--edit {
+      left: 8px;
+    }
+
+    &--trash {
+      right: 8px;
+    }
+  }
+
+  &__control,
+  &__button {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  &__control {
+    padding: 0 34px;
+    background: darken(#fff, 12%);
+
+    &::after {
+      display: none !important;
+    }
+
+    .text-field__control {
+      padding: 16px 0;
+      border: none;
+      color: $gray-dark;
+      line-height: 1;
+    }
+
+    .text-field__placeholder {
+      top: 0;
+      color: lighten($gray-dark, 70%);
+    }
+  }
+
+  &__button {
+    @include button-extend-all;
     display: block;
-    width: 100%;
-    padding-top: 18px;
-    padding-bottom: 18px;
-    text-align: left;
+    border-radius: 0;
+    background: #fff;
+    color: $gray-dark;
+    box-shadow: none;
+
+    &:hover {
+      background: darken(#fff, 8%);
+      box-shadow: none;
+    }
+
+    &__ripple {
+      background: darken(#fff, 14%);
+    }
+
+    &__body {
+      display: block;
+      width: 100%;
+      padding-top: 18px;
+      padding-bottom: 18px;
+      text-align: left;
+
+      .list-item--editable & {
+        padding-right: 34px;
+        padding-left: 34px;
+      }
+    }
   }
 }
