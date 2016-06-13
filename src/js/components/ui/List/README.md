@@ -13,7 +13,6 @@ class ListExample extends React.Component {
 
   handleComplete(listItem, val, index) {
     const values = this.state.values.slice();
-    console.log(val, "==================");
     values[index] = val;
     this.setState({ values });
   }
