@@ -37,6 +37,31 @@ export default class Button extends React.Component {
     ], this);
   }
 
+  handleClick(e) {
+    this.props.onClick(e);
+  }
+
+  handleMouseDown(e) {
+    e.stopPropagation();
+
+    const { top, left, width, height } = this.refs.element.getBoundingClientRect();
+    const mouseX = e.pageX - (left + window.pageXOffset);
+    const mouseY = e.pageY - (top + window.pageYOffset);
+    const center = Math.sqrt(Math.pow(width / 2, 2) + Math.pow(height / 2, 2));
+    const touch = Math.sqrt(Math.pow(width / 2 - mouseX, 2) + Math.pow(height / 2 - mouseY, 2));
+
+    this.addRippleElement(
+      e.pageY - (top + window.pageYOffset),
+      e.pageX - (left + window.pageXOffset),
+      (center + (center * (touch / center))) * 2
+    );
+  }
+
+  handleRippleHide() {
+    const ripples = this.state.ripples.slice(1);
+    this.setState({ ripples });
+  }
+
   getRippleStyle(top, left, size) {
     return {
       width: size,
@@ -66,27 +91,6 @@ export default class Button extends React.Component {
 
   createIcon(icon, className) {
     return icon ? <span className={className}>{icon}</span> : null;
-  }
-
-  handleClick(e) {
-    this.props.onClick(e);
-  }
-
-  handleMouseDown(e) {
-    e.stopPropagation();
-
-    const { top, left, width, height } = this.refs.element.getBoundingClientRect();
-
-    this.addRippleElement(
-      e.pageY - (top + window.pageYOffset),
-      e.pageX - (left + window.pageXOffset),
-      Math.sqrt(width * width + height * height) * 1.8
-    );
-  }
-
-  handleRippleHide() {
-    const ripples = this.state.ripples.slice(1);
-    this.setState({ ripples });
   }
 
   render() {
