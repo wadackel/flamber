@@ -8,4 +8,4 @@ export RaisedButton from "./RaisedButton/RaisedButton";
 export Slider from "./Slider/Slider";
 export TextField from "./TextField/TextField";
 export Menu from "./Menu/Menu";
-export MenuItem from "./Menu/MenuItem";
+export MenuItem from "./MenuItem/MenuItem";

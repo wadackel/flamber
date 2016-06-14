@@ -1,7 +1,7 @@
+/* eslint-disable */
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
-import MenuItem from "./MenuItem";
 
 const b = bem("menu");
 
