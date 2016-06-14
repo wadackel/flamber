@@ -1,0 +1,42 @@
+.icon-menu {
+  display: inline-block;
+  position: relative;
+  z-index: 10;
+
+  &__icon {
+    // TODO
+  }
+
+  &__menu {
+    position: absolute !important;
+    z-index: 10;
+
+    &--top-right {
+      // TODO
+    }
+
+    &--top-left {
+      //  TODO
+    }
+
+    &--middle-right {
+      // TODO
+    }
+
+    &--middle-left {
+      // TODO
+    }
+
+    &--bottom-right {
+      // TODO
+    }
+
+    &--bottom-left {
+      // TODO
+    }
+  }
+
+  &__item {
+    // TODO
+  }
+}
