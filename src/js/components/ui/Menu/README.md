@@ -1,9 +1,17 @@
 Basic:
 
 ```
-<Menu open={true}>
-  <MenuItem text="Item 1" />
-  <MenuItem text="Item 2" />
-  <MenuItem text="Item 3" />
-</Menu>
+class MenuExample extends React.Component {
+  render() {
+    return (
+      <Menu>
+        <MenuItem text="Item 1" value="item1" />
+        <MenuItem text="Item 2" value="item2" />
+        <MenuItem text="Item 3" value="item3" />
+      </Menu>
+    );
+  }
+}
+
+<MenuExample />
 ```

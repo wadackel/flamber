@@ -1,6 +1,8 @@
 .menu {
-
-  &__item {
-    // TODO
-  }
+  $shadow-color: rgba(#000, .78);
+  display: inline-block;
+  position: relative;
+  border-radius: 2px;
+  box-shadow: $shadow-color 0 1px 6px, $shadow-color 0 1px 4px;
+  overflow: hidden;
 }

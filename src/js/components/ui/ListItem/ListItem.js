@@ -63,7 +63,7 @@ export default class ListItem extends React.Component {
   handleClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onClick(e, this.state.value);
+    this.props.onClick(this, this.props.value, this.props.index);
   }
 
   handleChange(e, text) {
@@ -103,8 +103,7 @@ export default class ListItem extends React.Component {
       className,
       text,
       editable,
-      placeholder,
-      onClick
+      placeholder
     } = this.props;
 
     const {
@@ -134,7 +133,7 @@ export default class ListItem extends React.Component {
           : <Button
               baseClassName="list-item__button"
               label={text}
-              onClick={onClick}
+              onClick={this.handleClick}
             />
         }
         {editable &&
