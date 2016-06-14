@@ -2,6 +2,7 @@ import assign from "object-assign";
 import React, { PropTypes } from "react";
 import Ripple from "./Ripple";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import randomId from "../../../helpers/random-id";
 
@@ -118,7 +119,7 @@ export default class Button extends React.Component {
 
     return (
       <div
-        className={`${b(modifier)} ${className ? className : ""}`}
+        className={mergeClassNames(b(modifier), className)}
         ref="element"
         onMouseDown={this.handleMouseDown}
         onClick={this.handleClick}

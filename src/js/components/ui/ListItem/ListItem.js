@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import Button from "../internal/Button";
 import { TextField, IconButton } from "../";
@@ -111,9 +112,7 @@ export default class ListItem extends React.Component {
     } = this.state;
 
     return (
-      <div
-        className={`${b({ editable, "is-editing": isEditing })} ${className ? className : ""}`}
-      >
+      <div className={mergeClassNames(b({ "is-editing": isEditing, editable }), className)}>
         {editable &&
           <IconButton
             className={b("icon", { edit: true })}

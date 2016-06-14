@@ -3,6 +3,7 @@ import assign from "object-assign";
 import React, { PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import { Menu } from "../";
 
@@ -96,7 +97,7 @@ export default class IconMenu extends React.Component {
     });
 
     return (
-      <div className={`${b({ open })} ${className ? className : ""}`}>
+      <div className={mergeClassNames(b({ open }), className)}>
         {iconElement}
         {this.renderMenu()}
       </div>

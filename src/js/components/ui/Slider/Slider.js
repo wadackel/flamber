@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import RcSlider from "rc-slider";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("slider");
 
@@ -42,6 +43,7 @@ export default class Slider extends React.Component {
 
   render() {
     const {
+      className,
       min,
       max,
       step,
@@ -53,7 +55,7 @@ export default class Slider extends React.Component {
     } = this.props;
 
     return <RcSlider
-      className={b()}
+      className={mergeClassNames(b(), className)}
       handle={<Handle />}
       min={min}
       max={max}

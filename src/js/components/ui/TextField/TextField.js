@@ -1,6 +1,7 @@
 import React, { PropTypes } from "react";
 import assign from "object-assign";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("text-field");
@@ -132,7 +133,7 @@ export default class TextField extends React.Component {
     };
 
     return (
-      <div className={`${b(assign({}, modifier, { "has-label": !!label }))} ${className ? className : ""}`}>
+      <div className={mergeClassNames(b(assign({}, modifier, { "has-label": !!label })), className)}>
         {label
           ? <div className={b("label", modifier)}>{label}</div>
           : null

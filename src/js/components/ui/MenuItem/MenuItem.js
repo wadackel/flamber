@@ -1,6 +1,6 @@
-/* eslint-disable */
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 import { ListItem } from "../";
 
 const b = bem("menu-item");
@@ -28,7 +28,7 @@ export default class MenuItem extends React.Component {
     } = this.props;
 
     return <ListItem
-      className={`${b()} ${className ? className : ""}`}
+      className={mergeClassNames(b(), className)}
       text={text}
       index={index}
       value={value}

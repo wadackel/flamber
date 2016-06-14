@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("overlay");
@@ -66,7 +67,7 @@ export default class Overlay extends React.Component {
     } = this.props;
 
     return <div
-      className={b({ show }) + (className ? ` ${className}` : "")}
+      className={mergeClassNames(b({ show }), className)}
       onClick={this.handleClick}
     />;
   }

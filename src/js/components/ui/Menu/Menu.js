@@ -1,6 +1,6 @@
-/* eslint-disable */
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import { List } from "../";
 
@@ -12,7 +12,7 @@ export default class Menu extends React.Component {
     children: PropTypes.node,
     onItemClick: PropTypes.func,
     onChange: PropTypes.func,
-    value: PropTypes.any,
+    value: PropTypes.any
   };
 
   static defaultProps = {
@@ -46,7 +46,7 @@ export default class Menu extends React.Component {
   render() {
     const {
       className,
-      children,
+      children
     } = this.props;
 
     const cloneChildren = children.map((item, index) =>
@@ -58,9 +58,7 @@ export default class Menu extends React.Component {
     );
 
     return (
-      <List
-        className={`${b()} ${className ? className : ""}`}
-      >
+      <List className={mergeClassNames(b(), className)}>
         {cloneChildren}
       </List>
     );

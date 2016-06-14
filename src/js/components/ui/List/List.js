@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("list");
 
@@ -23,7 +24,7 @@ export default class List extends React.Component {
     );
 
     return (
-      <div className={`${b()} ${className ? className : ""}`}>{cloneChildren}</div>
+      <div className={mergeClassNames(b(), className)}>{cloneChildren}</div>
     );
   }
 }

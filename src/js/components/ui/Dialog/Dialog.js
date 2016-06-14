@@ -1,7 +1,8 @@
 import React, { PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-import bem from "../../../helpers/bem";
 import shareConfig from "../../../../share-config.json";
+import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import RenderToLayer from "../internal/RenderToLayer";
 import Overlay from "../internal/Overlay";
@@ -19,6 +20,7 @@ function FirstChild(props) {
 export default class Dialog extends React.Component {
   static propTypes = {
     children: PropTypes.node,
+    className: PropTypes.string,
     width: PropTypes.number.isRequired,
     title: PropTypes.string,
     titleIcon: PropTypes.element,
@@ -100,6 +102,7 @@ export default class Dialog extends React.Component {
   renderLayer() {
     const {
       children,
+      className,
       open
     } = this.props;
 
@@ -114,7 +117,7 @@ export default class Dialog extends React.Component {
           transitionLeaveTimeout={shareConfig["dialog-leave-duration"]}
         >
           {open ? <div className={b("wrapper", modifier)}>
-            <div className={b(modifier)}>
+            <div className={mergeClassNames(b(modifier), className)}>
               <div className={b("container", modifier)}>
                 {this.renderHeader()}
                 <div className={b("body", modifier)}>
