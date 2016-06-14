@@ -13,10 +13,6 @@
     }
   }
 
-  &--is-editing {
-    // TODO
-  }
-
   &__icon {
     @include transition(all);
     position: absolute;
