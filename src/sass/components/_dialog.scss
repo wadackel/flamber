@@ -1,34 +1,12 @@
-@keyframes dialog-enter {
-  0% {
-    transform: translateY(15px) scale(.88, .88);
-    opacity: .01;
-  }
-
-  100% {
-    transform: translateY(0) scale(1, 1);
-    opacity: 1;
-  }
-}
-
-@keyframes dialog-leave {
-  0% {
-    transform: translateY(0) scale(1, 1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(10px) scale(1, 1);
-    opacity: 0;
-  }
-}
-
 .dialog {
   @include relative(auto, auto, auto, auto, 1000);
+  @include transition(all);
   display: block;
   width: 400px;
   max-width: 100%;
   margin: auto;
-  transform: translateY(15px) scale(.88, .88);
+  transform: translateY(20px) scale(.7);
+  transform-origin: bottom center;
   border-radius: 3px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
@@ -36,11 +14,26 @@
   overflow: hidden;
 
   .open-enter & {
-    animation: dialog-enter #{$dialog-enter-duration}ms $transition-easing;
+    transform: translateY(20px) scale(.7);
+    transition-duration: #{$dialog-enter-duration}ms;
+    opacity: .01;
+  }
+
+  .open-enter-active & {
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
 
   .open-leave & {
-    animation: dialog-leave #{$dialog-leave-duration}ms $transition-easing;
+    transform: translateY(0) scale(1);
+    transition-duration: #{$dialog-leave-duration}ms;
+    opacity: 1;
+  }
+
+  .open-leave-active & {
+    transform: translateY(10px) scale(1);
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+    opacity: .01;
   }
 
   &--open {
@@ -65,18 +58,18 @@
     }
 
     .open-enter & {
-      transition-duration: $dialog-enter-duration;
+      transition-duration: #{$dialog-enter-duration}ms;
     }
 
     .open-leave & {
-      transition-duration: $dialog-leave-duration;
+      transition-duration: #{$dialog-leave-duration}ms;
     }
   }
 
   &__overlay {
 
     .open-enter & {
-      transition-duration: $dialog-enter-duration;
+      transition-duration: #{$dialog-enter-duration}ms;
       opacity: .01;
     }
 
@@ -85,7 +78,7 @@
     }
 
     .open-leave & {
-      transition-duration: $dialog-leave-duration;
+      transition-duration: #{$dialog-leave-duration}ms;
       opacity: 1;
     }
 
@@ -95,34 +88,7 @@
   }
 
   &__container {
-    @include transition(all);
     position: relative;
-    // opacity: 0;
-    opacity: 1;
-
-    .open-enter & {
-      // transition-delay: #{$dialog-enter-duration / 2}ms;
-      // transition-duration: #{$dialog-enter-duration / 2}ms;
-      // opacity: .01;
-    }
-
-    .open-enter-active & {
-      // opacity: 1;
-    }
-
-    .open-leave & {
-      // transition-delay: #{$dialog-leave-duration / 2}ms;
-      // transition-duration: #{$dialog-leave-duration / 2}ms;
-      // opacity: 1;
-    }
-
-    .open-leave-active & {
-      // opacity: .01;
-    }
-
-    &--open {
-      opacity: 1;
-    }
   }
 
   &__header {

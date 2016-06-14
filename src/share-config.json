@@ -1,5 +1,5 @@
 {
   "dialog-enter-duration": 250,
-  "dialog-leave-duration": 150,
+  "dialog-leave-duration": 300,
   "ripple-duration": 1000
 }
