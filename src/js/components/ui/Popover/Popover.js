@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { PropTypes } from "react";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../../share-config.json";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
@@ -17,7 +16,7 @@ export default class Popover extends React.Component {
     open: PropTypes.bool,
     origin: OriginalPropTypes.origin,
     triggerElement: PropTypes.instanceOf(HTMLElement),
-    triggerOrigin: OriginalPropTypes.position,
+    triggerOrigin: OriginalPropTypes.origin,
     onRequestClose: PropTypes.func
   };
 
@@ -25,6 +24,10 @@ export default class Popover extends React.Component {
     open: false,
     origin: {
       vertical: "top",
+      horizontal: "left"
+    },
+    triggerOrigin: {
+      vertical: "bottom",
       horizontal: "left"
     },
     onRequestClose: () => {}
@@ -100,7 +103,7 @@ export default class Popover extends React.Component {
 
     if (!open) return;
 
-    const { origin } = this.props;
+    const { origin, triggerOrigin } = this.props;
     const triggerElement = this.props.triggerElement || this.triggerElement;
     const layer = this.refs.layer.getLayer();
 
@@ -113,8 +116,8 @@ export default class Popover extends React.Component {
     const trigger = this.getTriggerPosition(triggerElement);
     const popover = this.getPopoverPosition(popoverElement);
 
-    popover.top = trigger[origin.vertical] - popover[origin.vertical];
-    popover.left = trigger[origin.horizontal] - popover[origin.horizontal];
+    popover.top = trigger[triggerOrigin.vertical] - popover[origin.vertical];
+    popover.left = trigger[triggerOrigin.horizontal] - popover[origin.horizontal];
 
     popoverElement.style.top = `${Math.max(closing ? popover.top : 0, popover.top)}px`;
     popoverElement.style.left = `${Math.max(closing ? popover.left : 0, popover.left)}px`;
