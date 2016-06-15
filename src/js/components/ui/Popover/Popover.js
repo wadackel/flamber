@@ -56,15 +56,20 @@ export default class Popover extends React.Component {
         });
 
       } else {
-        this.unbindCloseEvents();
         this.setState({ closing: true });
         this.timer = setTimeout(() => {
+          this.unbindCloseEvents();
           this.setState({
-            open: false
+            open: false,
+            closing: false
           });
         }, 500);
       }
     }
+  }
+
+  componentDidUpdate() {
+    this.setPositions();
   }
 
   componentWillUnmount() {
@@ -76,6 +81,7 @@ export default class Popover extends React.Component {
   }
 
   handleClose() {
+    this.setPositions();
     this.props.onRequestClose();
   }
 
@@ -90,7 +96,59 @@ export default class Popover extends React.Component {
   }
 
   setPositions() {
-    console.log("POSITIONS");
+    const { open, closing } = this.state;
+
+    if (!open) return;
+
+    const { origin } = this.props;
+    const triggerElement = this.props.triggerElement || this.triggerElement;
+    const layer = this.refs.layer.getLayer();
+
+    if (!layer) return;
+
+    const popoverElement = layer.children[0];
+
+    if (!popoverElement) return;
+
+    const trigger = this.getTriggerPosition(triggerElement);
+    const popover = this.getPopoverPosition(popoverElement);
+
+    popover.top = trigger[origin.vertical] - popover[origin.vertical];
+    popover.left = trigger[origin.horizontal] - popover[origin.horizontal];
+
+    popoverElement.style.top = `${Math.max(closing ? popover.top : 0, popover.top)}px`;
+    popoverElement.style.left = `${Math.max(closing ? popover.left : 0, popover.left)}px`;
+    popoverElement.style.maxHeight = `${window.innerHeight}px`;
+  }
+
+  getTriggerPosition(el) {
+    const { top, right, bottom, left } = el.getBoundingClientRect();
+    const pos = {
+      width: el.offsetWidth,
+      height: el.offsetHeight,
+      top,
+      left
+    };
+
+    pos.right = pos.right || pos.left + pos.width;
+    pos.bottom = pos.bottom || pos.top + pos.height;
+    pos.center = pos.left + pos.width / 2;
+    pos.middle = pos.top + pos.height / 2;
+
+    return pos;
+  }
+
+  getPopoverPosition(el) {
+    const { offsetWidth, offsetHeight } = el;
+
+    return {
+      top: 0,
+      middle: offsetHeight / 2,
+      bottom: offsetHeight,
+      left: 0,
+      center: offsetWidth / 2,
+      right: offsetWidth
+    };
   }
 
   renderLayer() {
