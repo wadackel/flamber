@@ -1,9 +1,12 @@
 import React, { PropTypes } from "react";
+import Prefixer from "inline-style-prefixer";
+import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import { List } from "../";
 
+const prefixer = new Prefixer();
 const b = bem("menu");
 
 export default class Menu extends React.Component {
@@ -49,10 +52,16 @@ export default class Menu extends React.Component {
       children
     } = this.props;
 
+    const childLength = children.length;
+    const childDelayIncrement = Math.floor((shareConfig["popover-duration"] / 2) / childLength);
+
     const cloneChildren = children.map((item, index) =>
       React.cloneElement(item, {
         key: item.props.text,
         onClick: this.handleItemClick,
+        style: prefixer.prefix({
+          transitionDelay: `${childDelayIncrement * index}ms`
+        }),
         index
       })
     );

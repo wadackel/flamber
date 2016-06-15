@@ -8,6 +8,7 @@ const b = bem("menu-item");
 export default class MenuItem extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    style: PropTypes.object,
     text: PropTypes.string,
     index: PropTypes.number,
     value: PropTypes.any,
@@ -21,6 +22,7 @@ export default class MenuItem extends React.Component {
   render() {
     const {
       className,
+      style,
       text,
       index,
       value,
@@ -29,6 +31,7 @@ export default class MenuItem extends React.Component {
 
     return <ListItem
       className={mergeClassNames(b(), className)}
+      style={style}
       text={text}
       index={index}
       value={value}

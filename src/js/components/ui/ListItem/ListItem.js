@@ -12,6 +12,7 @@ const b = bem("list-item");
 export default class ListItem extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    style: PropTypes.object,
     text: PropTypes.string,
     index: PropTypes.number,
     value: PropTypes.any,
@@ -102,6 +103,7 @@ export default class ListItem extends React.Component {
   render() {
     const {
       className,
+      style,
       text,
       editable,
       placeholder
@@ -112,7 +114,7 @@ export default class ListItem extends React.Component {
     } = this.state;
 
     return (
-      <div className={mergeClassNames(b({ "is-editing": isEditing, editable }), className)}>
+      <div className={mergeClassNames(b({ "is-editing": isEditing, editable }), className)} style={style}>
         {editable &&
           <IconButton
             className={b("icon", { edit: true })}

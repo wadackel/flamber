@@ -1,0 +1,21 @@
+.menu-item {
+  @include transition(all);
+  opacity: 0;
+
+  & + & {
+    border-top-width: 0;
+  }
+
+  .list-item__button {
+    height: auto;
+  }
+
+  .list-item__button__body {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .popover-animation--open & {
+    opacity: 1;
+  }
+}
