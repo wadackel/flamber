@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { PropTypes } from "react";
 import shareConfig from "../../../../share-config.json";
 import * as OriginalPropTypes from "../../../constants/prop-types";
@@ -6,6 +5,7 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import RenderToLayer from "../internal/RenderToLayer";
+import PopoverAnimation from "../internal/PopoverAnimation";
 
 const b = bem("popover");
 
@@ -53,10 +53,7 @@ export default class Popover extends React.Component {
       if (nextProps.open) {
         this.bindCloseEvents();
         this.triggerElement = nextProps.triggerElement || this.props.triggerElement;
-        this.setState({
-          open: true,
-          closing: false
-        });
+        this.setState({ open: true });
 
       } else {
         this.setState({ closing: true });
@@ -66,7 +63,7 @@ export default class Popover extends React.Component {
             open: false,
             closing: false
           });
-        }, 500);
+        }, shareConfig["popover-duration"]);
       }
     }
   }
@@ -79,7 +76,7 @@ export default class Popover extends React.Component {
     clearTimeout(this.timer);
   }
 
-  handleClickAway(e) {
+  handleClickAway() {
     this.props.onRequestClose();
   }
 
@@ -125,7 +122,7 @@ export default class Popover extends React.Component {
   }
 
   getTriggerPosition(el) {
-    const { top, right, bottom, left } = el.getBoundingClientRect();
+    const { top, left } = el.getBoundingClientRect();
     const pos = {
       width: el.offsetWidth,
       height: el.offsetHeight,
@@ -157,13 +154,24 @@ export default class Popover extends React.Component {
   renderLayer() {
     const {
       children,
-      className
+      className,
+      origin
     } = this.props;
 
+    const {
+      open,
+      closing
+    } = this.state;
+
     return (
-      <div className={mergeClassNames(b(), className)}>
+      <PopoverAnimation
+        className={mergeClassNames(b(), className)}
+        baseClassName="popover-animation"
+        open={open && !closing}
+        origin={origin}
+      >
         {children}
-      </div>
+      </PopoverAnimation>
     );
   }
 

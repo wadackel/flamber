@@ -1,3 +1,37 @@
 .popover {
   @include absolute(auto, auto, auto, auto, 10);
 }
+
+
+.popover-animation {
+  @include transition((transform, opacity), #{$popover-duration / 2}ms);
+  transform: scale(0);
+  opacity: 0;
+
+  &--open {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  &__horizontal {
+    @include transition(all, #{$popover-duration / 2}ms);
+    transform: scaleX(.4);
+    opacity: 0;
+
+    &--open {
+      transform: scaleX(1);
+      opacity: 1;
+    }
+  }
+
+  &__vertical {
+    @include transition(all, #{$popover-duration}ms);
+    transform: scaleY(.4);
+    opacity: 0;
+
+    &--open {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+}
