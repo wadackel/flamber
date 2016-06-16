@@ -29,3 +29,36 @@ class DropDownMenuExample extends React.Component {
 
 <DropDownMenuExample />
 ```
+
+
+Long values:
+
+```
+class DropDownMenuLongExample extends React.Component {
+  constructor(props) {
+    super(props);
+    const values = [];
+    for (let i = 0; i < 50; i++) {
+      values.push(<MenuItem key={i} value={i} text={`Item value ${i}`} />);
+    }
+    this.state = { value: 1, values };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(value) {
+    this.setState({ value });
+  }
+
+  render() {
+    return (
+      <div>
+        <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+          {this.state.values}
+        </DropDownMenu>
+      </div>
+    );
+  }
+}
+
+<DropDownMenuLongExample />
+```
