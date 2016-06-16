@@ -7,6 +7,7 @@ export List from "./List/List";
 export ListItem from "./ListItem/ListItem";
 export Menu from "./Menu/Menu";
 export MenuItem from "./MenuItem/MenuItem";
+export Popover from "./Popover/Popover";
 export RaisedButton from "./RaisedButton/RaisedButton";
 export Slider from "./Slider/Slider";
 export TextField from "./TextField/TextField";

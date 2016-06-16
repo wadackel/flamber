@@ -1,11 +1,10 @@
-/* eslint-disable */
-import assign from "object-assign";
 import React, { PropTypes } from "react";
+import { findDOMNode } from "react-dom";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
-import { Menu } from "../";
+import { Popover, Menu } from "../";
 
 const b = bem("icon-menu");
 
@@ -14,17 +13,25 @@ export default class IconMenu extends React.Component {
     children: PropTypes.node,
     className: PropTypes.string,
     icon: PropTypes.element,
+    open: PropTypes.bool,
     origin: OriginalPropTypes.origin,
     triggerOrigin: OriginalPropTypes.origin,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onItemClick: PropTypes.func
   };
 
   static defaultProps = {
+    open: false,
     origin: {
-      horizontal: "left",
-      vertical: "top"
+      vertical: "top",
+      horizontal: "left"
     },
-    onChange: () => {}
+    triggerOrigin: {
+      vertical: "top",
+      horizontal: "left"
+    },
+    onChange: () => {},
+    onItemClick: () => {}
   };
 
   constructor(props) {
@@ -37,8 +44,18 @@ export default class IconMenu extends React.Component {
 
     bindHandlers([
       "handleIconClick",
+      "handleItemClick",
       "handleRequestClose"
     ], this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.open !== this.state.open) {
+      this.setState({
+        open: nextProps.open,
+        triggerElement: findDOMNode(this.refs.triggerElement)
+      });
+    }
   }
 
   handleIconClick(e) {
@@ -46,6 +63,11 @@ export default class IconMenu extends React.Component {
       open: true,
       triggerElement: e.currentTarget
     });
+  }
+
+  handleItemClick(menuItem, value, index) {
+    this.setState({ open: false });
+    this.props.onItemClick(menuItem, value, index);
   }
 
   handleRequestClose() {
@@ -75,12 +97,10 @@ export default class IconMenu extends React.Component {
       ref: "triggerElement"
     });
 
-    // TODO
     const cloneChildren = children.map((item, index) =>
       React.cloneElement(item, {
         key: item.props.text,
         className: b("item"),
-        onClick: () => console.log("ITEM"),
         index
       })
     );
@@ -97,6 +117,7 @@ export default class IconMenu extends React.Component {
         >
           <Menu
             onChange={onChange}
+            onItemClick={this.handleItemClick}
           >
             {cloneChildren}
           </Menu>
