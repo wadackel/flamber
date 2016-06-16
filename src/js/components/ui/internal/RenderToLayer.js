@@ -8,7 +8,7 @@ function matches(el, target) {
   let node = target.parentNode;
 
   while (node !== null) {
-    if (node === parent) return true;
+    if (node === el) return true;
     node = node.parentNode;
   }
 
