@@ -1,7 +1,7 @@
 /* eslint-disable */
 import assign from "object-assign";
 import React, { PropTypes } from "react";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
@@ -14,10 +14,8 @@ export default class IconMenu extends React.Component {
     children: PropTypes.node,
     className: PropTypes.string,
     icon: PropTypes.element,
-    origin: PropTypes.shape({
-      horizontal: PropTypes.oneOf(["right", "left"]),
-      vertical: PropTypes.oneOf(["top", "middle", "bottom"])
-    }),
+    origin: OriginalPropTypes.origin,
+    triggerOrigin: OriginalPropTypes.origin,
     onChange: PropTypes.func
   };
 
@@ -33,73 +31,76 @@ export default class IconMenu extends React.Component {
     super(props);
 
     this.state = {
-      open: false
+      open: false,
+      triggerElement: null
     };
 
     bindHandlers([
-      "handleIconClick"
+      "handleIconClick",
+      "handleRequestClose"
     ], this);
   }
 
-  handleIconClick() {
-    this.setState({ open: !this.state.open });
+  handleIconClick(e) {
+    this.setState({
+      open: true,
+      triggerElement: e.currentTarget
+    });
   }
 
-  renderMenu() {
-    const {
-      children,
-      origin
-    } = this.props;
-
-    const {
-      open
-    } = this.state;
-
-    const cloneChildren = children.map((item, index) =>
-      React.cloneElement(item, {
-        key: item.text,
-        className: b("item"),
-        index
-      })
-    );
-
-    const menuClassName = b("menu", {
-      [`${origin.vertical}-${origin.horizontal}`]: true
+  handleRequestClose() {
+    this.setState({
+      open: false
     });
-
-    // TODO: Implements `Popover` component
-    return (
-      <ReactCSSTransitionGroup
-        transitionName="test"
-      >
-        {open &&
-          <Menu className={menuClassName}>
-            {cloneChildren}
-          </Menu>
-        }
-      </ReactCSSTransitionGroup>
-    );
   }
 
   render() {
     const {
+      children,
       className,
-      icon
+      icon,
+      origin,
+      triggerOrigin,
+      onChange
     } = this.props;
 
     const {
-      open
+      open,
+      triggerElement
     } = this.state;
 
     const iconElement = React.cloneElement(icon, {
       className: b("icon"),
-      onClick: this.handleIconClick
+      onClick: this.handleIconClick,
+      ref: "triggerElement"
     });
+
+    // TODO
+    const cloneChildren = children.map((item, index) =>
+      React.cloneElement(item, {
+        key: item.props.text,
+        className: b("item"),
+        onClick: () => console.log("ITEM"),
+        index
+      })
+    );
 
     return (
       <div className={mergeClassNames(b({ open }), className)}>
         {iconElement}
-        {this.renderMenu()}
+        <Popover
+          open={open}
+          origin={origin}
+          triggerOrigin={triggerOrigin}
+          triggerElement={triggerElement}
+          onRequestClose={this.handleRequestClose}
+        >
+          <Menu
+            onChange={onChange}
+          >
+            {cloneChildren}
+          </Menu>
+        </Popover>
       </div>
     );
   }
