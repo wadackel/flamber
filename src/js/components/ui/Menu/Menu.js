@@ -49,7 +49,8 @@ export default class Menu extends React.Component {
   render() {
     const {
       className,
-      children
+      children,
+      value
     } = this.props;
 
     const childLength = children.length;
@@ -62,6 +63,7 @@ export default class Menu extends React.Component {
         style: prefixer.prefix({
           transitionDelay: `${childDelayIncrement * index}ms`
         }),
+        selected: value === item.props.value,
         index
       })
     );

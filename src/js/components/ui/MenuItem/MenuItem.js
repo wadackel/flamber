@@ -12,10 +12,12 @@ export default class MenuItem extends React.Component {
     text: PropTypes.string,
     index: PropTypes.number,
     value: PropTypes.any,
+    selected: PropTypes.bool,
     onClick: PropTypes.func
   };
 
   static defaultProps = {
+    selected: false,
     onClick: () => {}
   }
 
@@ -26,11 +28,12 @@ export default class MenuItem extends React.Component {
       text,
       index,
       value,
+      selected,
       onClick
     } = this.props;
 
     return <ListItem
-      className={mergeClassNames(b(), className)}
+      className={mergeClassNames(b({ selected }), className)}
       style={style}
       text={text}
       index={index}

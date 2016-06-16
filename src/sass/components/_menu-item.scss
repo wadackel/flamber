@@ -1,9 +1,15 @@
 .menu-item {
   @include transition(all);
-  opacity: 0;
 
   & + & {
     border-top-width: 0;
+  }
+
+  &--selected {
+    .list-item__button {
+      background: darken(#fff, 12%);
+      color: $brand-primary;
+    }
   }
 
   .list-item__button {
@@ -13,6 +19,10 @@
   .list-item__button__body {
     padding-top: 14px;
     padding-bottom: 14px;
+  }
+
+  .popover-animation {
+    opacity: 0;
   }
 
   .popover-animation--open & {

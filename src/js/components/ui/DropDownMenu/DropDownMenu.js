@@ -102,6 +102,7 @@ export default class DropDownMenu extends React.Component {
           onRequestClose={this.handleRequestClose}
         >
           <Menu
+            value={value}
             onItemClick={this.handleItemClick}
           >
             {children}
