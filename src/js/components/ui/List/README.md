@@ -32,8 +32,9 @@ class ListExample extends React.Component {
         </List>
         <div style={{ marginBottom: 20 }} />
         <List>
-          {this.state.values.map(value =>
+          {this.state.values.map((value, index) =>
             <ListItem
+              key={index}
               text={value}
               editable
               placeolder="Type item name"
