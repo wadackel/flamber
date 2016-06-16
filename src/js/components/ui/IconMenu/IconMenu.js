@@ -97,14 +97,6 @@ export default class IconMenu extends React.Component {
       ref: "triggerElement"
     });
 
-    const cloneChildren = children.map((item, index) =>
-      React.cloneElement(item, {
-        key: item.props.text,
-        className: b("item"),
-        index
-      })
-    );
-
     return (
       <div className={mergeClassNames(b({ open }), className)}>
         {iconElement}
@@ -119,7 +111,7 @@ export default class IconMenu extends React.Component {
             onChange={onChange}
             onItemClick={this.handleItemClick}
           >
-            {cloneChildren}
+            {children}
           </Menu>
         </Popover>
       </div>
