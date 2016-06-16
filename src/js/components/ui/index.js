@@ -1,4 +1,5 @@
 export Dialog from "./Dialog/Dialog";
+export DropDownMenu from "./DropDownMenu/DropDownMenu";
 export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";
 export IconButton from "./IconButton/IconButton";

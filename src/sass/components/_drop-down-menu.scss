@@ -1,0 +1,36 @@
+.drop-down-menu {
+
+  &--inline {
+    display: inline-block;
+  }
+
+  &--block {
+    display: block;
+  }
+
+  &__trigger {
+    @include transition(all);
+    position: relative;
+    padding: .4rem 1.5rem .4rem 0;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      color: darken($color-root, 15%);
+    }
+
+    &--block {
+      border-bottom: 1px solid lighten($background-root, 30%);
+    }
+  }
+
+  &__icon {
+    @include absolute(50%, 0);
+    margin-top: -.4rem;
+
+    svg {
+      @include size(.8rem);
+      fill: currentColor;
+    }
+  }
+}
