@@ -3,12 +3,9 @@ import assign from "object-assign";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
+import { isValid } from "../../../helpers/validate";
 
 const b = bem("text-field");
-
-function isValid(value) {
-  return !!(value || value === 0);
-}
 
 export default class TextField extends React.Component {
   static propTypes = {
