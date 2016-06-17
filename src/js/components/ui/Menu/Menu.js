@@ -1,6 +1,5 @@
 import React, { PropTypes } from "react";
 import Prefixer from "inline-style-prefixer";
-import IScroll from "iscroll";
 import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -17,8 +16,7 @@ export default class Menu extends React.Component {
     children: PropTypes.node,
     onItemClick: PropTypes.func,
     onChange: PropTypes.func,
-    value: PropTypes.any,
-    maxHeight: PropTypes.number
+    value: PropTypes.any
   };
 
   static defaultProps = {
@@ -38,24 +36,10 @@ export default class Menu extends React.Component {
     ], this);
   }
 
-  componentDidMount() {
-    this.iscroll = new IScroll(this.refs.scrollContainer, {
-      bounce: false,
-      mouseWheel: true,
-      scrollbars: "custom",
-      preventDefault: false
-    });
-  }
-
   componentWillUpdate(nextProps, nextState) {
     if (nextState.value !== this.state.value) {
       this.props.onChange(nextState.value);
     }
-  }
-
-  componentWillUnmount() {
-    this.iscroll.destroy();
-    this.iscroll = null;
   }
 
   handleItemClick(menuItem, value, index) {
@@ -67,8 +51,7 @@ export default class Menu extends React.Component {
     const {
       className,
       children,
-      value,
-      maxHeight
+      value
     } = this.props;
 
     const childLength = children.length;
@@ -86,20 +69,10 @@ export default class Menu extends React.Component {
       })
     );
 
-    const scrollContainerStyle = {
-      maxHeight
-    };
-
     return (
-      <div
-        ref="scrollContainer"
-        className={b("scroll-container")}
-        style={scrollContainerStyle}
-      >
-        <List className={mergeClassNames(b(), className)}>
-          {cloneChildren}
-        </List>
-      </div>
+      <List className={mergeClassNames(b(), className)}>
+        {cloneChildren}
+      </List>
     );
   }
 }

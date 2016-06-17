@@ -1,23 +1,4 @@
 .menu {
-
-  &__scroll-container {
-    $shadow-color: rgba(#000, .78);
-    display: inline-block;
-    position: relative;
-    border-radius: 2px;
-    box-shadow: $shadow-color 0 1px 6px, $shadow-color 0 1px 4px;
-    overflow: hidden;
-
-    [class*="iScrollVerticalScrollbar"] {
-      @include absolute(0, 0, 0, auto, 100);
-      width: 4px;
-      background: #ccc;
-    }
-
-    [class*="iScrollIndicator"] {
-      position: absolute;
-      width: 100%;
-      background: rgba(#000, .3);
-    }
-  }
+  display: inline-block;
+  position: relative;
 }

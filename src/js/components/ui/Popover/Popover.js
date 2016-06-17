@@ -96,7 +96,7 @@ export default class Popover extends React.Component {
   }
 
   setPositions() {
-    const { open } = this.state;
+    const { open, closing } = this.state;
 
     if (!open) return;
 
@@ -116,9 +116,8 @@ export default class Popover extends React.Component {
     popover.top = trigger[triggerOrigin.vertical] - popover[origin.vertical];
     popover.left = trigger[triggerOrigin.horizontal] - popover[origin.horizontal];
 
-    popoverElement.style.top = `${popover.top}px`;
-    popoverElement.style.left = `${popover.left}px`;
-    popoverElement.style.maxHeight = `${window.innerHeight}px`;
+    popoverElement.style.top = `${Math.max(closing ? popover.top : 0, popover.top)}px`;
+    popoverElement.style.left = `${Math.max(closing ? popover.left : 0, popover.left)}px`;
   }
 
   getTriggerPosition(el) {

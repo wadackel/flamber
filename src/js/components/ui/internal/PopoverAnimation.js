@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import IScroll from "iscroll";
 import Prefixer from "inline-style-prefixer";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
@@ -24,8 +25,50 @@ export default class PopoverAnimation extends React.Component {
     this.setState({ open: true }); // eslint-disable-line react/no-did-mount-set-state
   }
 
+  componentDidUpdate() {
+    const { origin } = this.props;
+    const { scrollContainer } = this.refs;
+    const { top } = scrollContainer.getBoundingClientRect();
+    const height = scrollContainer.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const margin = 10;
+    const maxHeight = origin.vertical === "top" ? viewportHeight - top - margin : viewportHeight - margin;
+
+    if (maxHeight > 0 && maxHeight < height) {
+      scrollContainer.style.maxHeight = `${maxHeight}px`;
+      this.scrollable = true;
+    } else {
+      scrollContainer.style.maxHeight = "";
+      this.scrollable = false;
+    }
+
+    this.updateIScroll();
+  }
+
   componentWillReceiveProps(nextProps) {
     this.setState({ open: nextProps.open });
+  }
+
+  componentWillUnmount() {
+    if (this.iscroll) {
+      this.iscroll.destroy();
+      this.iscroll = null;
+    }
+  }
+
+  updateIScroll() {
+    if (!this.iscroll) {
+      if (this.scrollable) {
+        this.iscroll = new IScroll(this.refs.scrollContainer, {
+          bounce: false,
+          mouseWheel: true,
+          scrollbars: "custom",
+          preventDefault: false
+        });
+      }
+    } else {
+      this.iscroll.refresh();
+    }
   }
 
   render() {
@@ -46,18 +89,15 @@ export default class PopoverAnimation extends React.Component {
 
     return (
       <div
+        ref="popover"
         className={mergeClassNames(b(modifier), className)}
         style={style}
       >
-        <div
-          className={b("horizontal", modifier)}
-          style={style}
-        >
-          <div
-            className={b("vertical", modifier)}
-            style={style}
-          >
-            {children}
+        <div className={b("horizontal", modifier)} style={style}>
+          <div className={b("vertical", modifier)} style={style}>
+            <div ref="scrollContainer" className={b("scroll-container")}>
+              {children}
+            </div>
           </div>
         </div>
       </div>
