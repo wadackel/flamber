@@ -1,3 +1,4 @@
+export Checkbox from "./Checkbox/Checkbox";
 export Dialog from "./Dialog/Dialog";
 export DropDownMenu from "./DropDownMenu/DropDownMenu";
 export FlatButton from "./FlatButton/FlatButton";
