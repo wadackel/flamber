@@ -68,7 +68,7 @@ module.exports = {
     "no-useless-concat": "error",
     "no-useless-escape": "error",
     "no-void": "error",
-    "no-warning-comments": "warn",
+    "no-warning-comments": "off",
     "radix": "error",
     "vars-on-top": "error",
     "wrap-iife": "error",
