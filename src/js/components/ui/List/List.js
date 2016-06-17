@@ -24,7 +24,9 @@ export default class List extends React.Component {
     );
 
     return (
-      <div className={mergeClassNames(b(), className)}>{cloneChildren}</div>
+      <div className={mergeClassNames(b(), className)}>
+        {cloneChildren}
+      </div>
     );
   }
 }
