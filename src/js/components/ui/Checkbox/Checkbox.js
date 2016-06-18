@@ -11,6 +11,8 @@ export default class Checkbox extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     label: PropTypes.string,
+    name: PropTypes.string,
+    value: PropTypes.any,
     checked: PropTypes.bool,
     onCheck: PropTypes.func
   };
@@ -26,12 +28,44 @@ export default class Checkbox extends React.Component {
     this.state = {};
 
     bindHandlers([
+      "handleChange"
     ], this);
   }
 
+  handleChange(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.onCheck(this.props.value);
+  }
+
   render() {
+    const {
+      className,
+      label,
+      name,
+      value,
+      checked
+    } = this.props;
+
+    const modifier = {
+      checked
+    };
+
     return (
-      <div>Checkbox: TODO</div>
+      <div className={mergeClassNames(b(modifier), className)}>
+        <input
+          ref="checkbox"
+          type="checkbox"
+          className={b("input", modifier)}
+          name={name}
+          value={value}
+          onChange={this.handleChange}
+        />
+        <div className={b("body")}>
+          <span className={b("checkbox", modifier)}></span>
+          <span className={b("label", modifier)}>{label}</span>
+        </div>
+      </div>
     );
   }
 }
