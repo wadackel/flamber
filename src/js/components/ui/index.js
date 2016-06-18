@@ -1,3 +1,4 @@
+export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 export Checkbox from "./Checkbox/Checkbox";
 export Dialog from "./Dialog/Dialog";
 export DropDownMenu from "./DropDownMenu/DropDownMenu";
