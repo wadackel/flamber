@@ -1,0 +1,30 @@
+.color-bar {
+  display: block;
+
+  &__list {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  &__item {
+    @include transition(all, 120ms);
+    display: table-cell;
+    height: 20px;
+    transform: scaleY(.1);
+    transform-origin: top left;
+    cursor: pointer;
+
+    &:hover {
+      transform: scaleY(.4);
+    }
+
+    &--selected {
+      transform: scaleY(.5);
+
+      &:hover {
+        transform: scaleY(.5);
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 export Checkbox from "./Checkbox/Checkbox";
+export ColorBar from "./ColorBar/ColorBar";
 export Dialog from "./Dialog/Dialog";
 export DropDownMenu from "./DropDownMenu/DropDownMenu";
 export FlatButton from "./FlatButton/FlatButton";
