@@ -83,6 +83,7 @@ export default class ColorBar extends React.Component {
 
     const items = palette.map(value =>
       <ColorBarItem
+        key={value}
         color={value}
         selected={color === value}
         onClick={this.handleItemClick}
