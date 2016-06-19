@@ -1,0 +1,9 @@
+.progress-bar {
+  display: block;
+  background: $gray;
+
+  &__value {
+    height: 3px;
+    background: $brand-primary;
+  }
+}
