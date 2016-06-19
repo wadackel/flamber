@@ -11,6 +11,8 @@ export ListItem from "./ListItem/ListItem";
 export Menu from "./Menu/Menu";
 export MenuItem from "./MenuItem/MenuItem";
 export Popover from "./Popover/Popover";
+export Radio from "./Radio/Radio";
+export RadioGroup from "./RadioGroup/RadioGroup";
 export RaisedButton from "./RaisedButton/RaisedButton";
 export Slider from "./Slider/Slider";
 export TextField from "./TextField/TextField";
