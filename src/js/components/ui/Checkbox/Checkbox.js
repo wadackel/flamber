@@ -1,12 +1,12 @@
-/* eslint-disable */
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import randomId from "../../../helpers/random-id";
+import Ripple from "../internal/Ripple";
 
 const b = bem("checkbox");
 
-// TODO
 export default class Checkbox extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -25,17 +25,41 @@ export default class Checkbox extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      ripples: []
+    };
 
     bindHandlers([
-      "handleChange"
+      "handleChange",
+      "handleRippleHide"
     ], this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.checked !== this.props.checked && nextProps.checked) {
+      const { ripples } = this.state;
+
+      this.setState({
+        ripples: ripples.concat([
+          <Ripple
+            key={randomId()}
+            className={b("ripple")}
+            onRequestHide={this.handleRippleHide}
+          />
+        ])
+      });
+    }
   }
 
   handleChange(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onCheck(this.props.value);
+    this.props.onCheck(this.props.value, !this.props.checked);
+  }
+
+  handleRippleHide() {
+    const ripples = this.state.ripples.slice(1);
+    this.setState({ ripples });
   }
 
   render() {
@@ -46,6 +70,8 @@ export default class Checkbox extends React.Component {
       value,
       checked
     } = this.props;
+
+    const { ripples } = this.state;
 
     const modifier = {
       checked
@@ -59,10 +85,13 @@ export default class Checkbox extends React.Component {
           className={b("input", modifier)}
           name={name}
           value={value}
+          checked={checked}
           onChange={this.handleChange}
         />
         <div className={b("body")}>
-          <span className={b("checkbox", modifier)}></span>
+          <span className={b("checkbox", modifier)}>
+            {ripples}
+          </span>
           <span className={b("label", modifier)}>{label}</span>
         </div>
       </div>

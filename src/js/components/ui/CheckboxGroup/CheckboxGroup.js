@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -6,32 +5,38 @@ import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("checkbox-group");
 
-// TODO
 export default class CheckboxGroup extends React.Component {
   static propTypes = {
-    children: PropTypes.string,
-    className: PropTypes.node,
+    children: PropTypes.node,
+    className: PropTypes.string,
     name: PropTypes.string,
-    value: PropTypes.any,
+    value: PropTypes.array,
     onChange: PropTypes.func
   };
 
   static defaultProps = {
+    value: [],
     onChange: () => {}
   };
 
   constructor(props) {
     super(props);
 
-    this.state = {};
-
     bindHandlers([
-      "handleChange"
+      "handleCheck"
     ], this);
   }
 
-  handleChange() {
-    // TODO
+  handleCheck(value, checked) {
+    let newValue = [];
+
+    if (checked) {
+      newValue = this.props.value.concat(value);
+    } else {
+      newValue = this.props.value.filter(val => val !== value);
+    }
+
+    this.props.onChange(newValue);
   }
 
   render() {
@@ -39,13 +44,21 @@ export default class CheckboxGroup extends React.Component {
       children,
       className,
       name,
-      value,
+      value
     } = this.props;
 
-    // TODO
+    const cloneChildren = children.map(child =>
+      React.cloneElement(child, {
+        key: child.props.value,
+        checked: value.indexOf(child.props.value) >= 0,
+        onCheck: this.handleCheck,
+        name
+      })
+    );
+
     return (
       <div className={mergeClassNames(b(), className)}>
-        {children}
+        {cloneChildren}
       </div>
     );
   }
