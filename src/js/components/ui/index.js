@@ -6,6 +6,7 @@ export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";
 export IconButton from "./IconButton/IconButton";
 export IconMenu from "./IconMenu/IconMenu";
+export Label from "./Label/Label";
 export List from "./List/List";
 export ListItem from "./ListItem/ListItem";
 export Menu from "./Menu/Menu";

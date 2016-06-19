@@ -1,0 +1,23 @@
+.label {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background: $gray-light;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+
+  &__icon {
+    @include relative(-1px);
+    display: inline-block;
+    margin: 0 6px 0 0;
+    color: $gray-lighter;
+    line-height: 0;
+    vertical-align: middle;
+
+    svg {
+      @include size(1em);
+      fill: currentColor;
+    }
+  }
+}
