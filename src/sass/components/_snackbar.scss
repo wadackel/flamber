@@ -1,3 +1,71 @@
 .snackbar {
-  // TODO
+  $duration: 300ms;
+
+  @include fixed(auto, 0, 10px, 0, 2000);
+  @include transition(all, $duration / 2);
+  display: block;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+
+  &--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__horizontal,
+  &__vertical {
+    transform-origin: bottom center;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &__horizontal {
+    @include transition(all, $duration / 2);
+    transform: scaleX(.4);
+
+    &--open {
+      transform: scaleX(1);
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__vertical {
+    @include transition(all, $duration);
+    transform: scaleY(.4);
+
+    &--open {
+      transform: scaleY(1);
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__body {
+    @include transition(all, $duration);
+    display: inline-block;
+    padding: .5em 1.4em;
+    transform: translateY(30px);
+    border-radius: 2px;
+    background: rgba(#000, .92);
+    color: #fff;
+    font-size: .75em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
+    vertical-align: middle;
+
+    &--open {
+      transform: translateY(0);
+    }
+  }
+
+  &__message {
+    letter-spacing: .05em;
+  }
+
+  &__action {
+    margin-right: -.7em;
+    margin-left: 2em;
+    font-size: .87rem;
+  }
 }

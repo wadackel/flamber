@@ -13,7 +13,8 @@ class SnackbarExample extends React.Component {
         <RaisedButton onClick={() => this.setState({ open: true })}>Open</RaisedButton>
         <Snackbar
           open={this.state.open}
-          message={"Snackbar Example"}
+          message="Snackbar Example"
+          action="Undo"
           onRequestClose={() => this.setState({ open: false })}
         />
       </div>
