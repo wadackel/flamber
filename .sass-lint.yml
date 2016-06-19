@@ -82,6 +82,7 @@ rules:
     - 1
     - additional-identifiers: []
       excluded-identifiers: []
+      ignore-non-standard: true
   placeholder-in-extend: 1
   placeholder-name-format:
     - 1
