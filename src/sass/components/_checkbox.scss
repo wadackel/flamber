@@ -1,28 +1,7 @@
 .checkbox {
-  $size: 20px;
-
-  display: inline-block;
-  position: relative;
-
-  &__input {
-    @include absolute(0, 0, 0, 0, 5);
-    @include size(100%);
-    cursor: pointer;
-    opacity: 0;
-  }
-
-  &__checkbox,
-  &__label {
-    display: inline-block;
-    vertical-align: middle;
-  }
+  @include switch-extend-all(checkbox);
 
   &__checkbox {
-    @include size($size);
-    display: inline-block;
-    position: relative;
-    border: 2px solid #fff;
-
     &::before,
     &::after {
       @include transition(all, 200ms);
@@ -69,19 +48,5 @@
         transform: scale(1) rotate(45deg);
       }
     }
-  }
-
-  &__label {
-    display: inline-block;
-    margin: 0 0 0 10px;
-    line-height: $size;
-  }
-
-  &__ripple {
-    @extend %button-ripple;
-    @include size($size * 1.8);
-    top: 50%;
-    left: 50%;
-    z-index: 100;
   }
 }
