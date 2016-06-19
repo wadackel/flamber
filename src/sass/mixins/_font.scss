@@ -1,0 +1,7 @@
+@mixin font-smooth($smooth: true) {
+  @if ($smooth) {
+    font-smoothing: antialiased;
+  } @else {
+    font-smoothing: subpixel-antialiased;
+  }
+}

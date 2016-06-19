@@ -17,6 +17,7 @@
 
 //=== Mixins
 @import "mixins/clearfix";
+@import "mixins/font";
 @import "mixins/position";
 @import "mixins/size";
 @import "mixins/media-query";
@@ -35,6 +36,7 @@
 @import "components/internal/button";
 @import "components/internal/switch";
 
+@import "components/avatar";
 @import "components/checkbox-group";
 @import "components/checkbox";
 @import "components/color-bar";
