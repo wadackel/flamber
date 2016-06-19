@@ -1,3 +1,4 @@
+export Avatar from "./Avatar/Avatar";
 export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 export Checkbox from "./Checkbox/Checkbox";
 export ColorBar from "./ColorBar/ColorBar";

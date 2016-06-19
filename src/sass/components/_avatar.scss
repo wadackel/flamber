@@ -1,0 +1,41 @@
+.avatar {
+  $size: 40px;
+
+  display: block;
+  position: relative;
+  text-align: right;
+
+  &__inner {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  &__icon,
+  &__text {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &__icon {
+    @include size($size);
+    margin-top: -$size / 2;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 105%;
+  }
+
+  &__text {
+    padding-right: 10px;
+    letter-spacing: .05em;
+  }
+
+  &__name {
+    font-size: 1rem;
+  }
+
+  &__email {
+    font-size: .75rem;
+  }
+}
