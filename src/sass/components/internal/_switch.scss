@@ -1,0 +1,62 @@
+$switch-size: 20px;
+
+
+%switch-root {
+  display: block;
+  position: relative;
+}
+
+
+%switch-input {
+  @include absolute(0, 0, 0, 0, 5);
+  @include size(100%);
+  cursor: pointer;
+  opacity: 0;
+}
+
+
+%switch-element {
+  @include size($switch-size);
+  display: inline-block;
+  position: relative;
+  border: 2px solid $gray-lighter;
+  vertical-align: middle;
+}
+
+
+%switch-label {
+  display: inline-block;
+  margin: 0 0 0 10px;
+  line-height: $switch-size;
+  vertical-align: middle;
+}
+
+
+%switch-ripple {
+  @extend %button-ripple;
+  @include size($switch-size * 1.8);
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+}
+
+
+@mixin switch-extend-all($type) {
+  @extend %switch-root;
+
+  &__input {
+    @extend %switch-input;
+  }
+
+  &__#{$type} {
+    @extend %switch-element;
+  }
+
+  &__label {
+    @extend %switch-label;
+  }
+
+  &__ripple {
+    @extend %switch-ripple;
+  }
+}
