@@ -12,7 +12,6 @@ class PopoverExample extends React.Component {
   }
 
   handleClick(e) {
-    console.log(e.currentTarget);
     this.setState({
       open: true,
       triggerElement: e.currentTarget

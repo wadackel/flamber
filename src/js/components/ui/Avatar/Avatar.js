@@ -11,25 +11,30 @@ export default class Avatar extends React.Component {
     name: PropTypes.string,
     email: PropTypes.string,
     icon: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onIconClick: PropTypes.func
   };
 
   static defaultProps = {
-    onClick: () => {}
+    onClick: () => {},
+    onIconClick: () => {}
   };
 
   constructor(props) {
     super(props);
 
     bindHandlers([
-      "handleClick"
+      "handleClick",
+      "handleIconClick"
     ], this);
   }
 
   handleClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.props.onClick();
+    this.props.onClick(e);
+  }
+
+  handleIconClick(e) {
+    this.props.onIconClick(e);
   }
 
   render() {
@@ -54,7 +59,11 @@ export default class Avatar extends React.Component {
             <div className={b("name")}>{name}</div>
             <div className={b("email")}>{email}</div>
           </div>
-          <div className={b("icon")} style={iconStyle} />
+          <div
+            className={b("icon")}
+            style={iconStyle}
+            onClick={this.handleIconClick}
+          />
         </div>
       </div>
     );

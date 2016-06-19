@@ -1,0 +1,32 @@
+.user-drop-down {
+  position: relative;
+  width: 300px;
+  padding: 20px 20px 10px;
+  background: #fff;
+  color: $gray;
+  font-size: 1rem;
+
+  &__capacity {
+    .progress-bar {
+      background: #ccc;
+    }
+  }
+
+  &__footer {
+    margin: 10px 0 0;
+    text-align: right;
+  }
+
+  &__sign-out {
+    color: inherit !important;
+    font-size: .75em !important;
+
+    .flat-button__ripple {
+      background: rgba(#000, .2);
+    }
+
+    &:hover {
+      background-color: darken(#fff, 15%) !important;
+    }
+  }
+}
