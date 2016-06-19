@@ -3,6 +3,7 @@ export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 export Checkbox from "./Checkbox/Checkbox";
 export ColorBar from "./ColorBar/ColorBar";
 export Dialog from "./Dialog/Dialog";
+export DriveCapacity from "./DriveCapacity/DriveCapacity";
 export DropDownMenu from "./DropDownMenu/DropDownMenu";
 export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";
