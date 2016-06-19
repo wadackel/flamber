@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { PropTypes } from "react";
 import * as OriginPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";

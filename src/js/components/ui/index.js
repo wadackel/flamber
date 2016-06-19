@@ -20,4 +20,6 @@ export Radio from "./Radio/Radio";
 export RadioGroup from "./RadioGroup/RadioGroup";
 export RaisedButton from "./RaisedButton/RaisedButton";
 export Slider from "./Slider/Slider";
+export Snackbar from "./Snackbar/Snackbar";
 export TextField from "./TextField/TextField";
+export UserDropDown from "./UserDropDown/UserDropDown";
