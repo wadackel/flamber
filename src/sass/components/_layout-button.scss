@@ -1,0 +1,9 @@
+.layout-button {
+  color: $gray-light;
+
+  &--selected {
+    color: $gray-lightest;
+    cursor: default;
+    pointer-events: none;
+  }
+}
