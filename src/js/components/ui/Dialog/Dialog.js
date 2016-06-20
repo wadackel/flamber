@@ -117,13 +117,17 @@ export default class Dialog extends React.Component {
           transitionLeaveTimeout={shareConfig["dialog-leave-duration"]}
         >
           {open ? <div className={b("wrapper", modifier)}>
-            <div className={mergeClassNames(b(modifier), className)}>
-              <div className={b("container", modifier)}>
-                {this.renderHeader()}
-                <div className={b("body", modifier)}>
-                  {children}
+            <div className={b("horizontal", modifier)}>
+              <div className={b("vertical", modifier)}>
+                <div className={mergeClassNames(b(modifier), className)}>
+                  <div className={b("container", modifier)}>
+                    {this.renderHeader()}
+                    <div className={b("body", modifier)}>
+                      {children}
+                    </div>
+                    {this.renderActions()}
+                  </div>
                 </div>
-                {this.renderActions()}
               </div>
             </div>
             <Overlay
