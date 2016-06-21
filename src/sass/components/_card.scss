@@ -51,8 +51,16 @@ $card-duration: 200ms;
 
 .card-body {
   position: relative;
-  padding: 18px 40px 18px 20px;
+  padding: 15px 60px 15px 20px;
   color: $gray-light;
+}
+
+
+.card-title,
+.card-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 
@@ -69,5 +77,10 @@ $card-duration: 200ms;
 
 
 .card-action {
-  @include absolute(15px, 10px);
+  @include absolute(12px, 10px);
+  color: $gray-lighter;
+
+  .icon-button__ripple {
+    background: rgba(#000, .2);
+  }
 }
