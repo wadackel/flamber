@@ -20,7 +20,7 @@ module.exports = {
     },
     {
       name: "SVG Icon Components",
-      components: "src/js/components/svg-icons/**/*.js"
+      components: "src/js/components/svg-icons/**/*Icon.js"
     }
   ],
 

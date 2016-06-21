@@ -4,8 +4,7 @@ import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import Button from "../internal/Button";
 import { TextField, IconButton } from "../";
-import PencilIcon from "../../svg-icons/PencilIcon";
-import TrashIcon from "../../svg-icons/TrashIcon";
+import { PencilIcon, TrashIcon } from "../../svg-icons/";
 
 const b = bem("list-item");
 

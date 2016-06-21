@@ -7,7 +7,7 @@ import bindHandlers from "../../../helpers/bind-handlers";
 import RenderToLayer from "../internal/RenderToLayer";
 import Overlay from "../internal/Overlay";
 import { IconButton } from "../";
-import CloseIcon from "../../svg-icons/CloseIcon";
+import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("dialog");
 

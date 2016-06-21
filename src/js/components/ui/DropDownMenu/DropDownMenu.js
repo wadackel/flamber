@@ -3,7 +3,7 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import { Popover, Menu } from "../";
-import CaretIcon from "../../svg-icons/CaretIcon";
+import { CaretIcon } from "../../svg-icons/";
 
 const b = bem("drop-down-menu");
 const origin = { vertical: "top", horizontal: "left" };
