@@ -7,11 +7,10 @@ const b = bem("card");
 export default function Card({
   children,
   className,
-  style,
-  selected
+  style
 }) {
   return <div
-    className={mergeClassNames(b({ selected }), className)}
+    className={mergeClassNames(b(), className)}
     style={style}
   >
     {children}
@@ -26,6 +25,5 @@ Card.propTypes = {
 };
 
 Card.defaultProps = {
-  style: {},
-  selected: false
+  style: {}
 };

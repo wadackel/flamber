@@ -1,0 +1,27 @@
+.item-card {
+
+  &__checkbox {
+    @include absolute(10px, auto, auto, 10px);
+
+    .checkbox__checkbox {
+      border-color: #fff;
+    }
+  }
+
+  &__detail {
+    @include absolute(50%, auto, auto, 50%);
+    margin: -20px 0 0 -45px;
+
+    .flat-button__body {
+      width: 90px;
+      height: 40px;
+      padding: 0;
+      color: #fff;
+      line-height: 40px;
+    }
+  }
+
+  &__more {
+    @include absolute(5px, 5px);
+  }
+}

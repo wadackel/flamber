@@ -53,6 +53,14 @@ $card-duration: 200ms;
   position: relative;
   padding: 15px 60px 15px 20px;
   color: $gray-light;
+
+  a {
+    color: $gray-light;
+
+    &:hover {
+      color: $brand-primary;
+    }
+  }
 }
 
 
