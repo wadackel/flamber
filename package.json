@@ -94,6 +94,7 @@
     "redux": "^3.5.2",
     "redux-actions": "^0.9.1",
     "redux-logger": "^2.6.1",
-    "redux-saga": "^0.10.4"
+    "redux-saga": "^0.10.4",
+    "url-parse": "^1.1.1"
   }
 }
