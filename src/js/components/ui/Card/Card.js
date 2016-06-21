@@ -8,9 +8,13 @@ const b = bem("card");
 export default function Card({
   children,
   className,
+  style,
   selected
 }) {
-  return <div className={mergeClassNames(b({ selected }), className)}>
+  return <div
+    className={mergeClassNames(b({ selected }), className)}
+    style={style}
+  >
     {children}
   </div>;
 }
@@ -18,9 +22,11 @@ export default function Card({
 Card.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  style: PropTypes.object,
   selected: PropTypes.bool
 };
 
 Card.defaultProps = {
+  style: {},
   selected: false
 };

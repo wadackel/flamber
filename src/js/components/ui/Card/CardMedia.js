@@ -6,17 +6,20 @@ import mergeClassNames from "../../../helpers/merge-class-names";
 const b = bem("card-media");
 
 export default function CardMedia({
-  children,
   className,
+  image,
   overlay
 }) {
-  return <div className={mergeClassNames(b(), className)}>
-    {children}
-  </div>;
+  return (
+    <div className={mergeClassNames(b(), className)}>
+      {overlay && <div className={b("overlay")}>{overlay}</div>}
+      {image && <div className={b("item")} style={{ backgroundImage: `url(${image})` }}></div>}
+    </div>
+  );
 }
 
 CardMedia.propTypes = {
-  children: PropTypes.node,
   className: PropTypes.string,
+  image: PropTypes.string,
   overlay: PropTypes.element
 };

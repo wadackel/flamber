@@ -1,8 +1,11 @@
 Basic:
 
 ```
-<Card>
-  <CardMedia overlay={<div>Overlay</div>} />
+<Card style={{ width: 270 }} >
+  <CardMedia
+    image="/images/card-sample.png"
+    overlay={<div>Overlay</div>}
+  />
   <CardBody>
     <CardTitle>Card Title</CardTitle>
     <CardText>Card text</CardText>
