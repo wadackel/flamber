@@ -12,6 +12,7 @@ import {
   CardText,
   CardTitle,
   Checkbox,
+  ColorBar,
   FlatButton,
   IconButton
 } from "../";
@@ -161,7 +162,10 @@ export default class ItemCard extends React.Component {
             <IconButton icon={<StarIcon />} onClick={this.handleCilck} />
           </CardAction>
         </CardBody>
-        {/* TODO: colors */}
+        <ColorBar
+          className={b("colors")}
+          palette={colors}
+        />
       </Card>
     );
   }

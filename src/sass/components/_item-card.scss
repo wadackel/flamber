@@ -1,4 +1,5 @@
 .item-card {
+  overflow: hidden;
 
   &__checkbox {
     @include absolute(10px, auto, auto, 10px);
@@ -43,6 +44,19 @@
       transform: translateY(0);
       opacity: 1;
       visibility: visible;
+    }
+  }
+
+  &__body {
+    padding-bottom: 20px;
+  }
+
+  &__colors {
+    @include absolute(auto, 0, 0, 0);
+
+    .color-bar__item {
+      height: 5px;
+      transform: scale(1) !important;
     }
   }
 }
