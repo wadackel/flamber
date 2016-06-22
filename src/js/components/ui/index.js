@@ -11,6 +11,7 @@ export ColorBar from "./ColorBar/ColorBar";
 export Dialog from "./Dialog/Dialog";
 export DriveCapacity from "./DriveCapacity/DriveCapacity";
 export DropDownMenu from "./DropDownMenu/DropDownMenu";
+export FeedCard from "./FeedCard/FeedCard";
 export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";
 export IconButton from "./IconButton/IconButton";

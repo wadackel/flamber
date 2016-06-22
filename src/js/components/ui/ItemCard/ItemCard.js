@@ -1,4 +1,3 @@
-/* eslint-disable */
 import urlParse from "url-parse";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
