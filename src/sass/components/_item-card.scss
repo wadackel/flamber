@@ -23,5 +23,26 @@
 
   &__more {
     @include absolute(5px, 5px);
+    transform: translateY(0);
+
+    .item-card--show-more & {
+      transform: translateY(-5px);
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  &__more-actions {
+    @include absolute(5px, 5px);
+    @include transition(all);
+    transform: translateY(-5px);
+    opacity: 0;
+    visibility: hidden;
+
+    .item-card--show-more & {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
   }
 }

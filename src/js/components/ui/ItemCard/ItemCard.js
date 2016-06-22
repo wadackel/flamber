@@ -17,7 +17,8 @@ import {
 } from "../";
 import {
   MoreVertIcon,
-  StarIcon
+  StarIcon,
+  TrashIcon
 } from "../../svg-icons";
 
 const b = bem("item-card");
@@ -26,7 +27,7 @@ export default class ItemCard extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
-    selected: PropTypes.string,
+    selected: PropTypes.bool,
     href: PropTypes.string,
     url: PropTypes.string,
     title: PropTypes.string,
@@ -52,17 +53,46 @@ export default class ItemCard extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      showMore: false
+    };
+
     bindHandlers([
-      "handleFavorite",
-      "handleDetailClick"
+      "handleMouseLeave",
+      "handleCheck",
+      "handleFavoriteClick",
+      "handleDetailClick",
+      "handleMoreClick",
+      "handleMoreActionsMouseLeave",
+      "handleDeleteClick"
     ], this);
   }
 
-  handleFavorite() {
+  handleMouseLeave() {
+    this.setState({ showMore: false });
+  }
+
+  handleFavoriteClick() {
     // TODO
   }
 
   handleDetailClick() {
+    // TODO
+  }
+
+  handleCheck(value, checked) {
+    this.props.onSelect(checked);
+  }
+
+  handleMoreClick() {
+    this.setState({ showMore: true });
+  }
+
+  handleMoreActionsMouseLeave() {
+    this.setState({ showMore: false });
+  }
+
+  handleDeleteClick() {
     // TODO
   }
 
@@ -77,19 +107,45 @@ export default class ItemCard extends React.Component {
       colors
     } = this.props;
 
-    // TODO: More items
+    const { showMore } = this.state;
+
+    const moreActionClassName = b("more-action");
     const overlay = <div className={b("overlay")}>
-      <Checkbox className={b("checkbox")} checked={selected} />
-      <IconButton className={b("more")} icon={<MoreVertIcon />} />
+      <Checkbox
+        className={b("checkbox")}
+        checked={selected}
+        onCheck={this.handleCheck}
+      />
+      <IconButton
+        className={b("more")}
+        icon={<MoreVertIcon />}
+        onClick={this.handleMoreClick}
+      />
+      <div
+        className={b("more-actions")}
+        onMouseLeave={this.handleMoreActionsMouseLeave}
+      >
+        <IconButton
+          className={moreActionClassName}
+          icon={<TrashIcon />}
+          onClick={this.handleDeleteClick}
+        />
+      </div>
       <FlatButton className={b("detail")} onClick={this.handleDetailClick}>Detail</FlatButton>
     </div>;
 
     const parsedURL = urlParse(url, true);
 
+    const modifier = {
+      selected,
+      "show-more": showMore
+    };
+
     return (
       <Card
-        className={mergeClassNames(b({ selected }), className)}
+        className={mergeClassNames(b(modifier), className)}
         style={style}
+        onMouseLeave={this.handleMouseLeave}
       >
         <CardMedia
           className={b("media")}
