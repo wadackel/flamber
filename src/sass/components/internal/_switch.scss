@@ -7,6 +7,11 @@ $switch-size: 20px;
 }
 
 
+%switch-root-inline {
+  display: inline-block;
+}
+
+
 %switch-input {
   @include absolute(0, 0, 0, 0, 5);
   @include size(100%);
@@ -37,12 +42,16 @@ $switch-size: 20px;
   @include size($switch-size * 1.8);
   top: 50%;
   left: 50%;
-  z-index: 100;
+  background-color: rgba(#fff, .1);
 }
 
 
 @mixin switch-extend-all($type) {
   @extend %switch-root;
+
+  &--inline {
+    @extend %switch-root-inline;
+  }
 
   &__input {
     @extend %switch-input;

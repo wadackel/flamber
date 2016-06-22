@@ -44,8 +44,6 @@ class PopoverExample extends React.Component {
 ```
 
 
-### TODO 
-
 Custom origin:
 
 ```
@@ -109,32 +107,31 @@ class PopoverCustomOriginExample extends React.Component {
         </Popover>
         <div>
           <h4>Origin</h4>
-          <div>Vertical</div>
+          <h5>Vertical</h5>
           <div>
-            <label><input type="radio" checked={this.state.origin.vertical === "top"} onChange={() => this.setOrigin("vertical", "top")} /> Top</label>
-            <label><input type="radio" checked={this.state.origin.vertical === "middle"} onChange={() => this.setOrigin("vertical", "middle")} /> Middle</label>
-            <label><input type="radio" checked={this.state.origin.vertical === "bottom"} onChange={() => this.setOrigin("vertical", "bottom")} /> Bottom</label>
+            <Radio label="Top" inline={true} checked={this.state.origin.vertical === "top"} onCheck={() => this.setOrigin("vertical", "top")} style={{ marginRight: 20 }} />
+            <Radio label="Middle" inline={true} checked={this.state.origin.vertical === "middle"} onCheck={() => this.setOrigin("vertical", "middle")} style={{ marginRight: 20 }} />
+            <Radio label="Bottom" inline={true} checked={this.state.origin.vertical === "bottom"} onCheck={() => this.setOrigin("vertical", "bottom")} style={{ marginRight: 20 }} />
           </div>
-          <div>Horizontal</div>
+          <h5>Horizontal</h5>
           <div>
-            <label><input type="radio" checked={this.state.origin.horizontal === "left"} onChange={() => this.setOrigin("horizontal", "left")} /> Left</label>
-            <label><input type="radio" checked={this.state.origin.horizontal === "center"} onChange={() => this.setOrigin("horizontal", "center")} /> Center</label>
-            <label><input type="radio" checked={this.state.origin.horizontal === "right"} onChange={() => this.setOrigin("horizontal", "right")} /> Right</label>
+            <Radio label="Left" inline={true} checked={this.state.origin.horizontal === "left"} onCheck={() => this.setOrigin("horizontal", "left")} style={{ marginRight: 20 }} />
+            <Radio label="Center" inline={true} checked={this.state.origin.horizontal === "center"} onCheck={() => this.setOrigin("horizontal", "center")} style={{ marginRight: 20 }} />
+            <Radio label="Right" inline={true} checked={this.state.origin.horizontal === "right"} onCheck={() => this.setOrigin("horizontal", "right")} style={{ marginRight: 20 }} />
           </div>
         </div>
         <div>
-          <h4>TriggerOrigin</h4>
-          <div>Vertical</div>
+          <h5>Vertical</h5>
           <div>
-            <label><input type="radio" checked={this.state.triggerOrigin.vertical === "top"} onChange={() => this.setTriggerOrigin("vertical", "top")} /> Top</label>
-            <label><input type="radio" checked={this.state.triggerOrigin.vertical === "middle"} onChange={() => this.setTriggerOrigin("vertical", "middle")} /> Middle</label>
-            <label><input type="radio" checked={this.state.triggerOrigin.vertical === "bottom"} onChange={() => this.setTriggerOrigin("vertical", "bottom")} /> Bottom</label>
+            <Radio label="Top" inline={true} checked={this.state.triggerOrigin.vertical === "top"} onCheck={() => this.setTriggerOrigin("vertical", "top")} style={{ marginRight: 20 }} />
+            <Radio label="Middle" inline={true} checked={this.state.triggerOrigin.vertical === "middle"} onCheck={() => this.setTriggerOrigin("vertical", "middle")} style={{ marginRight: 20 }} />
+            <Radio label="Bottom" inline={true} checked={this.state.triggerOrigin.vertical === "bottom"} onCheck={() => this.setTriggerOrigin("vertical", "bottom")} style={{ marginRight: 20 }} />
           </div>
-          <div>Horizontal</div>
+          <h5>Horizontal</h5>
           <div>
-            <label><input type="radio" checked={this.state.triggerOrigin.horizontal === "left"} onChange={() => this.setTriggerOrigin("horizontal", "left")} /> Left</label>
-            <label><input type="radio" checked={this.state.triggerOrigin.horizontal === "center"} onChange={() => this.setTriggerOrigin("horizontal", "center")} /> Center</label>
-            <label><input type="radio" checked={this.state.triggerOrigin.horizontal === "right"} onChange={() => this.setTriggerOrigin("horizontal", "right")} /> Right</label>
+            <Radio label="Left" inline={true} checked={this.state.triggerOrigin.horizontal === "left"} onCheck={() => this.setTriggerOrigin("horizontal", "left")} style={{ marginRight: 20 }} />
+            <Radio label="Center" inline={true} checked={this.state.triggerOrigin.horizontal === "center"} onCheck={() => this.setTriggerOrigin("horizontal", "center")} style={{ marginRight: 20 }} />
+            <Radio label="Right" inline={true} checked={this.state.triggerOrigin.horizontal === "right"} onCheck={() => this.setTriggerOrigin("horizontal", "right")} style={{ marginRight: 20 }} />
           </div>
         </div>
       </div>

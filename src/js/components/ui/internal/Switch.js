@@ -9,16 +9,20 @@ export default class Checkbox extends React.Component {
   static propTypes = {
     baseClassName: PropTypes.string,
     className: PropTypes.string,
+    style: PropTypes.object,
     type: PropTypes.oneOf(["checkbox", "radio"]),
     label: PropTypes.string,
     name: PropTypes.string,
     value: PropTypes.any,
     checked: PropTypes.bool,
+    inline: PropTypes.bool,
     onCheck: PropTypes.func
   };
 
   static defaultProps = {
+    style: {},
     checked: false,
+    inline: false,
     onCheck: () => {}
   };
 
@@ -67,23 +71,26 @@ export default class Checkbox extends React.Component {
     const {
       baseClassName,
       className,
+      style,
       type,
       label,
       name,
       value,
-      checked
+      checked,
+      inline
     } = this.props;
 
     const { ripples } = this.state;
 
     const modifier = {
-      checked
+      checked,
+      inline
     };
 
     const b = bem(baseClassName);
 
     return (
-      <div className={mergeClassNames(b(modifier), className)}>
+      <div className={mergeClassNames(b(modifier), className)} style={style}>
         <input
           ref={type}
           type={type}
