@@ -1,11 +1,9 @@
 import React, { PropTypes } from "react";
 import IScroll from "iscroll";
-import Prefixer from "inline-style-prefixer";
 import * as OriginalPropTypes from "../../../constants/prop-types";
+import prefixer from "../../../helpers/prefixer";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-
-const prefixer = new Prefixer();
 
 export default class PopoverAnimation extends React.Component {
   static propTypes = {
