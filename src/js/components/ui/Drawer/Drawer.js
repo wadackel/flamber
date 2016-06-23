@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { PropTypes } from "react";
 import IScroll from "iscroll";
 import bem from "../../../helpers/bem";
@@ -24,11 +23,50 @@ export default class Drawer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
-
     bindHandlers([
+      "handleResize"
     ], this);
+  }
+
+  componentDidMount() {
+    this.iscroll = new IScroll(this.refs.scrollContainer, {
+      bounce: false,
+      mouseWheel: true,
+      scrollbars: "custom",
+      freeScroll: true,
+      preventDefault: false
+    });
+
+    this.updateScrollHeight();
+    window.addEventListener("resize", this.handleResize, false);
+  }
+
+  componentDidUpdate() {
+    this.updateScrollHeight();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize, false);
+  }
+
+  handleResize() {
+    this.updateScrollHeight();
+  }
+
+  updateScrollHeight() {
+    const {
+      drawer,
+      scrollContainer,
+      footer
+    } = this.refs;
+
+    const { top, bottom } = drawer.getBoundingClientRect();
+    const maxHeight = Math.min(bottom, window.innerHeight) - Math.max(0, top);
+    const footerHeight = footer ? footer.offsetHeight : 0;
+
+    scrollContainer.style.maxHeight = `${maxHeight - footerHeight}px`;
+
+    this.iscroll.refresh();
   }
 
   render() {
@@ -45,11 +83,10 @@ export default class Drawer extends React.Component {
       open
     };
 
-    const footerElement = footer && <div className={b("footer")}>
-    </div>;
+    const footerElement = footer && <div ref="footer" className={b("footer")}>{footer}</div>;
 
     return (
-      <div className={mergeClassNames(b(modifier), className)}>
+      <div ref="drawer" className={mergeClassNames(b(modifier), className)}>
         <div ref="scrollContainer" className={b("scroll-container")}>
           <div className={b("container")}>
             {children}

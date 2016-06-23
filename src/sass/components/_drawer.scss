@@ -11,6 +11,7 @@ $drawer-duration: 260ms;
   width: $drawer-width;
   background: $gray-dark;
   box-shadow: 0 0 $drawer-shadow-size rgba(0, 0, 0, .6);
+  overflow: hidden;
   z-index: 2000;
 
   &--left {
@@ -33,28 +34,56 @@ $drawer-duration: 260ms;
 
   &__scroll-container {
     overflow: hidden;
+
+    [class*="iScrollVerticalScrollbar"] {
+      @include absolute(0, 0, 0, auto, 100);
+      width: 4px;
+    }
+
+    [class*="iScrollIndicator"] {
+      position: absolute;
+      width: 100%;
+      background: rgba(#000, .6);
+    }
   }
 
   &__container {
-    // TODO
+    position: relative;
   }
 
   .list-item {
     & + .list-item {
       border-top-color: $gray-light;
     }
-  }
 
-  .list-item__button {
-    background-color: $gray-dark;
-    color: $gray-lightest;
+    &__icon {
+      color: rgba(#fff, .5);
+    }
 
-    &:hover {
-      background-color: darken($gray-dark, 20%);
+    &__control {
+      background-color: $brand-primary;
+
+      .text-field__control {
+        color: #fff;
+      }
+    }
+
+    &__button {
+      background-color: $gray-dark;
+      color: $gray-lightest;
+
+      &:hover {
+        background-color: darken($gray-dark, 20%);
+      }
+
+      &__ripple {
+        background-color: rgba(#fff, .2);
+      }
     }
   }
 
-  .list-item__button__ripple {
-    background-color: rgba(#fff, .2);
+  &__footer {
+    @include absolute(auto, 0, 0, 0, 10);
+    box-shadow: 0 0 6px rgba(0, 0, 0, .4);
   }
 }

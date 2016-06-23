@@ -35,11 +35,11 @@
     }
 
     &--edit {
-      left: 8px;
+      left: 12px;
     }
 
     &--trash {
-      right: 8px;
+      right: 12px;
     }
   }
 
@@ -50,7 +50,7 @@
   }
 
   &__control {
-    padding: 0 34px;
+    padding: 0 40px;
     background: darken(#fff, 12%);
 
     &::after {
@@ -95,8 +95,8 @@
       text-align: left;
 
       .list-item--editable & {
-        padding-right: 34px;
-        padding-left: 34px;
+        padding-right: 40px;
+        padding-left: 40px;
       }
     }
   }
