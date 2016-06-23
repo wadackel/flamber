@@ -7,25 +7,22 @@ const b = bem("spinner");
 export default class Spinner extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    show: PropTypes.bool,
     size: PropTypes.oneOf(["xl", "lg", "md", "sm", "xs"]),
     customSize: PropTypes.number
   };
 
   static defaultProps = {
-    show: false,
     size: "md"
   };
 
   render() {
     const {
       className,
-      show,
       size,
       customSize
     } = this.props;
 
-    const modifier = { show };
+    const modifier = {};
     const iconStyle = {};
 
     if (customSize) {

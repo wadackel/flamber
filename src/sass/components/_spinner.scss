@@ -59,15 +59,7 @@ $spinner-sizes: (
 
 
 .spinner {
-  @include transition(all);
   display: inline-block;
-  opacity: 0;
-  visibility: hidden;
-
-  &--show {
-    opacity: 1;
-    visibility: visible;
-  }
 
   &__icon {
     position: relative;
