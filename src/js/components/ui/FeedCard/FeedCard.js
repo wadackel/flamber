@@ -52,6 +52,7 @@ export default class FeedCard extends React.Component {
 
     // TODO
     const overlay = null;
+    const parsedURL = {};
 
     return (
       <Card
