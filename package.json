@@ -74,6 +74,7 @@
     "forever": "^0.15.1",
     "google-auth-library": "^0.9.8",
     "googleapis": "^7.1.0",
+    "imagesloaded": "^4.1.0",
     "inline-style-prefixer": "^1.0.4",
     "iscroll": "^5.2.0",
     "isomorphic-fetch": "^2.2.1",
