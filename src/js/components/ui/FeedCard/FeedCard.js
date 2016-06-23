@@ -6,7 +6,6 @@ import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Card,
-  CardAction,
   CardBody,
   CardMedia,
   CardText,

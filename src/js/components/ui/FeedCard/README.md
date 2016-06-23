@@ -14,7 +14,7 @@ class FeedCardExample extends React.Component {
         site="https://blog.wadackel.me/"
         favicon="/images/sample-favicon.ico"
         title="Dripup Creative Design Pallete"
-        image="/images/card-sample.png"
+        image="/images/feed-card-sample1.png"
         imageWidth={540}
         imageHeight={798}
       />
