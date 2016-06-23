@@ -1,0 +1,60 @@
+$drawer-width: 220px;
+$drawer-shadow-size: 8px;
+$drawer-duration: 260ms;
+
+
+.drawer {
+  @include transition(all, $drawer-duration);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: $drawer-width;
+  background: $gray-dark;
+  box-shadow: 0 0 $drawer-shadow-size rgba(0, 0, 0, .6);
+  z-index: 2000;
+
+  &--left {
+    left: -$drawer-shadow-size;
+    transform: translateX(-$drawer-width);
+
+    &.drawer--open {
+      transform: translateX(0);
+    }
+  }
+
+  &--right {
+    right: -$drawer-shadow-size;
+    transform: translateY(-$drawer-width);
+
+    &.drawer--open {
+      transform: translateY(0);
+    }
+  }
+
+  &__scroll-container {
+    overflow: hidden;
+  }
+
+  &__container {
+    // TODO
+  }
+
+  .list-item {
+    & + .list-item {
+      border-top-color: $gray-light;
+    }
+  }
+
+  .list-item__button {
+    background-color: $gray-dark;
+    color: $gray-lightest;
+
+    &:hover {
+      background-color: darken($gray-dark, 20%);
+    }
+  }
+
+  .list-item__button__ripple {
+    background-color: rgba(#fff, .2);
+  }
+}
