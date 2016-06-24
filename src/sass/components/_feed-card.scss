@@ -1,3 +1,42 @@
 .feed-card {
-  // TODO
+
+  &__body {
+    padding-right: 20px;
+  }
+
+  &__title,
+  &__text {
+    text-overflow: clip;
+    white-space: normal;
+    overflow: visible;
+  }
+
+  &__favicon {
+    max-width: 16px;
+    height: auto;
+    margin: 0 5px 0 0;
+    vertical-align: middle;
+  }
+
+  &__overlay {
+    @include size(100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__actions {
+
+    .flat-button {
+      display: block;
+      width: 100px;
+      margin: 10px auto;
+      color: #fff;
+
+      &__body {
+        padding-right: 0;
+        padding-left: 0;
+      }
+    }
+  }
 }

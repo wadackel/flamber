@@ -1,4 +1,5 @@
 /* eslint-disable */
+import assign from "object-assign";
 import urlParse from "url-parse";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
@@ -49,9 +50,14 @@ export default class FeedCard extends React.Component {
       imageHeight
     } = this.props;
 
-    // TODO
-    const overlay = null;
-    const parsedURL = {};
+    const parsedURL = urlParse(site, true);
+
+    const overlay = <div className={b("overlay")}>
+      <div className={b("actions")}>
+        <FlatButton className={b("visit")} onClick={this.handleDetailClick}>Visit</FlatButton>
+        <FlatButton className={b("add")} onClick={this.handleDetailClick}>Add item</FlatButton>
+      </div>
+    </div>;
 
     return (
       <Card
@@ -61,13 +67,19 @@ export default class FeedCard extends React.Component {
       >
         <CardMedia
           className={b("media")}
+          style={{
+            paddingBottom: `${(imageHeight / imageWidth) * 100}%`
+          }}
           image={image}
           overlay={overlay}
         />
         <CardBody className={b("body")}>
           <CardTitle className={b("title")}>{title}</CardTitle>
           <CardText className={b("text")}>
-            <a href={url} target="_blank">{parsedURL.host}</a>
+            <a href={url} target="_blank">
+              <img className={b("favicon")} src={favicon} alt={parsedURL.host} />
+              {parsedURL.host}
+            </a>
           </CardText>
         </CardBody>
       </Card>
