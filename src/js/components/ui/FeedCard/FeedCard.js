@@ -1,5 +1,3 @@
-/* eslint-disable */
-import assign from "object-assign";
 import urlParse from "url-parse";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
@@ -9,10 +7,9 @@ import {
   Card,
   CardBody,
   CardMedia,
+  CardOverlay,
   CardText,
   CardTitle,
-  Checkbox,
-  ColorBar,
   FlatButton
 } from "../";
 
@@ -37,6 +34,18 @@ export default class FeedCard extends React.Component {
     onAddItem: () => {}
   };
 
+  constructor(props) {
+    super(props);
+
+    bindHandlers([
+      "handleAddItem"
+    ], this);
+  }
+
+  handleAddItem() {
+    // TODO
+  }
+
   render() {
     const {
       className,
@@ -52,13 +61,6 @@ export default class FeedCard extends React.Component {
 
     const parsedURL = urlParse(site, true);
 
-    const overlay = <div className={b("overlay")}>
-      <div className={b("actions")}>
-        <FlatButton className={b("visit")} onClick={this.handleDetailClick}>Visit</FlatButton>
-        <FlatButton className={b("add")} onClick={this.handleDetailClick}>Add item</FlatButton>
-      </div>
-    </div>;
-
     return (
       <Card
         className={mergeClassNames(b(), className)}
@@ -71,7 +73,12 @@ export default class FeedCard extends React.Component {
             paddingBottom: `${(imageHeight / imageWidth) * 100}%`
           }}
           image={image}
-          overlay={overlay}
+          overlay={<CardOverlay
+            actions={[
+              <FlatButton className={b("visit")} onClick={this.handleDetailClick}>Visit</FlatButton>,
+              <FlatButton className={b("add")} onClick={this.handleAddItem}>Add item</FlatButton>
+            ]}
+          />}
         />
         <CardBody className={b("body")}>
           <CardTitle className={b("title")}>{title}</CardTitle>

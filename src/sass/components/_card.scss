@@ -101,7 +101,10 @@ $card-duration: 200ms;
   }
 
   &__action {
+    display: block;
     width: 120px;
+    margin-right: auto;
+    margin-left: auto;
     color: #fff !important;
     font-size: inherit;
 
