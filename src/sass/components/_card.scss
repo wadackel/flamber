@@ -19,20 +19,6 @@ $card-duration: 200ms;
 
   &__overlay {
     @include absolute(0, 0, 0, 0, 2);
-    @include transition(all, $card-duration);
-    background: rgba(0, 0, 0, .65);
-    color: #fff;
-    font-size: 1.125rem;
-    letter-spacing: .05em;
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-    backface-visibility: hidden;
-
-    .card:hover & {
-      opacity: 1;
-      visibility: visible;
-    }
   }
 
   &__item {
@@ -45,6 +31,87 @@ $card-duration: 200ms;
 
     .card:hover & {
       filter: blur(1px);
+    }
+  }
+}
+
+
+.card-overlay {
+  @include absolute(0, 0, 0, 0, 1);
+  @include transition(all, $card-duration);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, .75);
+  color: #fff;
+  font-size: 1.125rem;
+  letter-spacing: .05em;
+  text-align: center;
+  opacity: 0;
+  backface-visibility: hidden;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &__inner {
+    position: relative;
+  }
+
+  &__select {
+    @include absolute(10px, auto, auto, 10px);
+
+    .checkbox__checkbox {
+      border-color: #fff;
+    }
+  }
+
+  &__more,
+  &__more-actions {
+    @include transition(all, $card-duration);
+    @include absolute(5px, 5px, auto, auto);
+  }
+
+  &__more {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+
+    &--show {
+      transform: translateY(-15px);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1;
+    }
+  }
+
+  &__more-actions {
+    transform: translateY(-15px);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+
+    &--show {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+  }
+
+  &__action {
+    width: 120px;
+    color: #fff !important;
+    font-size: inherit;
+
+    & + & {
+      margin-top: 10px;
+    }
+
+    .flat-button__body {
+      padding-right: 0;
+      padding-left: 0;
     }
   }
 }
