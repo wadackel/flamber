@@ -8,15 +8,14 @@ import {
   CardAction,
   CardBody,
   CardMedia,
+  CardOverlay,
   CardText,
   CardTitle,
-  Checkbox,
   ColorBar,
   FlatButton,
   IconButton
 } from "../";
 import {
-  MoreVertIcon,
   StarIcon,
   TrashIcon
 } from "../../svg-icons";
@@ -59,7 +58,7 @@ export default class ItemCard extends React.Component {
 
     bindHandlers([
       "handleMouseLeave",
-      "handleCheck",
+      "handleSelect",
       "handleFavoriteClick",
       "handleDetailClick",
       "handleMoreClick",
@@ -80,7 +79,7 @@ export default class ItemCard extends React.Component {
     // TODO
   }
 
-  handleCheck(value, checked) {
+  handleSelect(value, checked) {
     this.props.onSelect(checked);
   }
 
@@ -109,31 +108,6 @@ export default class ItemCard extends React.Component {
 
     const { showMore } = this.state;
 
-    const moreActionClassName = b("more-action");
-    const overlay = <div className={b("overlay")}>
-      <Checkbox
-        className={b("checkbox")}
-        checked={selected}
-        onCheck={this.handleCheck}
-      />
-      <IconButton
-        className={b("more")}
-        icon={<MoreVertIcon />}
-        onClick={this.handleMoreClick}
-      />
-      <div
-        className={b("more-actions")}
-        onMouseLeave={this.handleMoreActionsMouseLeave}
-      >
-        <IconButton
-          className={moreActionClassName}
-          icon={<TrashIcon />}
-          onClick={this.handleDeleteClick}
-        />
-      </div>
-      <FlatButton className={b("detail")} onClick={this.handleDetailClick}>Detail</FlatButton>
-    </div>;
-
     const parsedURL = urlParse(url, true);
 
     const modifier = {
@@ -150,7 +124,13 @@ export default class ItemCard extends React.Component {
         <CardMedia
           className={b("media")}
           image={image}
-          overlay={overlay}
+          overlay={<CardOverlay
+            selectable={true}
+            selected={selected}
+            moreActions={<IconButton icon={<TrashIcon />} onClick={this.handleDeleteClick} />}
+            actions={<FlatButton onClick={this.handleDetailClick}>Detail</FlatButton>}
+            onSelect={this.handleSelect}
+          />}
         />
         <CardBody className={b("body")}>
           <CardTitle className={b("title")}>{title}</CardTitle>
