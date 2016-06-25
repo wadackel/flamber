@@ -1,15 +1,5 @@
 .feed-card {
-
-  &__body {
-    padding-right: 20px;
-  }
-
-  &__title,
-  &__text {
-    text-overflow: clip;
-    white-space: normal;
-    overflow: visible;
-  }
+  @include card-extend-all;
 
   &__favicon {
     max-width: 16px;

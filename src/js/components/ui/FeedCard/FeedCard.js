@@ -9,7 +9,9 @@ import {
   CardMedia,
   CardOverlay,
   CardText,
-  CardTitle,
+  CardTitle
+} from "../internal/Card/";
+import {
   FlatButton
 } from "../";
 
@@ -63,26 +65,27 @@ export default class FeedCard extends React.Component {
 
     return (
       <Card
-        className={mergeClassNames(b(), className)}
+        baseClassName={mergeClassNames(b(), className)}
         style={style}
         onMouseLeave={this.handleMouseLeave}
       >
         <CardMedia
-          className={b("media")}
+          baseClassName={b("media")}
           style={{
             paddingBottom: `${(imageHeight / imageWidth) * 100}%`
           }}
           image={image}
           overlay={<CardOverlay
+            baseClassName={b("overlay")}
             actions={[
-              <FlatButton className={b("visit")} onClick={this.handleDetailClick}>Visit</FlatButton>,
-              <FlatButton className={b("add")} onClick={this.handleAddItem}>Add item</FlatButton>
+              <FlatButton onClick={this.handleDetailClick}>Visit</FlatButton>,
+              <FlatButton onClick={this.handleAddItem}>Add item</FlatButton>
             ]}
           />}
         />
-        <CardBody className={b("body")}>
-          <CardTitle className={b("title")}>{title}</CardTitle>
-          <CardText className={b("text")}>
+        <CardBody baseClassName={b("body")}>
+          <CardTitle baseClassName={b("title")}>{title}</CardTitle>
+          <CardText baseClassName={b("text")}>
             <a href={url} target="_blank">
               <img className={b("favicon")} src={favicon} alt={parsedURL.host} />
               {parsedURL.host}

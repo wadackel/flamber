@@ -10,7 +10,9 @@ import {
   CardMedia,
   CardOverlay,
   CardText,
-  CardTitle,
+  CardTitle
+} from "../internal/Card/";
+import {
   ColorBar,
   FlatButton,
   IconButton
@@ -52,23 +54,12 @@ export default class ItemCard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showMore: false
-    };
-
     bindHandlers([
-      "handleMouseLeave",
       "handleSelect",
       "handleFavoriteClick",
       "handleDetailClick",
-      "handleMoreClick",
-      "handleMoreActionsMouseLeave",
       "handleDeleteClick"
     ], this);
-  }
-
-  handleMouseLeave() {
-    this.setState({ showMore: false });
   }
 
   handleFavoriteClick() {
@@ -81,14 +72,6 @@ export default class ItemCard extends React.Component {
 
   handleSelect(value, checked) {
     this.props.onSelect(checked);
-  }
-
-  handleMoreClick() {
-    this.setState({ showMore: true });
-  }
-
-  handleMoreActionsMouseLeave() {
-    this.setState({ showMore: false });
   }
 
   handleDeleteClick() {
@@ -106,25 +89,20 @@ export default class ItemCard extends React.Component {
       colors
     } = this.props;
 
-    const { showMore } = this.state;
-
     const parsedURL = urlParse(url, true);
 
-    const modifier = {
-      selected,
-      "show-more": showMore
-    };
+    const modifier = { selected };
 
     return (
       <Card
-        className={mergeClassNames(b(modifier), className)}
+        baseClassName={mergeClassNames(b(modifier), className)}
         style={style}
-        onMouseLeave={this.handleMouseLeave}
       >
         <CardMedia
-          className={b("media")}
+          baseClassName={b("media")}
           image={image}
           overlay={<CardOverlay
+            baseClassName={b("overlay")}
             selectable={true}
             selected={selected}
             moreActions={<IconButton icon={<TrashIcon />} onClick={this.handleDeleteClick} />}
@@ -132,12 +110,12 @@ export default class ItemCard extends React.Component {
             onSelect={this.handleSelect}
           />}
         />
-        <CardBody className={b("body")}>
-          <CardTitle className={b("title")}>{title}</CardTitle>
-          <CardText className={b("text")}>
+        <CardBody baseClassName={b("body")}>
+          <CardTitle baseClassName={b("title")}>{title}</CardTitle>
+          <CardText baseClassName={b("text")}>
             <a href={url} target="_blank">{parsedURL.host}</a>
           </CardText>
-          <CardAction className={b("action")}>
+          <CardAction baseClassName={b("action")}>
             <IconButton icon={<StarIcon />} onClick={this.handleCilck} />
           </CardAction>
         </CardBody>

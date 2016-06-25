@@ -1,7 +1,8 @@
 .item-card {
-  overflow: hidden;
+  @include card-extend-all;
 
   &__body {
+    padding-right: 60px;
     padding-bottom: 20px;
   }
 
