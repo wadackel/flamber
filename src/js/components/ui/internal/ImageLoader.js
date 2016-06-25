@@ -1,25 +1,28 @@
-import imagesLoaded from "imagesloaded";
 import React, { PropTypes } from "react";
+import ReactDOM from "react-dom";
 import bindHandlers from "../../../helpers/bind-handlers";
 
 const Status = {
-  LOADING: "LOADING",
-  LOADED: "LOADED",
-  FAILED: "FAILED"
+  LOADING: "loading",
+  LOADED: "loaded",
+  FAILED: "failed"
 };
 
 export default class ImageLoader extends React.Component {
   static propTypes = {
+    wrapper: PropTypes.func,
     children: PropTypes.node,
-    tag: PropTypes.string,
+    className: PropTypes.string,
+    src: PropTypes.string,
     background: PropTypes.bool,
-    preloader: PropTypes.node,
+    preloader: PropTypes.element,
     onError: PropTypes.func,
     onLoad: PropTypes.func
   };
 
   static defaultProps = {
-    tag: "span",
+    wrapper: ReactDOM.span,
+    background: false,
     onError: () => {},
     onLoad: () => {}
   };
@@ -27,62 +30,114 @@ export default class ImageLoader extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { status: Status.LOADING };
+    this.state = { status: props.src ? Status.LOADING : Status.PENDING };
 
     bindHandlers([
       "handleLoaded",
-      "handleFail"
+      "handleError"
     ], this);
   }
 
   componentDidMount() {
-    this.createImgLoad();
+    if (this.state.status === Status.LOADING) {
+      this.createLoader();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.src !== nextProps.src) {
+      this.setState({
+        status: nextProps.src ? Status.LOADING : Status.PENDING
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.status === Status.LOADING && !this.img) {
+      this.createLoader();
+    }
   }
 
   componentWillUnmount() {
-    this.destroyImgLoad();
+    this.destroyLoader();
   }
 
-  handleLoaded() {
-    this.destroyImgLoad();
+  handleLoaded(e) {
+    this.destroyLoader();
     this.setState({ status: Status.LOADED });
-    this.props.onLoad();
+    this.props.onLoad(e);
   }
 
-  handleFail() {
-    this.destroyImgLoad();
+  handleError(e) {
+    this.destroyLoader();
     this.setState({ status: Status.FAILED });
-    this.props.onError();
+    this.props.onError(e);
   }
 
-  createImgLoad() {
-    const { background } = this.props;
+  createLoader() {
+    this.destroyLoader();
 
-    this.destroyImgLoad();
-    this.imgLoad = imagesLoaded(this.refs.imageLoader, { background });
-    this.imgLoad.on("done", this.handleLoaded);
-    this.imgLoad.on("fail", this.handleFail);
+    this.img = new Image();
+    this.img.onload = this.handleLoaded;
+    this.img.onerror = this.handleError;
+    this.img.src = this.props.src;
   }
 
-  destroyImgLoad() {
-    if (this.imgLoad) {
-      this.imgLoad.off("done", this.handleLoaded);
-      this.imgLoad.off("fail", this.handleFail);
-      this.imgLoad = null;
+  destroyLoader() {
+    if (this.img) {
+      this.img.onload = null;
+      this.img.onerror = null;
+      this.img = null;
     }
+  }
+
+  getClassName() {
+    const { className } = this.props;
+    const { status } = this.state;
+
+    return className && className.trim().split(" ").map(str =>
+      `${str} ${str}--${status}`
+    ).join(" ");
   }
 
   render() {
     const {
+      wrapper,
       children,
-      tag,
-      preloader
+      src,
+      preloader,
+      background
     } = this.props;
 
     const { status } = this.state;
 
-    return React.createElement(tag, {
-      ref: "imageLoader"
-    }, status === "LOADED" ? children : preloader);
+    const props = {
+      className: this.getClassName()
+    };
+
+    switch (status) {
+      case Status.LOADED:
+        if (background) {
+          return <span
+            style={{ backgroundImage: `url(${src})` }}
+            {...props}
+          />;
+
+        } else {
+          return <img
+            src={src}
+            {...props}
+          />;
+        }
+
+      case Status.FAILED:
+        return wrapper({
+          children,
+          ...props
+        });
+
+      default:
+        return preloader;
+    }
   }
 }
