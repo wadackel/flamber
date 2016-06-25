@@ -96,7 +96,7 @@ module.exports = {
     "consistent-this": ["error", "_this"],
     "eol-last": "error",
     "func-style": ["error", "declaration"],
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "key-spacing": "error",
     "keyword-spacing": "error",
     "linebreak-style": ["error", "unix"],
