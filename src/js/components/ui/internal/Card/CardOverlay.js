@@ -1,17 +1,15 @@
 import assign from "object-assign";
 import React, { PropTypes } from "react";
-import bem from "../../../helpers/bem";
-import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
-import { Checkbox, IconButton } from "../";
-import { MoreVertIcon } from "../../svg-icons";
-
-const b = bem("card-overlay");
+import bem from "../../../../helpers/bem";
+import bindHandlers from "../../../../helpers/bind-handlers";
+import { Checkbox, IconButton } from "../../";
+import { MoreVertIcon } from "../../../svg-icons";
 
 export default class CardOverlay extends React.Component {
   static propTypes = {
-    className: PropTypes.string,
+    baseClassName: PropTypes.string,
     style: PropTypes.object,
+    show: PropTypes.bool,
     actions: PropTypes.node,
     moreActions: PropTypes.node,
     selectable: PropTypes.bool,
@@ -21,6 +19,7 @@ export default class CardOverlay extends React.Component {
 
   static defaultProps = {
     style: {},
+    show: false,
     selectable: false,
     selected: false,
     onSelect: () => {}
@@ -49,8 +48,9 @@ export default class CardOverlay extends React.Component {
 
   render() {
     const {
-      className,
+      baseClassName,
       style,
+      show,
       actions,
       moreActions,
       selectable,
@@ -58,9 +58,12 @@ export default class CardOverlay extends React.Component {
       onSelect
     } = this.props;
 
+    const b = bem(baseClassName.trim());
+
     const { moreActionsShow } = this.state;
 
     const modifier = {
+      show,
       selectable,
       selected
     };
@@ -103,7 +106,7 @@ export default class CardOverlay extends React.Component {
     </div>;
 
     return (
-      <div className={mergeClassNames(b(modifier), className)} style={style}>
+      <div className={b(modifier)} style={style}>
         {selectElement}
         {moreVertElement}
         {moreActionElements}
