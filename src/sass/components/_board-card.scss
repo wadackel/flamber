@@ -1,0 +1,60 @@
+.board-card {
+  @include card-extend-all;
+
+  &::before,
+  &::after {
+    @include absolute(0, 0, 0, 0, 0);
+    @include size(100%);
+    @include transition(all, $card-duration);
+    display: block;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(#000, .33);
+    content: "";
+  }
+
+  &::before {
+    transform: rotate(-3deg) translate(-2px, -3px);
+  }
+
+  &::after {
+    transform: rotate(3deg) translate(0, 2px);
+  }
+
+  &:hover {
+    &::before {
+      transform: rotate(-1deg) translate(-1px, -2px);
+    }
+
+    &::after {
+      transform: rotate(1deg) translate(0, 0);
+    }
+  }
+
+  &__label {
+    @include absolute(3px, auto, auto, 3px, 5);
+    @include transition(all, $card-duration);
+    opacity: 1;
+
+    .board-card__media--overlay-show & {
+      opacity: 0;
+    }
+  }
+
+  &__body {
+    padding-right: 20px;
+    border-radius: 0 0 $card-border-radius $card-border-radius;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(#000, .33);
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  &__text {
+    color: $gray-lighter;
+  }
+}
