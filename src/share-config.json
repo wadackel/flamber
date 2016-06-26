@@ -2,5 +2,5 @@
   "dialog-enter-duration": 250,
   "dialog-leave-duration": 300,
   "popover-duration": 400,
-  "ripple-duration": 1000
+  "ripple-duration": 680
 }
