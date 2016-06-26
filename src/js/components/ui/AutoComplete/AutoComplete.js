@@ -91,6 +91,14 @@ export default class AutoComplete extends React.Component {
     ], this);
   }
 
+  componentDidMount() {
+    this.setMenuWidth();
+  }
+
+  componentDidUpdate() {
+    this.setMenuWidth();
+  }
+
   componentWillUnmount() {
     clearTimeout(this.timerMenuItemClickClose);
   }
@@ -113,6 +121,7 @@ export default class AutoComplete extends React.Component {
       open: true,
       triggerElement: ReactDOM.findDOMNode(this.refs.searchTextField)
     }, () => {
+      this.setMenuWidth();
       this.props.onUpdateInput(value, this.props.dataSource);
     });
   }
@@ -183,12 +192,22 @@ export default class AutoComplete extends React.Component {
 
   handleEscKeyDown() {
     this.close();
+    this.focus();
   }
 
   handleRequestClose() {
-    if (!this.state.focusTextField) {
-      this.close();
-    }
+    this.close();
+  }
+
+  setMenuWidth() {
+    if (!this.state.open) return;
+
+    const searchTextField = ReactDOM.findDOMNode(this.refs.searchTextField);
+    const menu = ReactDOM.findDOMNode(this.refs.menu);
+
+    if (!menu) return;
+
+    menu.style.width = `${searchTextField.offsetWidth}px`;
   }
 
   close() {
