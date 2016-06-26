@@ -5,7 +5,7 @@ export default function CardText({
   children,
   baseClassName
 }) {
-  const b = bem(baseClassName.trim());
+  const b = bem(`${baseClassName.trim()}__text`);
 
   return <div className={b()}>
     {children}

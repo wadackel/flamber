@@ -5,7 +5,7 @@ export default function CardAction({
   children,
   baseClassName
 }) {
-  const b = bem(baseClassName.trim());
+  const b = bem(`${baseClassName.trim()}__actions`);
 
   return <div className={b()}>
     {children}

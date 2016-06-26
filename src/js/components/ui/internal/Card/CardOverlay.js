@@ -58,7 +58,7 @@ export default class CardOverlay extends React.Component {
       onSelect
     } = this.props;
 
-    const b = bem(baseClassName.trim());
+    const b = bem(`${baseClassName.trim()}__overlay`);
 
     const { moreActionsShow } = this.state;
 

@@ -5,7 +5,7 @@ export default function CardTitle({
   children,
   baseClassName
 }) {
-  const b = bem(baseClassName.trim());
+  const b = bem(`${baseClassName.trim()}__title`);
 
   return <div className={b()}>
     {children}

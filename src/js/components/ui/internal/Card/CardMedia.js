@@ -43,7 +43,7 @@ export default class CardMedia extends React.Component {
 
     const { overlayShow } = this.state;
 
-    const b = bem(baseClassName.trim());
+    const b = bem(`${baseClassName.trim()}__media`);
 
     const modifier = {
       "overlay-show": overlayShow

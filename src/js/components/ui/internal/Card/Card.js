@@ -1,9 +1,11 @@
 import React, { PropTypes } from "react";
 import bem from "../../../../helpers/bem";
+import mergeClassNames from "../../../../helpers/merge-class-names";
 
 export default function Card({
   children,
   baseClassName,
+  className,
   style,
   onClick,
   onMouseEnter,
@@ -12,7 +14,7 @@ export default function Card({
   const b = bem(baseClassName.trim());
 
   return <div
-    className={b()}
+    className={mergeClassNames(b(), className)}
     style={style}
     onClick={onClick}
     onMouseEnter={onMouseEnter}
@@ -25,6 +27,7 @@ export default function Card({
 Card.propTypes = {
   children: PropTypes.node,
   baseClassName: PropTypes.string,
+  className: PropTypes.string,
   style: PropTypes.object,
   selected: PropTypes.bool,
   onClick: PropTypes.func,
