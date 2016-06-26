@@ -1,3 +1,4 @@
+export AutoComplete from "./AutoComplete/AutoComplete";
 export Avatar from "./Avatar/Avatar";
 export BoardCard from "./BoardCard/BoardCard";
 export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
