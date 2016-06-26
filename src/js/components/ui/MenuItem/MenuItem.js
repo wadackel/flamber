@@ -13,12 +13,28 @@ export default class MenuItem extends React.Component {
     index: PropTypes.number,
     value: PropTypes.any,
     selected: PropTypes.bool,
+    focused: PropTypes.bool,
     onClick: PropTypes.func
   };
 
   static defaultProps = {
     selected: false,
+    focused: false,
     onClick: () => {}
+  }
+
+  componentDidMount() {
+    this.applyFocus();
+  }
+
+  componentDidUpdate() {
+    this.applyFocus();
+  }
+
+  applyFocus() {
+    if (this.props.focused) {
+      this.refs.listItem.applyFocus();
+    }
   }
 
   render() {
@@ -29,11 +45,13 @@ export default class MenuItem extends React.Component {
       index,
       value,
       selected,
+      focused,
       onClick
     } = this.props;
 
     return <ListItem
-      className={mergeClassNames(b({ selected }), className)}
+      ref="listItem"
+      className={mergeClassNames(b({ selected, focused }), className)}
       style={style}
       text={text}
       index={index}

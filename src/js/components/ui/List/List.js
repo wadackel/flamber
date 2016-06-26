@@ -7,13 +7,30 @@ const b = bem("list");
 export default class List extends React.Component {
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
+    onMouseDown: PropTypes.func,
+    onKeyDown: PropTypes.func
   };
+
+  static defaultProps = {
+    onMouseDown: () => {},
+    onKeyDown: () => {}
+  };
+
+  focus() {
+    this.refs.list.focus();
+  }
+
+  blur() {
+    this.refs.list.blur();
+  }
 
   render() {
     const {
       children,
-      className
+      className,
+      onMouseDown,
+      onKeyDown
     } = this.props;
 
     const cloneChildren = children.map((item, index) =>
@@ -24,7 +41,13 @@ export default class List extends React.Component {
     );
 
     return (
-      <div className={mergeClassNames(b(), className)}>
+      <div
+        ref="list"
+        className={mergeClassNames(b(), className)}
+        onMouseDown={onMouseDown}
+        onKeyDown={onKeyDown}
+        tabIndex={-1}
+      >
         {cloneChildren}
       </div>
     );

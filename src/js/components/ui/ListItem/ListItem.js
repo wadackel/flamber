@@ -99,6 +99,14 @@ export default class ListItem extends React.Component {
     this.props.onRequestDelete(this, this.props.index);
   }
 
+  applyFocus() {
+    const { button } = this.refs;
+
+    if (button) {
+      button.focus();
+    }
+  }
+
   render() {
     const {
       className,
@@ -131,6 +139,7 @@ export default class ListItem extends React.Component {
               onBlur={this.handleBlur}
             />
           : <Button
+              ref="button"
               baseClassName="list-item__button"
               label={text}
               onClick={this.handleClick}

@@ -18,15 +18,23 @@ export default class Button extends React.Component {
     icon: PropTypes.element,
     iconRight: PropTypes.element,
     onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
     onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func
+    onMouseLeave: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onKeyUp: PropTypes.func,
+    onKeyPress: PropTypes.func
   };
 
   static defaultProps = {
     type: "default",
     onClick: () => {},
+    onMouseDown: () => {},
     onMouseEnter: () => {},
-    onMouseLeave: () => {}
+    onMouseLeave: () => {},
+    onKeyDown: () => {},
+    onKeyUp: () => {},
+    onKeyPress: () => {}
   };
 
   constructor(props) {
@@ -43,8 +51,6 @@ export default class Button extends React.Component {
   }
 
   handleMouseDown(e) {
-    e.stopPropagation();
-
     const { top, left, width, height } = this.refs.element.getBoundingClientRect();
     const mouseX = e.pageX - (left + window.pageXOffset);
     const mouseY = e.pageY - (top + window.pageYOffset);
@@ -56,6 +62,8 @@ export default class Button extends React.Component {
       e.pageX - (left + window.pageXOffset),
       (center + (center * (touch / center))) * 2
     );
+
+    this.props.onMouseDown(e);
   }
 
   handleRippleHide() {
@@ -94,6 +102,14 @@ export default class Button extends React.Component {
     return icon ? <span className={className}>{icon}</span> : null;
   }
 
+  focus() {
+    this.refs.element.focus();
+  }
+
+  blur() {
+    this.refs.element.blur();
+  }
+
   render() {
     const {
       children,
@@ -107,7 +123,10 @@ export default class Button extends React.Component {
       iconRight,
       onClick,
       onMouseEnter,
-      onMouseLeave
+      onMouseLeave,
+      onKeyDown,
+      onKeyUp,
+      onKeyPress
     } = this.props;
 
     const { ripples } = this.state;
@@ -123,12 +142,15 @@ export default class Button extends React.Component {
 
     return (
       <div
-        className={mergeClassNames(b(modifier), className)}
         ref="element"
+        className={mergeClassNames(b(modifier), className)}
         onMouseDown={this.handleMouseDown}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
+        onKeyPress={onKeyPress}
       >
         <div className={b("ripple-container")}>{ripples}</div>
         {bodyElement}
