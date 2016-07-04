@@ -28,6 +28,5 @@ export RadioGroup from "./RadioGroup/RadioGroup";
 export RaisedButton from "./RaisedButton/RaisedButton";
 export Slider from "./Slider/Slider";
 export Snackbar from "./Snackbar/Snackbar";
-export Spinner from "./Spinner/Spinner";
 export TextField from "./TextField/TextField";
 export UserDropDown from "./UserDropDown/UserDropDown";

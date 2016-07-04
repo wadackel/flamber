@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
+import MDSpinner from "react-md-spinner";
 import bem from "../../../../helpers/bem";
 import bindHandlers from "../../../../helpers/bind-handlers";
-import { Spinner } from "../../";
 import ImageLoader from "../ImageLoader";
 
 export default class CardMedia extends React.Component {
@@ -61,7 +61,7 @@ export default class CardMedia extends React.Component {
           className={b("item", modifier)}
           src={image}
           background={true}
-          preloader={<Spinner />}
+          preloader={<MDSpinner />}
         />
         {children}
       </div>
