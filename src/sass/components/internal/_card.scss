@@ -169,6 +169,7 @@ $card-border-radius: 3px;
 @mixin card-extend-all() {
   @extend %card-root;
 
+  // Grid
   &__media {
     @extend %card-media;
 
@@ -239,5 +240,53 @@ $card-border-radius: 3px;
 
   &__action {
     @extend %card-action;
+  }
+
+
+  // List
+  &--list {
+    @extend %card-root;
+    display: table;
+    width: 100%;
+
+    &__col {
+      display: table-cell;
+      vertical-align: middle;
+
+      &--media {
+        width: 120px;
+      }
+
+      &--body {
+        padding: 0 20px;
+      }
+    }
+
+    &__media {
+      position: relative;
+      height: 80px;
+
+      &__item {
+        @extend %card-media-item;
+      }
+    }
+
+    &__label {
+      color: $gray-lightest;
+      font-size: .87rem;
+
+      svg {
+        @include size(.9em);
+        fill: currentColor;
+      }
+    }
+
+    &__title {
+      @extend %card-title;
+    }
+
+    &__text {
+      @extend %card-text;
+    }
   }
 }

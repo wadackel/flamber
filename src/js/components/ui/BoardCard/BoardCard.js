@@ -3,12 +3,14 @@ import assign from "object-assign";
 import urlParse from "url-parse";
 import moment from "moment";
 import React, { PropTypes } from "react";
+import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Card,
   CardBody,
+  CardCol,
   CardMedia,
   CardOverlay,
   CardText,
@@ -25,8 +27,6 @@ import {
   TrashIcon
 } from "../../svg-icons";
 
-const b = bem("board-card");
-
 export default class BoardCard extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -34,6 +34,7 @@ export default class BoardCard extends React.Component {
     selected: PropTypes.bool,
     title: PropTypes.string,
     image: PropTypes.string,
+    layout: PropTypes.oneOf([Layout.GRID, Layout.LIST]),
     itemCount: PropTypes.number,
     lastModified: PropTypes.instanceOf(Date),
     onSelect: PropTypes.func,
@@ -43,6 +44,7 @@ export default class BoardCard extends React.Component {
 
   static defaultProps = {
     style: {},
+    layout: Layout.GRID,
     selected: false,
     itemCount: 0,
     onSelect: () => {},
@@ -72,7 +74,7 @@ export default class BoardCard extends React.Component {
     // TODO
   }
 
-  render() {
+  renderList() {
     const {
       className,
       style,
@@ -83,11 +85,52 @@ export default class BoardCard extends React.Component {
       lastModified
     } = this.props;
 
-    const baseClassName = b();
+    const baseClassName = "board-card--list";
+    const b = bem(baseClassName);
 
     return (
       <Card
-        baseClassName={mergeClassNames(baseClassName, className)}
+        baseClassName={mergeClassNames(b({ selected }), className)}
+        style={style}
+      >
+        <CardCol baseClassName={baseClassName} className={b("col--media")}>
+          <CardMedia
+            baseClassName={baseClassName}
+            image={image}
+          />
+        </CardCol>
+        <CardCol baseClassName={baseClassName} className={b("col--body")}>
+          <CardBody baseClassName={baseClassName}>
+            <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
+            <CardText baseClassName={baseClassName}>
+              Last updated {moment(lastModified).format("YYYY.MM.DD")}
+            </CardText>
+          </CardBody>
+        </CardCol>
+        <CardCol baseClassName={baseClassName} className={b("col--meta")}>
+          <span className={b("label")}><FilesIcon /> {itemCount}</span>
+        </CardCol>
+      </Card>
+    );
+  }
+
+  renderGrid() {
+    const {
+      className,
+      style,
+      selected,
+      title,
+      image,
+      itemCount,
+      lastModified
+    } = this.props;
+
+    const baseClassName = "board-card";
+    const b = bem(baseClassName);
+
+    return (
+      <Card
+        baseClassName={mergeClassNames(b({ selected }), className)}
         style={style}
       >
         <CardMedia
@@ -112,5 +155,16 @@ export default class BoardCard extends React.Component {
         </CardBody>
       </Card>
     );
+  }
+
+  render() {
+    const { layout } = this.props;
+
+    switch (layout) {
+      case Layout.GRID:
+        return this.renderGrid();
+      case Layout.LIST:
+        return this.renderList();
+    }
   }
 }
