@@ -83,16 +83,18 @@ export default class BoardCard extends React.Component {
       lastModified
     } = this.props;
 
+    const baseClassName = b();
+
     return (
       <Card
-        baseClassName={mergeClassNames(b(), className)}
+        baseClassName={mergeClassNames(baseClassName, className)}
         style={style}
       >
         <CardMedia
-          baseClassName={b("media")}
+          baseClassName={baseClassName}
           image={image}
           overlay={<CardOverlay
-            baseClassName={b("overlay")}
+            baseClassName={baseClassName}
             selectable={true}
             selected={selected}
             moreActions={<IconButton icon={<TrashIcon />} onClick={this.handleDeleteClick} />}
@@ -102,9 +104,9 @@ export default class BoardCard extends React.Component {
         >
           <Label className={b("label")} icon={<FilesIcon />}>{itemCount}</Label>
         </CardMedia>
-        <CardBody baseClassName={b("body")}>
-          <CardTitle baseClassName={b("title")}>{title}</CardTitle>
-          <CardText baseClassName={b("text")}>
+        <CardBody baseClassName={baseClassName}>
+          <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
+          <CardText baseClassName={baseClassName}>
             Last updated {moment(lastModified).format("YYYY.MM.DD")}
           </CardText>
         </CardBody>
