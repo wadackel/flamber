@@ -20,6 +20,7 @@ import {
   Checkbox,
   ColorBar,
   Label,
+  IconMenu,
   FlatButton
 } from "../";
 import {
@@ -109,6 +110,8 @@ export default class BoardCard extends React.Component {
         </CardCol>
         <CardCol baseClassName={baseClassName} className={b("col--meta")}>
           <span className={b("label")}><FilesIcon /> {itemCount}</span>
+        </CardCol>
+        <CardCol baseClassName={baseClassName} className={b("col--more")}>
         </CardCol>
       </Card>
     );

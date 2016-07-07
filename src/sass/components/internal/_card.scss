@@ -70,41 +70,6 @@ $card-border-radius: 3px;
   }
 }
 
-%card-overlay-more {
-  @include transition(all, $card-duration);
-  @include absolute(5px, 5px, auto, auto);
-  transform: translateY(0);
-  opacity: 1;
-  visibility: visible;
-  z-index: 2;
-}
-
-%card-overlay-more-show {
-  transform: translateY(-15px);
-  opacity: 0;
-  visibility: hidden;
-  z-index: 1;
-}
-
-%card-overlay-more-actions {
-  @extend %card-overlay-more;
-  transform: translateY(-15px);
-  opacity: 0;
-  visibility: hidden;
-  z-index: 1;
-}
-
-%card-overlay-more-actions-show {
-  transform: translateY(0);
-  opacity: 1;
-  visibility: visible;
-  z-index: 2;
-}
-
-%card-overlay-more-action {
-  display: inline-block;
-}
-
 %card-overlay-action {
   display: block;
   width: 120px;
@@ -121,6 +86,49 @@ $card-border-radius: 3px;
     padding-right: 0;
     padding-left: 0;
   }
+}
+
+%card-overlay-more {
+  @include absolute(5px, 5px, auto, auto);
+}
+
+
+%card-more {
+  display: inline-block;
+}
+
+%card-more-trigger {
+  @include transition(all, $card-duration);
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+%card-more-trigger-show {
+  transform: translateY(-15px);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1;
+}
+
+%card-more-actions {
+  @extend %card-more;
+  transform: translateY(-15px);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1;
+}
+
+%card-more-actions-show {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+%card-more-action {
+  display: inline-block;
 }
 
 
@@ -197,32 +205,40 @@ $card-border-radius: 3px;
       @extend %card-overlay-inner;
     }
 
+    &__more {
+      @extend %card-overlay-more;
+    }
+
     &__select {
       @extend %card-overlay-select;
     }
 
-    &__more {
-      @extend %card-overlay-more;
+    &__action {
+      @extend %card-overlay-action;
+    }
+  }
+
+  &__more {
+    @extend %card-more;
+
+    &__actions {
+      @extend %card-more-actions;
 
       &--show {
-        @extend %card-overlay-more-show;
+        @extend %card-more-actions-show;
       }
-    }
-
-    &__more-actions {
-      @extend %card-overlay-more-actions;
-
-      &--show {
-        @extend %card-overlay-more-actions-show;
-      }
-    }
-
-    &__more-action {
-      @extend %card-overlay-more-action;
     }
 
     &__action {
-      @extend %card-overlay-action;
+      @extend %card-more-action;
+    }
+
+    &__trigger {
+      @extend %card-more-trigger;
+
+      &--show {
+        @extend %card-more-trigger-show;
+      }
     }
   }
 
@@ -251,14 +267,16 @@ $card-border-radius: 3px;
 
     &__col {
       display: table-cell;
+      padding: 0 10px;
       vertical-align: middle;
 
       &--media {
         width: 120px;
+        padding: 0;
       }
 
       &--body {
-        padding: 0 20px;
+        padding-left: 20px;
       }
     }
 

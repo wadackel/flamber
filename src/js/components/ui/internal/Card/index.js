@@ -3,6 +3,7 @@ export CardAction from "./CardAction";
 export CardBody from "./CardBody";
 export CardCol from "./CardCol";
 export CardMedia from "./CardMedia";
+export CardMore from "./CardMore";
 export CardOverlay from "./CardOverlay";
 export CardText from "./CardText";
 export CardTitle from "./CardTitle";
