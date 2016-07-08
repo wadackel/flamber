@@ -12,6 +12,7 @@ import {
   CardBody,
   CardCol,
   CardMedia,
+  CardMore,
   CardOverlay,
   CardText,
   CardTitle,
@@ -75,6 +76,12 @@ export default class BoardCard extends React.Component {
     // TODO
   }
 
+  renderMoreActions() {
+    return (
+      <IconButton icon={<TrashIcon />} onClick={this.handleDeleteClick} />
+    );
+  }
+
   renderList() {
     const {
       className,
@@ -112,6 +119,10 @@ export default class BoardCard extends React.Component {
           <span className={b("label")}><FilesIcon /> {itemCount}</span>
         </CardCol>
         <CardCol baseClassName={baseClassName} className={b("col--more")}>
+          <CardMore
+            baseClassName={baseClassName}
+            actions={this.renderMoreActions()}
+          />
         </CardCol>
       </Card>
     );
@@ -143,7 +154,7 @@ export default class BoardCard extends React.Component {
             baseClassName={baseClassName}
             selectable={true}
             selected={selected}
-            moreActions={<IconButton icon={<TrashIcon />} onClick={this.handleDeleteClick} />}
+            moreActions={this.renderMoreActions()}
             actions={<FlatButton onClick={this.handleEditClick}>Edit board</FlatButton>}
             onSelect={this.handleSelect}
           />}

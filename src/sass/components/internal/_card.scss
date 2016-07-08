@@ -43,6 +43,15 @@ $card-border-radius: 3px;
   filter: blur(1px);
 }
 
+%card-media-spinner {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+
 
 %card-overlay {
   @include absolute(0, 0, 0, 0, 1);
@@ -98,11 +107,11 @@ $card-border-radius: 3px;
 }
 
 %card-more-trigger {
+  @include absolute(0, 0, auto, auto, 2);
   @include transition(all, $card-duration);
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
-  z-index: 2;
 }
 
 %card-more-trigger-show {
@@ -114,6 +123,8 @@ $card-border-radius: 3px;
 
 %card-more-actions {
   @extend %card-more;
+  @include transition(all, $card-duration);
+  position: relative;
   transform: translateY(-15px);
   opacity: 0;
   visibility: hidden;
@@ -196,6 +207,10 @@ $card-border-radius: 3px;
         @extend %card-media-item-active;
       }
     }
+
+    &__spinner {
+      @extend %card-media-spinner;
+    }
   }
 
   &__overlay {
@@ -264,6 +279,7 @@ $card-border-radius: 3px;
     @extend %card-root;
     display: table;
     width: 100%;
+    color: darken($gray-lightest, 15%);
 
     &__col {
       display: table-cell;
@@ -278,6 +294,20 @@ $card-border-radius: 3px;
       &--body {
         padding-left: 20px;
       }
+
+      &--meta,
+      &--more {
+        white-space: nowrap;
+      }
+
+      &--meta {
+        width: 1%;
+      }
+
+      &--more {
+        width: 10%;
+        text-align: right;
+      }
     }
 
     &__media {
@@ -287,10 +317,13 @@ $card-border-radius: 3px;
       &__item {
         @extend %card-media-item;
       }
+
+      &__spinner {
+        @extend %card-media-spinner;
+      }
     }
 
     &__label {
-      color: $gray-lightest;
       font-size: .87rem;
 
       svg {
@@ -301,10 +334,41 @@ $card-border-radius: 3px;
 
     &__title {
       @extend %card-title;
+      color: $gray-light;
+      font-size: 1.25rem;
     }
 
     &__text {
       @extend %card-text;
+    }
+
+    &__more {
+      @extend %card-more;
+      position: relative;
+
+      &__actions {
+        @extend %card-more-actions;
+
+        &--show {
+          @extend %card-more-actions-show;
+        }
+
+        .icon-button__ripple {
+          background: rgba(#000, .2);
+        }
+      }
+
+      &__action {
+        @extend %card-more-action;
+      }
+
+      &__trigger {
+        @extend %card-more-trigger;
+
+        &--show {
+          @extend %card-more-trigger-show;
+        }
+      }
     }
   }
 }
