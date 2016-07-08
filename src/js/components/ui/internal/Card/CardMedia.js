@@ -56,7 +56,6 @@ export default class CardMedia extends React.Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
-        <MDSpinner className={b("spinner")} />
         {overlay && <div className={b("overlay", modifier)}>{overlay}</div>}
         <ImageLoader
           className={b("item", modifier)}
