@@ -73,7 +73,7 @@ export default class BoardCard extends React.Component {
 
   renderMoreActions() {
     return (
-      <IconButton icon={<TrashIcon />} onClick={this.handleDeleteClick} />
+      <IconButton icon={<TrashIcon />} tooltip="Delete" onClick={this.handleDeleteClick} />
     );
   }
 

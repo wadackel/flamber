@@ -10,6 +10,7 @@ export CropIcon from "./CropIcon";
 export FilesIcon from "./FilesIcon";
 export GithubIcon from "./GithubIcon";
 export GridIcon from "./GridIcon";
+export LinkIcon from "./LinkIcon";
 export ListIcon from "./ListIcon";
 export LogoIcon from "./LogoIcon";
 export MoreVertIcon from "./MoreVertIcon";

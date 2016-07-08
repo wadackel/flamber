@@ -15,8 +15,13 @@ import {
   CardTitle
 } from "../internal/Card/";
 import {
-  FlatButton
+  FlatButton,
+  IconButton
 } from "../";
+import {
+  LinkIcon,
+  PlusIcon
+} from "../../svg-icons/";
 
 export default class FeedCard extends React.Component {
   static propTypes = {
@@ -49,13 +54,6 @@ export default class FeedCard extends React.Component {
 
   handleAddItem() {
     // TODO
-  }
-
-  renderMoreActions() {
-    return [
-      <FlatButton onClick={this.handleDetailClick}>Visit</FlatButton>,
-      <FlatButton onClick={this.handleAddItem}>Add item</FlatButton>
-    ];
   }
 
   renderList() {
@@ -99,7 +97,10 @@ export default class FeedCard extends React.Component {
         <CardCol baseClassName={baseClassName} className={b("col--more")}>
           <CardMore
             baseClassName={baseClassName}
-            actions={this.renderMoreActions()}
+            actions={[
+              <IconButton icon={<LinkIcon />} tooltip="Visit" onClick={this.handleDetailClick} />,
+              <IconButton icon={<PlusIcon />} tooltip="Add item" onClick={this.handleAddItem} />
+            ]}
           />
         </CardCol>
       </Card>
