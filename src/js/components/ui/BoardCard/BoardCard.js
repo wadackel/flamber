@@ -1,6 +1,3 @@
-/* eslint-disable */
-import assign from "object-assign";
-import urlParse from "url-parse";
 import moment from "moment";
 import React, { PropTypes } from "react";
 import * as Layout from "../../../constants/layouts";
@@ -15,14 +12,12 @@ import {
   CardMore,
   CardOverlay,
   CardText,
-  CardTitle,
+  CardTitle
 } from "../internal/Card/";
 import {
-  Checkbox,
-  ColorBar,
   Label,
-  IconMenu,
-  FlatButton
+  FlatButton,
+  IconButton
 } from "../";
 import {
   FilesIcon,
@@ -41,7 +36,7 @@ export default class BoardCard extends React.Component {
     lastModified: PropTypes.instanceOf(Date),
     onSelect: PropTypes.func,
     onEdit: PropTypes.func,
-    onDelete: PropTypes.func,
+    onDelete: PropTypes.func
   };
 
   static defaultProps = {
