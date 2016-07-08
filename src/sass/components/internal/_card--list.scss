@@ -2,7 +2,7 @@
 %card-list-root {
   @extend %card-root;
   display: table;
-  width: 100%;
+  width: 100% !important;
   color: darken($gray-lightest, 15%);
 }
 
@@ -41,6 +41,7 @@
 
 %card-list-media-item {
   @extend %card-media-item;
+  background-position: center center !important;
 }
 
 %card-list-media-spinner {
@@ -56,6 +57,14 @@
     @include size(.9em);
     fill: currentColor;
   }
+}
+
+
+// Body
+%card-list-body {
+  @extend %card-body;
+  padding: 0;
+  color: inherit;
 }
 
 

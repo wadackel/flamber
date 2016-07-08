@@ -135,6 +135,10 @@ $card-border-radius: 3px;
       @extend %card-list-label;
     }
 
+    &__body {
+      @extend %card-list-body;
+    }
+
     &__title {
       @extend %card-list-title;
     }
