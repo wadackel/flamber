@@ -15,8 +15,6 @@ import {
   FlatButton
 } from "../";
 
-const b = bem("feed-card");
-
 export default class FeedCard extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -61,6 +59,8 @@ export default class FeedCard extends React.Component {
       imageHeight
     } = this.props;
 
+    const baseClassName = "feed-card";
+    const b = bem(baseClassName);
     const parsedURL = urlParse(site, true);
 
     return (
@@ -70,22 +70,22 @@ export default class FeedCard extends React.Component {
         onMouseLeave={this.handleMouseLeave}
       >
         <CardMedia
-          baseClassName={b("media")}
+          baseClassName={baseClassName}
           style={{
             paddingBottom: `${(imageHeight / imageWidth) * 100}%`
           }}
           image={image}
           overlay={<CardOverlay
-            baseClassName={b("overlay")}
+            baseClassName={baseClassName}
             actions={[
               <FlatButton onClick={this.handleDetailClick}>Visit</FlatButton>,
               <FlatButton onClick={this.handleAddItem}>Add item</FlatButton>
             ]}
           />}
         />
-        <CardBody baseClassName={b("body")}>
-          <CardTitle baseClassName={b("title")}>{title}</CardTitle>
-          <CardText baseClassName={b("text")}>
+        <CardBody baseClassName={baseClassName}>
+          <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
+          <CardText baseClassName={baseClassName}>
             <a href={url} target="_blank">
               <img className={b("favicon")} src={favicon} alt={parsedURL.host} />
               {parsedURL.host}
