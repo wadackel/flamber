@@ -26,6 +26,10 @@
 %card-list-col-meta {
   width: 1%;
   white-space: nowrap;
+
+  .icon-button__ripple {
+    background: rgba(#000, .2);
+  }
 }
 
 %card-list-col-more {
