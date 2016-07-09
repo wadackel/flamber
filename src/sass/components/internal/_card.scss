@@ -95,6 +95,96 @@ $card-border-radius: 3px;
   }
 
 
+  // Random grid
+  &--random-grid {
+    @extend %card-root;
+
+    &__media {
+      @extend %card-media;
+
+      &__overlay {
+        @extend %card-media-overlay;
+
+        &--overlay-show {
+          @extend %card-media-overlay-show;
+        }
+      }
+
+      &__item {
+        @extend %card-media-item;
+
+        &--overlay-show {
+          @extend %card-media-item-active;
+        }
+      }
+
+      &__spinner {
+        @extend %card-media-spinner;
+      }
+    }
+
+    &__overlay {
+      @extend %card-overlay;
+
+      &__inner {
+        @extend %card-overlay-inner;
+      }
+
+      &__more {
+        @extend %card-overlay-more;
+      }
+
+      &__select {
+        @extend %card-overlay-select;
+      }
+
+      &__action {
+        @extend %card-overlay-action;
+      }
+    }
+
+    &__more {
+      @extend %card-more;
+
+      &__actions {
+        @extend %card-more-actions;
+
+        &--show {
+          @extend %card-more-actions-show;
+        }
+      }
+
+      &__action {
+        @extend %card-more-action;
+      }
+
+      &__trigger {
+        @extend %card-more-trigger;
+
+        &--show {
+          @extend %card-more-trigger-show;
+        }
+      }
+    }
+
+    &__body {
+      @extend %card-body;
+    }
+
+    &__title {
+      @extend %card-title;
+    }
+
+    &__text {
+      @extend %card-text;
+    }
+
+    &__action {
+      @extend %card-action;
+    }
+  }
+
+
   // List
   &--list {
     @extend %card-list-root;

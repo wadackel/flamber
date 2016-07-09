@@ -53,3 +53,34 @@ class ItemCardListExample extends React.Component {
 
 <ItemCardListExample />
 ```
+
+
+RandomGrid:
+
+```
+class ItemCardRandomGridExample extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { selected: false };
+  }
+
+  render() {
+    return (
+      <ItemCard
+        layout="random-grid"
+        style={{ width: 270 }}
+        selected={this.state.selected}
+        url="http://example.com/path/to/"
+        title="Dripup Creative Design Pallete"
+        image="/images/feed-card-sample2.png"
+        imageWidth={540}
+        imageHeight={406}
+        colors={["#2D8A35", "#161815", "#4361A6"]}
+        onSelect={() => this.setState({ selected: !this.state.selected })}
+      />
+    );
+  }
+}
+
+<ItemCardRandomGridExample />
+```

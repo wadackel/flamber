@@ -37,6 +37,8 @@ export default class ItemCard extends React.Component {
     url: PropTypes.string,
     title: PropTypes.string,
     image: PropTypes.string,
+    imageWidth: PropTypes.number,
+    imageHeight: PropTypes.number,
     colors: PropTypes.array,
     onSelect: PropTypes.func,
     onFavorite: PropTypes.func,
@@ -83,19 +85,13 @@ export default class ItemCard extends React.Component {
     // TODO
   }
 
-  renderRandomGrid() {
-    return (
-      <div>RANDOM_GRID</div>
-    );
-  }
-
   renderMoreActions() {
     return [
       <IconButton icon={<TrashIcon />} tooltip="Delete" onClick={this.handleDeleteClick} />
     ];
   }
 
-  renderGrid() {
+  renderGrid(isRandomGrid) {
     const {
       className,
       style,
@@ -103,10 +99,12 @@ export default class ItemCard extends React.Component {
       url,
       title,
       image,
+      imageWidth,
+      imageHeight,
       colors
     } = this.props;
 
-    const baseClassName = "item-card";
+    const baseClassName = "item-card" + (isRandomGrid ? "--random-grid" : "");
     const b = bem(baseClassName);
     const modifier = { selected };
 
@@ -120,6 +118,9 @@ export default class ItemCard extends React.Component {
         <CardMedia
           baseClassName={baseClassName}
           image={image}
+          style={{
+            paddingBottom: `${(imageHeight / imageWidth) * 100}%`
+          }}
           overlay={<CardOverlay
             baseClassName={baseClassName}
             selectable={true}
@@ -200,9 +201,9 @@ export default class ItemCard extends React.Component {
 
     switch (layout) {
       case Layout.RANDOM_GRID:
-        return this.renderRandomGrid();
+        return this.renderGrid(true);
       case Layout.GRID:
-        return this.renderGrid();
+        return this.renderGrid(false);
       case Layout.LIST:
         return this.renderList();
     }

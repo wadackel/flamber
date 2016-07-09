@@ -1,12 +1,14 @@
 .item-card {
   @include card-extend-all;
 
-  &__body {
+  &__body,
+  &--random-grid__body {
     padding-right: 60px;
     padding-bottom: 20px;
   }
 
-  &__colors {
+  &__colors,
+  &--random-grid__colors {
     @include absolute(auto, 0, 0, 0, 5);
     border-top: 1px solid #efefef;
 
