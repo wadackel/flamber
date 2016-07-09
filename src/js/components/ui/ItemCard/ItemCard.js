@@ -8,6 +8,7 @@ import {
   CardAction,
   CardBody,
   CardMedia,
+  CardMore,
   CardOverlay,
   CardText,
   CardTitle
@@ -21,8 +22,6 @@ import {
   StarIcon,
   TrashIcon
 } from "../../svg-icons";
-
-const b = bem("item-card");
 
 export default class ItemCard extends React.Component {
   static propTypes = {
@@ -89,9 +88,11 @@ export default class ItemCard extends React.Component {
       colors
     } = this.props;
 
-    const parsedURL = urlParse(url, true);
-
+    const baseClassName = "item-card";
+    const b = bem(baseClassName);
     const modifier = { selected };
+
+    const parsedURL = urlParse(url, true);
 
     return (
       <Card
@@ -99,10 +100,10 @@ export default class ItemCard extends React.Component {
         style={style}
       >
         <CardMedia
-          baseClassName={b("media")}
+          baseClassName={baseClassName}
           image={image}
           overlay={<CardOverlay
-            baseClassName={b("overlay")}
+            baseClassName={baseClassName}
             selectable={true}
             selected={selected}
             moreActions={<IconButton icon={<TrashIcon />} onClick={this.handleDeleteClick} />}
@@ -110,12 +111,12 @@ export default class ItemCard extends React.Component {
             onSelect={this.handleSelect}
           />}
         />
-        <CardBody baseClassName={b("body")}>
-          <CardTitle baseClassName={b("title")}>{title}</CardTitle>
-          <CardText baseClassName={b("text")}>
+        <CardBody baseClassName={baseClassName}>
+          <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
+          <CardText baseClassName={baseClassName}>
             <a href={url} target="_blank">{parsedURL.host}</a>
           </CardText>
-          <CardAction baseClassName={b("action")}>
+          <CardAction baseClassName={baseClassName}>
             <IconButton icon={<StarIcon />} onClick={this.handleCilck} />
           </CardAction>
         </CardBody>
