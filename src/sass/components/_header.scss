@@ -1,14 +1,15 @@
 $header-main-height: 60px;
 
 .header {
-  @include fixed(0, 0, auto, 0, 5000);
+  @include fixed(0, 0, auto, 0, 999);
   background: $gray-light;
   box-shadow: 0 0 8px rgba(0, 0, 0, .5);
 
   &__row {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     height: $header-main-height;
 
     &--main {
@@ -21,18 +22,27 @@ $header-main-height: 60px;
   }
 
   &__col {
-    flex-grow: 1;
     white-space: nowrap;
+
+    &--bottom-left {
+      padding-left: 20px;
+    }
+
+    &--top-right,
+    &--bottom-right {
+      padding-right: 20px;
+    }
 
     &--top-center,
     &--bottom-center {
-      flex-grow: 5;
+      flex-grow: 1;
+      padding: 0 20px;
       text-align: center;
     }
   }
 
   &__logo {
-    margin: 0;
+    margin: 0 20px 0 0;
     float: left;
 
     a {
@@ -58,20 +68,78 @@ $header-main-height: 60px;
     &__list {
       margin: 0;
       padding: 0;
+      font-size: 0;
       list-style: none;
     }
 
     &__item {
-      // TODO
+      display: inline-block;
+      font-size: 1rem;
+
+      a {
+        display: block;
+        position: relative;
+        height: $header-main-height;
+        padding: 0 20px;
+        color: lighten($gray-light, 20%);
+        line-height: $header-main-height;
+
+        &:hover {
+          color: lighten($gray-light, 40%);
+        }
+
+        &::after {
+          @include absolute(auto, 0, 0, 0, 1);
+          @include transition(all);
+          display: block;
+          height: 1px;
+          transform: scale(0, 1);
+          transform-origin: center center;
+          background: $brand-primary;
+          content: "";
+          opacity: 0;
+        }
+      }
+
+      &--active a {
+        color: $brand-primary !important;
+        cursor: default;
+
+        &::after {
+          transform: scale(1, 1);
+          opacity: 1;
+        }
+      }
     }
   }
 
+  &__main-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: normal;
+    letter-spacing: .05em;
+  }
+
   &__user {
+    margin: 0 10px 0 0;
+    float: left;
     text-align: right;
 
     &__avatar {
       display: inline-block !important;
       vertical-align: middle;
+    }
+
+    &__drop-down {
+      z-index: 5001;
+    }
+  }
+
+  &__setting {
+    float: left;
+
+    svg {
+      @include size(24px);
     }
   }
 }

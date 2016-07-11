@@ -4,9 +4,11 @@ import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Avatar,
-  UserDropDown
+  UserDropDown,
+  IconButton
 } from "../";
 import {
+  CogIcon,
   LogoIcon
 } from "../../svg-icons/";
 
@@ -64,7 +66,7 @@ export default class Header extends Component {
             <h1 className={b("logo")}><a href="#"><LogoIcon /></a></h1>
             <nav className={b("nav")}>
               <ul className={b("nav__list")}>
-                <li className={b("nav__item")}><a href="#">My items</a></li>
+                <li className={b("nav__item", { active: true })}><a href="#">My items</a></li>
                 <li className={b("nav__item")}><a href="#">Feed</a></li>
               </ul>
             </nav>
@@ -82,6 +84,7 @@ export default class Header extends Component {
                 onIconClick={this.handleUserDropDownClick}
               />
               <UserDropDown
+                className={b("user__drop-down")}
                 open={userDropDownOpen}
                 triggerElement={userDropDownTrigger}
                 limit={16106127360}
@@ -89,6 +92,9 @@ export default class Header extends Component {
                 onRequestClose={this.handleUserDropDownRequestClose}
                 onRequestSignOut={this.handleSignOut}
               />
+            </div>
+            <div className={b("setting")}>
+              <IconButton icon={<CogIcon />} />
             </div>
           </div>
         </div>
