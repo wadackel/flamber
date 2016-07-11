@@ -11,6 +11,7 @@ export DropDownMenu from "./DropDownMenu/DropDownMenu";
 export FeedCard from "./FeedCard/FeedCard";
 export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";
+export Header from "./Header/Header";
 export IconButton from "./IconButton/IconButton";
 export IconMenu from "./IconMenu/IconMenu";
 export ItemCard from "./ItemCard/ItemCard";

@@ -1,0 +1,77 @@
+$header-main-height: 60px;
+
+.header {
+  @include fixed(0, 0, auto, 0, 5000);
+  background: $gray-light;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: $header-main-height;
+
+    &--main {
+      // TODO
+    }
+
+    &--sub {
+      // TODO
+    }
+  }
+
+  &__col {
+    flex-grow: 1;
+    white-space: nowrap;
+
+    &--top-center,
+    &--bottom-center {
+      flex-grow: 5;
+      text-align: center;
+    }
+  }
+
+  &__logo {
+    margin: 0;
+    float: left;
+
+    a {
+      @include size(60px);
+      display: block;
+      position: relative;
+      background: $brand-primary;
+      color: #fff;
+    }
+
+    svg {
+      @include absolute(0, 0, 0, 0, 1);
+      width: 23px;
+      height: 30px;
+      margin: auto;
+      fill: currentColor;
+    }
+  }
+
+  &__nav {
+    float: left;
+
+    &__list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    &__item {
+      // TODO
+    }
+  }
+
+  &__user {
+    text-align: right;
+
+    &__avatar {
+      display: inline-block !important;
+      vertical-align: middle;
+    }
+  }
+}
