@@ -46,7 +46,7 @@ export function *handleSignInRequest() {
 export function *handleSignInSuccess() {
   while (true) {
     yield take(SIGN_IN_SUCCESS);
-    yield put(replace("/"));
+    yield put(replace("/app/"));
   }
 }
 

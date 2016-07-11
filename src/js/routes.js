@@ -5,17 +5,10 @@ import {
   SignOut,
   Landing
 } from "./containers";
-
-
-// TODO
-import { Component } from "react";
-class UserOnly extends Component {
-  render() {
-    return (
-      <div>UserOnly</div>
-    );
-  }
-}
+import {
+  App,
+  Boards
+} from "./containers/app/";
 
 function getAuthenticated(store) {
   const { auth: { authenticated } } = store.getState();
@@ -45,7 +38,9 @@ export default function getRoutes(store) {
 
       <Route onEnter={userOnly}>
         <Route path="/signout" component={SignOut} />
-        <Route path="/user" component={UserOnly}></Route>
+        <Route path="/app/" component={App}>
+          <IndexRoute component={Boards} />
+        </Route>
       </Route>
 
       <Route onEnter={guestOnly}>
