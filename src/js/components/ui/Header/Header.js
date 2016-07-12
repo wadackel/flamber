@@ -5,6 +5,8 @@ import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Avatar,
   UserDropDown,
+  Nav,
+  NavItem,
   IconButton
 } from "../";
 import {
@@ -64,12 +66,10 @@ export default class Header extends Component {
         <div className={b("row", { main: true })}>
           <div className={b("col", { "top-left": true })}>
             <h1 className={b("logo")}><a href="#"><LogoIcon /></a></h1>
-            <nav className={b("nav")}>
-              <ul className={b("nav__list")}>
-                <li className={b("nav__item", { active: true })}><a href="#">My items</a></li>
-                <li className={b("nav__item")}><a href="#">Feed</a></li>
-              </ul>
-            </nav>
+            <Nav className={b("nav")}>
+              <NavItem className={b("nav__item")} active>My items</NavItem>
+              <NavItem className={b("nav__item")}>Feeds</NavItem>
+            </Nav>
           </div>
           <div className={b("col", { "top-center": true })}>
             <h2 className={b("main-title")}>Web Application</h2>

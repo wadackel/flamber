@@ -65,13 +65,6 @@ $header-main-height: 60px;
   &__nav {
     float: left;
 
-    &__list {
-      margin: 0;
-      padding: 0;
-      font-size: 0;
-      list-style: none;
-    }
-
     &__item {
       display: inline-block;
       font-size: 1rem;
