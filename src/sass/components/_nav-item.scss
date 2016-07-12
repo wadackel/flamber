@@ -1,0 +1,38 @@
+$nav-item-height: 60px;
+
+.nav-item {
+  display: inline-block;
+
+  &__button {
+    @include button-extend-all;
+    color: lighten($gray-light, 20%);
+    box-shadow: none !important;
+
+    &::after {
+      @include absolute(auto, 0, -1px, 0, 5);
+      @include transition(all, $transition-duration-fast);
+      display: block;
+      height: 1px;
+      transform: scale(0, 1);
+      transform-origin: center center;
+      background: $brand-primary;
+      content: "";
+      opacity: 0;
+    }
+
+    &--active {
+      color: $brand-primary;
+
+      &::after {
+        transform: scale(1, 1);
+        opacity: 1;
+      }
+    }
+
+    &__body {
+      height: $nav-item-height;
+      padding: 0 20px;
+      line-height: $nav-item-height;
+    }
+  }
+}

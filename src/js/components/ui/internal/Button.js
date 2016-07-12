@@ -83,7 +83,7 @@ export default class Button extends React.Component {
   addRippleElement(top, left, size) {
     const { baseClassName, type } = this.props;
     const { ripples } = this.state;
-    const b = bem(baseClassName);
+    const b = bem(baseClassName.trim());
     const style = this.getRippleStyle(top, left, size);
 
     this.setState({
@@ -130,7 +130,7 @@ export default class Button extends React.Component {
     } = this.props;
 
     const { ripples } = this.state;
-    const b = bem(baseClassName);
+    const b = bem(baseClassName.trim());
     const modifier = { [type]: true };
     const labelElement = label ? <span className={b("label", modifier)}>{label}</span> : null;
     const iconElement = this.createIcon(icon, b("icon", modifier));
