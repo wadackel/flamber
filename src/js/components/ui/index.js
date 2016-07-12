@@ -22,6 +22,8 @@ export List from "./List/List";
 export ListItem from "./ListItem/ListItem";
 export Menu from "./Menu/Menu";
 export MenuItem from "./MenuItem/MenuItem";
+export Nav from "./Nav/Nav";
+export NavItem from "./NavItem/NavItem";
 export Popover from "./Popover/Popover";
 export ProgressBar from "./ProgressBar/ProgressBar";
 export Radio from "./Radio/Radio";
