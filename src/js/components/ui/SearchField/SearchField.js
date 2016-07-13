@@ -1,0 +1,86 @@
+import React, { Component, PropTypes } from "react";
+import bem from "../../../helpers/bem";
+import mergeClassNames from "../../../helpers/merge-class-names";
+import bindHandlers from "../../../helpers/bind-handlers";
+import { TextField, IconButton } from "../";
+import { SearchIcon } from "../../svg-icons/";
+
+const b = bem("search-field");
+
+export default class SearchField extends Component {
+  static propTypes = {
+    className: PropTypes.string,
+    value: PropTypes.any,
+    placeholder: PropTypes.string,
+    onSearch: PropTypes.func
+  };
+
+  static defaultProps = {
+    onSearch: () => {}
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = { value: props.value };
+
+    bindHandlers([
+      "handleSubmit",
+      "handleClick",
+      "handleChange"
+    ], this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.setState({ value: nextProps.value });
+    }
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.requestSearch();
+  }
+
+  handleClick() {
+    this.requestSearch();
+  }
+
+  handleChange(e, value) {
+    this.setState({ value });
+  }
+
+  requestSearch() {
+    this.props.onSearch(this.state.value);
+  }
+
+  render() {
+    const {
+      className,
+      placeholder
+    } = this.props;
+
+    const { value } = this.state;
+
+    return (
+      <div className={mergeClassNames(b(), className)}>
+        <form className={b("form")} onSubmit={this.handleSubmit}>
+          <div className={b("body")}>
+            <IconButton
+              className={b("button")}
+              icon={<SearchIcon />}
+              onClick={this.handleClick}
+            />
+            <TextField
+              className={b("text-field")}
+              placeholder={placeholder}
+              value={value}
+              onChange={this.handleChange}
+            />
+          </div>
+        </form>
+      </div>
+    );
+  }
+}

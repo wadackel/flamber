@@ -1,0 +1,16 @@
+.search-field {
+
+  &__body {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+  }
+
+  &__text-field {
+    .text-field__control {
+      border-bottom: none;
+    }
+  }
+}

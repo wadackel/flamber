@@ -29,6 +29,7 @@ export ProgressBar from "./ProgressBar/ProgressBar";
 export Radio from "./Radio/Radio";
 export RadioGroup from "./RadioGroup/RadioGroup";
 export RaisedButton from "./RaisedButton/RaisedButton";
+export SearchField from "./SearchField/SearchField";
 export Slider from "./Slider/Slider";
 export Snackbar from "./Snackbar/Snackbar";
 export TextField from "./TextField/TextField";
