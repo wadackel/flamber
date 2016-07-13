@@ -119,6 +119,11 @@ $header-main-height: 60px;
     letter-spacing: .05em;
   }
 
+  &__sub-title {
+    font-size: .87rem;
+    font-weight: normal;
+  }
+
   &__user {
     margin: 0 10px 0 0;
     float: left;
@@ -158,15 +163,5 @@ $header-main-height: 60px;
   &__layout-slider {
     width: 140px !important;
     margin-right: 20px;
-  }
-
-  &__layout-group {
-    .layout-button {
-      color: lighten($gray-light, 5%);
-
-      &--selected {
-        color: lighten($gray-light, 50%);
-      }
-    }
   }
 }

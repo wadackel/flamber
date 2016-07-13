@@ -117,7 +117,7 @@ export default class Header extends Component {
             />
           </div>
           <div className={b("col", { "sub-center": true })}>
-            <h3 className={b("hoge")}>Total 102 items</h3>
+            <h3 className={b("sub-title")}>Total 102 items</h3>
           </div>
           <div className={b("col", { "sub-right": true })}>
             <Slider
