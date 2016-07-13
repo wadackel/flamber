@@ -1,5 +1,14 @@
 .layout-button {
-  color: $gray-light;
+  color: lighten($gray-light, 10%);
+
+  .icon-button__body {
+    width: 30px;
+  }
+
+  .icon-button__ripple {
+    width: 40px !important;
+    height: 40px !important;
+  }
 
   &--selected {
     color: $gray-lightest;
