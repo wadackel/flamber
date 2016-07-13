@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
+import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import {
@@ -8,11 +9,17 @@ import {
   Nav,
   NavItem,
   IconButton,
-  SearchField
+  LayoutButtonGroup,
+  LayoutButton,
+  SearchField,
+  Slider
 } from "../";
 import {
   CogIcon,
-  LogoIcon
+  LogoIcon,
+  RandomGridIcon,
+  GridIcon,
+  ListIcon
 } from "../../svg-icons/";
 
 const b = bem("header");
@@ -113,6 +120,18 @@ export default class Header extends Component {
             <h3 className={b("hoge")}>Total 102 items</h3>
           </div>
           <div className={b("col", { "sub-right": true })}>
+            <Slider
+              className={b("layout-slider")}
+              defaultValue={50}
+            />
+            <LayoutButtonGroup
+              className={b("layout-group")}
+              value={Layout.GRID}
+            >
+              <LayoutButton icon={<RandomGridIcon />} value={Layout.RANDOM_GRID}></LayoutButton>
+              <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>
+              <LayoutButton icon={<ListIcon />} value={Layout.LIST}></LayoutButton>
+            </LayoutButtonGroup>
           </div>
         </div>
       </header>
