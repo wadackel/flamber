@@ -24,17 +24,22 @@ $header-main-height: 60px;
   &__col {
     white-space: nowrap;
 
-    &--bottom-left {
+    &--sub-left {
       padding-left: 20px;
     }
 
-    &--top-right,
-    &--bottom-right {
+    &--sub-left,
+    &--sub-right {
+      flex-grow: 2;
+    }
+
+    &--main-right,
+    &--sub-right {
       padding-right: 20px;
     }
 
-    &--top-center,
-    &--bottom-center {
+    &--main-center,
+    &--sub-center {
       flex-grow: 1;
       padding: 0 20px;
       text-align: center;
@@ -133,6 +138,14 @@ $header-main-height: 60px;
 
     svg {
       @include size(24px);
+    }
+  }
+
+  &__search-field {
+    display: inline-block;
+
+    .text-field__placeholder {
+      color: lighten($gray-light, 5%);
     }
   }
 }

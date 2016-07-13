@@ -7,7 +7,8 @@ import {
   UserDropDown,
   Nav,
   NavItem,
-  IconButton
+  IconButton,
+  SearchField
 } from "../";
 import {
   CogIcon,
@@ -64,17 +65,17 @@ export default class Header extends Component {
     return (
       <header className={b()}>
         <div className={b("row", { main: true })}>
-          <div className={b("col", { "top-left": true })}>
+          <div className={b("col", { "main-left": true })}>
             <h1 className={b("logo")}><a href="#"><LogoIcon /></a></h1>
             <Nav className={b("nav")}>
-              <NavItem className={b("nav__item")} active>My items</NavItem>
-              <NavItem className={b("nav__item")}>Feeds</NavItem>
+              <NavItem active>My items</NavItem>
+              <NavItem>Feeds</NavItem>
             </Nav>
           </div>
-          <div className={b("col", { "top-center": true })}>
+          <div className={b("col", { "main-center": true })}>
             <h2 className={b("main-title")}>Web Application</h2>
           </div>
-          <div className={b("col", { "top-right": true })}>
+          <div className={b("col", { "main-right": true })}>
             <div className={b("user")}>
               <Avatar
                 className={b("user__avatar")}
@@ -96,6 +97,22 @@ export default class Header extends Component {
             <div className={b("setting")}>
               <IconButton icon={<CogIcon />} />
             </div>
+          </div>
+        </div>
+
+        <div className={b("row", { sub: true })}>
+          <div className={b("col", { "sub-left": true })}>
+            <IconButton icon={<TagsIcon />} />
+            <IconButton icon={<StarIcon />} />
+            <SearchField
+              className={b("search-field")}
+              placeholder="Type search keyword"
+            />
+          </div>
+          <div className={b("col", { "sub-center": true })}>
+            <h3 className={b("hoge")}>Total 102 items</h3>
+          </div>
+          <div className={b("col", { "sub-right": true })}>
           </div>
         </div>
       </header>
