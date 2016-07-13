@@ -1,0 +1,62 @@
+.editable-text {
+  $base-padding: .5em;
+  $icon-padding: 1em + $base-padding;
+
+  display: inline-block;
+
+  &__body {
+    position: relative;
+    padding: $base-padding $icon-padding $base-padding 0;
+  }
+
+  &__icon {
+    @include absolute(0, 0, 0, auto);
+    @include transition(all, 100ms);
+    display: block;
+    margin: auto;
+    transform: translateY(-$base-padding);
+    opacity: 0;
+    @include size(.8em);
+
+    svg {
+      @include size(100%);
+      fill: currentColor;
+    }
+
+    &--show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  &__text {
+    position: relative;
+    z-index: 1;
+
+    &--is-editing {
+      visibility: hidden;
+    }
+  }
+
+  &__text-field {
+    &.text-field {
+      @include absolute(0, 0, 0, 0, 2);
+      width: auto;
+      margin-right: $icon-padding;
+      visibility: hidden;
+    }
+
+    &--is-editing.text-field {
+      visibility: visible;
+    }
+
+    .text-field__control {
+      min-width: 1em;
+      padding: $base-padding 0;
+      border-bottom: none;
+      font-size: 1em;
+      line-height: inherit;
+      vertical-align: middle;
+    }
+  }
+}

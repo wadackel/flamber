@@ -8,6 +8,7 @@ export Dialog from "./Dialog/Dialog";
 export Drawer from "./Drawer/Drawer";
 export DriveCapacity from "./DriveCapacity/DriveCapacity";
 export DropDownMenu from "./DropDownMenu/DropDownMenu";
+export EditableText from "./EditableText/EditableText";
 export FeedCard from "./FeedCard/FeedCard";
 export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";
