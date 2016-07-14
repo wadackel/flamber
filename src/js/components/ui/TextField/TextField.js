@@ -108,6 +108,7 @@ export default class TextField extends React.Component {
       className,
       id,
       type,
+      name,
       defaultValue,
       label,
       placeholder,
