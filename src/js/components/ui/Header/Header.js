@@ -5,6 +5,7 @@ import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Avatar,
+  EditableText,
   UserDropDown,
   Nav,
   NavItem,
@@ -17,6 +18,7 @@ import {
 import {
   CogIcon,
   LogoIcon,
+  PencilIcon,
   RandomGridIcon,
   GridIcon,
   ListIcon
@@ -80,7 +82,11 @@ export default class Header extends Component {
             </Nav>
           </div>
           <div className={b("col", { "main-center": true })}>
-            <h2 className={b("main-title")}>Web Application</h2>
+            <EditableText
+              className={b("main-title")}
+              icon={<PencilIcon />}
+              value="Web Application"
+            />
           </div>
           <div className={b("col", { "main-right": true })}>
             <div className={b("user")}>
