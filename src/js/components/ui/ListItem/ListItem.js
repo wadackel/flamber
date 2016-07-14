@@ -19,6 +19,7 @@ export default class ListItem extends React.Component {
     placeholder: PropTypes.string,
     onClick: PropTypes.func,
     onChange: PropTypes.func,
+    onEnter: PropTypes.func,
     onComplete: PropTypes.func,
     onRequestDelete: PropTypes.func
   };
@@ -27,6 +28,7 @@ export default class ListItem extends React.Component {
     editable: false,
     onClick: () => {},
     onChange: () => {},
+    onEnter: () => {},
     onComplete: () => {},
     onRequestDelete: () => {}
   }
@@ -42,6 +44,7 @@ export default class ListItem extends React.Component {
     bindHandlers([
       "handleClick",
       "handleChange",
+      "handleEnter",
       "handleBlur",
       "handleComplete",
       "handleEditClick",
@@ -70,6 +73,11 @@ export default class ListItem extends React.Component {
   handleChange(e, text) {
     this.setState({ text });
     this.props.onChange(this, text, this.props.index);
+  }
+
+  handleEnter(e, text) {
+    this.props.onEnter(this, text, this.props.index);
+    this.refs.control.blur();
   }
 
   handleBlur() {
@@ -137,6 +145,7 @@ export default class ListItem extends React.Component {
               placeholder={placeholder}
               onChange={this.handleChange}
               onBlur={this.handleBlur}
+              onEnter={this.handleEnter}
             />
           : <Button
               ref="button"
