@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import * as OriginPropTypes from "../../../constants/prop-types";
+import { HTMLElement } from "../../../helpers/browser-only";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
