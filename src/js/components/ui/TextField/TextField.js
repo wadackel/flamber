@@ -4,6 +4,7 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import { isValid } from "../../../helpers/validate";
+import Input from "../internal/Input";
 
 const b = bem("text-field");
 
@@ -21,6 +22,7 @@ export default class TextField extends React.Component {
     multiLine: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
+    onEnter: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     onKeyDown: PropTypes.func,
@@ -34,6 +36,7 @@ export default class TextField extends React.Component {
     rows: 1,
     multiLine: false,
     onChange: () => {},
+    onEnter: () => {},
     onBlur: () => {},
     onFocus: () => {},
     onKeyDown: () => {},
@@ -51,6 +54,7 @@ export default class TextField extends React.Component {
 
     bindHandlers([
       "handleChange",
+      "handleEnter",
       "handleFocus",
       "handleBlur"
     ], this);
@@ -66,8 +70,13 @@ export default class TextField extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({ hasValue: isValid(e.target.value) });
+    this.updateStateValue(e.target.value);
     this.props.onChange(e, e.target.value);
+  }
+
+  handleEnter(e) {
+    this.updateStateValue(e.target.value);
+    this.props.onEnter(e, e.target.value);
   }
 
   handleFocus(e) {
@@ -80,9 +89,18 @@ export default class TextField extends React.Component {
     this.props.onBlur(e);
   }
 
+  updateStateValue(value) {
+    this.setState({ hasValue: isValid(value) });
+  }
+
   focus() {
     const { control } = this.refs;
     if (control) control.focus();
+  }
+
+  blur() {
+    const { control } = this.refs;
+    if (control) control.blur();
   }
 
   render() {
@@ -96,6 +114,7 @@ export default class TextField extends React.Component {
       value,
       multiLine,
       rows,
+      onEnter, // eslint-disable-line no-unused-vars
       onKeyDown,
       onKeyUp,
       onKeyPress
@@ -115,7 +134,7 @@ export default class TextField extends React.Component {
       type: multiLine ? "multi-line" : type
     });
 
-    const textProps = {
+    const commonProps = {
       className: b("control", textModifier),
       onChange: this.handleChange,
       onFocus: this.handleFocus,
@@ -129,6 +148,15 @@ export default class TextField extends React.Component {
       onKeyPress
     };
 
+    const textAreaProps = assign({}, commonProps, {
+      rows
+    });
+
+    const inputProps = assign({}, textAreaProps, {
+      onEnter: this.handleEnter,
+      type
+    });
+
     return (
       <div className={mergeClassNames(b(assign({}, modifier, { "has-label": !!label })), className)}>
         {label
@@ -140,8 +168,8 @@ export default class TextField extends React.Component {
           : null
         }
         {multiLine
-          ? <textarea ref="control" {...textProps} rows={rows} />
-          : <input ref="control" {...textProps} type={type} />
+          ? <textarea ref="control" {...textAreaProps} />
+          : <Input ref="control" {...inputProps} />
         }
       </div>
     );
