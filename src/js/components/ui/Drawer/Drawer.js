@@ -1,5 +1,6 @@
+const IScroll = typeof window !== "undefined" ? require("iscroll") : null;
+
 import React, { PropTypes } from "react";
-import IScroll from "iscroll";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";

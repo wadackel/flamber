@@ -1,5 +1,6 @@
+const IScroll = typeof window !== "undefined" ? require("iscroll") : null;
+
 import React, { PropTypes } from "react";
-import IScroll from "iscroll";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import prefixer from "../../../helpers/prefixer";
 import bem from "../../../helpers/bem";
