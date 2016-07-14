@@ -16,14 +16,16 @@ export default class Checkbox extends React.Component {
     value: PropTypes.any,
     checked: PropTypes.bool,
     inline: PropTypes.bool,
-    onCheck: PropTypes.func
+    onCheck: PropTypes.func,
+    onClick: PropTypes.func
   };
 
   static defaultProps = {
     style: {},
     checked: false,
     inline: false,
-    onCheck: () => {}
+    onCheck: () => {},
+    onClick: () => {}
   };
 
   constructor(props) {
@@ -77,7 +79,8 @@ export default class Checkbox extends React.Component {
       name,
       value,
       checked,
-      inline
+      inline,
+      onClick
     } = this.props;
 
     const { ripples } = this.state;
@@ -99,6 +102,7 @@ export default class Checkbox extends React.Component {
           value={value}
           checked={checked}
           onChange={this.handleChange}
+          onClick={onClick}
         />
         <div className={b("body")}>
           <span className={b(type, modifier)}>

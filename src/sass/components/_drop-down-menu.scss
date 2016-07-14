@@ -8,6 +8,10 @@
     display: block;
   }
 
+  &__before {
+    display: inline-block;
+  }
+
   &__trigger {
     @include transition(all);
     position: relative;

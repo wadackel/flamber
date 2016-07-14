@@ -15,7 +15,11 @@ class DropDownMenuExample extends React.Component {
   render() {
     return (
       <div>
-        <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+        <DropDownMenu
+          before={<Checkbox onClick={e => e.stopPropagation()} />}
+          value={this.state.value}
+          onChange={this.handleChange}
+        >
           <MenuItem value={1} text="Item value 1" />
           <MenuItem value={2} text="Item value 2" />
           <MenuItem value={3} text="Item value 3" />

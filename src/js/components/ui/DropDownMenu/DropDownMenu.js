@@ -15,6 +15,7 @@ export default class DropDownMenu extends React.Component {
     className: PropTypes.string,
     value: PropTypes.any,
     type: PropTypes.oneOf(["block", "inline"]),
+    before: PropTypes.node,
     onChange: PropTypes.func
   };
 
@@ -60,6 +61,7 @@ export default class DropDownMenu extends React.Component {
     const {
       children,
       className,
+      before,
       value,
       type
     } = this.props;
@@ -76,11 +78,15 @@ export default class DropDownMenu extends React.Component {
 
     let displayValue = "";
 
-    children.forEach(item => {
+    React.Children.forEach(children, item => {
       if (item.props.value === value) {
         displayValue = item.props.text;
       }
     });
+
+    const beforeElement = before && <div className={b("before", modifier)}>
+      {before}
+    </div>;
 
     return (
       <div className={mergeClassNames(b(modifier), className)}>
@@ -89,6 +95,7 @@ export default class DropDownMenu extends React.Component {
           className={b("trigger", modifier)}
           onClick={this.handleTriggerClick}
         >
+          {beforeElement}
           {displayValue}
           <div className={b("icon", modifier)}>
             <CaretIcon />
