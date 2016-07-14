@@ -16,6 +16,8 @@ import {
   Slider
 } from "../";
 import {
+  TagsIcon,
+  StarIcon,
   CogIcon,
   LogoIcon,
   PencilIcon,
