@@ -13,14 +13,15 @@ export default class EditableText extends Component {
     icon: PropTypes.node,
     value: PropTypes.string,
     onChange: PropTypes.func,
+    onComplete: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
-    onBlur: PropTypes.func,
-    onFocus: PropTypes.func
+    onBlur: PropTypes.func
   };
 
   static defaultProps = {
-    onChange: () => {},
+    onEnter: () => {},
+    onComplete: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},
     onBlur: () => {}
@@ -38,7 +39,7 @@ export default class EditableText extends Component {
       "handleClick",
       "handleMouseEnter",
       "handleMouseLeave",
-      "handleChange",
+      "handleEnter",
       "handleBlur"
     ], this);
   }
@@ -59,13 +60,15 @@ export default class EditableText extends Component {
     this.props.onMouseLeave();
   }
 
-  handleChange(e, value) {
-    this.props.onChange(e, value);
+  handleEnter(e, value) {
+    this.props.onEnter(e, value);
+    this.refs.textField.blur();
   }
 
   handleBlur(e) {
     this.setState({ isEditing: false });
     this.props.onBlur(e);
+    this.props.onComplete(e.target.value);
   }
 
   render() {
@@ -73,6 +76,7 @@ export default class EditableText extends Component {
       className,
       icon,
       value,
+      onEnter,
       onBlur,
       ...props
     } = this.props;
@@ -99,7 +103,7 @@ export default class EditableText extends Component {
             ref="textField"
             className={b("text-field", modifier)}
             value={value}
-            onChange={this.handleChange}
+            onEnter={this.handleEnter}
             onBlur={this.handleBlur}
             {...props}
           />
