@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -12,7 +11,7 @@ export default class EditableText extends Component {
     className: PropTypes.string,
     icon: PropTypes.node,
     value: PropTypes.string,
-    onChange: PropTypes.func,
+    onEnter: PropTypes.func,
     onComplete: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
@@ -76,8 +75,8 @@ export default class EditableText extends Component {
       className,
       icon,
       value,
-      onEnter,
-      onBlur,
+      onEnter, // eslint-disable-line no-unused-vars
+      onBlur, // eslint-disable-line no-unused-vars
       ...props
     } = this.props;
 
@@ -98,7 +97,7 @@ export default class EditableText extends Component {
         onMouseLeave={this.handleMouseLeave}
       >
         <div className={b("body")}>
-          <span className={b("icon", { "show": !isEditing && isHover })}>{icon}</span>
+          <span className={b("icon", { show: !isEditing && isHover })}>{icon}</span>
           <TextField
             ref="textField"
             className={b("text-field", modifier)}
