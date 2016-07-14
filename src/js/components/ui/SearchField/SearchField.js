@@ -25,9 +25,9 @@ export default class SearchField extends Component {
     this.state = { value: props.value };
 
     bindHandlers([
-      "handleSubmit",
       "handleClick",
-      "handleChange"
+      "handleChange",
+      "handleEnter"
     ], this);
   }
 
@@ -37,18 +37,16 @@ export default class SearchField extends Component {
     }
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.requestSearch();
-  }
-
   handleClick() {
     this.requestSearch();
   }
 
   handleChange(e, value) {
     this.setState({ value });
+  }
+
+  handleEnter() {
+    this.requestSearch();
   }
 
   requestSearch() {
@@ -65,21 +63,20 @@ export default class SearchField extends Component {
 
     return (
       <div className={mergeClassNames(b(), className)}>
-        <form className={b("form")} onSubmit={this.handleSubmit}>
-          <div className={b("body")}>
-            <IconButton
-              className={b("button")}
-              icon={<SearchIcon />}
-              onClick={this.handleClick}
-            />
-            <TextField
-              className={b("text-field")}
-              placeholder={placeholder}
-              value={value}
-              onChange={this.handleChange}
-            />
-          </div>
-        </form>
+        <div className={b("body")}>
+          <IconButton
+            className={b("button")}
+            icon={<SearchIcon />}
+            onClick={this.handleClick}
+          />
+          <TextField
+            className={b("text-field")}
+            placeholder={placeholder}
+            value={value}
+            onChange={this.handleChange}
+            onEnter={this.handleEnter}
+          />
+        </div>
       </div>
     );
   }
