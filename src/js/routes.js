@@ -7,7 +7,8 @@ import {
 } from "./containers";
 import {
   App,
-  Boards
+  Boards,
+  Settings
 } from "./containers/app/";
 
 function getAuthenticated(store) {
@@ -39,6 +40,8 @@ export default function getRoutes(store) {
       <Route onEnter={userOnly}>
         <Route path="/signout" component={SignOut} />
         <Route path="/app/" component={App}>
+          <Route path="settings" component={Settings} />
+          <Route path="boards" component={Boards} />
           <IndexRoute component={Boards} />
         </Route>
       </Route>

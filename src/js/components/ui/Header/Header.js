@@ -30,9 +30,11 @@ const b = bem("header");
 
 export default class Header extends Component {
   static propTypes = {
+    onSettingsClick: PropTypes.func
   };
 
   static defaultProps = {
+    onSettingsClick: () => {}
   };
 
   constructor(props) {
@@ -68,6 +70,10 @@ export default class Header extends Component {
   }
 
   render() {
+    const {
+      onSettingsClick
+    } = this.props;
+
     const {
       userDropDownOpen,
       userDropDownTrigger
@@ -110,7 +116,7 @@ export default class Header extends Component {
               />
             </div>
             <div className={b("setting")}>
-              <IconButton icon={<CogIcon />} />
+              <IconButton icon={<CogIcon />} onClick={onSettingsClick} />
             </div>
           </div>
         </div>
