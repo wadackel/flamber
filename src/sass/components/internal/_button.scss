@@ -79,6 +79,11 @@ $button-icon-margin: 8px;
   &:focus {
     outline: none;
   }
+
+  &:hover,
+  &:active {
+    color: inherit;
+  }
 }
 
 

@@ -31,7 +31,12 @@ body {
 
 a {
   @include transition(all);
+  color: $brand-primary;
   text-decoration: none;
+
+  &:hover {
+    color: lighten($brand-primary, 15%);
+  }
 }
 
 img {
