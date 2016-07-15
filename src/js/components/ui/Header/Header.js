@@ -5,6 +5,7 @@ import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Avatar,
+  LogoButton,
   EditableText,
   UserDropDown,
   Nav,
@@ -30,10 +31,12 @@ const b = bem("header");
 export default class Header extends Component {
   static propTypes = {
     navItems: PropTypes.node,
+    onLogoClick: PropTypes.func,
     onSettingsClick: PropTypes.func
   };
 
   static defaultProps = {
+    onLogoClick: () => {},
     onSettingsClick: () => {}
   };
 
@@ -72,6 +75,7 @@ export default class Header extends Component {
   render() {
     const {
       navItems,
+      onLogoClick,
       onSettingsClick
     } = this.props;
 
@@ -84,7 +88,7 @@ export default class Header extends Component {
       <header className={b()}>
         <div className={b("row", { main: true })}>
           <div className={b("col", { "main-left": true })}>
-            <h1 className={b("logo")}><a href="#"><LogoIcon /></a></h1>
+            <h1 className={b("logo")}><LogoButton onClick={onLogoClick} /></h1>
             <Nav className={b("nav")}>
               {navItems}
             </Nav>
