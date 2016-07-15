@@ -1,0 +1,23 @@
+.logo-button {
+  @include button-extend-all;
+  border-radius: 0;
+  background: $brand-primary;
+  color: #fff;
+  box-shadow: none !important;
+
+  &__body {
+    @include size(60px);
+    padding: 0;
+  }
+
+  &__icon {
+    margin: 0;
+
+    svg {
+      width: 23px;
+      height: 30px;
+      vertical-align: middle;
+      fill: currentColor;
+    }
+  }
+}

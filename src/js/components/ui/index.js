@@ -21,6 +21,7 @@ export LayoutButton from "./LayoutButton/LayoutButton";
 export LayoutButtonGroup from "./LayoutButtonGroup/LayoutButtonGroup";
 export List from "./List/List";
 export ListItem from "./ListItem/ListItem";
+export LogoButton from "./LogoButton/LogoButton";
 export Menu from "./Menu/Menu";
 export MenuItem from "./MenuItem/MenuItem";
 export Nav from "./Nav/Nav";
