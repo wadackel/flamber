@@ -16,6 +16,7 @@ import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
 import configureStore from "./store/configureStore";
 import authMiddleware from "./middleware/auth";
+import apiRoutes from "./routes/api";
 import authRoutes from "./routes/auth";
 import getRoutes from "./routes";
 import { initialState as authInitialState } from "./reducers/auth";
@@ -60,6 +61,7 @@ app.use(methodOverride("X-Method-Override"));
 app.use(express.static(path.resolve(__dirname, "../../public")));
 
 app.use(authMiddleware);
+app.use("/api", apiRoutes);
 app.use("/auth", authRoutes);
 
 

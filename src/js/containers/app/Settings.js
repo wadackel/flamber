@@ -10,6 +10,7 @@ import {
   Radio
 } from "../../components/ui/";
 import { GithubIcon } from "../../components/svg-icons";
+import { updateSettingsRequest } from "../../actions/settings";
 
 const b = bem("settings");
 
@@ -70,5 +71,8 @@ export class Settings extends Component {
 }
 
 export default connect(
-  state => ({ auth: state.auth })
+  state => ({
+    auth: state.auth,
+    settings: state.settings
+  })
 )(Settings);
