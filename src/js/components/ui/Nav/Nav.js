@@ -16,10 +16,14 @@ export default class Nav extends Component {
       className
     } = this.props;
 
+    const cloneChildren = React.Children.map(children, (item, index) =>
+      React.cloneElement(item, { key: index })
+    );
+
     return (
       <nav className={mergeClassNames(b(), className)}>
         <ul className={b("list")}>
-          {children}
+          {cloneChildren}
         </ul>
       </nav>
     );

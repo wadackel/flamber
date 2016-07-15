@@ -5,7 +5,8 @@ import { push } from "react-router-redux";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import {
-  Header
+  Header,
+  NavItem
 } from "../../components/ui/";
 
 const b = bem("app");
@@ -22,8 +23,18 @@ export class App extends Component {
     super(props);
 
     bindHandlers([
+      "handleMyItemsClick",
+      "handleFeedsClick",
       "handleSettingsClick"
     ], this);
+  }
+
+  handleMyItemsClick() {
+    this.props.dispatch(push("/app/boards"));
+  }
+
+  handleFeedsClick() {
+    this.props.dispatch(push("/app/feeds"));
   }
 
   handleSettingsClick() {
@@ -34,6 +45,10 @@ export class App extends Component {
     return (
       <div className={b()}>
         <Header
+          navItems={[
+            <NavItem onClick={this.handleMyItemsClick}>My Items</NavItem>,
+            <NavItem onClick={this.handleFeedsClick}>Feeds</NavItem>
+          ]}
           onSettingsClick={this.handleSettingsClick}
         />
         <div className={b("content")}>

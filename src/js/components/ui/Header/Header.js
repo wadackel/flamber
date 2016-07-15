@@ -8,7 +8,6 @@ import {
   EditableText,
   UserDropDown,
   Nav,
-  NavItem,
   IconButton,
   LayoutButtonGroup,
   LayoutButton,
@@ -30,6 +29,7 @@ const b = bem("header");
 
 export default class Header extends Component {
   static propTypes = {
+    navItems: PropTypes.node,
     onSettingsClick: PropTypes.func
   };
 
@@ -71,6 +71,7 @@ export default class Header extends Component {
 
   render() {
     const {
+      navItems,
       onSettingsClick
     } = this.props;
 
@@ -85,8 +86,7 @@ export default class Header extends Component {
           <div className={b("col", { "main-left": true })}>
             <h1 className={b("logo")}><a href="#"><LogoIcon /></a></h1>
             <Nav className={b("nav")}>
-              <NavItem active>My items</NavItem>
-              <NavItem>Feeds</NavItem>
+              {navItems}
             </Nav>
           </div>
           <div className={b("col", { "main-center": true })}>
