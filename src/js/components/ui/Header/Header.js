@@ -30,7 +30,12 @@ const b = bem("header");
 
 export default class Header extends Component {
   static propTypes = {
+    user: PropTypes.object,
     navItems: PropTypes.node,
+    mainTItle: PropTypes.node,
+    subTitle: PropTypes.node,
+    subLeft: PropTypes.node,
+    subRight: PropTypes.node,
     onLogoClick: PropTypes.func,
     onSettingsClick: PropTypes.func
   };
@@ -72,9 +77,35 @@ export default class Header extends Component {
     // TODO
   }
 
+  renderSubHeader() {
+    const {
+      subTitle,
+      subLeft,
+      subRight
+    } = this.props;
+
+    if (!subTitle && !subLeft && !subRight) return null;
+
+    return (
+      <div className={b("row", { sub: true })}>
+        {subLeft && <div className={b("col", { "sub-left": true })}>
+          {subLeft}
+        </div>}
+        {subTitle && <div className={b("col", { "sub-center": true })}>
+          <h3 className={b("sub-title")}>{subTitle}</h3>
+        </div>}
+        {subRight && <div className={b("col", { "sub-right": true })}>
+          {subRight}
+        </div>}
+      </div>
+    );
+  }
+
   render() {
     const {
+      user,
       navItems,
+      mainTitle,
       onLogoClick,
       onSettingsClick
     } = this.props;
@@ -84,37 +115,39 @@ export default class Header extends Component {
       userDropDownTrigger
     } = this.state;
 
+    const navItemElements = React.Children.map(navItems, (item, index) =>
+      React.cloneElement(item, { key: index })
+    );
+
     return (
       <header className={b()}>
         <div className={b("row", { main: true })}>
           <div className={b("col", { "main-left": true })}>
             <h1 className={b("logo")}><LogoButton onClick={onLogoClick} /></h1>
             <Nav className={b("nav")}>
-              {navItems}
+              {navItemElements}
             </Nav>
           </div>
-          <div className={b("col", { "main-center": true })}>
-            <EditableText
-              className={b("main-title")}
-              icon={<PencilIcon />}
-              value="Web Application"
-            />
-          </div>
+          {mainTitle && <div className={b("col", { "main-center": true })}>
+            <div className={b("main-title")}>
+              {mainTitle}
+            </div>
+          </div>}
           <div className={b("col", { "main-right": true })}>
             <div className={b("user")}>
               <Avatar
                 className={b("user__avatar")}
-                name="wadackel"
-                email="mail@example.com"
-                icon="/images/avatar-sample.png"
+                name={user.displayName}
+                email={user.emailAddress}
+                icon={user.photoLink}
                 onIconClick={this.handleUserDropDownClick}
               />
               <UserDropDown
                 className={b("user__drop-down")}
                 open={userDropDownOpen}
                 triggerElement={userDropDownTrigger}
-                limit={16106127360}
-                usage={2195751968}
+                limit={parseInt(user.limit, 10)}
+                usage={parseInt(user.usage, 10)}
                 onRequestClose={this.handleUserDropDownRequestClose}
                 onRequestSignOut={this.handleSignOut}
               />
@@ -125,33 +158,7 @@ export default class Header extends Component {
           </div>
         </div>
 
-        <div className={b("row", { sub: true })}>
-          <div className={b("col", { "sub-left": true })}>
-            <IconButton icon={<TagsIcon />} />
-            <IconButton icon={<StarIcon />} />
-            <SearchField
-              className={b("search-field")}
-              placeholder="Type search keyword"
-            />
-          </div>
-          <div className={b("col", { "sub-center": true })}>
-            <h3 className={b("sub-title")}>Total 102 items</h3>
-          </div>
-          <div className={b("col", { "sub-right": true })}>
-            <Slider
-              className={b("layout-slider")}
-              defaultValue={50}
-            />
-            <LayoutButtonGroup
-              className={b("layout-group")}
-              value={Layout.GRID}
-            >
-              <LayoutButton icon={<RandomGridIcon />} value={Layout.RANDOM_GRID}></LayoutButton>
-              <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>
-              <LayoutButton icon={<ListIcon />} value={Layout.LIST}></LayoutButton>
-            </LayoutButtonGroup>
-          </div>
-        </div>
+        {this.renderSubHeader()}
       </header>
     );
   }
