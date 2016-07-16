@@ -16,8 +16,8 @@ export default class Input extends Component {
     onKeyUp: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.keyPressed = false;
 

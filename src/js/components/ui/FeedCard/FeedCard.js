@@ -44,8 +44,8 @@ export default class FeedCard extends React.Component {
     onAddItem: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleAddItem"

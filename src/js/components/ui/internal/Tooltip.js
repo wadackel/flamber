@@ -21,8 +21,8 @@ export default class Tooltip extends React.Component {
     }
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       width: 0,

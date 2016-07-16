@@ -17,8 +17,8 @@ export default class LayoutButtonGroup extends React.Component {
     onChange: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleButtonClick"

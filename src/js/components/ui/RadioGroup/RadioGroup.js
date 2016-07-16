@@ -18,8 +18,8 @@ export default class RadioGroup extends React.Component {
     onChange: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleCheck"

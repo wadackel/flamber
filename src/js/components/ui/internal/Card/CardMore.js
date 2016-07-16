@@ -13,8 +13,8 @@ export default class CardMore extends Component {
     actions: PropTypes.node
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = { show: false };
 

@@ -34,8 +34,8 @@ export default class Popover extends React.Component {
     onRequestClose: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       open: props.open,

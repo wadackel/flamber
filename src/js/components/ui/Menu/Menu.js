@@ -34,8 +34,8 @@ export default class Menu extends React.Component {
     onKeyDown: () => {}
   }
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     const focusIndex = this.getInitialFocusIndex(props);
 

@@ -20,8 +20,8 @@ export default class Avatar extends React.Component {
     onIconClick: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleClick",

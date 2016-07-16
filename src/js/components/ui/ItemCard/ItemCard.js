@@ -58,8 +58,8 @@ export default class ItemCard extends React.Component {
     onColorClick: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleSelect",

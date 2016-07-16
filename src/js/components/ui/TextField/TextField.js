@@ -44,8 +44,8 @@ export default class TextField extends React.Component {
     onKeyUp: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       isFocused: false,

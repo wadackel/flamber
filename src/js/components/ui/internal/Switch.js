@@ -28,8 +28,8 @@ export default class Checkbox extends React.Component {
     onClick: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       ripples: []

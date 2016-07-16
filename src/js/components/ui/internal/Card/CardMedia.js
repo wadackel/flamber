@@ -13,8 +13,8 @@ export default class CardMedia extends React.Component {
     overlay: PropTypes.element
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = { overlayShow: false };
 

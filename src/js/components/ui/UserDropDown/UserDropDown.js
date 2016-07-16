@@ -34,8 +34,8 @@ export default class UserDropDown extends React.Component {
     onRequestClose: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleRequestClose",

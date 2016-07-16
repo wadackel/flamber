@@ -24,8 +24,8 @@ export default class Snackbar extends React.Component {
     onRequestClose: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleActionClick",

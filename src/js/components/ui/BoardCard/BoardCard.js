@@ -49,8 +49,8 @@ export default class BoardCard extends React.Component {
     onDelete: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleSelect",

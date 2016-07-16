@@ -17,8 +17,8 @@ export default class Overlay extends React.Component {
     onClick: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleClick"

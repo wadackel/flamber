@@ -26,8 +26,8 @@ export default class EditableText extends Component {
     onBlur: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       isEditing: false,

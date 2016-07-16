@@ -27,8 +27,8 @@ export default class ImageLoader extends React.Component {
     onLoad: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = { status: props.src ? Status.LOADING : Status.PENDING };
 

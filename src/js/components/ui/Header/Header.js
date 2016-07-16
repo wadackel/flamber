@@ -45,8 +45,8 @@ export default class Header extends Component {
     onSettingsClick: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       userDropDownOpen: false,

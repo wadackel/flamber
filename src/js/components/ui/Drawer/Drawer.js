@@ -21,8 +21,8 @@ export default class Drawer extends React.Component {
     open: false
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleResize"

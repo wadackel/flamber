@@ -33,8 +33,8 @@ export default class ListItem extends React.Component {
     onRequestDelete: () => {}
   }
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       text: props.text,

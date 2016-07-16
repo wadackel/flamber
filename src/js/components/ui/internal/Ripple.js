@@ -17,8 +17,8 @@ export default class Ripple extends React.Component {
     onRequestHide: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       show: true

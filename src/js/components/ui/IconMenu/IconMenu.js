@@ -34,8 +34,8 @@ export default class IconMenu extends React.Component {
     onItemClick: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       open: false,

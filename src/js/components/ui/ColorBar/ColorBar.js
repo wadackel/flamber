@@ -62,8 +62,8 @@ export default class ColorBar extends React.Component {
     onChange: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "handleItemClick"

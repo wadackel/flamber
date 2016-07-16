@@ -15,8 +15,8 @@ export default class PopoverAnimation extends React.Component {
     origin: OriginalPropTypes.origin
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = { open: false };
   }
 

@@ -32,8 +32,8 @@ export default class IconButton extends React.Component {
     onMouseLeave: () => {}
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {
       showTooltip: false

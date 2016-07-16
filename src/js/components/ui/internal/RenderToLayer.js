@@ -27,8 +27,8 @@ export default class RenderToLayer extends React.Component {
     useLayerForClickAway: true
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     bindHandlers([
       "onClickAway"
