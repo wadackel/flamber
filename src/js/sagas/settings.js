@@ -1,6 +1,19 @@
 import { fork, take, put, call } from "redux-saga/effects";
-import { updateSettings } from "../api/settings";
+import { fetchSettings, updateSettings } from "../api/settings";
 import * as Settings from "../actions/settings";
+
+export function *handleFetchSettingsRequest() {
+  while (true) {
+    yield take(Settings.FETCH_SETTINGS_REQUEST);
+
+    try {
+      const settings = yield call(fetchSettings);
+      yield put(Settings.fetchSettingsSuccess(settings));
+    } catch (err) {
+      yield put(Settings.fetchSettingsFailure(err));
+    }
+  }
+}
 
 export function *handleUpdateSettingsRequest() {
   while (true) {
@@ -18,6 +31,7 @@ export function *handleUpdateSettingsRequest() {
 
 export default function *rootSaga() {
   yield [
+    fork(handleFetchSettingsRequest),
     fork(handleUpdateSettingsRequest)
   ];
 }

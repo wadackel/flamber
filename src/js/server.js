@@ -87,13 +87,23 @@ app.use((req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 
     } else if (renderProps) {
-      const content = renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>
+      const components = renderProps.components.filter(
+        component => component && typeof component.fetchData === "function"
       );
 
-      res.status(200).send(`<!doctype html>\n${renderToString(<HTML content={content} store={store} />)}`);
+      Promise.all(components.map(component => store.dispatch(component.fetchData())))
+        .then(() => {
+          const content = renderToString(
+            <Provider store={store}>
+              <RouterContext {...renderProps} />
+            </Provider>
+          );
+
+          res.status(200).send(`<!doctype html>\n${renderToString(<HTML content={content} store={store} />)}`);
+        })
+        .catch(err => {
+          res.status(500).send(err.message);
+        });
 
     } else {
       res.status(404).send("404 Not found");

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import MDSpinner from "react-md-spinner";
+import * as Themes from "../../constants/themes";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import {
@@ -21,14 +23,30 @@ export class Settings extends Component {
   static defaultProps = {
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+
+    bindHandlers([
+      "handleThemeChange"
+    ], this);
+  }
+
+  handleThemeChange(value) {
+    this.props.dispatch(updateSettingsRequest({
+      theme: value
+    }));
   }
 
   render() {
     const {
-      auth: { user }
+      auth: { user },
+      settings: { theme }
     } = this.props;
+
+    const themes = [
+      { label: "Dark", value: Themes.DARK },
+      { label: "Light", value: Themes.LIGHT }
+    ];
 
     return (
       <div className={b()}>
@@ -41,9 +59,17 @@ export class Settings extends Component {
         <section className={b("group")}>
           <h3 className={b("group__title")}>テーマ</h3>
           <div className={b("group__body")}>
-            <RadioGroup>
-              <Radio label="Dark" value={0} />
-              <Radio label="Light" value={1} />
+            <RadioGroup
+              value={theme}
+              onChange={this.handleThemeChange}
+            >
+              {themes.map(obj =>
+                <Radio
+                  key={obj.value}
+                  label={obj.label}
+                  value={obj.value}
+                />
+              )}
             </RadioGroup>
           </div>
         </section>

@@ -5,6 +5,7 @@ import { push } from "react-router-redux";
 import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
+import { fetchSettingsRequest } from "../../actions/settings";
 import {
   Header,
   EditableText,
@@ -39,8 +40,9 @@ export class App extends Component {
   static defaultProps = {
   };
 
-  constructor(props) {
-    super(props);
+  static fetchData() {
+    return fetchSettingsRequest();
+  }
 
     bindHandlers([
       "handleMyItemsClick",
@@ -165,5 +167,8 @@ export class App extends Component {
 }
 
 export default connect(
-  state => ({ auth: state.auth })
+  state => ({
+    auth: state.auth,
+    settings: state.settings
+  })
 )(App);

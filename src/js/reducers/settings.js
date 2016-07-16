@@ -1,6 +1,9 @@
-import assign from "object-assign";
+import { handleActions } from "redux-actions";
 import * as Themes from "../constants/themes";
 import {
+  FETCH_SETTINGS_REQUEST,
+  FETCH_SETTINGS_SUCCESS,
+  FETCH_SETTINGS_FAILURE,
   UPDATE_SETTINGS_REQUEST,
   UPDATE_SETTINGS_SUCCESS,
   UPDATE_SETTINGS_FAILURE
@@ -11,26 +14,40 @@ export const initialState = {
   theme: Themes.DARK
 };
 
-export default function settings(state = initialState, action) {
-  switch (action.type) {
+export default handleActions({
+  // Fetch
+  [FETCH_SETTINGS_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
 
-    case UPDATE_SETTINGS_REQUEST:
-      return assign({}, state, {
-        isFetching: true
-      });
+  [FETCH_SETTINGS_SUCCESS]: (state, action) => ({
+    ...state,
+    ...action.payload,
+    isFetching: false
+  }),
 
-    case UPDATE_SETTINGS_SUCCESS:
-      return assign({}, state, {
-        isFetching: false,
-        theme: action.payload.theme
-      });
+  [FETCH_SETTINGS_FAILURE]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    error: action.payload
+  }),
 
-    case UPDATE_SETTINGS_FAILURE:
-      return assign({}, state, {
-        isFetching: false
-      });
+  // Update
+  [UPDATE_SETTINGS_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
 
-    default:
-      return state;
-  }
-}
+  [UPDATE_SETTINGS_SUCCESS]: (state, action) => ({
+    ...state,
+    ...action.payload,
+    isFetching: false
+  }),
+
+  [UPDATE_SETTINGS_FAILURE]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    error: action.payload
+  })
+}, initialState);
