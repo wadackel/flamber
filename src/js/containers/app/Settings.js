@@ -9,7 +9,8 @@ import {
   DriveCapacity,
   RaisedButton,
   RadioGroup,
-  Radio
+  Radio,
+  Snackbar
 } from "../../components/ui/";
 import { GithubIcon } from "../../components/svg-icons";
 import { fetchSettingsRequest, updateSettingsRequest } from "../../actions/settings";
@@ -30,9 +31,20 @@ export class Settings extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.state = {
+      snackbarOpen: false
+    };
+
     bindHandlers([
-      "handleThemeChange"
+      "handleThemeChange",
+      "handleSnackbarClose"
     ], this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.settings.isFetching && !nextProps.settings.isFetching) {
+      this.setState({ snackbarOpen: true });
+    }
   }
 
   handleThemeChange(theme) {
@@ -44,12 +56,18 @@ export class Settings extends Component {
     this.props.dispatch(updateSettingsRequest(settings));
   }
 
+  handleSnackbarClose() {
+    this.setState({ snackbarOpen: false });
+  }
+
   render() {
     const {
-      auth: { user }
+      auth: { user },
+      settings
     } = this.props;
 
     const { theme } = this.context;
+    const { snackbarOpen } = this.state;
 
     const themes = [
       { label: "Dark", value: Themes.DARK },
@@ -65,7 +83,13 @@ export class Settings extends Component {
         />
 
         <section className={b("group")}>
-          <h3 className={b("group__title")}>テーマ</h3>
+          <h3 className={b("group__title")}>
+            {settings.isFetching && <MDSpinner
+              size={14}
+              style={{ marginRight: 5 }}
+            />}
+            テーマ
+          </h3>
           <div className={b("group__body")}>
             <RadioGroup
               value={theme}
@@ -99,6 +123,12 @@ export class Settings extends Component {
             <div><RaisedButton icon={<GithubIcon />} href="https://github.com/tsuyoshiwada/dripup" target="_blank">GitHub</RaisedButton></div>
           </div>
         </section>
+
+        <Snackbar
+          open={snackbarOpen}
+          message="テーマを更新しました"
+          onRequestClose={this.handleSnackbarClose}
+        />
       </div>
     );
   }
