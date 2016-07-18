@@ -1,9 +1,10 @@
 import queryString from "query-string";
 import fetch from "../utils/fetch";
 import openPopup from "../utils/popup";
+import { URL_ROOT } from "../constants/application";
 
-export const AUTH_VALIDATE_ENDPOINT = "/auth/validate";
-export const AUTH_REVOKE_ENDPOINT = "/auth/revoke";
+export const AUTH_VALIDATE_ENDPOINT = `${URL_ROOT}/auth/validate`;
+export const AUTH_REVOKE_ENDPOINT = `${URL_ROOT}/auth/revoke`;
 
 
 function listenForCredentials(popup, resolve, reject) {

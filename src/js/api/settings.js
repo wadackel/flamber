@@ -1,11 +1,12 @@
 import fetch from "../utils/fetch";
+import { API_ROOT } from "../constants/application";
 
-export const SETTINGS_ENDPOINT = "/api/settings";
+export const SETTINGS_ENDPOINT = `${API_ROOT}/settings`;
 
 
 export function fetchSettings() {
   return new Promise((resolve, reject) => {
-    fetch(`${SETTINGS_ENDPOINT}`)
+    fetch(SETTINGS_ENDPOINT)
       .then(res => {
         if (res.status === "ok") {
           resolve(res.settings);
