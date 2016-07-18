@@ -16,6 +16,7 @@ import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
 import configureStore from "./store/configureStore";
 import authMiddleware from "./middleware/auth";
+import setUpMiddleware from "./middleware/setup-data";
 import authRoutes from "./routes/auth";
 import apiRoutes from "./routes/api";
 import getRoutes from "./routes";
@@ -63,6 +64,7 @@ app.use(express.static(path.resolve(__dirname, "../../public")));
 app.use(authMiddleware);
 app.use("/auth", authRoutes);
 app.use("/api", apiRoutes);
+app.use(setUpMiddleware);
 
 
 // Basic routes
@@ -72,7 +74,8 @@ app.use((req, res) => {
       authenticated: req.authenticated,
       authenticateURL: req.authenticateURL,
       user: req.user
-    })
+    }),
+    settings: req.settings
   };
 
   const memoryHistory = createMemoryHistory(req.url);
@@ -87,23 +90,13 @@ app.use((req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
 
     } else if (renderProps) {
-      const components = renderProps.components.filter(
-        component => component && typeof component.fetchData === "function"
+      const content = renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
       );
 
-      Promise.all(components.map(component => store.dispatch(component.fetchData())))
-        .then(() => {
-          const content = renderToString(
-            <Provider store={store}>
-              <RouterContext {...renderProps} />
-            </Provider>
-          );
-
-          res.status(200).send(`<!doctype html>\n${renderToString(<HTML content={content} store={store} />)}`);
-        })
-        .catch(err => {
-          res.status(500).send(err.message);
-        });
+      res.status(200).send(`<!doctype html>\n${renderToString(<HTML content={content} store={store} />)}`);
 
     } else {
       res.status(404).send("404 Not found");

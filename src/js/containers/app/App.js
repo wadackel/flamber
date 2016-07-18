@@ -5,7 +5,6 @@ import { push } from "react-router-redux";
 import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import { fetchSettingsRequest } from "../../actions/settings";
 import {
   Header,
   EditableText,
@@ -38,10 +37,6 @@ export class App extends Component {
   };
 
   static defaultProps = {
-  };
-
-  static fetchData() {
-    return fetchSettingsRequest();
   };
 
   constructor(props, context) {

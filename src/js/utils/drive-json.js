@@ -1,4 +1,5 @@
 const mimeType = "application/json";
+const folder = "appDataFolder";
 
 export function getJSON(drive, fileId) {
   return new Promise((resolve, reject) => {
@@ -19,11 +20,13 @@ export function getJSON(drive, fileId) {
 export function findJSON(drive, name) {
   return new Promise((resolve, reject) => {
     drive.files.list({
-      q: `name = "${name}" and mimeType = "${mimeType}"`,
-      spaces: "appDataFolder"
+      q: `name = '${name}'`,
+      spaces: folder
     }, (err, res) => {
       if (err) {
         reject(err);
+      } else if (res.files.length === 0) {
+        reject("Not found");
       } else {
         resolve(res.files.shift());
       }
@@ -35,7 +38,7 @@ export function createJSON(drive, name, body) {
   return new Promise((resolve, reject) => {
     drive.files.create({
       resource: {
-        parents: ["appDataFolder"],
+        parents: [folder],
         name,
         mimeType
       },
@@ -58,7 +61,7 @@ export function updateJSON(drive, fileId, name, body) {
     drive.files.update({
       fileId,
       resouce: {
-        parents: ["appDataFolder"],
+        parents: [folder],
         name
       },
       media: {

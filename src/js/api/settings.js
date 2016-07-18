@@ -29,7 +29,7 @@ export function updateSettings(settings) {
       body: JSON.stringify(settings)
     };
 
-    fetch(`${SETTINGS_ENDPOINT}`, params)
+    fetch(SETTINGS_ENDPOINT, params)
       .then(res => {
         if (res.status === "ok") {
           resolve(res.settings);

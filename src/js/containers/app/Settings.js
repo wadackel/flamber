@@ -12,7 +12,7 @@ import {
   Radio
 } from "../../components/ui/";
 import { GithubIcon } from "../../components/svg-icons";
-import { updateSettingsRequest } from "../../actions/settings";
+import { fetchSettingsRequest, updateSettingsRequest } from "../../actions/settings";
 
 const b = bem("settings");
 
