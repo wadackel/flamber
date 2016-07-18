@@ -29,7 +29,7 @@ export default function authMiddleware(req, res, next) {
       next();
     })
     .catch(err => {
-      console.log(err);
+      console.log(err); // eslint-disable-line no-console
       req.authenticated = false;
       req.user = null;
       req.drive = null;

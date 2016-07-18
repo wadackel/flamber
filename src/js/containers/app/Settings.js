@@ -35,10 +35,13 @@ export class Settings extends Component {
     ], this);
   }
 
-  handleThemeChange(value) {
-    this.props.dispatch(updateSettingsRequest({
-      theme: value
-    }));
+  handleThemeChange(theme) {
+    const settings = {
+      ...this.props.settings,
+      theme
+    };
+
+    this.props.dispatch(updateSettingsRequest(settings));
   }
 
   render() {

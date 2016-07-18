@@ -1,14 +1,26 @@
 import { Router } from "express";
+import { updateSettings } from "../utils/drive/settings";
 
 const router = Router();
 
 
 router.post("/settings", (req, res) => {
-  // TODO: Implement the registration to Google Drive.
-  res.json({
-    status: "ok",
-    settings: req.body
-  });
+  const { drive } = req;
+
+  updateSettings(drive, req.body)
+    .then(settings => {
+      res.json({
+        status: "ok",
+        settings
+      });
+    })
+    .catch(error => {
+      console.log(error); // eslint-disable-line no-console
+      res.json({
+        status: "error",
+        error
+      });
+    });
 });
 
 
