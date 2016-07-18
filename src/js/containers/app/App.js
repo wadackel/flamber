@@ -44,6 +44,9 @@ export class App extends Component {
     return fetchSettingsRequest();
   }
 
+  constructor(props, context) {
+    super(props, context);
+
     bindHandlers([
       "handleMyItemsClick",
       "handleFeedsClick",
