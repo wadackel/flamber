@@ -23,6 +23,10 @@ export class Settings extends Component {
   static defaultProps = {
   };
 
+  static contextTypes = {
+    theme: PropTypes.string.isRequired
+  };
+
   constructor(props, context) {
     super(props, context);
 
@@ -39,9 +43,10 @@ export class Settings extends Component {
 
   render() {
     const {
-      auth: { user },
-      settings: { theme }
+      auth: { user }
     } = this.props;
+
+    const { theme } = this.context;
 
     const themes = [
       { label: "Dark", value: Themes.DARK },
@@ -100,5 +105,8 @@ export default connect(
   state => ({
     auth: state.auth,
     settings: state.settings
-  })
+  }),
+  null,
+  null,
+  { pure: false }
 )(Settings);

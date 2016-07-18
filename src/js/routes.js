@@ -10,6 +10,7 @@ import {
   Boards,
   Settings
 } from "./containers/app/";
+import ThemeProvider from "./components/ThemeProvider";
 
 function getAuthenticated(store) {
   const { auth: { authenticated } } = store.getState();
@@ -34,7 +35,7 @@ export default function getRoutes(store) {
   }
 
   const routes = (
-    <Route path="/">
+    <Route path="/" component={ThemeProvider}>
       <IndexRoute component={Landing} />
 
       <Route onEnter={userOnly}>

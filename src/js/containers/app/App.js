@@ -42,7 +42,7 @@ export class App extends Component {
 
   static fetchData() {
     return fetchSettingsRequest();
-  }
+  };
 
   constructor(props, context) {
     super(props, context);
@@ -173,5 +173,8 @@ export default connect(
   state => ({
     auth: state.auth,
     settings: state.settings
-  })
+  }),
+  null,
+  null,
+  { pure: false }
 )(App);

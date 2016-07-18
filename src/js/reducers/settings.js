@@ -11,7 +11,7 @@ import {
 
 export const initialState = {
   isFetching: false,
-  theme: Themes.DARK
+  theme: Themes.DEFAULT
 };
 
 export default handleActions({
