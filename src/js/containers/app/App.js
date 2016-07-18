@@ -56,19 +56,23 @@ export class App extends Component {
   }
 
   handleMyItemsClick() {
-    this.props.dispatch(push("/app/"));
+    this.push("/app/");
   }
 
   handleFeedsClick() {
-    this.props.dispatch(push("/app/feeds"));
+    this.push("/app/feeds");
   }
 
   handleLogoClick() {
-    this.props.dispatch(push("/app/"));
+    this.push("/app/");
   }
 
   handleSettingsClick() {
-    this.props.dispatch(push("/app/settings"));
+    this.push("/app/settings");
+  }
+
+  push(path) {
+    this.props.dispatch(push(path));
   }
 
   getHeaderBoardsProps() {
