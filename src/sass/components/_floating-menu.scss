@@ -3,22 +3,34 @@
   position: relative;
 
   &__toggle {
-    // TODO
+    .floating-button__icon {
+      @include transition(all, $transition-duration-fast);
+      @include size(16px);
+      transform: rotate(0);
+    }
 
     &--open {
-      // TODO
+      background: $gray-lightest !important;
+
+      &:hover {
+        background: darken($gray-lightest, 20%) !important;
+      }
+
+      .floating-button__icon {
+        transform: rotate(-135deg);
+      }
     }
   }
 
   &__list {
     @include absolute(auto, 0, 100%, 0, 5);
     @include transition(all, $transition-duration-fast);
-    transform: translateY(30px);
+    transform: translateY(30px) scale(.7);
     opacity: 0;
     visibility: hidden;
 
     &--open {
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
       opacity: 1;
       visibility: visible;
     }
@@ -28,15 +40,15 @@
     @include size(50px);
     display: block;
     margin: 5px auto;
+    transition-duration: $transition-duration-normal;
+    transition-property: all;
     opacity: 0;
     visibility: hidden;
-    transition-property: all;
-    transition-duration: $transition-duration-normal;
 
     &--open {
+      transform: translateY(0) !important;
       opacity: 1;
       visibility: visible;
-      transform: translateY(0) !important;
     }
   }
 }
