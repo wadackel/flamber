@@ -2,6 +2,7 @@ import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
+import measureScrollbarWidth from "../../../utils/measure-scrollbar-width";
 
 const b = bem("overlay");
 
@@ -23,6 +24,10 @@ export default class Overlay extends React.Component {
     bindHandlers([
       "handleClick"
     ], this);
+  }
+
+  componentWillMount() {
+    this.scrollbarWidth = measureScrollbarWidth();
   }
 
   componentDidMount() {
@@ -53,11 +58,15 @@ export default class Overlay extends React.Component {
   }
 
   scrollLock() {
-    document.body.style.overflow = "hidden";
+    const { body } = document;
+    body.style.overflow = "hidden";
+    body.style.paddingRight = `${this.scrollbarWidth}px`;
   }
 
   unScrollLock() {
-    document.body.style.overflow = "";
+    const { body } = document;
+    body.style.overflow = "";
+    body.style.paddingRight = "";
   }
 
   render() {
