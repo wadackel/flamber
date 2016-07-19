@@ -18,3 +18,7 @@
 .ReactStyleguidist-Layout__sidebar {
   background: #1a1a1a;
 }
+
+.ReactStyleguidist-Playground__root {
+  overflow: visible;
+}

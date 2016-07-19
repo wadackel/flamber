@@ -12,6 +12,7 @@ export EditableText from "./EditableText/EditableText";
 export FeedCard from "./FeedCard/FeedCard";
 export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";
+export FloatingMenu from "./FloatingMenu/FloatingMenu";
 export Header from "./Header/Header";
 export IconButton from "./IconButton/IconButton";
 export IconMenu from "./IconMenu/IconMenu";
