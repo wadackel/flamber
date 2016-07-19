@@ -10,6 +10,7 @@ export default class Button extends React.Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    style: PropTypes.object,
     baseClassName: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     href: PropTypes.string,
@@ -28,6 +29,7 @@ export default class Button extends React.Component {
 
   static defaultProps = {
     type: "default",
+    style: {},
     onClick: () => {},
     onMouseDown: () => {},
     onMouseEnter: () => {},
@@ -115,6 +117,7 @@ export default class Button extends React.Component {
       children,
       baseClassName,
       className,
+      style,
       type,
       href,
       target,
@@ -144,6 +147,7 @@ export default class Button extends React.Component {
       <div
         ref="element"
         className={mergeClassNames(b(modifier), className)}
+        style={style}
         onMouseDown={this.handleMouseDown}
         onClick={onClick}
         onMouseEnter={onMouseEnter}

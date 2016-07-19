@@ -1,0 +1,54 @@
+.floating-menu {
+  display: inline-block;
+  position: relative;
+
+  &__toggle {
+    .floating-button__icon {
+      @include transition(all, $transition-duration-fast);
+      @include size(16px);
+      transform: rotate(0);
+    }
+
+    &--open {
+      background: $gray-lightest !important;
+
+      &:hover {
+        background: darken($gray-lightest, 20%) !important;
+      }
+
+      .floating-button__icon {
+        transform: rotate(-135deg);
+      }
+    }
+  }
+
+  &__list {
+    @include absolute(auto, 0, 100%, 0, 5);
+    @include transition(all, $transition-duration-fast);
+    transform: translateY(30px) scale(.7);
+    opacity: 0;
+    visibility: hidden;
+
+    &--open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__item {
+    @include size(50px);
+    display: block;
+    margin: 5px auto;
+    transition-duration: $transition-duration-normal;
+    transition-property: all;
+    opacity: 0;
+    visibility: hidden;
+
+    &--open {
+      transform: translateY(0) !important;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

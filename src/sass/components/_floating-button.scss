@@ -38,6 +38,7 @@ $button-colors: (
 
 .floating-button {
   @include button-extend-all;
+  @include size($button-size);
 
   border-radius: 50%;
 
@@ -50,15 +51,16 @@ $button-colors: (
   }
 
   &__body {
-    @include size($button-size);
+    @include size(100%);
     padding: 0;
   }
 
   &__icon {
     margin: 0;
+    color: $color-root;
 
     svg {
-      fill: $color-root;
+      fill: currentColor;
     }
   }
 
@@ -75,8 +77,8 @@ $button-colors: (
       }
     }
 
-    &__icon--#{$type} svg {
-      fill: map-deep-get($values, default, color);
+    &__icon--#{$type} {
+      color: map-deep-get($values, default, color);
     }
   }
 }
