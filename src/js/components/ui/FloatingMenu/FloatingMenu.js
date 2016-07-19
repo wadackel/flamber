@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";

@@ -10,6 +10,7 @@ const b = bem("icon-button");
 export default class IconButton extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    style: PropTypes.object,
     type: PropTypes.string.isRequired,
     href: PropTypes.string,
     target: PropTypes.string,

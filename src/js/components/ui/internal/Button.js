@@ -10,7 +10,7 @@ export default class Button extends React.Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    style: PropTypes.obj,
+    style: PropTypes.object,
     baseClassName: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     href: PropTypes.string,
