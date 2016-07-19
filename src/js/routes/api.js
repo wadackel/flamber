@@ -12,6 +12,8 @@ function errorResponse(res, error) {
   });
 }
 
+
+// Settings
 router.get("/settings", (req, res) => {
   const { drive } = req;
 
@@ -40,6 +42,18 @@ router.post("/settings", (req, res) => {
     .catch(error => {
       errorResponse(res, error);
     });
+});
+
+
+// Boards
+router.get("/boards", (req, res) => {
+  // const { drive } = req;
+
+  // TODO: save on Google Drive
+  res.json({
+    status: "ok",
+    boards: []
+  });
 });
 
 

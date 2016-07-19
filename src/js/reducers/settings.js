@@ -9,7 +9,7 @@ import {
   UPDATE_SETTINGS_FAILURE
 } from "../actions/settings";
 
-export const initialState = {
+const initialState = {
   isFetching: false,
   theme: Themes.DEFAULT
 };
