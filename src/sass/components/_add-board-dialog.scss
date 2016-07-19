@@ -1,0 +1,17 @@
+.add-board-dialog {
+
+  .text-field {
+    &__label {
+      color: $gray-lightest;
+
+      &--is-focused {
+        color: $brand-primary !important;
+      }
+    }
+
+    &__control {
+      border-bottom-color: $gray-lightest;
+      color: $gray-light;
+    }
+  }
+}

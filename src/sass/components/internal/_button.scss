@@ -40,6 +40,10 @@ $button-icon-margin: 8px;
   }
 }
 
+%button-root-disable {
+  cursor: default;
+}
+
 
 %button-ripple-container {
   @include absolute(0, 0, 0, 0, 0);
@@ -86,6 +90,10 @@ $button-icon-margin: 8px;
   }
 }
 
+%button-body-disable {
+  cursor: default;
+}
+
 
 %button-label {
   position: relative;
@@ -101,6 +109,7 @@ $button-icon-margin: 8px;
   svg {
     @include size(1rem);
     vertical-align: baseline;
+    fill: currentColor;
   }
 }
 
@@ -114,6 +123,10 @@ $button-icon-margin: 8px;
 @mixin button-extend-all() {
   @extend %button-root;
 
+  &--disable {
+    @extend %button-root-disable;
+  }
+
   &__ripple-container {
     @extend %button-ripple-container;
   }
@@ -124,6 +137,10 @@ $button-icon-margin: 8px;
 
   &__body {
     @extend %button-body;
+
+    &--disable {
+      @extend %button-body-disable;
+    }
   }
 
   &__label {

@@ -9,6 +9,8 @@ Basic:
   <FlatButton type="secondary">Click me</FlatButton>
   {" "}
   <FlatButton type="danger">Click me</FlatButton>
+  {" "}
+  <FlatButton type="primary" disable>Click me</FlatButton>
 </div>
 ```
 

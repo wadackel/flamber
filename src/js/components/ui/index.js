@@ -1,3 +1,4 @@
+export AddBoardDialog from "./AddBoardDialog/AddBoardDialog";
 export AutoComplete from "./AutoComplete/AutoComplete";
 export Avatar from "./Avatar/Avatar";
 export BoardCard from "./BoardCard/BoardCard";

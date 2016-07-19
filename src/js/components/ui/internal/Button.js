@@ -13,6 +13,7 @@ export default class Button extends React.Component {
     style: PropTypes.object,
     baseClassName: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
+    disable: PropTypes.bool,
     href: PropTypes.string,
     target: PropTypes.string,
     label: PropTypes.node,
@@ -29,6 +30,7 @@ export default class Button extends React.Component {
 
   static defaultProps = {
     type: "default",
+    disable: false,
     style: {},
     onClick: () => {},
     onMouseDown: () => {},
@@ -119,6 +121,7 @@ export default class Button extends React.Component {
       className,
       style,
       type,
+      disable,
       href,
       target,
       label,
@@ -134,7 +137,7 @@ export default class Button extends React.Component {
 
     const { ripples } = this.state;
     const b = bem(baseClassName.trim());
-    const modifier = { [type]: true };
+    const modifier = { [type]: true, disable };
     const labelElement = label ? <span className={b("label", modifier)}>{label}</span> : null;
     const iconElement = this.createIcon(icon, b("icon", modifier));
     const iconRightElement = this.createIcon(iconRight, b("icon", assign(modifier, { right: true })));
@@ -143,18 +146,22 @@ export default class Button extends React.Component {
       ? <button className={bodyClass}>{iconElement}{labelElement}{iconRightElement}</button>
       : <a className={bodyClass} href={href} target={target}>{iconElement}{labelElement}{iconRightElement}</a>;
 
+    const events = disable ? {} : {
+      onMouseDown: this.handleMouseDown,
+      onClick,
+      onMouseEnter,
+      onMouseLeave,
+      onKeyDown,
+      onKeyUp,
+      onKeyPress
+    };
+
     return (
       <div
         ref="element"
         className={mergeClassNames(b(modifier), className)}
         style={style}
-        onMouseDown={this.handleMouseDown}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-        onKeyPress={onKeyPress}
+        {...events}
       >
         <div className={b("ripple-container")}>{ripples}</div>
         {bodyElement}

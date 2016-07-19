@@ -9,11 +9,10 @@ $button-colors: (
 .flat-button {
   @include button-extend-all;
 
-  box-shadow: none;
+  box-shadow: none !important;
 
-  &:hover {
+  &:not(&--disable):hover {
     background: lighten($background-root, 8%);
-    box-shadow: none;
   }
 
   @each $modifier, $color in $button-colors {
@@ -21,8 +20,12 @@ $button-colors: (
       color: $color;
     }
 
-    &__icon--#{$modifier} svg {
-      fill: $color;
+    &__icon--#{$modifier} {
+      color: $color;
     }
+  }
+
+  &--disable {
+    color: $gray-lightest;
   }
 }

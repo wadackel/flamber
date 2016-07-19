@@ -3,8 +3,6 @@
   @include transition(all);
   display: block;
   width: 400px;
-  // max-width: 100%;
-  // margin: auto;
   border-radius: 3px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
@@ -200,7 +198,7 @@
     text-align: right;
 
     .flat-button {
-      &:hover {
+      &:not(.flat-button--disable):hover {
         background-color: darken(#fff, 8%);
       }
 
