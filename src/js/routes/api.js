@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { fetchSettings, updateSettings } from "../utils/drive/settings";
+import { fetchMyItems } from "../utils/drive/my-items";
 
 const router = Router();
 
@@ -47,13 +48,18 @@ router.post("/settings", (req, res) => {
 
 // Boards
 router.get("/boards", (req, res) => {
-  // const { drive } = req;
+  const { drive } = req;
 
-  // TODO: save on Google Drive
-  res.json({
-    status: "ok",
-    boards: []
-  });
+  fetchMyItems(drive)
+    .then(({ boards }) => {
+      res.json({
+        status: "ok",
+        boards
+      });
+    })
+    .catch(error => {
+      errorResponse(res, error);
+    });
 });
 
 
