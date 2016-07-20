@@ -5,6 +5,7 @@ import { push } from "react-router-redux";
 import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
+import { addBoardRequest } from "../../actions/boards";
 import {
   AddBoardDialog,
   FloatingMenu,
@@ -90,7 +91,7 @@ export class App extends Component {
   }
 
   handleAddBoard(boardName) {
-    console.log(`TODO: ${boardName}`);
+    this.props.dispatch(addBoardRequest(boardName));
   }
 
   handleAddLinkItemOpen() {

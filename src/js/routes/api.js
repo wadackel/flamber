@@ -1,6 +1,7 @@
+import uuid from "node-uuid";
 import { Router } from "express";
 import { fetchSettings, updateSettings } from "../utils/drive/settings";
-import { fetchMyItems } from "../utils/drive/my-items";
+import { fetchMyItems, createMyItems } from "../utils/drive/my-items";
 
 const router = Router();
 
@@ -55,6 +56,31 @@ router.get("/boards", (req, res) => {
       res.json({
         status: "ok",
         boards
+      });
+    })
+    .catch(error => {
+      errorResponse(res, error);
+    });
+});
+
+router.post("/boards", (req, res) => {
+  const { drive, body } = req;
+  const dateString = new Date().toString();
+
+  fetchMyItems(drive)
+    .then(myItems => createMyItems(drive, {
+      ...myItems,
+      boards: [...myItems.boards, {
+        id: uuid.v4(),
+        name: body.name,
+        created: dateString,
+        modified: dateString
+      }]
+    }))
+    .then(({ boards }) => {
+      res.json({
+        status: "ok",
+        board: boards.pop()
       });
     })
     .catch(error => {

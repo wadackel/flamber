@@ -84,6 +84,7 @@
     "method-override": "^2.3.6",
     "moment": "^2.14.1",
     "multer": "^1.1.0",
+    "node-uuid": "^1.4.7",
     "object-assign": "^4.1.0",
     "query-string": "^4.2.2",
     "rc-slider": "^3.7.3",

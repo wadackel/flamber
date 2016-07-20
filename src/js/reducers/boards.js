@@ -2,7 +2,10 @@ import { handleActions } from "redux-actions";
 import {
   FETCH_BOARDS_REQUEST,
   FETCH_BOARDS_SUCCESS,
-  FETCH_BOARDS_FAILURE
+  FETCH_BOARDS_FAILURE,
+  ADD_BOARD_REQUEST,
+  ADD_BOARD_SUCCESS,
+  ADD_BOARD_FAILURE
 } from "../actions/boards";
 
 const initialState = {
@@ -24,6 +27,24 @@ export default handleActions({
   }),
 
   [FETCH_BOARDS_FAILURE]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    error: action.payload
+  }),
+
+  // Add
+  [ADD_BOARD_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
+
+  [ADD_BOARD_SUCCESS]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    entities: [...state.entities, action.payload]
+  }),
+
+  [ADD_BOARD_FAILURE]: (state, action) => ({
     ...state,
     isFetching: false,
     error: action.payload

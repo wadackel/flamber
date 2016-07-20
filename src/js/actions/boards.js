@@ -9,3 +9,13 @@ export const FETCH_BOARDS_FAILURE = "FETCH_BOARDS_FAILURE";
 export const fetchBoardsRequest = createAction(FETCH_BOARDS_REQUEST);
 export const fetchBoardsSuccess = createAction(FETCH_BOARDS_SUCCESS);
 export const fetchBoardsFailure = createAction(FETCH_BOARDS_FAILURE);
+
+
+// Add board
+export const ADD_BOARD_REQUEST = "ADD_BOARD_REQUEST";
+export const ADD_BOARD_SUCCESS = "ADD_BOARD_SUCCESS";
+export const ADD_BOARD_FAILURE = "ADD_BOARD_FAILURE";
+
+export const addBoardRequest = createAction(ADD_BOARD_REQUEST);
+export const addBoardSuccess = createAction(ADD_BOARD_SUCCESS);
+export const addBoardFailure = createAction(ADD_BOARD_FAILURE);
