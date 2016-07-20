@@ -1,5 +1,6 @@
 import { handleActions } from "redux-actions";
 import * as Themes from "../constants/themes";
+import * as Layout from "../constants/layouts";
 import {
   FETCH_SETTINGS_REQUEST,
   FETCH_SETTINGS_SUCCESS,
@@ -11,7 +12,8 @@ import {
 
 const initialState = {
   isFetching: false,
-  theme: Themes.DEFAULT
+  theme: Themes.DEFAULT,
+  boardsLayout: Layout.GRID
 };
 
 export default handleActions({
@@ -34,8 +36,9 @@ export default handleActions({
   }),
 
   // Update
-  [UPDATE_SETTINGS_REQUEST]: state => ({
+  [UPDATE_SETTINGS_REQUEST]: (state, action) => ({
     ...state,
+    ...action.payload,
     isFetching: true
   }),
 

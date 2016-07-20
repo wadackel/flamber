@@ -1,8 +1,11 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import bem from "../../helpers/bem";
 import { fetchBoardsRequest } from "../../actions/boards";
 import { BoardCard } from "../../components/ui/";
+
+const b = bem("boards");
 
 export class Boards extends Component {
   static propTypes = {
@@ -17,20 +20,27 @@ export class Boards extends Component {
 
   render() {
     const {
+      settings: {
+        boardsLayout
+      },
       boards
     } = this.props;
 
     const boardElements = boards.entities.map(board =>
-      <BoardCard
+      <div
+        className={b("item", { [boardsLayout]: true })}
         key={board.id}
-        style={{ width: 300 }}
-        title={board.name}
-        lastModified={new Date(board.modified)}
-      />
+      >
+        <BoardCard
+          title={board.name}
+          layout={boardsLayout}
+          lastModified={new Date(board.modified)}
+        />
+      </div>
     );
 
     return (
-      <div>
+      <div className="container boards">
         {boardElements}
       </div>
     );
@@ -39,6 +49,7 @@ export class Boards extends Component {
 
 export default connect(
   state => ({
+    settings: state.settings,
     boards: state.boards
   })
 )(Boards);
