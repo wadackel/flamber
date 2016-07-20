@@ -29,10 +29,10 @@ export default class FloatingButton extends React.Component {
     return <Button
       baseClassName="floating-button"
       tooltipPositions={{
-        top: "100%",
-        right: "100%",
-        bottom: "100%",
-        left: "100%"
+        top: "110%",
+        right: "110%",
+        bottom: "110%",
+        left: "110%"
       }}
       {...this.props}
     />;

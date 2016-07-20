@@ -187,6 +187,11 @@ export class App extends Component {
       ...headerProps
     } = this.getHeaderProps();
 
+    const floatingButtonTooltipOrigin = {
+      vertical: "middle",
+      horizontal: "left"
+    };
+
     return (
       <div className={b()}>
         {/* Header */}
@@ -208,9 +213,27 @@ export class App extends Component {
 
         {/* Menu */}
         <FloatingMenu className={b("floating-menu")}>
-          <FloatingButton type="primary" icon={<BoardIcon />} onClick={this.handleAddBoardOpen} />
-          <FloatingButton type="primary" icon={<PictureLinkIcon />} onClick={this.handleAddLinkItemOpen} />
-          <FloatingButton type="primary" icon={<BoardIcon />} onClick={this.handleAddItemOpen} />
+          <FloatingButton
+            type="primary"
+            icon={<BoardIcon />}
+            tooltip="ボードの追加"
+            tooltipOrigin={floatingButtonTooltipOrigin}
+            onClick={this.handleAddBoardOpen}
+          />
+          <FloatingButton
+            type="primary"
+            icon={<PictureLinkIcon />}
+            tooltip="URLからアイテムを追加"
+            tooltipOrigin={floatingButtonTooltipOrigin}
+            onClick={this.handleAddLinkItemOpen}
+          />
+          <FloatingButton
+            type="primary"
+            icon={<UploadIcon />}
+            tooltip="ファイルからアイテムを追加"
+            tooltipOrigin={floatingButtonTooltipOrigin}
+            onClick={this.handleAddItemOpen}
+          />
         </FloatingMenu>
 
         {/* Add board */}
