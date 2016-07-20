@@ -145,6 +145,28 @@
     }
   }
 
+  &__process-overlay {
+    @include absolute(0, 0, 0, 0, 10);
+    @include transition(all, $transition-duration-fast);
+    background: rgba(#fff, .7);
+    opacity: 0;
+    visibility: hidden;
+
+    &--processing {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &__spinner {
+      position: absolute !important;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+    }
+  }
+
   &__container {
     position: relative;
   }
