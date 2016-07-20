@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import * as OriginalPropTypes from "../../../constants/prop-types";
 import Button from "../internal/Button";
 
 export default class FloatingButton extends React.Component {
@@ -9,7 +10,15 @@ export default class FloatingButton extends React.Component {
     href: PropTypes.string,
     target: PropTypes.string,
     icon: PropTypes.element,
-    onClick: PropTypes.func
+    tooltip: PropTypes.string,
+    tooltipOrigin: OriginalPropTypes.origin,
+    onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onKeyUp: PropTypes.func,
+    onKeyPress: PropTypes.func
   };
 
   static defaultProps = {
@@ -19,7 +28,13 @@ export default class FloatingButton extends React.Component {
   render() {
     return <Button
       baseClassName="floating-button"
+      tooltipPositions={{
+        top: "100%",
+        right: "100%",
+        bottom: "100%",
+        left: "100%"
+      }}
       {...this.props}
-      />;
+    />;
   }
 }

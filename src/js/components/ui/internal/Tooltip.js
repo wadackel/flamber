@@ -4,13 +4,21 @@ import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
+export const TooltipPositions = PropTypes.shape({
+  top: PropTypes.string,
+  right: PropTypes.string,
+  bottom: PropTypes.string,
+  left: PropTypes.string
+});
+
 export default class Tooltip extends React.Component {
   static propTypes = {
     baseClassName: PropTypes.string.isRequired,
     className: PropTypes.string,
     show: PropTypes.bool,
     label: PropTypes.string.isRequired,
-    origin: OriginalPropTypes.origin
+    origin: OriginalPropTypes.origin,
+    positions: TooltipPositions.isRequired
   };
 
   static defaultPropTypes = {
@@ -67,19 +75,19 @@ export default class Tooltip extends React.Component {
   }
 
   getStyles() {
-    const { origin } = this.props;
+    const { origin, positions } = this.props;
     const { width, height } = this.state;
 
     const vertical = {
-      top: { bottom: "90%" },
-      middle: { top: "50%", marginTop: height / 2 * -1 },
-      bottom: { top: "90%" }
+      top: { bottom: positions.top },
+      middle: { top: "50%", marginTop: Math.round(height / 2 * -1) },
+      bottom: { top: positions.bottom }
     };
 
     const horizontal = {
-      left: { right: "90%" },
-      center: { left: "50%", marginLeft: width / 2 * -1 },
-      right: { left: "90%" }
+      left: { right: positions.left },
+      center: { left: "50%", marginLeft: Math.round(width / 2 * -1) },
+      right: { left: positions.right }
     };
 
     return assign(

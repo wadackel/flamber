@@ -64,6 +64,10 @@ $button-colors: (
     }
   }
 
+  &__tooltip {
+    @include tooltip;
+  }
+
   @each $type, $values in $button-colors {
     &--#{$type} {
       @each $modifier, $values in $values {

@@ -10,7 +10,13 @@ export default class RaisedButton extends React.Component {
     target: PropTypes.string,
     icon: PropTypes.element,
     iconRight: PropTypes.element,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
+    onKeyDown: PropTypes.func,
+    onKeyUp: PropTypes.func,
+    onKeyPress: PropTypes.func
   };
 
   static defaultProps = {

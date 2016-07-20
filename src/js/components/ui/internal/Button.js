@@ -1,10 +1,12 @@
 import assign from "object-assign";
 import React, { PropTypes } from "react";
+import * as OriginalPropTypes from "../../../constants/prop-types";
 import Ripple from "./Ripple";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import randomId from "../../../helpers/random-id";
+import Tooltip, { TooltipPositions } from "./Tooltip";
 
 export default class Button extends React.Component {
   static propTypes = {
@@ -19,6 +21,9 @@ export default class Button extends React.Component {
     label: PropTypes.node,
     icon: PropTypes.element,
     iconRight: PropTypes.element,
+    tooltip: PropTypes.string,
+    tooltipOrigin: OriginalPropTypes.origin,
+    tooltipPositions: TooltipPositions,
     onClick: PropTypes.func,
     onMouseDown: PropTypes.func,
     onMouseEnter: PropTypes.func,
@@ -32,6 +37,16 @@ export default class Button extends React.Component {
     type: "default",
     disable: false,
     style: {},
+    tooltipOrigin: {
+      vertical: "top",
+      horizontal: "center"
+    },
+    tooltipPositions: {
+      top: "90%",
+      right: "90%",
+      bottom: "90%",
+      left: "90%"
+    },
     onClick: () => {},
     onMouseDown: () => {},
     onMouseEnter: () => {},
@@ -45,11 +60,14 @@ export default class Button extends React.Component {
     super(props, context);
 
     this.state = {
-      ripples: []
+      ripples: [],
+      showTooltip: false
     };
 
     bindHandlers([
       "handleMouseDown",
+      "handleMouseEnter",
+      "handleMouseLeave",
       "handleRippleHide"
     ], this);
   }
@@ -68,6 +86,22 @@ export default class Button extends React.Component {
     );
 
     this.props.onMouseDown(e);
+  }
+
+  handleMouseEnter(e) {
+    if (this.props.tooltip) {
+      this.setState({ showTooltip: true });
+    }
+
+    this.props.onMouseEnter(e);
+  }
+
+  handleMouseLeave(e) {
+    if (this.props.tooltip) {
+      this.setState({ showTooltip: false });
+    }
+
+    this.props.onMouseLeave(e);
   }
 
   handleRippleHide() {
@@ -127,15 +161,22 @@ export default class Button extends React.Component {
       label,
       icon,
       iconRight,
+      tooltip,
+      tooltipOrigin,
+      tooltipPositions,
       onClick,
-      onMouseEnter,
-      onMouseLeave,
+      onMouseEnter, // eslint-disable-line no-unused-vars
+      onMouseLeave, // eslint-disable-line no-unused-vars
       onKeyDown,
       onKeyUp,
       onKeyPress
     } = this.props;
 
-    const { ripples } = this.state;
+    const {
+      ripples,
+      showTooltip
+    } = this.state;
+
     const b = bem(baseClassName.trim());
     const modifier = { [type]: true, disable };
     const labelElement = label ? <span className={b("label", modifier)}>{label}</span> : null;
@@ -148,9 +189,9 @@ export default class Button extends React.Component {
 
     const events = disable ? {} : {
       onMouseDown: this.handleMouseDown,
+      onMouseEnter: this.handleMouseEnter,
+      onMouseLeave: this.handleMouseLeave,
       onClick,
-      onMouseEnter,
-      onMouseLeave,
       onKeyDown,
       onKeyUp,
       onKeyPress
@@ -166,6 +207,15 @@ export default class Button extends React.Component {
         <div className={b("ripple-container")}>{ripples}</div>
         {bodyElement}
         {children}
+        {tooltip &&
+          <Tooltip
+            baseClassName={b("tooltip").trim()}
+            show={showTooltip}
+            label={tooltip}
+            origin={tooltipOrigin}
+            positions={tooltipPositions}
+          />
+        }
       </div>
     );
   }
