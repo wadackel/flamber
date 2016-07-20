@@ -1,5 +1,5 @@
 import assign from "object-assign";
-import fetch from "isomorphic-fetch";
+import libFetch from "isomorphic-fetch";
 
 export function checkStatus(res) {
   if (res.status >= 200 && res.status < 300) {
@@ -11,12 +11,25 @@ export function checkStatus(res) {
   }
 }
 
-export default function(url, params = {}) {
+export default function fetch(url, params = {}) {
   const options = assign({}, {
     credentials: "include"
   }, params);
 
-  return fetch(url, options)
+  return libFetch(url, options)
     .then(checkStatus)
     .then(res => res.json());
+}
+
+export function fetchJSON(url, body, method = "POST", params = {}) {
+  const options = assign({}, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body),
+    method
+  }, params);
+
+  return fetch(url, options);
 }

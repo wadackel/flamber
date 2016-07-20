@@ -28,6 +28,7 @@ export default class BoardCard extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
+    id: PropTypes.string,
     selected: PropTypes.bool,
     title: PropTypes.string,
     image: PropTypes.string,
@@ -68,12 +69,12 @@ export default class BoardCard extends React.Component {
   }
 
   handleDeleteClick() {
-    // TODO
+    this.props.onDelete(this.props.id);
   }
 
   renderMoreActions() {
     return (
-      <IconButton icon={<TrashIcon />} tooltip="Delete" onClick={this.handleDeleteClick} />
+      <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />
     );
   }
 

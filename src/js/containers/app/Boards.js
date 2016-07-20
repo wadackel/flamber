@@ -2,7 +2,8 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import bem from "../../helpers/bem";
-import { fetchBoardsRequest } from "../../actions/boards";
+import bindHandlers from "../../helpers/bind-handlers";
+import { fetchBoardsRequest, deleteBoardRequest } from "../../actions/boards";
 import { BoardCard } from "../../components/ui/";
 
 const b = bem("boards");
@@ -14,8 +15,20 @@ export class Boards extends Component {
   static defaultProps = {
   };
 
+  constructor(props, context) {
+    super(props, context);
+
+    bindHandlers([
+      "handleDelete"
+    ], this);
+  }
+
   componentDidMount() {
     this.props.dispatch(fetchBoardsRequest());
+  }
+
+  handleDelete(id) {
+    this.props.dispatch(deleteBoardRequest(id));
   }
 
   render() {
@@ -32,9 +45,11 @@ export class Boards extends Component {
         key={board.id}
       >
         <BoardCard
+          id={board.id}
           title={board.name}
           layout={boardsLayout}
           lastModified={new Date(board.modified)}
+          onDelete={this.handleDelete}
         />
       </div>
     );

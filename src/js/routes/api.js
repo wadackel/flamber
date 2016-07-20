@@ -1,7 +1,11 @@
 import uuid from "node-uuid";
 import { Router } from "express";
 import { fetchSettings, updateSettings } from "../utils/drive/settings";
-import { fetchMyItems, createMyItems } from "../utils/drive/my-items";
+import {
+  fetchMyItems,
+  createMyItems,
+  updateMyItems
+} from "../utils/drive/my-items";
 
 const router = Router();
 
@@ -83,6 +87,27 @@ router.post("/boards", (req, res) => {
       res.json({
         status: "ok",
         board: boards.pop()
+      });
+    })
+    .catch(error => {
+      errorResponse(res, error);
+    });
+});
+
+router.delete("/boards/", (req, res) => {
+  const { drive, body } = req;
+
+  fetchMyItems(drive)
+    .then(myItems => updateMyItems(drive, {
+      ...myItems,
+      boards: myItems.boards.filter(board =>
+        board.id !== body.id
+      )
+    }))
+    .then(() => {
+      res.json({
+        status: "ok",
+        id: body.id
       });
     })
     .catch(error => {

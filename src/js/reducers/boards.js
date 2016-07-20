@@ -5,7 +5,10 @@ import {
   FETCH_BOARDS_FAILURE,
   ADD_BOARD_REQUEST,
   ADD_BOARD_SUCCESS,
-  ADD_BOARD_FAILURE
+  ADD_BOARD_FAILURE,
+  DELETE_BOARD_REQUEST,
+  DELETE_BOARD_SUCCESS,
+  DELETE_BOARD_FAILURE
 } from "../actions/boards";
 
 const initialState = {
@@ -45,6 +48,26 @@ export default handleActions({
   }),
 
   [ADD_BOARD_FAILURE]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    error: action.payload
+  }),
+
+  // Delete
+  [DELETE_BOARD_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
+
+  [DELETE_BOARD_SUCCESS]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    entities: state.entities.filter(board =>
+      board.id !== action.payload
+    )
+  }),
+
+  [DELETE_BOARD_FAILURE]: (state, action) => ({
     ...state,
     isFetching: false,
     error: action.payload
