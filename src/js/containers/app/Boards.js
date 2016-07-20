@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import { TransitionMotion, spring, presets } from "react-motion";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import { fetchBoardsRequest, deleteBoardRequest } from "../../actions/boards";
@@ -19,7 +20,9 @@ export class Boards extends Component {
     super(props, context);
 
     bindHandlers([
-      "handleDelete"
+      "handleDelete",
+      "handleWillLeave",
+      "handleWillEnter"
     ], this);
   }
 
@@ -31,6 +34,18 @@ export class Boards extends Component {
     this.props.dispatch(deleteBoardRequest(id));
   }
 
+  handleWillEnter() {
+    return {
+      opacity: 0
+    };
+  }
+
+  handleWillLeave() {
+    return {
+      opacity: spring(0)
+    };
+  }
+
   render() {
     const {
       settings: {
@@ -39,25 +54,40 @@ export class Boards extends Component {
       boards
     } = this.props;
 
-    const boardElements = boards.entities.map(board =>
-      <div
-        className={b("item", { [boardsLayout]: true })}
-        key={board.id}
-      >
-        <BoardCard
-          id={board.id}
-          title={board.name}
-          layout={boardsLayout}
-          lastModified={new Date(board.modified)}
-          onDelete={this.handleDelete}
-        />
-      </div>
-    );
+    const motionStyles = boards.entities.map(board => ({
+      key: board.id,
+      style: {
+        opacity: spring(1)
+      },
+      data: board
+    }));
 
     return (
-      <div className="container boards">
-        {boardElements}
-      </div>
+      <TransitionMotion
+        styles={motionStyles}
+        willLeave={this.handleWillLeave}
+        willEnter={this.handleWillEnter}
+      >
+        {styles =>
+          <div className="container boards">
+            {styles.map(({ key, style, data }) =>
+              <div
+                className={b("item", { [boardsLayout]: true })}
+                key={key}
+                style={style}
+              >
+                <BoardCard
+                  id={data.id}
+                  title={data.name}
+                  layout={boardsLayout}
+                  lastModified={new Date(data.modified)}
+                  onDelete={this.handleDelete}
+                />
+              </div>
+            )}
+          </div>
+        }
+      </TransitionMotion>
     );
   }
 }
