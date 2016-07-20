@@ -2,10 +2,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { fetchBoardsRequest } from "../../actions/boards";
+import { BoardCard } from "../../components/ui/";
 
 export class Boards extends Component {
   static propTypes = {
-    children: PropTypes.node
   };
 
   static defaultProps = {
@@ -16,9 +16,22 @@ export class Boards extends Component {
   }
 
   render() {
+    const {
+      boards
+    } = this.props;
+
+    const boardElements = boards.entities.map(board =>
+      <BoardCard
+        key={board.id}
+        style={{ width: 300 }}
+        title={board.name}
+        lastModified={new Date(board.modified)}
+      />
+    );
+
     return (
       <div>
-        TODO: Boards
+        {boardElements}
       </div>
     );
   }

@@ -73,6 +73,8 @@ router.post("/boards", (req, res) => {
       boards: [...myItems.boards, {
         id: uuid.v4(),
         name: body.name,
+        image: "",
+        itemCount: 0,
         created: dateString,
         modified: dateString
       }]
