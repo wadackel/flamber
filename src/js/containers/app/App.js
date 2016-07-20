@@ -6,6 +6,9 @@ import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import {
+  AddBoardDialog,
+  FloatingMenu,
+  FloatingButton,
   Header,
   EditableText,
   NavItem,
@@ -13,9 +16,12 @@ import {
   LayoutButtonGroup,
   LayoutButton,
   SearchField,
-  Slider
+  Slider,
 } from "../../components/ui/";
 import {
+  BoardIcon,
+  PictureLinkIcon,
+  UploadIcon,
   TagsIcon,
   StarIcon,
   PencilIcon,
@@ -42,11 +48,20 @@ export class App extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.state = {
+      addBoardDialogOpen: false
+    };
+
     bindHandlers([
       "handleMyItemsClick",
       "handleFeedsClick",
       "handleLogoClick",
-      "handleSettingsClick"
+      "handleSettingsClick",
+      "handleAddBoardOpen",
+      "handleAddBoardClose",
+      "handleAddBoard",
+      "handleAddLinkItemOpen",
+      "handleAddItemOpen"
     ], this);
   }
 
@@ -64,6 +79,26 @@ export class App extends Component {
 
   handleSettingsClick() {
     this.push("/app/settings");
+  }
+
+  handleAddBoardOpen() {
+    this.setState({ addBoardDialogOpen: true });
+  }
+
+  handleAddBoardClose() {
+    this.setState({ addBoardDialogOpen: false });
+  }
+
+  handleAddBoard(boardName) {
+    console.log(`TODO: ${boardName}`);
+  }
+
+  handleAddLinkItemOpen() {
+    // TODO
+  }
+
+  handleAddItemOpen() {
+    // TODO
   }
 
   push(path) {
@@ -144,12 +179,17 @@ export class App extends Component {
     } = this.props;
 
     const {
+      addBoardDialogOpen
+    } = this.state;
+
+    const {
       activeNavItem,
       ...headerProps
     } = this.getHeaderProps();
 
     return (
       <div className={b()}>
+        {/* Header */}
         <Header
           user={user}
           navItems={[
@@ -160,9 +200,25 @@ export class App extends Component {
           onSettingsClick={this.handleSettingsClick}
           {...headerProps}
         />
+
+        {/* Content */}
         <div className={b("content")}>
           {this.props.children}
         </div>
+
+        {/* Menu */}
+        <FloatingMenu className={b("floating-menu")}>
+          <FloatingButton type="primary" icon={<BoardIcon />} onClick={this.handleAddBoardOpen} />
+          <FloatingButton type="primary" icon={<PictureLinkIcon />} onClick={this.handleAddLinkItemOpen} />
+          <FloatingButton type="primary" icon={<BoardIcon />} onClick={this.handleAddItemOpen} />
+        </FloatingMenu>
+
+        {/* Add board */}
+        <AddBoardDialog
+          open={addBoardDialogOpen}
+          onRequestClose={this.handleAddBoardClose}
+          onRequestAdd={this.handleAddBoard}
+        />
       </div>
     );
   }

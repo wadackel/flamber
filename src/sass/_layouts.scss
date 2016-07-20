@@ -1,6 +1,18 @@
+#app,
+.app {
+  @include size(100%);
+}
+
 .app {
 
   &__content {
     padding-top: 120px;
+  }
+
+  &__floating-menu {
+    position: fixed !important;
+    right: 20px;
+    bottom: 20px;
+    z-index: 400;
   }
 }
