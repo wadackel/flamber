@@ -1,8 +1,10 @@
-import { fork, take, put, call } from "redux-saga/effects";
+import _ from "lodash";
+import { fork, take, put, call, select } from "redux-saga/effects";
 import {
   fetchBoards,
   addBoard,
-  deleteBoard
+  deleteBoard,
+  detailBoard
 } from "../api/boards";
 import * as Boards from "../actions/boards";
 
@@ -32,7 +34,7 @@ export function *handleAddBoardRequest() {
   }
 }
 
-export function *handleDeleteRequest() {
+export function *handleDeleteBoardRequest() {
   while (true) {
     const action = yield take(Boards.DELETE_BOARD_REQUEST);
 
@@ -45,10 +47,33 @@ export function *handleDeleteRequest() {
   }
 }
 
+/* eslint-disable */
+export function *handleDetailBoardRequest() {
+  while (true) {
+    const action = yield take(Boards.DETAIL_BOARD_REQUEST);
+
+    try {
+      const { boards: { entities } } = yield select();
+      const board = _.find(entities, o => o.id === action.payload);
+
+      if (board) {
+        yield put(Boards.detailBoardSuccess(board));
+
+      } else {
+        const fetchedBoard = yield call(detailBoard, action.payload);
+        yield put(Boards.detailBoardSuccess(fetchedBoard));
+      }
+    } catch (err) {
+      yield put(Boards.detailBoardFailure(err));
+    }
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
     fork(handleAddBoardRequest),
-    fork(handleDeleteRequest)
+    fork(handleDeleteBoardRequest),
+    fork(handleDetailBoardRequest)
   ];
 }

@@ -29,3 +29,13 @@ export const DELETE_BOARD_FAILURE = "DELETE_BOARD_FAILURE";
 export const deleteBoardRequest = createAction(DELETE_BOARD_REQUEST);
 export const deleteBoardSuccess = createAction(DELETE_BOARD_SUCCESS);
 export const deleteBoardFailure = createAction(DELETE_BOARD_FAILURE);
+
+
+// Show
+export const DETAIL_BOARD_REQUEST = "DETAIL_BOARD_REQUEST";
+export const DETAIL_BOARD_SUCCESS = "DETAIL_BOARD_SUCCESS";
+export const DETAIL_BOARD_FAILURE = "DETAIL_BOARD_FAILURE";
+
+export const detailBoardRequest = createAction(DETAIL_BOARD_REQUEST);
+export const detailBoardSuccess = createAction(DETAIL_BOARD_SUCCESS);
+export const detailBoardFailure = createAction(DETAIL_BOARD_FAILURE);

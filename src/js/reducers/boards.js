@@ -8,14 +8,18 @@ import {
   ADD_BOARD_FAILURE,
   DELETE_BOARD_REQUEST,
   DELETE_BOARD_SUCCESS,
-  DELETE_BOARD_FAILURE
+  DELETE_BOARD_FAILURE,
+  DETAIL_BOARD_REQUEST,
+  DETAIL_BOARD_SUCCESS,
+  DETAIL_BOARD_FAILURE
 } from "../actions/boards";
 
 const initialState = {
   isFetching: false,
   isAdding: false,
   isDeleting: false,
-  entities: []
+  entities: [],
+  board: null
 };
 
 export default handleActions({
@@ -72,6 +76,24 @@ export default handleActions({
   [DELETE_BOARD_FAILURE]: (state, action) => ({
     ...state,
     isDeleting: false,
+    error: action.payload
+  }),
+
+  // Detail
+  [DETAIL_BOARD_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
+
+  [DETAIL_BOARD_SUCCESS]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    board: action.payload
+  }),
+
+  [DETAIL_BOARD_FAILURE]: (state, action) => ({
+    ...state,
+    isFetching: false,
     error: action.payload
   })
 }, initialState);

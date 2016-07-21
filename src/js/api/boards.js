@@ -45,3 +45,17 @@ export function deleteBoard(id) {
       .catch(error => reject({ error }));
   });
 }
+
+export function detailBoard(id) {
+  return new Promise((resolve, reject) => {
+    fetch(`${BOARDS_ENDPOINT}/${id}`)
+      .then(res => {
+        if (res.status === "ok") {
+          resolve(res.board);
+        } else {
+          reject({ error: res.error });
+        }
+      })
+      .catch(error => reject({ error }));
+  });
+}

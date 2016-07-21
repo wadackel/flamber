@@ -1,3 +1,4 @@
+import _ from "lodash";
 import uuid from "node-uuid";
 import { Router } from "express";
 import { fetchSettings, updateSettings } from "../utils/drive/settings";
@@ -109,6 +110,27 @@ router.delete("/boards/", (req, res) => {
         status: "ok",
         id: body.id
       });
+    })
+    .catch(error => {
+      errorResponse(res, error);
+    });
+});
+
+router.get("/boards/:id", (req, res) => {
+  const { drive, params } = req;
+
+  fetchMyItems(drive)
+    .then(({ boards }) => {
+      const board = _.find(boards, o => o.id === params.id);
+
+      if (board) {
+        res.json({
+          status: "ok",
+          board
+        });
+      } else {
+        errorResponse(res, new Error("Not found"));
+      }
     })
     .catch(error => {
       errorResponse(res, error);
