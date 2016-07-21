@@ -8,6 +8,7 @@ import {
 import {
   App,
   Boards,
+  BoardDetail,
   Settings
 } from "./containers/app/";
 import ThemeProvider from "./components/ThemeProvider";
@@ -43,6 +44,7 @@ export default function getRoutes(store) {
         <Route path="/app/" component={App}>
           <Route path="settings" component={Settings} />
           <Route path="boards" component={Boards} />
+          <Route path="board/:id" component={BoardDetail} />
           <IndexRoute component={Boards} />
         </Route>
       </Route>

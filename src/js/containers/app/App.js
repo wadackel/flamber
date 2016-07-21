@@ -165,6 +165,31 @@ export class App extends Component {
     };
   }
 
+  getHeaderBoardDetailProps() {
+    return {
+      activeNavItem: NavItemActive.MY_ITEMS,
+      subLeft: (
+        <div>
+          <IconButton icon={<TagsIcon />} />
+          <IconButton icon={<StarIcon />} />
+          <SearchField
+            placeholder="Type search keyword"
+          />
+        </div>
+      ),
+      subRight: (
+        <div>
+          <LayoutButtonGroup
+          >
+            <LayoutButton icon={<RandomGridIcon />} value={Layout.RANDOM_GRID}></LayoutButton>
+            <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>
+            <LayoutButton icon={<ListIcon />} value={Layout.LIST}></LayoutButton>
+          </LayoutButtonGroup>
+        </div>
+      )
+    };
+  }
+
   getHeaderFeedsProps() {
     return {
       activeNavItem: NavItemActive.FEEDS
@@ -186,6 +211,7 @@ export class App extends Component {
     const { location: { pathname } } = this.props;
     const methodMaps = [
       { method: this.getHeaderBoardsProps, regex: /^\/app\/?(boards\/?.*)?$/ },
+      { method: this.getHeaderBoardDetailProps, regex: /^\/app\/board\/(.+)$/ },
       { method: this.getHeaderFeedsProps, regex: /^\/app\/feeds\/?.*$/ },
       { method: this.getHeaderSettingsProps, regex: /^\/app\/settings\/?.*$/ },
       { method: this.getHeader404Props, regex: /^.*$/ }

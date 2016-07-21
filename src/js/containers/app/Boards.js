@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import { push } from "react-router-redux";
 import { TransitionMotion, spring, presets } from "react-motion";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
@@ -20,6 +21,7 @@ export class Boards extends Component {
     super(props, context);
 
     bindHandlers([
+      "handleEdit",
       "handleDelete",
       "handleWillLeave",
       "handleWillEnter"
@@ -28,6 +30,10 @@ export class Boards extends Component {
 
   componentDidMount() {
     this.props.dispatch(fetchBoardsRequest());
+  }
+
+  handleEdit(id) {
+    this.props.dispatch(push(`/app/board/${id}`));
   }
 
   handleDelete(id) {
@@ -69,7 +75,7 @@ export class Boards extends Component {
         willEnter={this.handleWillEnter}
       >
         {styles =>
-          <div className="container boards">
+          <div className={`container ${b()}`}>
             {styles.map(({ key, style, data }) =>
               <div
                 className={b("item", { [boardsLayout]: true })}
@@ -81,6 +87,7 @@ export class Boards extends Component {
                   title={data.name}
                   layout={boardsLayout}
                   lastModified={new Date(data.modified)}
+                  onEdit={this.handleEdit}
                   onDelete={this.handleDelete}
                 />
               </div>

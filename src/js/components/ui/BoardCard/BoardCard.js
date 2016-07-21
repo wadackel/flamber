@@ -65,7 +65,7 @@ export default class BoardCard extends React.Component {
   }
 
   handleEditClick() {
-    // TODO
+    this.props.onEdit(this.props.id);
   }
 
   handleDeleteClick() {
