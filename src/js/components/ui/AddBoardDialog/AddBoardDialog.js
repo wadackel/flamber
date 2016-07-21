@@ -14,6 +14,7 @@ const b = bem("add-board-dialog");
 export default class AddBoardDialog extends Component {
   static propTypes = {
     className: PropTypes.string,
+    processing: PropTypes.bool,
     width: PropTypes.number,
     open: PropTypes.bool,
     onRequestAdd: PropTypes.func,
@@ -21,6 +22,7 @@ export default class AddBoardDialog extends Component {
   };
 
   static defaultProps = {
+    processing: false,
     onRequestAdd: () => {}
   };
 
@@ -28,7 +30,7 @@ export default class AddBoardDialog extends Component {
     super(props, context);
 
     this.state = {
-      boardName: ""
+      value: ""
     };
 
     bindHandlers([
@@ -36,6 +38,12 @@ export default class AddBoardDialog extends Component {
       "handleAdd",
       "handleBoardNameChange"
     ], this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.open && !nextProps.open) {
+      this.setState({ value: "" });
+    }
   }
 
   handleClose() {
@@ -46,8 +54,8 @@ export default class AddBoardDialog extends Component {
   }
 
   handleAdd() {
-    const { boardName } = this.state;
-    const trimmedBoardName = boardName.trim();
+    const { value } = this.state;
+    const trimmedBoardName = value.trim();
 
     if (trimmedBoardName !== "") {
       this.props.onRequestAdd(trimmedBoardName);
@@ -55,28 +63,32 @@ export default class AddBoardDialog extends Component {
   }
 
   handleBoardNameChange(e, value) {
-    this.setState({ boardName: value });
+    if (!this.props.processing) {
+      this.setState({ value });
+    }
   }
 
   render() {
     const {
       className,
+      processing,
       ...props
     } = this.props;
 
-    const { boardName } = this.state;
+    const { value } = this.state;
 
     return (
       <Dialog
         className={mergeClassNames(b(), className)}
+        processing={processing}
         title="Add board"
         titleIcon={<BoardIcon />}
         actions={[
-          <FlatButton type="primary" onClick={this.handleClose}>Cancel</FlatButton>,
+          <FlatButton type="primary" onClick={this.handleClose} disable={processing}>Cancel</FlatButton>,
           <FlatButton
             type="primary"
             onClick={this.handleAdd}
-            disable={boardName.trim() === ""}
+            disable={value.trim() === "" || processing}
           >
             Add
           </FlatButton>
@@ -85,6 +97,7 @@ export default class AddBoardDialog extends Component {
       >
         <TextField
           label="Type board name"
+          value={value}
           onChange={this.handleBoardNameChange}
           onEnter={this.handleAdd}
         />
