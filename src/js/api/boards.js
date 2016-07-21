@@ -32,6 +32,20 @@ export function addBoard(name) {
   });
 }
 
+export function updateBoard(board) {
+  return new Promise((resolve, reject) => {
+    fetchJSON(`${BOARDS_ENDPOINT}/${board.id}`, board, "PUT")
+      .then(res => {
+        if (res.status === "ok") {
+          resolve(res.board);
+        } else {
+          reject({ error: res.error });
+        }
+      })
+      .catch(error => reject({ error }));
+  });
+}
+
 export function deleteBoard(id) {
   return new Promise((resolve, reject) => {
     fetchJSON(BOARDS_ENDPOINT, { id }, "DELETE")

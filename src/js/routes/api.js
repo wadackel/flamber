@@ -1,11 +1,12 @@
-import _ from "lodash";
 import uuid from "node-uuid";
 import { Router } from "express";
 import { fetchSettings, updateSettings } from "../utils/drive/settings";
 import {
   fetchMyItems,
   createMyItems,
-  updateMyItems
+  updateMyItems,
+  findBoard,
+  updateBoard
 } from "../utils/drive/my-items";
 
 const router = Router();
@@ -119,22 +120,27 @@ router.delete("/boards/", (req, res) => {
 router.get("/boards/:id", (req, res) => {
   const { drive, params } = req;
 
-  fetchMyItems(drive)
-    .then(({ boards }) => {
-      const board = _.find(boards, o => o.id === params.id);
-
-      if (board) {
-        res.json({
-          status: "ok",
-          board
-        });
-      } else {
-        errorResponse(res, new Error("Not found"));
-      }
+  findBoard(drive, params.id)
+    .then(board => {
+      res.json({
+        status: "ok",
+        board
+      });
     })
-    .catch(error => {
-      errorResponse(res, error);
-    });
+    .catch(error => errorResponse(res, error));
+});
+
+router.put("/boards/:id", (req, res) => {
+  const { drive, params, body } = req;
+
+  updateBoard(drive, params.id, body)
+    .then(board => {
+      res.json({
+        status: "ok",
+        board
+      });
+    })
+    .catch(error => errorResponse(res, error));
 });
 
 

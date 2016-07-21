@@ -6,7 +6,7 @@ import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import { updateSettingsRequest } from "../../actions/settings";
-import { addBoardRequest } from "../../actions/boards";
+import { addBoardRequest, updateBoardRequest } from "../../actions/boards";
 import {
   AddBoardDialog,
   FloatingMenu,
@@ -53,7 +53,8 @@ export class App extends Component {
 
     this.state = {
       addBoardDialogOpen: false,
-      addBoardSnackbarOpen: false
+      addBoardSnackbarOpen: false,
+      boardName: ""
     };
 
     bindHandlers([
@@ -61,10 +62,15 @@ export class App extends Component {
       "handleFeedsClick",
       "handleLogoClick",
       "handleSettingsClick",
+
       "handleAddBoardOpen",
       "handleAddBoardClose",
       "handleAddBoard",
       "handleAddBoardSnackbarClose",
+
+      "handleBoardNameChange",
+      "handleBoardNameComplete",
+
       "handleAddLinkItemOpen",
       "handleAddItemOpen",
       "handleBoardsLayoutChange"
@@ -77,11 +83,19 @@ export class App extends Component {
     if (boards.isAdding && !nextProps.boards.isAdding) {
       this.setState({
         addBoardDialogOpen: false,
-        addBoardSnackbarOpen: true
+        addBoardSnackbarOpen: true,
       });
+    }
+
+    if (
+      (!boards.board && nextProps.boards.board)
+      || ((boards.board && nextProps.boards.board) && (boards.board.name !== nextProps.boards.board.name))
+    ) {
+      this.setState({ boardName: nextProps.boards.board.name });
     }
   }
 
+  // Navigation
   handleMyItemsClick() {
     this.push("/app/");
   }
@@ -98,6 +112,7 @@ export class App extends Component {
     this.push("/app/settings");
   }
 
+  // Add board
   handleAddBoardOpen() {
     this.setState({ addBoardDialogOpen: true });
   }
@@ -114,10 +129,28 @@ export class App extends Component {
     this.setState({ addBoardSnackbarOpen: false });
   }
 
+  // Update board
+  handleBoardNameChange(e, value) {
+    this.setState({ boardName: value });
+  }
+
+  handleBoardNameComplete(value) {
+    const { boards: { board } } = this.props;
+
+    this.props.dispatch(updateBoardRequest({
+      ...board,
+      name: value
+    }));
+
+    this.setState({ boardName: value });
+  }
+
+  // Add item (link)
   handleAddLinkItemOpen() {
     // TODO
   }
 
+  // Add item
   handleAddItemOpen() {
     // TODO
   }
@@ -135,6 +168,18 @@ export class App extends Component {
     this.props.dispatch(push(path));
   }
 
+  getHeaderMyItemsSubLeft() {
+    return (
+      <div>
+        <IconButton icon={<TagsIcon />} />
+        <IconButton icon={<StarIcon />} />
+        <SearchField
+          placeholder="Type search keyword"
+        />
+      </div>
+    );
+  }
+
   getHeaderBoardsProps() {
     const {
       boardsLayout
@@ -142,15 +187,7 @@ export class App extends Component {
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
-      subLeft: (
-        <div>
-          <IconButton icon={<TagsIcon />} />
-          <IconButton icon={<StarIcon />} />
-          <SearchField
-            placeholder="Type search keyword"
-          />
-        </div>
-      ),
+      subLeft: this.getHeaderMyItemsSubLeft(),
       subRight: (
         <div>
           <LayoutButtonGroup
@@ -166,17 +203,20 @@ export class App extends Component {
   }
 
   getHeaderBoardDetailProps() {
+    const { boards: { board } } = this.props;
+    const { boardName } = this.state;
+
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
-      subLeft: (
-        <div>
-          <IconButton icon={<TagsIcon />} />
-          <IconButton icon={<StarIcon />} />
-          <SearchField
-            placeholder="Type search keyword"
-          />
-        </div>
+      mainTitle: board && (
+        <EditableText
+          icon={<PencilIcon />}
+          value={boardName}
+          onChange={this.handleBoardNameChange}
+          onComplete={this.handleBoardNameComplete}
+        />
       ),
+      subLeft: this.getHeaderMyItemsSubLeft(),
       subRight: (
         <div>
           <LayoutButtonGroup

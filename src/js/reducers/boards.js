@@ -6,6 +6,9 @@ import {
   ADD_BOARD_REQUEST,
   ADD_BOARD_SUCCESS,
   ADD_BOARD_FAILURE,
+  UPDATE_BOARD_REQUEST,
+  UPDATE_BOARD_SUCCESS,
+  UPDATE_BOARD_FAILURE,
   DELETE_BOARD_REQUEST,
   DELETE_BOARD_SUCCESS,
   DELETE_BOARD_FAILURE,
@@ -17,6 +20,7 @@ import {
 const initialState = {
   isFetching: false,
   isAdding: false,
+  isUpdating: false,
   isDeleting: false,
   entities: [],
   board: null
@@ -56,6 +60,26 @@ export default handleActions({
   [ADD_BOARD_FAILURE]: (state, action) => ({
     ...state,
     isAdding: false,
+    error: action.payload
+  }),
+
+  // Update
+  [UPDATE_BOARD_REQUEST]: state => ({
+    ...state,
+    isUpdating: true
+  }),
+
+  [UPDATE_BOARD_SUCCESS]: (state, action) => ({
+    ...state,
+    isUpdating: false,
+    entities: state.entities.map(board =>
+      board.id === action.payload.id ? action.payload : board
+    )
+  }),
+
+  [UPDATE_BOARD_FAILURE]: (state, action) => ({
+    ...state,
+    isUpdating: false,
     error: action.payload
   }),
 
