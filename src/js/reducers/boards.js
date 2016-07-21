@@ -13,6 +13,8 @@ import {
 
 const initialState = {
   isFetching: false,
+  isAdding: false,
+  isDeleting: false,
   entities: []
 };
 
@@ -38,30 +40,30 @@ export default handleActions({
   // Add
   [ADD_BOARD_REQUEST]: state => ({
     ...state,
-    isFetching: true
+    isAdding: true
   }),
 
   [ADD_BOARD_SUCCESS]: (state, action) => ({
     ...state,
-    isFetching: false,
+    isAdding: false,
     entities: [...state.entities, action.payload]
   }),
 
   [ADD_BOARD_FAILURE]: (state, action) => ({
     ...state,
-    isFetching: false,
+    isAdding: false,
     error: action.payload
   }),
 
   // Delete
   [DELETE_BOARD_REQUEST]: state => ({
     ...state,
-    isFetching: true
+    isDeleting: true
   }),
 
   [DELETE_BOARD_SUCCESS]: (state, action) => ({
     ...state,
-    isFetching: false,
+    isDeleting: false,
     entities: state.entities.filter(board =>
       board.id !== action.payload
     )
@@ -69,7 +71,7 @@ export default handleActions({
 
   [DELETE_BOARD_FAILURE]: (state, action) => ({
     ...state,
-    isFetching: false,
+    isDeleting: false,
     error: action.payload
   })
 }, initialState);

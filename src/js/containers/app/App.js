@@ -19,6 +19,7 @@ import {
   LayoutButton,
   SearchField,
   Slider,
+  Snackbar
 } from "../../components/ui/";
 import {
   BoardIcon,
@@ -51,7 +52,8 @@ export class App extends Component {
     super(props, context);
 
     this.state = {
-      addBoardDialogOpen: false
+      addBoardDialogOpen: false,
+      addBoardSnackbarOpen: false
     };
 
     bindHandlers([
@@ -62,10 +64,22 @@ export class App extends Component {
       "handleAddBoardOpen",
       "handleAddBoardClose",
       "handleAddBoard",
+      "handleAddBoardSnackbarClose",
       "handleAddLinkItemOpen",
       "handleAddItemOpen",
       "handleBoardsLayoutChange"
     ], this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { boards } = this.props;
+
+    if (boards.isAdding && !nextProps.boards.isAdding) {
+      this.setState({
+        addBoardDialogOpen: false,
+        addBoardSnackbarOpen: true
+      });
+    }
   }
 
   handleMyItemsClick() {
@@ -94,6 +108,10 @@ export class App extends Component {
 
   handleAddBoard(boardName) {
     this.props.dispatch(addBoardRequest(boardName));
+  }
+
+  handleAddBoardSnackbarClose() {
+    this.setState({ addBoardSnackbarOpen: false });
   }
 
   handleAddLinkItemOpen() {
@@ -182,11 +200,13 @@ export class App extends Component {
 
   render() {
     const {
-      auth: { user }
+      auth: { user },
+      boards
     } = this.props;
 
     const {
-      addBoardDialogOpen
+      addBoardDialogOpen,
+      addBoardSnackbarOpen
     } = this.state;
 
     const {
@@ -245,9 +265,17 @@ export class App extends Component {
 
         {/* Add board */}
         <AddBoardDialog
+          processing={boards.isAdding}
           open={addBoardDialogOpen}
           onRequestClose={this.handleAddBoardClose}
           onRequestAdd={this.handleAddBoard}
+        />
+        <Snackbar
+          open={addBoardSnackbarOpen}
+          message="ボードを追加しました"
+          action="Show"
+          onActionClick={() => console.log("TODO")}
+          onRequestClose={this.handleAddBoardSnackbarClose}
         />
       </div>
     );
@@ -257,7 +285,8 @@ export class App extends Component {
 export default connect(
   state => ({
     auth: state.auth,
-    settings: state.settings
+    settings: state.settings,
+    boards: state.boards
   }),
   null,
   null,
