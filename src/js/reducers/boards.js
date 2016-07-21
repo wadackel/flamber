@@ -72,6 +72,7 @@ export default handleActions({
   [UPDATE_BOARD_SUCCESS]: (state, action) => ({
     ...state,
     isUpdating: false,
+    board: state.board && state.board.id === action.payload.id ? action.payload : state.board,
     entities: state.entities.map(board =>
       board.id === action.payload.id ? action.payload : board
     )

@@ -2,6 +2,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
+import MDSpinner from "react-md-spinner";
 import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
@@ -203,18 +204,33 @@ export class App extends Component {
   }
 
   getHeaderBoardDetailProps() {
-    const { boards: { board } } = this.props;
+    const {
+      boards: {
+        board,
+        isUpdating
+      }
+    } = this.props;
+
     const { boardName } = this.state;
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
       mainTitle: board && (
-        <EditableText
-          icon={<PencilIcon />}
-          value={boardName}
-          onChange={this.handleBoardNameChange}
-          onComplete={this.handleBoardNameComplete}
-        />
+        <div>
+          <EditableText
+            icon={<PencilIcon />}
+            value={boardName}
+            onChange={this.handleBoardNameChange}
+            onComplete={this.handleBoardNameComplete}
+          />
+          <MDSpinner
+            size={20}
+            style={{
+              visibility: isUpdating ? "visible" : "hidden",
+              marginLeft: 10
+            }}
+          />
+        </div>
       ),
       subLeft: this.getHeaderMyItemsSubLeft(),
       subRight: (

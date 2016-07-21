@@ -36,6 +36,7 @@ export function updateMyItems(drive, myItems) {
   });
 }
 
+// FIXME: Refactor
 export function findBoard(drive, id) {
   return new Promise((resolve, reject) => {
     fetchMyItems(drive)
@@ -47,16 +48,20 @@ export function findBoard(drive, id) {
   });
 }
 
-export function updateBoard(drive, id, newBoard) {
+// FIXME: Refactor
+export function updateBoard(drive, id, props) {
   return new Promise((resolve, reject) => {
-    console.log(id, newBoard);
     fetchMyItems(drive)
       .then(myItems => updateMyItems(drive, {
         ...myItems,
         boards: myItems.boards.map(board =>
-          board.id === id ? newBoard : board
+          board.id === id ? Object.assign({}, board, props) : board
         )
       }))
+      .then(({ boards }) => {
+        const board = _.find(boards, o => o.id === id);
+        board ? resolve(board) : reject(new Error("Not found"));
+      })
       .catch(reject);
   });
 }
