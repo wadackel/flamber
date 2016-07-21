@@ -1,5 +1,9 @@
 import { fork, take, put, call } from "redux-saga/effects";
-import { fetchBoards, addBoard } from "../api/boards";
+import {
+  fetchBoards,
+  addBoard,
+  deleteBoard
+} from "../api/boards";
 import * as Boards from "../actions/boards";
 
 export function *handleFetchBoardsRequest() {
@@ -23,7 +27,20 @@ export function *handleAddBoardRequest() {
       const board = yield call(addBoard, action.payload);
       yield put(Boards.addBoardSuccess(board));
     } catch (err) {
-      yield put(Boards.ADD_BOARD_FAILURE(err));
+      yield put(Boards.addBoardFailure(err));
+    }
+  }
+}
+
+export function *handleDeleteRequest() {
+  while (true) {
+    const action = yield take(Boards.DELETE_BOARD_REQUEST);
+
+    try {
+      yield call(deleteBoard, action.payload);
+      yield put(Boards.deleteBoardSuccess(action.payload));
+    } catch (err) {
+      yield put(Boards.deleteBoardFailure(err));
     }
   }
 }
@@ -31,6 +48,7 @@ export function *handleAddBoardRequest() {
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
-    fork(handleAddBoardRequest)
+    fork(handleAddBoardRequest),
+    fork(handleDeleteRequest)
   ];
 }

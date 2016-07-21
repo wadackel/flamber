@@ -3,13 +3,17 @@
   position: relative;
 
   &__toggle {
+    @include transition(all, $transition-duration-fast);
+    transform: scale(1);
+
     .floating-button__icon {
       @include transition(all, $transition-duration-fast);
       @include size(16px);
-      transform: rotate(0);
+      transform: rotate(0) scale(1);
     }
 
     &--open {
+      transform: scale(.95);
       background: $gray-lightest !important;
 
       &:hover {
@@ -17,7 +21,7 @@
       }
 
       .floating-button__icon {
-        transform: rotate(-135deg);
+        transform: rotate(-135deg) scale(1.4);
       }
     }
   }

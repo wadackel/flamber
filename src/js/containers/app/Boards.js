@@ -1,8 +1,13 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { fetchBoardsRequest } from "../../actions/boards";
+import { TransitionMotion, spring, presets } from "react-motion";
+import bem from "../../helpers/bem";
+import bindHandlers from "../../helpers/bind-handlers";
+import { fetchBoardsRequest, deleteBoardRequest } from "../../actions/boards";
 import { BoardCard } from "../../components/ui/";
+
+const b = bem("boards");
 
 export class Boards extends Component {
   static propTypes = {
@@ -11,34 +16,85 @@ export class Boards extends Component {
   static defaultProps = {
   };
 
+  constructor(props, context) {
+    super(props, context);
+
+    bindHandlers([
+      "handleDelete",
+      "handleWillLeave",
+      "handleWillEnter"
+    ], this);
+  }
+
   componentDidMount() {
     this.props.dispatch(fetchBoardsRequest());
   }
 
+  handleDelete(id) {
+    this.props.dispatch(deleteBoardRequest(id));
+  }
+
+  handleWillEnter() {
+    return {
+      opacity: 0
+    };
+  }
+
+  handleWillLeave() {
+    return {
+      opacity: spring(0)
+    };
+  }
+
   render() {
     const {
+      settings: {
+        boardsLayout
+      },
       boards
     } = this.props;
 
-    const boardElements = boards.entities.map(board =>
-      <BoardCard
-        key={board.id}
-        style={{ width: 300 }}
-        title={board.name}
-        lastModified={new Date(board.modified)}
-      />
-    );
+    const motionStyles = boards.entities.map(board => ({
+      key: board.id,
+      style: {
+        opacity: spring(1)
+      },
+      data: board
+    }));
 
     return (
-      <div>
-        {boardElements}
-      </div>
+      <TransitionMotion
+        styles={motionStyles}
+        willLeave={this.handleWillLeave}
+        willEnter={this.handleWillEnter}
+      >
+        {styles =>
+          <div className="container boards">
+            {styles.map(({ key, style, data }) =>
+              <div
+                className={b("item", { [boardsLayout]: true })}
+                key={key}
+                style={style}
+              >
+                <BoardCard
+                  id={data.id}
+                  title={data.name}
+                  layout={boardsLayout}
+                  lastModified={new Date(data.modified)}
+                  onDelete={this.handleDelete}
+                />
+              </div>
+            )}
+          </div>
+        }
+      </TransitionMotion>
     );
   }
 }
 
 export default connect(
   state => ({
+    settings: state.settings,
     boards: state.boards
   })
 )(Boards);

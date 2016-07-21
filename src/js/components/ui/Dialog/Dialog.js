@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import MDSpinner from "react-md-spinner";
 import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -21,6 +22,7 @@ export default class Dialog extends React.Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    processing: PropTypes.bool,
     width: PropTypes.number.isRequired,
     title: PropTypes.string,
     titleIcon: PropTypes.element,
@@ -30,6 +32,7 @@ export default class Dialog extends React.Component {
   };
 
   static defaultProps = {
+    processing: false,
     width: 450,
     open: false,
     onRequestClose: () => {}
@@ -50,11 +53,27 @@ export default class Dialog extends React.Component {
   handleCloseClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onRequestClose();
+    this.requestClose();
   }
 
   handleOverlayClick() {
-    this.props.onRequestClose();
+    this.requestClose();
+  }
+
+  requestClose() {
+    if (!this.props.processing) {
+      this.props.onRequestClose();
+    }
+  }
+
+  renderProcessOverlay() {
+    const { processing } = this.props;
+
+    return (
+      <div className={b("process-overlay", { processing })}>
+        <MDSpinner className={b("process-overlay__spinner")} size={34} />
+      </div>
+    );
   }
 
   renderHeader() {
@@ -103,10 +122,11 @@ export default class Dialog extends React.Component {
     const {
       children,
       className,
+      processing,
       open
     } = this.props;
 
-    const modifier = { open };
+    const modifier = { open, processing };
 
     return (
       <div>
@@ -120,6 +140,7 @@ export default class Dialog extends React.Component {
             <div className={b("horizontal", modifier)}>
               <div className={b("vertical", modifier)}>
                 <div className={mergeClassNames(b(modifier), className)}>
+                  {this.renderProcessOverlay()}
                   <div className={b("container", modifier)}>
                     {this.renderHeader()}
                     <div className={b("body", modifier)}>

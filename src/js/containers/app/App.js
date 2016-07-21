@@ -5,6 +5,7 @@ import { push } from "react-router-redux";
 import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
+import { updateSettingsRequest } from "../../actions/settings";
 import { addBoardRequest } from "../../actions/boards";
 import {
   AddBoardDialog,
@@ -62,7 +63,8 @@ export class App extends Component {
       "handleAddBoardClose",
       "handleAddBoard",
       "handleAddLinkItemOpen",
-      "handleAddItemOpen"
+      "handleAddItemOpen",
+      "handleBoardsLayoutChange"
     ], this);
   }
 
@@ -102,19 +104,26 @@ export class App extends Component {
     // TODO
   }
 
+  handleBoardsLayoutChange(layout) {
+    const settings = {
+      ...this.props.settings,
+      boardsLayout: layout
+    };
+
+    this.props.dispatch(updateSettingsRequest(settings));
+  }
+
   push(path) {
     this.props.dispatch(push(path));
   }
 
   getHeaderBoardsProps() {
+    const {
+      boardsLayout
+    } = this.props.settings;
+
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
-      mainTitle: (
-        <EditableText
-          icon={<PencilIcon />}
-          value="Web Application"
-        />
-      ),
       subLeft: (
         <div>
           <IconButton icon={<TagsIcon />} />
@@ -126,13 +135,10 @@ export class App extends Component {
       ),
       subRight: (
         <div>
-          <Slider
-            defaultValue={50}
-          />
           <LayoutButtonGroup
-            value={Layout.GRID}
+            value={boardsLayout}
+            onChange={this.handleBoardsLayoutChange}
           >
-            <LayoutButton icon={<RandomGridIcon />} value={Layout.RANDOM_GRID}></LayoutButton>
             <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>
             <LayoutButton icon={<ListIcon />} value={Layout.LIST}></LayoutButton>
           </LayoutButtonGroup>
@@ -171,7 +177,7 @@ export class App extends Component {
       obj.regex.test(pathname)
     ).shift();
 
-    return res.method();
+    return res.method.call(this);
   }
 
   render() {

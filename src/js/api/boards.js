@@ -1,4 +1,4 @@
-import fetch from "../utils/fetch";
+import fetch, { fetchJSON } from "../utils/fetch";
 import { API_ROOT } from "../constants/application";
 
 export const BOARDS_ENDPOINT = `${API_ROOT}/boards`;
@@ -20,19 +20,24 @@ export function fetchBoards() {
 
 export function addBoard(name) {
   return new Promise((resolve, reject) => {
-    const params = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name })
-    };
-
-    fetch(BOARDS_ENDPOINT, params)
+    fetchJSON(BOARDS_ENDPOINT, { name })
       .then(res => {
         if (res.status === "ok") {
           resolve(res.board);
+        } else {
+          reject({ error: res.error });
+        }
+      })
+      .catch(error => reject({ error }));
+  });
+}
+
+export function deleteBoard(id) {
+  return new Promise((resolve, reject) => {
+    fetchJSON(BOARDS_ENDPOINT, { id }, "DELETE")
+      .then(res => {
+        if (res.status === "ok") {
+          resolve(res.id);
         } else {
           reject({ error: res.error });
         }

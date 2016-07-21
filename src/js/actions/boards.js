@@ -19,3 +19,13 @@ export const ADD_BOARD_FAILURE = "ADD_BOARD_FAILURE";
 export const addBoardRequest = createAction(ADD_BOARD_REQUEST);
 export const addBoardSuccess = createAction(ADD_BOARD_SUCCESS);
 export const addBoardFailure = createAction(ADD_BOARD_FAILURE);
+
+
+// Delete
+export const DELETE_BOARD_REQUEST = "DELETE_BOARD_REQUEST";
+export const DELETE_BOARD_SUCCESS = "DELETE_BOARD_SUCCESS";
+export const DELETE_BOARD_FAILURE = "DELETE_BOARD_FAILURE";
+
+export const deleteBoardRequest = createAction(DELETE_BOARD_REQUEST);
+export const deleteBoardSuccess = createAction(DELETE_BOARD_SUCCESS);
+export const deleteBoardFailure = createAction(DELETE_BOARD_FAILURE);
