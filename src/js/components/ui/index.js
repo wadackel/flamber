@@ -1,4 +1,5 @@
 export AddBoardDialog from "./AddBoardDialog/AddBoardDialog";
+export AddItemFileDialog from "./AddItemFileDialog/AddItemFileDialog";
 export AutoComplete from "./AutoComplete/AutoComplete";
 export Avatar from "./Avatar/Avatar";
 export BoardCard from "./BoardCard/BoardCard";
@@ -11,6 +12,7 @@ export DriveCapacity from "./DriveCapacity/DriveCapacity";
 export DropDownMenu from "./DropDownMenu/DropDownMenu";
 export EditableText from "./EditableText/EditableText";
 export FeedCard from "./FeedCard/FeedCard";
+export FileDnD from "./FileDnD/FileDnD";
 export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";
 export FloatingMenu from "./FloatingMenu/FloatingMenu";
