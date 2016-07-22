@@ -5,18 +5,13 @@ import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
+import FirstChild from "../internal/FirstChild";
 import RenderToLayer from "../internal/RenderToLayer";
 import Overlay from "../internal/Overlay";
 import { IconButton } from "../";
 import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("dialog");
-
-function FirstChild(props) {
-  const children = React.Children.toArray(props.children);
-
-  return children[0] || null;
-}
 
 export default class Dialog extends React.Component {
   static propTypes = {

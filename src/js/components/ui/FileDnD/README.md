@@ -9,7 +9,16 @@ class FileDnDExample extends React.Component {
 
   render() {
     return (
-      <FileDnD>
+      <FileDnD
+        style={{
+          width: "100%",
+          height: 300
+        }}
+        overlay={
+          <div>Drag me!!</div>
+        }
+        onDrop={dataTransfer => console.log(dataTransfer.files[0])}
+      >
         <div>
           Result:
         </div>
@@ -17,4 +26,6 @@ class FileDnDExample extends React.Component {
     );
   }
 }
+
+<FileDnDExample />
 ```
