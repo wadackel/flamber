@@ -4,7 +4,20 @@ Basic:
 class FileDnDExample extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { src: "" };
+    this.handleDrop = this.handleDrop.bind(this);
+  }
+
+  handleDrop(dataTransfer) {
+    const { files } = dataTransfer;
+    const file = files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.setState({ src: reader.result });
+    };
+
+    reader.readAsDataURL(file);
   }
 
   render() {
@@ -17,10 +30,11 @@ class FileDnDExample extends React.Component {
         overlay={
           <div>Drag me!!</div>
         }
-        onDrop={dataTransfer => console.log(dataTransfer.files[0])}
+        onDrop={this.handleDrop}
       >
         <div>
-          Result:
+          <div>Result:</div>
+          {this.state.src && <img src={this.state.src} />}
         </div>
       </FileDnD>
     );

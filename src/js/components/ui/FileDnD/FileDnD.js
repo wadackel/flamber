@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import shareConfig from "../../../../share-config.json";
 import FirstChild from "../internal/FirstChild";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -40,7 +41,8 @@ export default class FileDnD extends Component {
       "handleDragEnter",
       "handleDragLeave",
       "handleDragOver",
-      "handleDrop"
+      "handleDrop",
+      "handleOverlayDragLeave"
     ], this);
   }
 
@@ -74,6 +76,10 @@ export default class FileDnD extends Component {
     }
   }
 
+  handleOverlayDragLeave(e) {
+    e.stopPropagation();
+  }
+
   render() {
     const {
       className,
@@ -82,25 +88,31 @@ export default class FileDnD extends Component {
     } = this.props;
 
     const { dragging } = this.state;
+    const modifier = { dragging };
 
-    const dropOverlay = dragging && <div className={b("overlay")}>
+    const dropOverlay = dragging && <div
+      className={b("overlay")}
+      onDragLeave={this.handleOverlayDragLeave}
+    >
       {overlay}
     </div>;
 
     return (
       <div
-        className={mergeClassNames(b({ dragging }), className)}
+        className={mergeClassNames(b(modifier), className)}
         onDragEnter={this.handleDragEnter}
         onDragLeave={this.handleDragLeave}
         onDragOver={this.handleDragOver}
         onDrop={this.handleDrop}
         style={style}
       >
-        {this.props.children}
+        <div className={b("content", modifier)}>
+          {this.props.children}
+        </div>
         <ReactCSSTransitionGroup
           transitionName="drop-overlay"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={180}
+          transitionEnterTimeout={shareConfig["file-dnd-overlay-enter-duration"]}
+          transitionLeaveTimeout={shareConfig["file-dnd-overlay-leave-duration"]}
           component={FirstChild}
         >
           {dropOverlay}
