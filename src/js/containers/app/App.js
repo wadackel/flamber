@@ -7,9 +7,15 @@ import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import { updateSettingsRequest } from "../../actions/settings";
-import { addBoardRequest, updateBoardRequest } from "../../actions/boards";
+import {
+  fetchBoardsRequest,
+  addBoardRequest,
+  updateBoardRequest,
+  addItemRequest
+} from "../../actions/boards";
 import {
   AddBoardDialog,
+  AddItemFileDialog,
   FloatingMenu,
   FloatingButton,
   Header,
@@ -55,7 +61,9 @@ export class App extends Component {
     this.state = {
       addBoardDialogOpen: false,
       addBoardSnackbarOpen: false,
-      boardName: ""
+      addItemFileDialogOpen: false,
+      addItemFileSnackbarOpen: false,
+      boardName: "",
     };
 
     bindHandlers([
@@ -73,7 +81,12 @@ export class App extends Component {
       "handleBoardNameComplete",
 
       "handleAddLinkItemOpen",
-      "handleAddItemOpen",
+
+      "handleAddItemFileOpen",
+      "handleAddItemFileClose",
+      "handleAddItemFile",
+      "handleAddItemFileSnackbarClose",
+
       "handleBoardsLayoutChange"
     ], this);
   }
@@ -85,6 +98,13 @@ export class App extends Component {
       this.setState({
         addBoardDialogOpen: false,
         addBoardSnackbarOpen: true,
+      });
+    }
+
+    if (boards.isItemAdding && !nextProps.boards.isItemAdding) {
+      this.setState({
+        addItemFileDialogOpen: false,
+        addItemFileSnackbarOpen: true
       });
     }
 
@@ -152,8 +172,30 @@ export class App extends Component {
   }
 
   // Add item
-  handleAddItemOpen() {
-    // TODO
+  handleAddItemFileOpen() {
+    const { boards: { entities } } = this.props;
+
+    if (entities.length === 0) {
+      this.props.dispatch(fetchBoardsRequest());
+    }
+
+    this.setState({ addItemFileDialogOpen: true });
+  }
+
+  handleAddItemFileClose() {
+    this.setState({ addItemFileDialogOpen: false });
+  }
+
+  handleAddItemFile(file, palette, boardId) {
+    this.props.dispatch(addItemRequest({
+      file,
+      palette,
+      boardId
+    }));
+  }
+
+  handleAddItemFileSnackbarClose() {
+    this.setState({ addItemFileSnackbarOpen: false });
   }
 
   handleBoardsLayoutChange(layout) {
@@ -288,7 +330,9 @@ export class App extends Component {
 
     const {
       addBoardDialogOpen,
-      addBoardSnackbarOpen
+      addBoardSnackbarOpen,
+      addItemFileDialogOpen,
+      addItemFileSnackbarOpen
     } = this.state;
 
     const {
@@ -341,7 +385,7 @@ export class App extends Component {
             icon={<UploadIcon />}
             tooltip="ファイルからアイテムを追加"
             tooltipOrigin={floatingButtonTooltipOrigin}
-            onClick={this.handleAddItemOpen}
+            onClick={this.handleAddItemFileOpen}
           />
         </FloatingMenu>
 
@@ -358,6 +402,25 @@ export class App extends Component {
           action="Show"
           onActionClick={() => console.log("TODO")}
           onRequestClose={this.handleAddBoardSnackbarClose}
+        />
+
+        {/* Add item file */}
+        <AddItemFileDialog
+          processing={boards.isFetching || boards.isItemAdding}
+          open={addItemFileDialogOpen}
+          selectBoards={boards.entities.map(board => ({
+            name: board.name,
+            value: board.id
+          }))}
+          onRequestClose={this.handleAddItemFileClose}
+          onRequestAdd={this.handleAddItemFile}
+        />
+        <Snackbar
+          open={addItemFileSnackbarOpen}
+          message="アイテムを追加しました"
+          action="Show"
+          onActionClick={() => console.log("TODO")}
+          onRequestClose={this.handleAddItemFileSnackbarClose}
         />
       </div>
     );

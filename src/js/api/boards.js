@@ -73,3 +73,24 @@ export function detailBoard(id) {
       .catch(error => reject({ error }));
   });
 }
+
+export function addItem({ file, palette, boardId}) {
+  return new Promise((resolve, reject) => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("palette", palette);
+
+    fetch(`${BOARDS_ENDPOINT}/${boardId}`, {
+        method: "POST",
+        body: data
+      })
+      .then(res => {
+        if (res.status === "ok") {
+          resolve(res.item);
+        } else {
+          reject({ error: res.error });
+        }
+      })
+      .catch(error => reject({ error }));
+  });
+}

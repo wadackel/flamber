@@ -1,15 +1,19 @@
 import uuid from "node-uuid";
 import { Router } from "express";
+import multer from "multer";
 import { fetchSettings, updateSettings } from "../utils/drive/settings";
 import {
   fetchMyItems,
   createMyItems,
   updateMyItems,
   findBoard,
-  updateBoard
+  updateBoard,
+  addItemByFile
 } from "../utils/drive/my-items";
 
 const router = Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 
 function errorResponse(res, error) {
@@ -81,6 +85,7 @@ router.post("/boards", (req, res) => {
         name: body.name,
         image: "",
         itemCount: 0,
+        items: [],
         created: dateString,
         modified: dateString
       }]
@@ -121,7 +126,7 @@ router.get("/boards/:id", (req, res) => {
   const { drive, params } = req;
 
   findBoard(drive, params.id)
-    .then(board => {
+    .then(({ board }) => {
       res.json({
         status: "ok",
         board
@@ -130,14 +135,16 @@ router.get("/boards/:id", (req, res) => {
     .catch(error => errorResponse(res, error));
 });
 
-router.put("/boards/:id", (req, res) => {
-  const { drive, params, body } = req;
 
-  updateBoard(drive, params.id, body)
-    .then(board => {
+// Items
+router.post("/boards/:id", upload.single("file"), (req, res) => {
+  const { drive, params, body, file } = req;
+
+  addItemByFile(drive, params.id, file, body.palette)
+    .then(item => {
       res.json({
         status: "ok",
-        board
+        item
       });
     })
     .catch(error => errorResponse(res, error));

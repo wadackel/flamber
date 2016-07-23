@@ -1,3 +1,4 @@
+import deepEqual from "deep-equal";
 import React, { Component, PropTypes } from "react";
 import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
@@ -56,6 +57,7 @@ export default class AddItemFileDialog extends Component {
     this.state = {
       dragging: false,
       selectImage: {
+        file: null,
         src: null,
         palette: []
       },
@@ -74,6 +76,14 @@ export default class AddItemFileDialog extends Component {
     ], this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!deepEqual(this.props.selectBoards, nextProps.selectBoards)) {
+      this.setState({
+        selectBoard: nextProps.selectBoards[0] && nextProps.selectBoards[0].value
+      });
+    }
+  }
+
   handleClose() {
     const { onRequestClose } = this.props;
     if (typeof onRequestClose === "function") {
@@ -85,7 +95,7 @@ export default class AddItemFileDialog extends Component {
     const { selectImage, selectBoard } = this.state;
 
     this.props.onRequestAdd(
-      selectImage.src,
+      selectImage.file,
       selectImage.palette,
       selectBoard
     );
@@ -124,6 +134,7 @@ export default class AddItemFileDialog extends Component {
 
     this.setState({
       selectImage: {
+        file: null,
         src: null,
         palette: []
       }
@@ -146,6 +157,7 @@ export default class AddItemFileDialog extends Component {
 
       this.setState({
         selectImage: {
+          file,
           src,
           palette
         }

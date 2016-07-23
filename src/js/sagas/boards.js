@@ -8,7 +8,8 @@ import {
   addBoard,
   updateBoard,
   deleteBoard,
-  detailBoard
+  detailBoard,
+  addItem
 } from "../api/boards";
 import * as Boards from "../actions/boards";
 
@@ -94,12 +95,26 @@ export function *handleDetailBoardRequest() {
   }
 }
 
+export function *handleAddItemRequest() {
+  while (true) {
+    const action = yield take(Boards.ADD_ITEM_REQUEST);
+
+    try {
+      const item = yield call(addItem, action.payload);
+      yield put(Boards.addItemSuccess(item));
+    } catch (err) {
+      yield put(Boards.addItemFailure(err));
+    }
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
     fork(handleAddBoardRequest),
     fork(watchUpdateBoardRequest),
     fork(handleDeleteBoardRequest),
-    fork(handleDetailBoardRequest)
+    fork(handleDetailBoardRequest),
+    fork(handleAddItemRequest)
   ];
 }

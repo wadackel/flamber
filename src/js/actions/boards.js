@@ -49,3 +49,13 @@ export const DETAIL_BOARD_FAILURE = "DETAIL_BOARD_FAILURE";
 export const detailBoardRequest = createAction(DETAIL_BOARD_REQUEST);
 export const detailBoardSuccess = createAction(DETAIL_BOARD_SUCCESS);
 export const detailBoardFailure = createAction(DETAIL_BOARD_FAILURE);
+
+
+// Add item
+export const ADD_ITEM_REQUEST = "ADD_ITEM_REQUEST";
+export const ADD_ITEM_SUCCESS = "ADD_ITEM_SUCCESS";
+export const ADD_ITEM_FAILURE = "ADD_ITEM_FAILURE";
+
+export const addItemRequest = createAction(ADD_ITEM_REQUEST);
+export const addItemSuccess = createAction(ADD_ITEM_SUCCESS);
+export const addItemFailure = createAction(ADD_ITEM_FAILURE);

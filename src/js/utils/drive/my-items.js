@@ -1,4 +1,5 @@
 import _ from "lodash";
+import uuid from "node-uuid";
 import {
   findJSON,
   getJSON,
@@ -40,9 +41,10 @@ export function updateMyItems(drive, myItems) {
 export function findBoard(drive, id) {
   return new Promise((resolve, reject) => {
     fetchMyItems(drive)
-      .then(({ boards }) => {
+      .then((myItems) => {
+        const { boards } = myItems;
         const board = _.find(boards, o => o.id === id);
-        board ? resolve(board) : reject(new Error("Not found"));
+        board ? resolve({ myItems, board }) : reject(new Error("Not found"));
       })
       .catch(reject);
   });
@@ -62,6 +64,60 @@ export function updateBoard(drive, id, props) {
         const board = _.find(boards, o => o.id === id);
         board ? resolve(board) : reject(new Error("Not found"));
       })
+      .catch(reject);
+  });
+}
+
+function uploadImage(drive, file) {
+  return new Promise((resolve, reject) => {
+    drive.files.create({
+      resource: {
+        parents: ["appDataFolder"],
+        name: file.originalname,
+        mimeType: file.mimetype
+      },
+      media: {
+        mimeType: file.mimetype,
+        body: file.buffer
+      }
+    }, (err, res) => {
+      err ? reject(err) : resolve(res);
+    });
+  });
+}
+
+export function addItemByFile(drive, boardId, file, palette) {
+  return new Promise((resolve, reject) => {
+    let resultMyItems;
+    let resultBoard;
+
+    findBoard(drive, boardId)
+      .then(({ myItems, board }) => {
+        resultMyItems = myItems;
+        resultBoard = board;
+
+        return uploadImage(drive, file);
+      })
+      .then(res => {
+        const dateString = new Date().toString();
+        const item = {
+          id: res.id,
+          url: "",
+          description: "",
+          name: file.originalname,
+          mimeType: res.mimeType,
+          tags: [],
+          created: dateString,
+          modified: dateString,
+          palette,
+          boardId
+        };
+
+        resultBoard.items.push(item);
+
+        return updateBoard(drive, boardId, resultBoard);
+      })
+      .then(resolve)
       .catch(reject);
   });
 }
