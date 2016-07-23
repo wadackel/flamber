@@ -1,16 +1,22 @@
-/* eslint-disable */
 import React, { Component, PropTypes } from "react";
+import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
+import getImagePalette from "../../../utils/get-image-palette";
 import {
   Dialog,
   DropDownMenu,
   MenuItem,
   FlatButton,
+  FileDnD,
+  IconButton,
   TextField
 } from "../";
-import { UploadIcon } from "../../svg-icons/";
+import {
+  CloseIcon,
+  UploadIcon
+} from "../../svg-icons/";
 
 const b = bem("add-item-file-dialog");
 
@@ -34,16 +40,36 @@ export default class AddItemFileDialog extends Component {
     onRequestAdd: () => {}
   };
 
+  static childContextTypes = {
+    theme: PropTypes.string.isRequired
+  };
+
+  getChildContext() {
+    return {
+      theme: Themes.LIGHT
+    };
+  }
+
   constructor(props, context) {
     super(props, context);
 
     this.state = {
+      dragging: false,
+      selectImage: {
+        src: null,
+        palette: []
+      },
       selectBoard: props.selectBoards[0] && props.selectBoards[0].value
     };
 
     bindHandlers([
       "handleClose",
       "handleAdd",
+      "handleDragStart",
+      "handleDragEnd",
+      "handleDrop",
+      "handleFileChange",
+      "handlePreviewCloseClick",
       "handleBoardChange"
     ], this);
   }
@@ -56,11 +82,77 @@ export default class AddItemFileDialog extends Component {
   }
 
   handleAdd() {
-    console.log("TODO");
+    const { selectImage, selectBoard } = this.state;
+
+    this.props.onRequestAdd(
+      selectImage.src,
+      selectImage.palette,
+      selectBoard
+    );
+  }
+
+  handleDragStart() {
+    if (!this.state.dragging) {
+      this.setState({ dragging: true });
+    }
+  }
+
+  handleDragEnd() {
+    if (this.state.dragging) {
+      this.setState({ dragging: false });
+    }
+  }
+
+  handleDrop(dataTransfer) {
+    const { files } = dataTransfer;
+
+    if (files.length > 0) {
+      this.setImageByFile(files[0]);
+    }
+  }
+
+  handleFileChange(e) {
+    const { files } = this.refs.file;
+
+    if (files.length > 0) {
+      this.setImageByFile(files[0]);
+    }
+  }
+
+  handlePreviewCloseClick(e) {
+    e.stopPropagation();
+
+    this.setState({
+      selectImage: {
+        src: null,
+        palette: []
+      }
+    });
   }
 
   handleBoardChange(value) {
     this.setState({ selectBoard: value });
+  }
+
+  setImageByFile(file) {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const src = reader.result;
+      const img = new Image();
+      img.src = src;
+
+      const palette = getImagePalette(img);
+
+      this.setState({
+        selectImage: {
+          src,
+          palette
+        }
+      });
+    };
+
+    reader.readAsDataURL(file);
   }
 
   render() {
@@ -72,12 +164,14 @@ export default class AddItemFileDialog extends Component {
     } = this.props;
 
     const {
+      dragging,
+      selectImage,
       selectBoard
     } = this.state;
 
     return (
       <Dialog
-        className={mergeClassNames(b(), className)}
+        className={mergeClassNames(b({ dragging }), className)}
         processing={processing}
         title="Add item from file"
         titleIcon={<UploadIcon />}
@@ -86,13 +180,55 @@ export default class AddItemFileDialog extends Component {
           <FlatButton
             type="primary"
             onClick={this.handleAdd}
-            disable={processing}
+            disable={processing || !selectImage.src}
           >
             Add
           </FlatButton>
         ]}
+        onDragEnter={this.handleDragStart}
         {...props}
       >
+        <FileDnD
+          className={b("dnd")}
+          overlay={
+            <p className={b("dnd__title")}>Drop to your image file</p>
+          }
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
+          onDrop={this.handleDrop}
+        />
+
+        <div className={b("browse")}>
+          <input
+            type="file"
+            ref="file"
+            className={b("browse__input")}
+            accept="image/*"
+            onChange={this.handleFileChange}
+          />
+          <p className={b("browse__title")}>Drag &amp; Drop or Browse</p>
+          {selectImage.src && <div className={b("preview")}>
+            <IconButton
+              className={b("preview__close")}
+              size="sm"
+              icon={<CloseIcon />}
+              onClick={this.handlePreviewCloseClick}
+            />
+            <img className={b("preview__image")} src={selectImage.src} />
+            <ul className={b("preview__palette")}>
+              {selectImage.palette.map((color, index) =>
+                <li
+                  key={index}
+                  className={b("preview__color")}
+                  style={{
+                    backgroundColor: `rgb(${color.r}, ${color.g}, ${color.b})`
+                  }}>
+                </li>
+              )}
+            </ul>
+          </div>}
+        </div>
+
         <DropDownMenu
           type="block"
           className={b("select-board")}
