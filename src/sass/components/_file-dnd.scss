@@ -1,0 +1,47 @@
+.file-dnd {
+  position: relative;
+
+  &__content {
+    @include transition(filter, $file-dnd-overlay-leave-duration);
+
+    &--dragging {
+      transition-duration: $file-dnd-overlay-enter-duration;
+      filter: blur(2px);
+    }
+  }
+
+  &__overlay {
+    @include absolute(0, 0, 0, 0, 6000);
+    @include transition((opacity, transform, filter));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid darken($brand-primary, 10%);
+    background: rgba($brand-primary, .8);
+    color: #fff;
+
+    &.drop-overlay {
+      &-enter-active {
+        transition-duration: #{$file-dnd-overlay-enter-duration}ms;
+      }
+
+      &-leave-active {
+        transition-duration: #{$file-dnd-overlay-leave-duration}ms;
+      }
+
+      &-enter-active,
+      &-leave {
+        transform: scale(1);
+        filter: blur(0);
+        opacity: 1;
+      }
+
+      &-enter,
+      &-leave-active {
+        transform: scale(.99);
+        filter: blur(2px);
+        opacity: 0.01;
+      }
+    }
+  }
+}

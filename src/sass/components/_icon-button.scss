@@ -1,4 +1,10 @@
 $button-size: 40px;
+$button-sizes: (
+  xl: 60px,
+  lg: 50px,
+  sm: 34px,
+  xs: 28px
+);
 
 .icon-button {
   @include button-extend-all;
@@ -32,15 +38,31 @@ $button-size: 40px;
   }
 
   &__icon {
+    @include size(1rem);
     margin: 0;
+    vertical-align: baseline;
 
     svg {
-      vertical-align: middle;
       fill: currentColor;
     }
   }
 
   &__tooltip {
     @include tooltip;
+  }
+
+  @each $modifier, $size in $button-sizes {
+    &--#{$modifier} &__body {
+      @include size($size);
+    }
+
+    &--#{$modifier} &__icon {
+      $icon-size: round($size * .4);
+      @include size($icon-size);
+
+      svg {
+        @include size($icon-size);
+      }
+    }
   }
 }

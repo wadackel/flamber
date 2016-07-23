@@ -11,6 +11,23 @@ Basic:
 ```
 
 
+Sizes:
+
+```
+<div>
+  <IconButton icon={<StarIcon />} size="xl" />
+  {" "}
+  <IconButton icon={<StarIcon />} size="lg" />
+  {" "}
+  <IconButton icon={<StarIcon />} size="md" />
+  {" "}
+  <IconButton icon={<StarIcon />} size="sm" />
+  {" "}
+  <IconButton icon={<StarIcon />} size="xs" />
+</div>
+```
+
+
 Tooltip:
 
 ```

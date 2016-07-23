@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import ReactDOM from "react-dom";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
@@ -24,6 +25,10 @@ export default class DropDownMenu extends React.Component {
     onChange: () => {}
   };
 
+  static contextTypes = {
+    theme: PropTypes.string.isRequired
+  };
+
   constructor(props, context) {
     super(props, context);
 
@@ -37,6 +42,14 @@ export default class DropDownMenu extends React.Component {
       "handleItemClick",
       "handleRequestClose"
     ], this);
+  }
+
+  componentDidMount() {
+    this.setMenuWidth();
+  }
+
+  componentDidUpdate() {
+    this.setMenuWidth();
   }
 
   handleTriggerClick(e) {
@@ -57,6 +70,17 @@ export default class DropDownMenu extends React.Component {
     this.setState({ open: false });
   }
 
+  setMenuWidth() {
+    if (!this.state.open) return;
+
+    const triggerElement = ReactDOM.findDOMNode(this.refs.triggerElement);
+    const menu = ReactDOM.findDOMNode(this.refs.menu);
+
+    if (!menu) return;
+
+    menu.style.minWidth = `${triggerElement.offsetWidth}px`;
+  }
+
   render() {
     const {
       children,
@@ -66,6 +90,8 @@ export default class DropDownMenu extends React.Component {
       type
     } = this.props;
 
+    const { theme } = this.context;
+
     const {
       open,
       triggerElement
@@ -73,6 +99,7 @@ export default class DropDownMenu extends React.Component {
 
     const modifier = {
       [type]: true,
+      theme,
       open
     };
 
@@ -109,8 +136,12 @@ export default class DropDownMenu extends React.Component {
           onRequestClose={this.handleRequestClose}
         >
           <Menu
+            ref="menu"
+            disableAutoFocus={false}
+            initiallyKeyboardFocused={true}
             value={value}
             onItemClick={this.handleItemClick}
+            onEscKeyDown={this.handleRequestClose}
           >
             {children}
           </Menu>

@@ -15,6 +15,10 @@ export default class PopoverAnimation extends React.Component {
     origin: OriginalPropTypes.origin
   };
 
+  static contextTypes = {
+    theme: PropTypes.string.isRequired
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = { open: false };
@@ -85,8 +89,10 @@ export default class PopoverAnimation extends React.Component {
       origin
     } = this.props;
 
+    const { theme } = this.context;
+
     const b = bem(baseClassName);
-    const modifier = { open: this.state.open };
+    const modifier = { open: this.state.open, theme };
 
     const originVertical = origin.vertical === "middle" ? "50%" : origin.vertical;
     const originHorizontal = origin.horizontal === "center" ? "50%" : origin.horizontal;
@@ -101,7 +107,7 @@ export default class PopoverAnimation extends React.Component {
       >
         <div className={b("horizontal", modifier)} style={style}>
           <div className={b("vertical", modifier)} style={style}>
-            <div ref="scrollContainer" className={b("scroll-container")}>
+            <div ref="scrollContainer" className={b("scroll-container", modifier)}>
               {children}
             </div>
           </div>

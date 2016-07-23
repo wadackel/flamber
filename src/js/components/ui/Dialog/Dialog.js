@@ -5,18 +5,13 @@ import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
+import FirstChild from "../internal/FirstChild";
 import RenderToLayer from "../internal/RenderToLayer";
 import Overlay from "../internal/Overlay";
 import { IconButton } from "../";
 import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("dialog");
-
-function FirstChild(props) {
-  const children = React.Children.toArray(props.children);
-
-  return children[0] || null;
-}
 
 export default class Dialog extends React.Component {
   static propTypes = {
@@ -28,14 +23,20 @@ export default class Dialog extends React.Component {
     titleIcon: PropTypes.element,
     actions: PropTypes.node,
     open: PropTypes.bool.isRequired,
-    onRequestClose: PropTypes.func.isRequired
+    onRequestClose: PropTypes.func.isRequired,
+    onDragEnter: PropTypes.func,
+    onDragOver: PropTypes.func,
+    onDragLeave: PropTypes.func
   };
 
   static defaultProps = {
     processing: false,
     width: 450,
     open: false,
-    onRequestClose: () => {}
+    onRequestClose: () => {},
+    onDragEnter: () => {},
+    onDragOver: () => {},
+    onDragLeave: () => {}
   };
 
   constructor(props, context) {
@@ -123,7 +124,10 @@ export default class Dialog extends React.Component {
       children,
       className,
       processing,
-      open
+      open,
+      onDragEnter,
+      onDragOver,
+      onDragLeave
     } = this.props;
 
     const modifier = { open, processing };
@@ -139,7 +143,12 @@ export default class Dialog extends React.Component {
           {open ? <div className={b("wrapper", modifier)}>
             <div className={b("horizontal", modifier)}>
               <div className={b("vertical", modifier)}>
-                <div className={mergeClassNames(b(modifier), className)}>
+                <div
+                  className={mergeClassNames(b(modifier), className)}
+                  onDragEnter={onDragEnter}
+                  onDragOver={onDragOver}
+                  onDragLeave={onDragLeave}
+                >
                   {this.renderProcessOverlay()}
                   <div className={b("container", modifier)}>
                     {this.renderHeader()}
