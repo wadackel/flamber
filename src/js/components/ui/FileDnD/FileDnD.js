@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../../share-config.json";
@@ -15,6 +14,8 @@ export default class FileDnD extends Component {
     className: PropTypes.string,
     style: PropTypes.object,
     overlay: PropTypes.node,
+    onDragStart: PropTypes.func,
+    onDragEnd: PropTypes.func,
     onDragEnter: PropTypes.func,
     onDragLeave: PropTypes.func,
     onDragOver: PropTypes.func,
@@ -24,6 +25,8 @@ export default class FileDnD extends Component {
   static defaultProps = {
     style: {},
     overlay: <span />,
+    onDragStart: () => {},
+    onDragEnd: () => {},
     onDragEnter: () => {},
     onDragLeave: () => {},
     onDragOver: () => {},
@@ -41,27 +44,47 @@ export default class FileDnD extends Component {
       "handleDragEnter",
       "handleDragLeave",
       "handleDragOver",
-      "handleDrop",
-      "handleOverlayDragLeave"
+      "handleDrop"
     ], this);
+  }
+
+  componentDidMount() {
+    const { dnd } = this.refs;
+
+    dnd.addEventListener("dragenter", this.handleDragEnter, false);
+    dnd.addEventListener("dragleave", this.handleDragLeave, false);
+    dnd.addEventListener("dragover", this.handleDragOver, false);
+    dnd.addEventListener("drop", this.handleDrop, false);
+  }
+
+  componentWillUnmount() {
+    const { dnd } = this.refs;
+
+    dnd.removeEventListener("dragenter", this.handleDragEnter, false);
+    dnd.removeEventListener("dragleave", this.handleDragLeave, false);
+    dnd.removeEventListener("dragover", this.handleDragOver, false);
+    dnd.removeEventListener("drop", this.handleDrop, false);
   }
 
   handleDragEnter(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ dragging: true });
+    this.dragStart();
     this.props.onDragEnter(e);
   }
 
   handleDragLeave(e) {
-    this.setState({ dragging: false });
+    e.stopPropagation();
+    if (e.target === e.currentTarget) {
+      this.dragEnd();
+    }
     this.props.onDragLeave(e);
   }
 
   handleDragOver(e) {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ dragging: true });
+    this.dragStart();
     this.props.onDragOver(e);
   }
 
@@ -69,15 +92,25 @@ export default class FileDnD extends Component {
     e.stopPropagation();
     e.preventDefault();
 
-    this.setState({ dragging: false });
+    this.dragEnd();
 
     if (e.dataTransfer.files.length > 0) {
       this.props.onDrop(e.dataTransfer);
     }
   }
 
-  handleOverlayDragLeave(e) {
-    e.stopPropagation();
+  dragStart() {
+    if (!this.state.dragging) {
+      this.setState({ dragging: true });
+      this.props.onDragStart();
+    }
+  }
+
+  dragEnd() {
+    if (this.state.dragging) {
+      this.setState({ dragging: false });
+      this.props.onDragEnd();
+    }
   }
 
   render() {
@@ -90,20 +123,14 @@ export default class FileDnD extends Component {
     const { dragging } = this.state;
     const modifier = { dragging };
 
-    const dropOverlay = dragging && <div
-      className={b("overlay")}
-      onDragLeave={this.handleOverlayDragLeave}
-    >
+    const dropOverlay = dragging && <div className={b("overlay")}>
       {overlay}
     </div>;
 
     return (
       <div
+        ref="dnd"
         className={mergeClassNames(b(modifier), className)}
-        onDragEnter={this.handleDragEnter}
-        onDragLeave={this.handleDragLeave}
-        onDragOver={this.handleDragOver}
-        onDrop={this.handleDrop}
         style={style}
       >
         <div className={b("content", modifier)}>
