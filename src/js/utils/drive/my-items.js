@@ -91,7 +91,7 @@ function fetchImageThumbnail(drive, id) {
   return new Promise((resolve, reject) => {
     drive.files.get({
       fileId: id,
-      fields: "id, name, mimeType, thumbnailLink"
+      fields: "id, name, mimeType, thumbnailLink, imageMediaMetadata(width, height)"
     }, (err, res) => {
       err ? reject(err) : resolve(res);
     });
@@ -118,6 +118,8 @@ export function addItemByFile(drive, boardId, file, palette) {
           url: "",
           description: "",
           name: file.originalname,
+          imageWidth: res.imageMediaMetadata.width,
+          imageHeight: res.imageMediaMetadata.height,
           thumbnail: res.thumbnailLink,
           mimeType: res.mimeType,
           tags: [],
@@ -132,6 +134,56 @@ export function addItemByFile(drive, boardId, file, palette) {
         return updateBoard(drive, boardId, resultBoard);
       })
       .then(resolve)
+      .catch(reject);
+  });
+}
+
+function deleteItemMedia(drive, id) {
+  return new Promise((resolve, reject) => {
+    drive.files.delete({
+      fileId: id
+    }, (err, res) => {
+      err ? reject(err) : resolve(res);
+    });
+  });
+}
+
+export function deleteItem(drive, id) {
+  return new Promise((resolve, reject) => {
+    let resultMyItems;
+    let resultBoard;
+
+    fetchMyItems(drive)
+      .then(myItems => {
+        resultMyItems = myItems;
+
+        const board = _.find(myItems.boards, board => {
+          if (_.find(board.items, item => item.id === id)) {
+            resultBoard = board;
+            return true;
+          }
+        });
+
+        return resultBoard
+          ? Promise.resolve()
+          : Promise.reject(new Error("Not found"));
+      })
+      .then(() => deleteItemMedia(drive, id))
+      .then(() => updateMyItems(drive, {
+        ...resultMyItems,
+        boards: resultMyItems.boards.map(board => ({
+          ...board,
+          items: board.items.filter(item =>
+            item.id !== id
+          )
+        }))
+      }))
+      .then(() => {
+        resolve({
+          boardId: resultBoard.id,
+          id
+        })
+      })
       .catch(reject);
   });
 }

@@ -1,4 +1,5 @@
 /* eslint-disable */
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -13,6 +14,7 @@ import {
   updateBoardRequest,
   addItemRequest
 } from "../../actions/boards";
+import { boardSelectorByBoards } from "../../selectors/boards";
 import {
   AddBoardDialog,
   AddItemFileDialog,
@@ -91,8 +93,12 @@ export class App extends Component {
     ], this);
   }
 
+  componentDidMount() {
+    this.props.dispatch(fetchBoardsRequest());
+  }
+
   componentWillReceiveProps(nextProps) {
-    const { boards } = this.props;
+    const { boards, params } = this.props;
 
     if (boards.isAdding && !nextProps.boards.isAdding) {
       this.setState({
@@ -108,11 +114,12 @@ export class App extends Component {
       });
     }
 
-    if (
-      (!boards.board && nextProps.boards.board)
-      || ((boards.board && nextProps.boards.board) && (boards.board.name !== nextProps.boards.board.name))
-    ) {
-      this.setState({ boardName: nextProps.boards.board.name });
+    const nextBoard = boardSelectorByBoards(nextProps.boards, params.id);
+
+    if (nextBoard && nextBoard.name !== this.state.boardName && !nextProps.boards.isUpdating) {
+      this.setState({
+        boardName: nextBoard.name
+      });
     }
   }
 
@@ -156,7 +163,8 @@ export class App extends Component {
   }
 
   handleBoardNameComplete(value) {
-    const { boards: { board } } = this.props;
+    const { boards, params } = this.props;
+    const board = _.find(boards.entities, o => o.id === params.id);
 
     this.props.dispatch(updateBoardRequest({
       ...board,
@@ -174,11 +182,6 @@ export class App extends Component {
   // Add item
   handleAddItemFileOpen() {
     const { boards: { entities } } = this.props;
-
-    if (entities.length === 0) {
-      this.props.dispatch(fetchBoardsRequest());
-    }
-
     this.setState({ addItemFileDialogOpen: true });
   }
 
@@ -246,14 +249,10 @@ export class App extends Component {
   }
 
   getHeaderBoardDetailProps() {
-    const {
-      boards: {
-        board,
-        isUpdating
-      }
-    } = this.props;
-
+    const { boards, params } = this.props;
+    const { isUpdating } = boards;
     const { boardName } = this.state;
+    const board = boardSelectorByBoards(boards, params.id);
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,

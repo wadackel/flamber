@@ -7,8 +7,9 @@ const initialState = {
   isUpdating: false,
   isDeleting: false,
   isItemAdding: false,
-  entities: [],
-  board: null
+  isItemDeleting: false,
+  currentId: null,
+  entities: []
 };
 
 export default handleActions({
@@ -57,7 +58,6 @@ export default handleActions({
   [Boards.UPDATE_BOARD_SUCCESS]: (state, action) => ({
     ...state,
     isUpdating: false,
-    board: state.board && state.board.id === action.payload.id ? action.payload : state.board,
     entities: state.entities.map(board =>
       board.id === action.payload.id ? action.payload : board
     )
@@ -98,7 +98,7 @@ export default handleActions({
   [Boards.DETAIL_BOARD_SUCCESS]: (state, action) => ({
     ...state,
     isFetching: false,
-    board: action.payload
+    currentId: action.payload.id
   }),
 
   [Boards.DETAIL_BOARD_FAILURE]: (state, action) => ({
@@ -131,6 +131,31 @@ export default handleActions({
   [Boards.ADD_ITEM_FAILURE]: (state, action) => ({
     ...state,
     isItemAdding: false,
+    error: action.payload
+  }),
+
+  // Delete item
+  [Boards.DELETE_ITEM_REQUEST]: state => ({
+    ...state,
+    isItemDeleting: true
+  }),
+
+  [Boards.DELETE_ITEM_SUCCESS]: (state, action) => ({
+    ...state,
+    isItemDeleting: false,
+    entities: state.entities.map(board =>
+      board.id !== action.payload.boardId ? board : {
+        ...board,
+        itemCount: board.itemCount - 1,
+        items: board.items.map(item =>
+          item.id !== action.payload.id
+        )
+      }
+    )
+  }),
+
+  [Boards.DELETE_ITEM_FAILURE]: (state, action) => ({
+    ...state,
     error: action.payload
   })
 }, initialState);

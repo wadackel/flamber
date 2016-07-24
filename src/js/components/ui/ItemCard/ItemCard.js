@@ -81,8 +81,8 @@ export default class ItemCard extends React.Component {
     this.props.onSelect(checked);
   }
 
-  handleDeleteClick() {
-    // TODO
+  handleDeleteClick(e) {
+    this.props.onDelete(this.props.id);
   }
 
   renderMoreActions() {

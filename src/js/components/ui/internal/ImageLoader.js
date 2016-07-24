@@ -21,7 +21,7 @@ export default class ImageLoader extends React.Component {
   };
 
   static defaultProps = {
-    wrapper: ReactDOM.span,
+    wrapper: React.DOM.span,
     background: false,
     onError: () => {},
     onLoad: () => {}

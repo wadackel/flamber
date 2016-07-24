@@ -94,3 +94,20 @@ export function addItem({ file, palette, boardId}) {
       .catch(error => reject({ error }));
   });
 }
+
+export function deleteItem(id) {
+  return new Promise((resolve, reject) => {
+    fetchJSON(`${BOARDS_ENDPOINT}/item`, { id }, "DELETE")
+      .then(res => {
+        if (res.status === "ok") {
+          resolve({
+            id: res.id,
+            boardId: res.boardId
+          });
+        } else {
+          reject({ error: res.error });
+        }
+      })
+      .catch(error => reject({ error }));
+  });
+}

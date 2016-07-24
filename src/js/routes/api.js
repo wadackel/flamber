@@ -8,7 +8,8 @@ import {
   updateMyItems,
   findBoard,
   updateBoard,
-  addItemByFile
+  addItemByFile,
+  deleteItem
 } from "../utils/drive/my-items";
 
 const router = Router();
@@ -101,6 +102,19 @@ router.post("/boards", (req, res) => {
     });
 });
 
+router.put("/boards/:id", (req, res) => {
+  const { drive, params, body } = req;
+
+  updateBoard(drive, params.id, body)
+    .then(board => {
+      res.json({
+        status: "ok",
+        board
+      });
+    })
+    .catch(error => errorResponse(res, error));
+});
+
 router.delete("/boards/", (req, res) => {
   const { drive, body } = req;
 
@@ -145,6 +159,20 @@ router.post("/boards/:id", upload.single("file"), (req, res) => {
       res.json({
         status: "ok",
         item
+      });
+    })
+    .catch(error => errorResponse(res, error));
+});
+
+router.delete("/boards/item", (req, res) => {
+  const { drive, body } = req;
+
+  deleteItem(drive, body.id)
+    .then(({ id, boardId }) => {
+      res.json({
+        status: "ok",
+        id,
+        boardId
       });
     })
     .catch(error => errorResponse(res, error));

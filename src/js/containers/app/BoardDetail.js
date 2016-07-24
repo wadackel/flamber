@@ -1,9 +1,16 @@
 /* eslint-disable */
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { detailBoardRequest } from "../../actions/boards";
+import {
+  detailBoardRequest,
+  deleteItemRequest
+} from "../../actions/boards";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
+import {
+  ItemCard
+} from "../../components/ui/";
 
 const b = bem("board-detail");
 
@@ -18,6 +25,7 @@ export class BoardDetail extends Component {
     super(props, context);
 
     bindHandlers([
+      "handleDelete"
     ], this);
   }
 
@@ -26,14 +34,32 @@ export class BoardDetail extends Component {
     this.props.dispatch(detailBoardRequest(id));
   }
 
+  handleDelete(id) {
+    this.props.dispatch(deleteItemRequest(id));
+  }
+
   render() {
-    const { boards: { board } } = this.props;
+    const { boards } = this.props;
+    const board = _.find(boards.entities, o => o.id === this.props.params.id);
+
+    if (!board) return null;
+
+    const { items } = board;
 
     return (
       <div className={`container ${b()}`}>
-        <pre>
-        {JSON.stringify(board || "{}", null, "  ")}
-        </pre>
+        {items.map(item =>
+          <ItemCard
+            key={item.id}
+            id={item.id}
+            title={item.name}
+            url={item.url}
+            image={item.thumbnail}
+            imageWidth={item.imageWidth}
+            imageHeight={item.imageHeight}
+            onDelete={this.handleDelete}
+          />
+        )}
       </div>
     );
   }
