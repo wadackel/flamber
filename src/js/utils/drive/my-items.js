@@ -79,7 +79,19 @@ function uploadImage(drive, file) {
       media: {
         mimeType: file.mimetype,
         body: file.buffer
-      }
+      },
+      fields: "id, mimeType"
+    }, (err, res) => {
+      err ? reject(err) : resolve(res);
+    });
+  });
+}
+
+function fetchImageThumbnail(drive, id) {
+  return new Promise((resolve, reject) => {
+    drive.files.get({
+      fileId: id,
+      fields: "id, name, mimeType, thumbnailLink"
     }, (err, res) => {
       err ? reject(err) : resolve(res);
     });
@@ -98,6 +110,7 @@ export function addItemByFile(drive, boardId, file, palette) {
 
         return uploadImage(drive, file);
       })
+      .then(res => fetchImageThumbnail(drive, res.id))
       .then(res => {
         const dateString = new Date().toString();
         const item = {
@@ -105,6 +118,7 @@ export function addItemByFile(drive, boardId, file, palette) {
           url: "",
           description: "",
           name: file.originalname,
+          thumbnail: res.thumbnailLink,
           mimeType: res.mimeType,
           tags: [],
           created: dateString,
