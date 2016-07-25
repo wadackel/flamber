@@ -13,6 +13,7 @@ import {
   Snackbar
 } from "../../components/ui/";
 import { GithubIcon } from "../../components/svg-icons";
+import { deleteAppRequest } from "../../actions/application";
 import { fetchSettingsRequest, updateSettingsRequest } from "../../actions/settings";
 
 const b = bem("settings");
@@ -37,7 +38,8 @@ export class Settings extends Component {
 
     bindHandlers([
       "handleThemeChange",
-      "handleSnackbarClose"
+      "handleSnackbarClose",
+      "handleDeleteClick"
     ], this);
   }
 
@@ -58,6 +60,10 @@ export class Settings extends Component {
 
   handleSnackbarClose() {
     this.setState({ snackbarOpen: false });
+  }
+
+  handleDeleteClick() {
+    this.props.dispatch(deleteAppRequest());
   }
 
   render() {
@@ -110,7 +116,7 @@ export class Settings extends Component {
           <h3 className={b("group__title")}>全ファイルを削除</h3>
           <div className={b("group__body")}>
             <p>dripupに関する全ての情報を削除します。<br />この操作は取り消すことは出来ません。</p>
-            <div><RaisedButton type="danger">Delete</RaisedButton></div>
+            <div><RaisedButton type="danger" onClick={this.handleDeleteClick}>Delete</RaisedButton></div>
           </div>
         </section>
 

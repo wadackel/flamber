@@ -26,6 +26,13 @@ function errorResponse(res, error) {
 }
 
 
+// Application
+router.delete("/application", (req, res) => {
+  // TODO
+  res.json({ status: "ok" });
+});
+
+
 // Settings
 router.get("/settings", (req, res) => {
   const { drive } = req;
