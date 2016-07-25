@@ -26,10 +26,43 @@ function errorResponse(res, error) {
 }
 
 
-// Application
+// TODO: Application
+function deleteItemGoogleDrive(drive, item, delay) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      drive.files.delete({
+        fileId: item.id
+      }, err => {
+        err ? reject(err) : resolve(item);
+      });
+    }, delay);
+  });
+}
+
+function deleteAllGoogleDrive(drive) {
+  return new Promise((resolve, reject) => {
+    drive.files.list({
+      spaces: "appDataFolder",
+      fields: "nextPageToken, files(id, name)",
+      pageSize: 1000
+    }, (err, res) => {
+      if (err) return reject(err);
+
+      Promise.all(res.files.map((item, i) => deleteItemGoogleDrive(drive, item, 200 * i)))
+        .then(resolve)
+        .catch(reject);
+    });
+  });
+}
+
 router.delete("/application", (req, res) => {
-  // TODO
-  res.json({ status: "ok" });
+  const { drive } = req;
+
+  deleteAllGoogleDrive(drive)
+    .then(() => {
+      res.json({ status: "ok" });
+    })
+    .catch(error => errorResponse(res, error));
 });
 
 
