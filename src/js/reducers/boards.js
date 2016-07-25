@@ -147,7 +147,7 @@ export default handleActions({
       board.id !== action.payload.boardId ? board : {
         ...board,
         itemCount: board.itemCount - 1,
-        items: board.items.map(item =>
+        items: board.items.filter(item =>
           item.id !== action.payload.id
         )
       }

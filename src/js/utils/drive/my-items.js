@@ -102,6 +102,7 @@ export function addItemByFile(drive, boardId, file, palette) {
   return new Promise((resolve, reject) => {
     let resultMyItems;
     let resultBoard;
+    let resultItem;
 
     findBoard(drive, boardId)
       .then(({ myItems, board }) => {
@@ -129,11 +130,14 @@ export function addItemByFile(drive, boardId, file, palette) {
           boardId
         };
 
+        resultItem = item;
         resultBoard.items.push(item);
 
         return updateBoard(drive, boardId, resultBoard);
       })
-      .then(resolve)
+      .then(() => {
+        resolve(resultItem);
+      })
       .catch(reject);
   });
 }
