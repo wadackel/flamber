@@ -118,9 +118,9 @@ export default class ItemCard extends React.Component {
         <CardMedia
           baseClassName={baseClassName}
           image={image}
-          style={{
+          style={isRandomGrid ? {
             paddingBottom: `${(imageHeight / imageWidth) * 100}%`
-          }}
+          } : {}}
           overlay={<CardOverlay
             baseClassName={baseClassName}
             selectable={true}

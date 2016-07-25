@@ -49,16 +49,18 @@ export class BoardDetail extends Component {
     return (
       <div className={`container ${b()}`}>
         {items.map(item =>
-          <ItemCard
-            key={item.id}
-            id={item.id}
-            title={item.name}
-            url={item.url}
-            image={item.thumbnail}
-            imageWidth={item.imageWidth}
-            imageHeight={item.imageHeight}
-            onDelete={this.handleDelete}
-          />
+          <div key={item.id} className={b("item")}>
+            <ItemCard
+              id={item.id}
+              layout={"grid"}
+              title={item.name}
+              url={item.url}
+              image={item.thumbnail}
+              imageWidth={item.imageWidth}
+              imageHeight={item.imageHeight}
+              onDelete={this.handleDelete}
+            />
+          </div>
         )}
       </div>
     );

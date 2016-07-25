@@ -276,6 +276,9 @@ export class App extends Component {
       subLeft: this.getHeaderMyItemsSubLeft(),
       subRight: (
         <div>
+          <Slider
+            defaultValue={50}
+          />
           <LayoutButtonGroup
           >
             <LayoutButton icon={<RandomGridIcon />} value={Layout.RANDOM_GRID}></LayoutButton>
