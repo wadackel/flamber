@@ -163,8 +163,11 @@ $header-main-height: 60px;
   &__setting {
     float: left;
 
-    svg {
-      @include size(24px);
+    .icon-button__icon {
+      &,
+      svg {
+        @include size(24px);
+      }
     }
   }
 }
