@@ -1,15 +1,7 @@
 import _ from "lodash";
 
 export function boardSelectorByBoards(boards, id) {
-  const board = _.find(boards.entities, o => o.id === id);
-
-  if (board) {
-    return board;
-  } else if (boards.board && boards.board.id === id) {
-    return boards.board;
-  }
-
-  return null;
+  return _.find(boards.entities, o => o._id === id);
 }
 
 export function boardSelector(state, id) {
@@ -20,7 +12,7 @@ export function itemSelectorByBoards(boards, id) {
   let item = null;
 
   _.forEach(boards.entities, board => {
-    const res = _.find(board.items, o => o.id === id);
+    const res = _.find(board.items, o => o._id === id);
 
     if (res) {
       item = res;

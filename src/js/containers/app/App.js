@@ -1,5 +1,4 @@
 /* eslint-disable */
-import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -167,7 +166,7 @@ export class App extends Component {
 
   handleBoardNameComplete(value) {
     const { boards, params } = this.props;
-    const board = _.find(boards.entities, o => o.id === params.id);
+    const board = boardSelectorByBoards(boards, params.id);
 
     this.props.dispatch(updateBoardRequest({
       ...board,

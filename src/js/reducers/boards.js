@@ -85,86 +85,13 @@ export default handleActions({
     ...state,
     isDeleting: false,
     entities: state.entities.filter(board =>
-      board.id !== action.payload
+      board._id !== action.payload
     )
   }),
 
   [Boards.DELETE_BOARD_FAILURE]: (state, action) => ({
     ...state,
     isDeleting: false,
-    error: action.payload
-  }),
-
-  // Detail
-  [Boards.DETAIL_BOARD_REQUEST]: state => ({
-    ...state,
-    isFetching: true,
-    error: null
-  }),
-
-  [Boards.DETAIL_BOARD_SUCCESS]: (state, action) => ({
-    ...state,
-    isFetching: false,
-    currentBoardId: action.payload.id
-  }),
-
-  [Boards.DETAIL_BOARD_FAILURE]: (state, action) => ({
-    ...state,
-    isFetching: false,
-    error: action.payload
-  }),
-
-  // Add item
-  [Boards.ADD_ITEM_REQUEST]: state => ({
-    ...state,
-    isItemAdding: true,
-    error: null
-  }),
-
-  [Boards.ADD_ITEM_SUCCESS]: (state, action) => ({
-    ...state,
-    isItemAdding: false,
-    entities: state.entities.map(board =>
-      board.id !== action.payload.boardId ? board : {
-        ...board,
-        itemCount: board.itemCount + 1,
-        items: [
-          ...board.items,
-          action.payload
-        ]
-      }
-    )
-  }),
-
-  [Boards.ADD_ITEM_FAILURE]: (state, action) => ({
-    ...state,
-    isItemAdding: false,
-    error: action.payload
-  }),
-
-  // Delete item
-  [Boards.DELETE_ITEM_REQUEST]: state => ({
-    ...state,
-    isItemDeleting: true,
-    error: null
-  }),
-
-  [Boards.DELETE_ITEM_SUCCESS]: (state, action) => ({
-    ...state,
-    isItemDeleting: false,
-    entities: state.entities.map(board =>
-      board.id !== action.payload.boardId ? board : {
-        ...board,
-        itemCount: board.itemCount - 1,
-        items: board.items.filter(item =>
-          item.id !== action.payload.id
-        )
-      }
-    )
-  }),
-
-  [Boards.DELETE_ITEM_FAILURE]: (state, action) => ({
-    ...state,
     error: action.payload
   })
 }, initialState);

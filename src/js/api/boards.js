@@ -34,7 +34,7 @@ export function addBoard(name) {
 
 export function updateBoard(board) {
   return new Promise((resolve, reject) => {
-    fetchJSON(`${BOARDS_ENDPOINT}/${board.id}`, board, "PUT")
+    fetchJSON(BOARDS_ENDPOINT, board, "PUT")
       .then(res => {
         if (res.status === "ok") {
           resolve(res.board);
@@ -48,10 +48,10 @@ export function updateBoard(board) {
 
 export function deleteBoard(id) {
   return new Promise((resolve, reject) => {
-    fetchJSON(BOARDS_ENDPOINT, { id }, "DELETE")
+    fetchJSON(BOARDS_ENDPOINT, { _id: id }, "DELETE")
       .then(res => {
         if (res.status === "ok") {
-          resolve(res.id);
+          resolve(id);
         } else {
           reject({ error: res.error });
         }
