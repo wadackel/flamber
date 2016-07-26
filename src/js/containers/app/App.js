@@ -76,6 +76,7 @@ export class App extends Component {
       "handleAddBoardOpen",
       "handleAddBoardClose",
       "handleAddBoard",
+      "handleAddBoardActionClick",
       "handleAddBoardSnackbarClose",
 
       "handleBoardNameChange",
@@ -116,7 +117,7 @@ export class App extends Component {
       });
     }
 
-    const nextBoard = boardSelectorByBoards(nextProps.boards, params.id);
+    const nextBoard = boardSelectorByBoards(nextProps.boards, nextProps.params.id);
 
     if (nextBoard && nextBoard.name !== this.state.boardName && !nextProps.boards.isUpdating) {
       this.setState({
@@ -153,6 +154,13 @@ export class App extends Component {
 
   handleAddBoard(boardName) {
     this.props.dispatch(addBoardRequest(boardName));
+  }
+
+  handleAddBoardActionClick() {
+    const { boards: { entities } } = this.props;
+    const lastBoardId = entities[entities.length - 1]._id;
+    this.push(`/app/board/${lastBoardId}`);
+    this.setState({ addBoardSnackbarOpen: false });
   }
 
   handleAddBoardSnackbarClose() {
@@ -405,7 +413,7 @@ export class App extends Component {
           open={addBoardSnackbarOpen}
           message={addBoardSnackbarMessage || ""}
           action={boards.error ? null : "Show"}
-          onActionClick={() => console.log("TODO")}
+          onActionClick={this.handleAddBoardActionClick}
           onRequestClose={this.handleAddBoardSnackbarClose}
         />
 
