@@ -26,6 +26,7 @@ export default function authMiddleware(req, res, next) {
       req.authenticated = true;
       req.user = user;
       req.drive = drive;
+      console.log(user);
       next();
     })
     .catch(err => {

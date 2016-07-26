@@ -1,5 +1,7 @@
 import { getDrive } from "./drive";
+import User from "../models/user";
 
+// FIXME: Refactor
 export function fetchUser(oauth2Client, token) {
   return new Promise((resolve, reject) => {
     const drive = getDrive(oauth2Client, token);
@@ -13,7 +15,23 @@ export function fetchUser(oauth2Client, token) {
         return;
       }
 
-      resolve(Object.assign({}, res.user, res.storageQuota));
+      const profile = Object.assign({}, res.user, res.storageQuota);
+
+      User.findOne({ email: profile.emailAddress }, (dbError, user) => {
+        if (dbError || !user) {
+          // TODO: Responding to other providers
+          User.createProviderFactory("google", profile, (createError, newUser) => {
+            if (createError) {
+              reject(createError);
+            } else {
+              resolve(newUser);
+            }
+          });
+
+        } else {
+          resolve(user);
+        }
+      });
     });
   });
 }
@@ -21,15 +39,12 @@ export function fetchUser(oauth2Client, token) {
 export function fetchToken(oauth2Client, code) {
   return new Promise((resolve, reject) => {
     oauth2Client.getToken(code, (err, token) => {
-
-      /* eslint-disable no-console */
       if (err) {
-        console.log("Error while trying to retrieve access token", err);
+        console.log("Error while trying to retrieve access token", err); // eslint-disable-line no-console
         reject(err);
 
         return;
       }
-      /* eslint-enable no-console */
 
       resolve(token);
     });

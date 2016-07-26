@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import path from "path";
+import mongoose from "mongoose";
 import express from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -24,6 +25,8 @@ import { initialState as authInitialState } from "./reducers/auth";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+
+mongoose.connect("mongodb://localhost/dripup");
 
 
 // Layout
@@ -106,8 +109,6 @@ app.use((req, res) => {
 
 
 // Listen
-/* eslint-disable no-console */
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+  console.log(`Listening on port ${PORT}`); // eslint-disable-line no-console
 });
-/* eslint-enable no-console */

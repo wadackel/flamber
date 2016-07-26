@@ -85,6 +85,7 @@
     "lodash": "^4.13.1",
     "method-override": "^2.3.6",
     "moment": "^2.14.1",
+    "mongoose": "^4.5.7",
     "multer": "^1.1.0",
     "node-uuid": "^1.4.7",
     "object-assign": "^4.1.0",
