@@ -97,7 +97,6 @@ export default class AddBoardDialog extends Component {
       >
         <TextField
           label="Type board name"
-          value={value}
           onChange={this.handleBoardNameChange}
           onEnter={this.handleAdd}
         />
