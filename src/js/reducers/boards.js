@@ -8,20 +8,23 @@ const initialState = {
   isDeleting: false,
   isItemAdding: false,
   isItemDeleting: false,
-  currentId: null,
-  entities: []
+  currentBoardId: null,
+  entities: [],
+  error: null
 };
 
 export default handleActions({
   // Fetch
   [Boards.FETCH_BOARDS_REQUEST]: state => ({
     ...state,
-    isFetching: true
+    isFetching: true,
+    error: null
   }),
 
   [Boards.FETCH_BOARDS_SUCCESS]: (state, action) => ({
     ...state,
     isFetching: false,
+    error: null,
     entities: action.payload
   }),
 
@@ -34,7 +37,8 @@ export default handleActions({
   // Add
   [Boards.ADD_BOARD_REQUEST]: state => ({
     ...state,
-    isAdding: true
+    isAdding: true,
+    error: null
   }),
 
   [Boards.ADD_BOARD_SUCCESS]: (state, action) => ({
@@ -52,7 +56,8 @@ export default handleActions({
   // Update
   [Boards.UPDATE_BOARD_REQUEST]: state => ({
     ...state,
-    isUpdating: true
+    isUpdating: true,
+    error: null
   }),
 
   [Boards.UPDATE_BOARD_SUCCESS]: (state, action) => ({
@@ -72,7 +77,8 @@ export default handleActions({
   // Delete
   [Boards.DELETE_BOARD_REQUEST]: state => ({
     ...state,
-    isDeleting: true
+    isDeleting: true,
+    error: null
   }),
 
   [Boards.DELETE_BOARD_SUCCESS]: (state, action) => ({
@@ -92,13 +98,14 @@ export default handleActions({
   // Detail
   [Boards.DETAIL_BOARD_REQUEST]: state => ({
     ...state,
-    isFetching: true
+    isFetching: true,
+    error: null
   }),
 
   [Boards.DETAIL_BOARD_SUCCESS]: (state, action) => ({
     ...state,
     isFetching: false,
-    currentId: action.payload.id
+    currentBoardId: action.payload.id
   }),
 
   [Boards.DETAIL_BOARD_FAILURE]: (state, action) => ({
@@ -110,7 +117,8 @@ export default handleActions({
   // Add item
   [Boards.ADD_ITEM_REQUEST]: state => ({
     ...state,
-    isItemAdding: true
+    isItemAdding: true,
+    error: null
   }),
 
   [Boards.ADD_ITEM_SUCCESS]: (state, action) => ({
@@ -137,7 +145,8 @@ export default handleActions({
   // Delete item
   [Boards.DELETE_ITEM_REQUEST]: state => ({
     ...state,
-    isItemDeleting: true
+    isItemDeleting: true,
+    error: null
   }),
 
   [Boards.DELETE_ITEM_SUCCESS]: (state, action) => ({

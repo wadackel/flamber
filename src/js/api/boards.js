@@ -60,30 +60,18 @@ export function deleteBoard(id) {
   });
 }
 
-export function detailBoard(id) {
-  return new Promise((resolve, reject) => {
-    fetch(`${BOARDS_ENDPOINT}/${id}`)
-      .then(res => {
-        if (res.status === "ok") {
-          resolve(res.board);
-        } else {
-          reject({ error: res.error });
-        }
-      })
-      .catch(error => reject({ error }));
-  });
-}
-
-export function addItem({ file, palette, boardId}) {
+export function addItem({ file, palette, boardId }) {
   return new Promise((resolve, reject) => {
     const data = new FormData();
     data.append("file", file);
     data.append("palette", palette);
 
-    fetch(`${BOARDS_ENDPOINT}/${boardId}`, {
-        method: "POST",
-        body: data
-      })
+    const params = {
+      method: "POST",
+      body: data
+    };
+
+    fetch(`${BOARDS_ENDPOINT}/${boardId}`, params)
       .then(res => {
         if (res.status === "ok") {
           resolve(res.item);

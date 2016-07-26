@@ -104,6 +104,9 @@ export class App extends Component {
       this.setState({
         addBoardDialogOpen: false,
         addBoardSnackbarOpen: true,
+        addBoardSnackbarMessage: nextProps.boards.error
+          ? "ボード追加でエラーが発生しました"
+          : "ボードを追加しました"
       });
     }
 
@@ -333,6 +336,7 @@ export class App extends Component {
     const {
       addBoardDialogOpen,
       addBoardSnackbarOpen,
+      addBoardSnackbarMessage,
       addItemFileDialogOpen,
       addItemFileSnackbarOpen
     } = this.state;
@@ -400,8 +404,8 @@ export class App extends Component {
         />
         <Snackbar
           open={addBoardSnackbarOpen}
-          message="ボードを追加しました"
-          action="Show"
+          message={addBoardSnackbarMessage}
+          action={boards.error ? null : "Show"}
           onActionClick={() => console.log("TODO")}
           onRequestClose={this.handleAddBoardSnackbarClose}
         />
