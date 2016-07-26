@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const BoardSchema = new Schema({
   name: { type: String, required: true },
   thumbnail: { type: String, default: "" },
-  itemCount: { type: String, default: 0 },
+  itemCount: { type: Number, default: 0 },
   created: { type: Date, default: Date.now },
   modified: { type: Date, default: Date.now }
 });
