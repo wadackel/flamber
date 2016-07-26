@@ -16,6 +16,7 @@ import { match, RouterContext, createMemoryHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
 import configureStore from "./store/configureStore";
+import errorJSONMiddleware from "./middleware/error-json";
 import authMiddleware from "./middleware/auth";
 import setUpMiddleware from "./middleware/setup-data";
 import authRoutes from "./routes/auth";
@@ -64,6 +65,7 @@ app.use(methodOverride("X-HTTP-Method-Override"));
 app.use(methodOverride("X-Method-Override"));
 app.use(express.static(path.resolve(__dirname, "../../public")));
 
+app.use(errorJSONMiddleware);
 app.use(authMiddleware);
 app.use("/auth", authRoutes);
 app.use("/api", apiRoutes);

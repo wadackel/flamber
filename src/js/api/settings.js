@@ -1,4 +1,4 @@
-import fetch from "../utils/fetch";
+import fetch, { fetchJSON } from "../utils/fetch";
 import { API_ROOT } from "../constants/application";
 
 export const SETTINGS_ENDPOINT = `${API_ROOT}/settings`;
@@ -11,7 +11,7 @@ export function fetchSettings() {
         if (res.status === "ok") {
           resolve(res.settings);
         } else {
-          reject({ error: res.err });
+          reject({ error: res.error });
         }
       })
       .catch(error => reject({ error }));
@@ -20,21 +20,12 @@ export function fetchSettings() {
 
 export function updateSettings(settings) {
   return new Promise((resolve, reject) => {
-    const params = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(settings)
-    };
-
-    fetch(SETTINGS_ENDPOINT, params)
+    fetchJSON(SETTINGS_ENDPOINT, settings, "PUT")
       .then(res => {
         if (res.status === "ok") {
           resolve(res.settings);
         } else {
-          reject({ error: res.err });
+          reject({ error: res.error });
         }
       })
       .catch(error => reject({ error }));
