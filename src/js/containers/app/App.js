@@ -403,7 +403,7 @@ export class App extends Component {
         />
         <Snackbar
           open={addBoardSnackbarOpen}
-          message={addBoardSnackbarMessage}
+          message={addBoardSnackbarMessage || ""}
           action={boards.error ? null : "Show"}
           onActionClick={() => console.log("TODO")}
           onRequestClose={this.handleAddBoardSnackbarClose}
