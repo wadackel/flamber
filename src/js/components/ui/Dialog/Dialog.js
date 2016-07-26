@@ -42,8 +42,6 @@ export default class Dialog extends React.Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {};
-
     bindHandlers([
       "renderLayer",
       "handleCloseClick",
@@ -172,6 +170,10 @@ export default class Dialog extends React.Component {
   }
 
   render() {
-    return <RenderToLayer render={this.renderLayer} open={true} useLayerForClickAway={false} />;
+    return <RenderToLayer
+      render={this.renderLayer}
+      open={true}
+      useLayerForClickAway={false}
+    />;
   }
 }

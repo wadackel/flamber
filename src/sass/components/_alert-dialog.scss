@@ -1,0 +1,17 @@
+.alert-dialog {
+  width: auto !important;
+  max-width: 100% !important;
+  margin-right: 15px;
+  margin-left: 15px;
+
+  &__title {
+    margin: 0 0 15px;
+    color: $gray;
+    font-size: 1.37rem;
+    font-weight: normal;
+  }
+
+  &__body {
+    color: lighten($gray-light, 30%);
+  }
+}
