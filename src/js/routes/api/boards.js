@@ -52,7 +52,7 @@ router.put("/", (req, res) => {
 
 router.delete("/", (req, res) => {
   Board.findByIdAndRemove(req.body._id)
-    .then((test, test1) => {
+    .then(() => {
       res.json({ status: "ok" });
     })
     .catch(res.errorJSON);
