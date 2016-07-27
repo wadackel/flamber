@@ -2,8 +2,8 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import {
-  detailBoardRequest,
-  deleteItemRequest
+  deleteItemRequest,
+  currentBoard
 } from "../../actions/boards";
 import { boardSelectorByBoards } from "../../selectors/boards";
 import bem from "../../helpers/bem";
@@ -29,45 +29,41 @@ export class BoardDetail extends Component {
     ], this);
   }
 
+  componentDidMount() {
+    this.props.dispatch(currentBoard(this.props.params.id));
+  }
+
   handleDelete(id) {
     this.props.dispatch(deleteItemRequest(id));
   }
 
   render() {
-    const { boards, params } = this.props;
-    const board = boardSelectorByBoards(boards, params.id);
+    const { items } = this.props;
 
-    if (!board) return null;
-
-    // TODO
-    return null;
-    //
-    // const { items } = board;
-    //
-    // return (
-    //   <div className={`container ${b()}`}>
-    //     {items.map(item =>
-    //       <div key={item.id} className={b("item")}>
-    //         <ItemCard
-    //           id={item.id}
-    //           layout={"grid"}
-    //           title={item.name}
-    //           url={item.url}
-    //           image={item.thumbnail}
-    //           imageWidth={item.imageWidth}
-    //           imageHeight={item.imageHeight}
-    //           onDelete={this.handleDelete}
-    //         />
-    //       </div>
-    //     )}
-    //   </div>
-    // );
+    return (
+      <div className={`container ${b()}`}>
+        {items.entities.map(item =>
+          <div key={item.id} className={b("item")}>
+            <ItemCard
+              id={item._id}
+              layout={"grid"}
+              title={item.name}
+              image={item.thumbnail}
+              imageWidth={item.width}
+              imageHeight={item.height}
+              onDelete={this.handleDelete}
+            />
+          </div>
+        )}
+      </div>
+    );
   }
 }
 
 export default connect(
   state => ({
     settings: state.settings,
-    boards: state.boards
+    boards: state.boards,
+    items: state.items
   })
 )(BoardDetail);

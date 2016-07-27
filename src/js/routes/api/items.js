@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import Item from "../../models/item";
-import { uploadItemFile } from "../../utils/drive/items";
+import { uploadItemFile, updateItemsThumbnailIfNeeded } from "../../utils/drive/items";
 
 const router = Router();
 const storage = multer.memoryStorage();
@@ -9,6 +9,21 @@ const upload = multer({ storage });
 
 router.get("/", (req, res) => {
   res.errorJSON("TODO");
+});
+
+router.get("/board/:boardId", (req, res) => {
+  const { drive, params } = req;
+  const { boardId } = params;
+
+  Item.find({ boardId })
+    .then(items => updateItemsThumbnailIfNeeded(drive, items))
+    .then(items => {
+      res.json({
+        status: "ok",
+        items
+      });
+    })
+    .catch(res.errorJSON);
 });
 
 router.post("/", upload.single("file"), (req, res) => {

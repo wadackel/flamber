@@ -4,6 +4,21 @@ import { API_ROOT } from "../constants/application";
 export const ITEMS_ENDPOINT = `${API_ROOT}/items`;
 
 
+export function fetchBoardItems(boardId) {
+  return new Promise((resolve, reject) => {
+    fetch(`${ITEMS_ENDPOINT}/board/${boardId}`)
+      .then(res => {
+        if (res.status === "ok") {
+          resolve(res.items);
+        } else {
+          reject(res.error);
+        }
+      })
+      .catch(error => reject({ error }));
+  });
+}
+
+
 export function addItem({ file, palette, boardId }) {
   return new Promise((resolve, reject) => {
     const data = new FormData();

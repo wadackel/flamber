@@ -12,6 +12,25 @@ const initialState = {
 };
 
 export default handleActions({
+  // Fetch board items
+  [Items.FETCH_BOARD_ITEMS_REQUEST]: state => ({
+    ...state,
+    isFetching: true,
+    error: null
+  }),
+
+  [Items.FETCH_BOARD_ITEMS_SUCCESS]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    entities: action.payload
+  }),
+
+  [Items.FETCH_BOARD_ITEMS_FAILURE]: (state, action) => ({
+    ...state,
+    isFetching: false,
+    error: action.payload
+  }),
+
   // Add
   [Items.ADD_ITEM_REQUEST]: state => ({
     ...state,
@@ -19,7 +38,7 @@ export default handleActions({
     error: null
   }),
 
-  [Items.ADD_ITEM_SUCCESS]: (state, action) => ({
+  [Items.ADD_ITEM_SUCCESS]: state => ({
     ...state,
     isAdding: false
   }),
@@ -27,6 +46,24 @@ export default handleActions({
   [Items.ADD_ITEM_FAILURE]: (state, action) => ({
     ...state,
     isAdding: false,
+    error: action.payload
+  }),
+
+  // Delete
+  [Items.DELETE_ITEM_REQUEST]: state => ({
+    ...state,
+    isDeleting: true,
+    error: null
+  }),
+
+  [Items.DELETE_ITEM_SUCCESS]: state => ({
+    ...state,
+    isDeleting: false
+  }),
+
+  [Items.DELETE_ITEM_FAILURE]: (state, action) => ({
+    ...state,
+    isDeleting: false,
     error: action.payload
   })
 }, initialState);

@@ -6,8 +6,7 @@ import {
   fetchBoards,
   addBoard,
   updateBoard,
-  deleteBoard,
-  detailBoard
+  deleteBoard
 } from "../api/boards";
 import * as Boards from "../actions/boards";
 
@@ -73,32 +72,11 @@ export function *handleDeleteBoardRequest() {
   }
 }
 
-export function *handleDetailBoardRequest() {
-  while (true) {
-    const action = yield take(Boards.DETAIL_BOARD_REQUEST);
-
-    try {
-      const board = yield select(boardSelector, action.payload);
-
-      if (board) {
-        yield put(Boards.detailBoardSuccess(board));
-
-      } else {
-        const fetchedBoard = yield call(detailBoard, action.payload);
-        yield put(Boards.detailBoardSuccess(fetchedBoard));
-      }
-    } catch (err) {
-      yield put(Boards.detailBoardFailure(err));
-    }
-  }
-}
-
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
     fork(handleAddBoardRequest),
     fork(watchUpdateBoardRequest),
-    fork(handleDeleteBoardRequest),
-    fork(handleDetailBoardRequest)
+    fork(handleDeleteBoardRequest)
   ];
 }

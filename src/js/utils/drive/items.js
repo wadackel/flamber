@@ -13,6 +13,39 @@ export function getItemThumbnail(drive, id) {
   });
 }
 
+function updateItemThumbnailIfNeeded(drive, item) {
+  return new Promise((resolve, reject) => {
+    const date = new Date();
+    const diff = (date - item.modified) / 1000 / 60;
+
+    if (diff < 50) {
+      return resolve(item);
+    }
+
+    drive.files.update({
+      fileId: item.fileId,
+      resource: {
+        modifiedTime: date.toISOString()
+      },
+      fields: "id"
+    }, err => {
+      if (err) return reject(err);
+
+      getItemThumbnail(drive, item.fileId)
+        .then(file => {
+          item.thumbnail = file.thumbnailLink;
+          item.modified = date;
+          item.save().then(savedItem => resolve(savedItem)).catch(reject);
+        })
+        .catch(reject);
+    });
+  });
+}
+
+export function updateItemsThumbnailIfNeeded(drive, items) {
+  return Promise.all(items.map(item => updateItemThumbnailIfNeeded(drive, item)));
+}
+
 export function uploadItemFile(drive, file) {
   return new Promise((resolve, reject) => {
     drive.files.create({

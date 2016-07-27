@@ -42,10 +42,6 @@ export const deleteBoardFailure = createAction(DELETE_BOARD_FAILURE);
 
 
 // Show
-export const DETAIL_BOARD_REQUEST = "DETAIL_BOARD_REQUEST";
-export const DETAIL_BOARD_SUCCESS = "DETAIL_BOARD_SUCCESS";
-export const DETAIL_BOARD_FAILURE = "DETAIL_BOARD_FAILURE";
+export const CURRENT_BOARD = "CURRENT_BOARD";
 
-export const detailBoardRequest = createAction(DETAIL_BOARD_REQUEST);
-export const detailBoardSuccess = createAction(DETAIL_BOARD_SUCCESS);
-export const detailBoardFailure = createAction(DETAIL_BOARD_FAILURE);
+export const currentBoard = createAction(CURRENT_BOARD);
