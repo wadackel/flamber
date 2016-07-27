@@ -86,7 +86,7 @@ export default class ItemCard extends React.Component {
 
   renderMoreActions() {
     return [
-      <IconButton icon={<TrashIcon />} tooltip="Delete" onClick={this.handleDeleteClick} />
+      <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />
     ];
   }
 

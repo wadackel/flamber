@@ -1,8 +1,11 @@
-import { fork, take, put, call } from "redux-saga/effects";
+import { takeLatest } from "redux-saga";
+import { fork, take, put, call, select } from "redux-saga/effects";
 import {
   fetchBoardItems,
-  addItem
+  addItem,
+  deleteItem
 } from "../api/items";
+import { getCurrentBoard } from "../selectors/boards";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
@@ -19,7 +22,18 @@ export function *handleAddItemRequest() {
   }
 }
 
-function *handleFetchBoardItemsRequest() {
+export function *handleAddItemSuccess() {
+  while (true) {
+    const action = yield take(Items.ADD_ITEM_SUCCESS);
+    const board = yield select(getCurrentBoard);
+
+    if (board && board._id === action.payload.boardId) {
+      yield put(Items.addBoardItem(action.payload));
+    }
+  }
+}
+
+export function *handleFetchBoardItemsRequest() {
   while (true) {
     const action = yield take(Items.FETCH_BOARD_ITEMS_REQUEST);
 
@@ -32,17 +46,44 @@ function *handleFetchBoardItemsRequest() {
   }
 }
 
-function *watchCurrentBoard() {
+export function *watchCurrentBoard() {
   while (true) {
     const action = yield take(Boards.CURRENT_BOARD);
     yield put(Items.fetchBoardItemsRequest(action.payload));
   }
 }
 
+export function *handleDeleteItemRequest(action) {
+  try {
+    const item = yield call(deleteItem, action.payload);
+    yield put(Items.deleteItemSuccess(item));
+  } catch (err) {
+    yield put(Items.deleteItemFailure(err));
+  }
+}
+
+export function *watchDeleteItemRequest() {
+  yield *takeLatest(Items.DELETE_ITEM_REQUEST, handleDeleteItemRequest);
+}
+
+export function *handleDeleteItemSuccess() {
+  while (true) {
+    const action = yield take(Items.DELETE_ITEM_SUCCESS);
+    const board = yield select(getCurrentBoard);
+
+    if (board && board._id === action.payload.boardId) {
+      yield put(Items.deleteBoardItem(action.payload));
+    }
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleAddItemRequest),
+    fork(handleAddItemSuccess),
     fork(handleFetchBoardItemsRequest),
-    fork(watchCurrentBoard)
+    fork(watchCurrentBoard),
+    fork(watchDeleteItemRequest),
+    fork(handleDeleteItemSuccess)
   ];
 }

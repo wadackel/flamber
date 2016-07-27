@@ -68,3 +68,17 @@ export function uploadItemFile(drive, file) {
     });
   });
 }
+
+export function deleteItemFile(drive, id) {
+  return new Promise((resolve, reject) => {
+    drive.files.delete({
+      fileId: id
+    }, err => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(id);
+      }
+    });
+  });
+}

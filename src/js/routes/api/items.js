@@ -1,7 +1,11 @@
 import { Router } from "express";
 import multer from "multer";
 import Item from "../../models/item";
-import { uploadItemFile, updateItemsThumbnailIfNeeded } from "../../utils/drive/items";
+import {
+  uploadItemFile,
+  updateItemsThumbnailIfNeeded,
+  deleteItemFile
+} from "../../utils/drive/items";
 
 const router = Router();
 const storage = multer.memoryStorage();
@@ -47,6 +51,26 @@ router.post("/", upload.single("file"), (req, res) => {
       res.json({
         status: "ok",
         item
+      });
+    })
+    .catch(res.errorJSON);
+});
+
+router.delete("/", (req, res) => {
+  const { drive, body } = req;
+  let deleteItem = null;
+
+  Item.findById(body._id)
+    .then(item => {
+      deleteItem = item;
+
+      return deleteItemFile(drive, deleteItem.fileId);
+    })
+    .then(() => deleteItem.remove())
+    .then(() => {
+      res.json({
+        status: "ok",
+        item: deleteItem
       });
     })
     .catch(res.errorJSON);

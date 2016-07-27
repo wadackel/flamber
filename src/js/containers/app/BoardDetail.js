@@ -1,16 +1,12 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {
-  deleteItemRequest,
-  currentBoard
-} from "../../actions/boards";
+import { currentBoard } from "../../actions/boards";
+import { deleteItemRequest } from "../../actions/items";
 import { boardSelectorByBoards } from "../../selectors/boards";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import {
-  ItemCard
-} from "../../components/ui/";
+import { ItemCard } from "../../components/ui/";
 
 const b = bem("board-detail");
 
