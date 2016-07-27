@@ -14,7 +14,7 @@ import {
 } from "../../components/ui/";
 import { GithubIcon } from "../../components/svg-icons";
 import { deleteAppRequest } from "../../actions/application";
-import { fetchSettingsRequest, updateSettingsRequest } from "../../actions/settings";
+import { fetchSettingsRequest, updateThemeRequest } from "../../actions/settings";
 
 const b = bem("settings");
 
@@ -44,18 +44,15 @@ export class Settings extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.settings.isFetching && !nextProps.settings.isFetching) {
+    const { settings } = this.props;
+
+    if (settings.isThemeUpdating && !nextProps.settings.isThemeUpdating) {
       this.setState({ snackbarOpen: true });
     }
   }
 
   handleThemeChange(theme) {
-    const settings = {
-      ...this.props.settings,
-      theme
-    };
-
-    this.props.dispatch(updateSettingsRequest(settings));
+    this.props.dispatch(updateThemeRequest(theme));
   }
 
   handleSnackbarClose() {

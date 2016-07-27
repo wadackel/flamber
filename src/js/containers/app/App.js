@@ -6,7 +6,10 @@ import MDSpinner from "react-md-spinner";
 import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import { updateSettingsRequest } from "../../actions/settings";
+import {
+  updateBoardsLayoutRequest,
+  updateItemsLayoutRequest
+} from "../../actions/settings";
 import {
   fetchBoardsRequest,
   addBoardRequest,
@@ -91,7 +94,8 @@ export class App extends Component {
       "handleAddItemFile",
       "handleAddItemFileSnackbarClose",
 
-      "handleBoardsLayoutChange"
+      "handleBoardsLayoutChange",
+      "handleItemsLayoutChange"
     ], this);
   }
 
@@ -217,12 +221,11 @@ export class App extends Component {
   }
 
   handleBoardsLayoutChange(layout) {
-    const settings = {
-      ...this.props.settings,
-      boardsLayout: layout
-    };
+    this.props.dispatch(updateBoardsLayoutRequest(layout));
+  }
 
-    this.props.dispatch(updateSettingsRequest(settings));
+  handleItemsLayoutChange(layout) {
+    this.props.dispatch(updateItemsLayoutRequest(layout));
   }
 
   push(path) {
@@ -264,7 +267,7 @@ export class App extends Component {
   }
 
   getHeaderBoardDetailProps() {
-    const { boards, params } = this.props;
+    const { boards, params, settings: { itemsLayout } } = this.props;
     const { isUpdating } = boards;
     const { boardName } = this.state;
     const board = boardSelectorByBoards(boards, params.id);
@@ -295,6 +298,8 @@ export class App extends Component {
             defaultValue={50}
           />
           <LayoutButtonGroup
+            value={itemsLayout}
+            onChange={this.handleItemsLayoutChange}
           >
             <LayoutButton icon={<RandomGridIcon />} value={Layout.RANDOM_GRID}></LayoutButton>
             <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>

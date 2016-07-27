@@ -1,7 +1,8 @@
 import { takeLatest } from "redux-saga";
-import { fork, take, put, call } from "redux-saga/effects";
+import { fork, take, put, call, select } from "redux-saga/effects";
 import { fetchSettings, updateSettings } from "../api/settings";
 import * as Settings from "../actions/settings";
+import { getSettings } from "../selectors/settings";
 
 export function *handleFetchSettingsRequest() {
   while (true) {
@@ -16,17 +17,47 @@ export function *handleFetchSettingsRequest() {
   }
 }
 
-export function *handleUpdateSettingsRequest(action) {
+function *callUpdateSettings(key, value) {
+  const settings = yield select(getSettings);
+  const newSettings = {
+    ...settings,
+    [key]: value
+  };
+
+  return yield call(updateSettings, newSettings);
+}
+
+export function *handleUpdateThemeRequest(action) {
   try {
-    const settings = yield call(updateSettings, action.payload);
-    yield put(Settings.updateSettingsSuccess(settings));
+    const settings = yield callUpdateSettings("theme", action.payload);
+    yield put(Settings.updateThemeSuccess(settings.theme));
   } catch (err) {
-    yield put(Settings.updateSettingsFailure(err));
+    yield put(Settings.updateThemeFailure(err));
+  }
+}
+
+export function *handleUpdateBoardsLayoutRequest(action) {
+  try {
+    const settings = yield callUpdateSettings("boardsLayout", action.payload);
+    yield put(Settings.updateBoardsLayoutSuccess(settings.boardsLayout));
+  } catch (err) {
+    yield put(Settings.updateBoardsLayoutFailure(err));
+  }
+}
+
+export function *handleUpdateItemsLayoutRequest(action) {
+  try {
+    const settings = yield callUpdateSettings("itemsLayout", action.payload);
+    yield put(Settings.updateItemsLayoutSuccess(settings.itemsLayout));
+  } catch (err) {
+    yield put(Settings.updateItemsLayoutFailure(err));
   }
 }
 
 export function *watchUpdateSettingsRequest() {
-  yield *takeLatest(Settings.UPDATE_SETTINGS_REQUEST, handleUpdateSettingsRequest);
+  yield *takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest);
+  yield *takeLatest(Settings.UPDATE_BOARDS_LAYOUT_REQUEST, handleUpdateBoardsLayoutRequest);
+  yield *takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest);
 }
 
 export default function *rootSaga() {

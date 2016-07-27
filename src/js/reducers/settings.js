@@ -1,56 +1,92 @@
 import { handleActions } from "redux-actions";
 import * as Themes from "../constants/themes";
 import * as Layout from "../constants/layouts";
-import {
-  FETCH_SETTINGS_REQUEST,
-  FETCH_SETTINGS_SUCCESS,
-  FETCH_SETTINGS_FAILURE,
-  UPDATE_SETTINGS_REQUEST,
-  UPDATE_SETTINGS_SUCCESS,
-  UPDATE_SETTINGS_FAILURE
-} from "../actions/settings";
+import * as Settings from "../actions/settings";
 
 const initialState = {
   isFetching: false,
   theme: Themes.DEFAULT,
-  boardsLayout: Layout.GRID
+  isThemeUpdating: false,
+  boardsLayout: Layout.GRID,
+  isBoardsLayoutUpdating: false,
+  itemsLayout: Layout.GRID,
+  isItemsLayoutUpdating: false
 };
 
 export default handleActions({
   // Fetch
-  [FETCH_SETTINGS_REQUEST]: state => ({
+  [Settings.FETCH_SETTINGS_REQUEST]: state => ({
     ...state,
     isFetching: true
   }),
 
-  [FETCH_SETTINGS_SUCCESS]: (state, action) => ({
+  [Settings.FETCH_SETTINGS_SUCCESS]: (state, action) => ({
     ...state,
     ...action.payload,
-    isFetching: false
+    isFetching: false,
+    error: null
   }),
 
-  [FETCH_SETTINGS_FAILURE]: (state, action) => ({
+  [Settings.FETCH_SETTINGS_FAILURE]: (state, action) => ({
     ...state,
     isFetching: false,
     error: action.payload
   }),
 
-  // Update
-  [UPDATE_SETTINGS_REQUEST]: (state, action) => ({
+  // Update theme
+  [Settings.UPDATE_THEME_REQUEST]: (state, action) => ({
     ...state,
-    ...action.payload,
-    isFetching: true
+    isThemeUpdating: true,
+    theme: action.payload
   }),
 
-  [UPDATE_SETTINGS_SUCCESS]: (state, action) => ({
+  [Settings.UPDATE_THEME_SUCCESS]: (state, action) => ({
     ...state,
-    ...action.payload,
-    isFetching: false
+    isThemeUpdating: false,
+    theme: action.payload
   }),
 
-  [UPDATE_SETTINGS_FAILURE]: (state, action) => ({
+  [Settings.UPDATE_THEME_FAILURE]: (state, action) => ({
     ...state,
-    isFetching: false,
+    isThemeUpdating: false,
+    error: action.payload
+  }),
+
+  // Update boardsLayout
+  [Settings.UPDATE_BOARDS_LAYOUT_REQUEST]: (state, action) => ({
+    ...state,
+    isBoardsLayoutUpdaing: true,
+    boardsLayout: action.payload
+  }),
+
+  [Settings.UPDATE_BOARDS_LAYOUT_SUCCESS]: (state, action) => ({
+    ...state,
+    isBoardsLayoutUpdaing: false,
+    boardsLayout: action.payload
+  }),
+
+  [Settings.UPDATE_BOARDS_LAYOUT_FAILURE]: (state, action) => ({
+    ...state,
+    isBoardsLayoutUpdaing: false,
+    error: action.payload
+  }),
+
+  // Update itemsLayout
+  [Settings.UPDATE_ITEMS_LAYOUT_REQUEST]: (state, action) => ({
+    ...state,
+    isItemsLayoutUpdating: true,
+    itemsLayout: action.payload
+  }),
+
+  [Settings.UPDATE_ITEMS_LAYOUT_SUCCESS]: (state, action) => ({
+    ...state,
+    isItemsLayoutUpdating: false,
+    itemsLayout: action.payload
+  }),
+
+  [Settings.UPDATE_ITEMS_LAYOUT_FAILURE]: (state, action) => ({
+    ...state,
+    isItemsLayoutUpdating: false,
     error: action.payload
   })
 }, initialState);

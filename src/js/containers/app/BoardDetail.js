@@ -34,7 +34,7 @@ export class BoardDetail extends Component {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, settings: { itemsLayout } } = this.props;
 
     return (
       <div className={`container ${b()}`}>
@@ -42,7 +42,7 @@ export class BoardDetail extends Component {
           <div key={item.id} className={b("item")}>
             <ItemCard
               id={item._id}
-              layout={"grid"}
+              layout={itemsLayout}
               title={item.name}
               image={item.thumbnail}
               imageWidth={item.width}

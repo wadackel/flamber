@@ -16,23 +16,21 @@ router.get("/", (req, res) => {
 });
 
 router.put("/", (req, res) => {
-  Setting.findOne({}, (error, settings) => {
-    _.forEach(req.body, (value, key) => {
-      settings[key] = value;
-    });
+  Setting.findOne()
+    .then(settings => {
+      _.forEach(req.body, (value, key) => {
+        settings[key] = value;
+      });
 
-    settings.save(err => {
-      if (err) {
-        res.errorJSON(err);
-
-      } else {
-        res.status({
-          status: "ok",
-          settings
-        });
-      }
-    });
-  });
+      return settings.save();
+    })
+    .then(settings => {
+      res.json({
+        status: "ok",
+        settings
+      });
+    })
+    .catch(res.errorJSON);
 });
 
 export default router;
