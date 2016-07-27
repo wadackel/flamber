@@ -10,9 +10,9 @@ import { updateSettingsRequest } from "../../actions/settings";
 import {
   fetchBoardsRequest,
   addBoardRequest,
-  updateBoardRequest,
-  addItemRequest
+  updateBoardRequest
 } from "../../actions/boards";
+import { addItemRequest } from "../../actions/items";
 import { boardSelectorByBoards } from "../../selectors/boards";
 import {
   AddBoardDialog,
@@ -423,7 +423,7 @@ export class App extends Component {
           open={addItemFileDialogOpen}
           selectBoards={boards.entities.map(board => ({
             name: board.name,
-            value: board.id
+            value: board._id
           }))}
           onRequestClose={this.handleAddItemFileClose}
           onRequestAdd={this.handleAddItemFile}

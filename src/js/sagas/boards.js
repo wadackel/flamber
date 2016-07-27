@@ -1,4 +1,3 @@
-import _ from "lodash";
 import deepEqual from "deep-equal";
 import { takeLatest } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
@@ -8,9 +7,7 @@ import {
   addBoard,
   updateBoard,
   deleteBoard,
-  detailBoard,
-  addItem,
-  deleteItem
+  detailBoard
 } from "../api/boards";
 import * as Boards from "../actions/boards";
 
@@ -96,40 +93,12 @@ export function *handleDetailBoardRequest() {
   }
 }
 
-export function *handleAddItemRequest() {
-  while (true) {
-    const action = yield take(Boards.ADD_ITEM_REQUEST);
-
-    try {
-      const item = yield call(addItem, action.payload);
-      yield put(Boards.addItemSuccess(item));
-    } catch (err) {
-      yield put(Boards.addItemFailure(err));
-    }
-  }
-}
-
-export function *handleDeleteItemRequest() {
-  while (true) {
-    const action = yield take(Boards.DELETE_ITEM_REQUEST);
-
-    try {
-      const result = yield call(deleteItem, action.payload);
-      yield put(Boards.deleteItemSuccess(result));
-    } catch(err) {
-      yield put(Boards.deleteItemFailure(err));
-    }
-  }
-}
-
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
     fork(handleAddBoardRequest),
     fork(watchUpdateBoardRequest),
     fork(handleDeleteBoardRequest),
-    fork(handleDetailBoardRequest),
-    fork(handleAddItemRequest),
-    fork(handleDeleteItemRequest)
+    fork(handleDetailBoardRequest)
   ];
 }

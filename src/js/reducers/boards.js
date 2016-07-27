@@ -6,8 +6,6 @@ const initialState = {
   isAdding: false,
   isUpdating: false,
   isDeleting: false,
-  isItemAdding: false,
-  isItemDeleting: false,
   currentBoardId: null,
   entities: [],
   error: null
@@ -24,7 +22,6 @@ export default handleActions({
   [Boards.FETCH_BOARDS_SUCCESS]: (state, action) => ({
     ...state,
     isFetching: false,
-    error: null,
     entities: action.payload
   }),
 
