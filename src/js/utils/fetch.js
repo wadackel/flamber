@@ -21,6 +21,7 @@ export default function fetch(url, params = {}) {
     .then(res => res.json());
 }
 
+// TODO: Rename
 export function fetchJSON(url, body, method = "POST", params = {}) {
   const options = assign({}, {
     headers: {

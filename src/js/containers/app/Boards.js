@@ -61,7 +61,7 @@ export class Boards extends Component {
     } = this.props;
 
     const motionStyles = boards.entities.map(board => ({
-      key: board.id,
+      key: board._id,
       style: {
         opacity: spring(1)
       },
@@ -83,9 +83,10 @@ export class Boards extends Component {
                 style={style}
               >
                 <BoardCard
-                  id={data.id}
+                  id={data._id}
                   title={data.name}
                   layout={boardsLayout}
+                  itemCount={data.itemCount}
                   lastModified={new Date(data.modified)}
                   onEdit={this.handleEdit}
                   onDelete={this.handleDelete}

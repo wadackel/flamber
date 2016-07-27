@@ -1,5 +1,4 @@
 /* eslint-disable */
-import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -11,9 +10,9 @@ import { updateSettingsRequest } from "../../actions/settings";
 import {
   fetchBoardsRequest,
   addBoardRequest,
-  updateBoardRequest,
-  addItemRequest
+  updateBoardRequest
 } from "../../actions/boards";
+import { addItemRequest } from "../../actions/items";
 import { boardSelectorByBoards } from "../../selectors/boards";
 import {
   AddBoardDialog,
@@ -63,8 +62,10 @@ export class App extends Component {
     this.state = {
       addBoardDialogOpen: false,
       addBoardSnackbarOpen: false,
+      addBoardSnackbarMessage: "",
       addItemFileDialogOpen: false,
       addItemFileSnackbarOpen: false,
+      addItemFileSnackbarMessage: "",
       boardName: "",
     };
 
@@ -77,6 +78,7 @@ export class App extends Component {
       "handleAddBoardOpen",
       "handleAddBoardClose",
       "handleAddBoard",
+      "handleAddBoardActionClick",
       "handleAddBoardSnackbarClose",
 
       "handleBoardNameChange",
@@ -98,23 +100,29 @@ export class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { boards, params } = this.props;
+    const { boards, items, params } = this.props;
 
     if (boards.isAdding && !nextProps.boards.isAdding) {
       this.setState({
         addBoardDialogOpen: false,
         addBoardSnackbarOpen: true,
+        addBoardSnackbarMessage: nextProps.boards.error
+          ? "ボード追加でエラーが発生しました"
+          : "ボードを追加しました"
       });
     }
 
-    if (boards.isItemAdding && !nextProps.boards.isItemAdding) {
+    if (items.isAdding && !nextProps.items.isAdding) {
       this.setState({
         addItemFileDialogOpen: false,
-        addItemFileSnackbarOpen: true
+        addItemFileSnackbarOpen: true,
+        addItemFileSnackbarMessage: nextProps.boards.error
+          ? "アイテム追加でエラーが発生しました"
+          : "アイテムを追加しました"
       });
     }
 
-    const nextBoard = boardSelectorByBoards(nextProps.boards, params.id);
+    const nextBoard = boardSelectorByBoards(nextProps.boards, nextProps.params.id);
 
     if (nextBoard && nextBoard.name !== this.state.boardName && !nextProps.boards.isUpdating) {
       this.setState({
@@ -153,6 +161,13 @@ export class App extends Component {
     this.props.dispatch(addBoardRequest(boardName));
   }
 
+  handleAddBoardActionClick() {
+    const { boards: { entities } } = this.props;
+    const lastBoardId = entities[entities.length - 1]._id;
+    this.push(`/app/board/${lastBoardId}`);
+    this.setState({ addBoardSnackbarOpen: false });
+  }
+
   handleAddBoardSnackbarClose() {
     this.setState({ addBoardSnackbarOpen: false });
   }
@@ -164,7 +179,7 @@ export class App extends Component {
 
   handleBoardNameComplete(value) {
     const { boards, params } = this.props;
-    const board = _.find(boards.entities, o => o.id === params.id);
+    const board = boardSelectorByBoards(boards, params.id);
 
     this.props.dispatch(updateBoardRequest({
       ...board,
@@ -327,14 +342,17 @@ export class App extends Component {
   render() {
     const {
       auth: { user },
-      boards
+      boards,
+      items
     } = this.props;
 
     const {
       addBoardDialogOpen,
       addBoardSnackbarOpen,
+      addBoardSnackbarMessage,
       addItemFileDialogOpen,
-      addItemFileSnackbarOpen
+      addItemFileSnackbarOpen,
+      addItemFileSnackbarMessage
     } = this.state;
 
     const {
@@ -400,26 +418,26 @@ export class App extends Component {
         />
         <Snackbar
           open={addBoardSnackbarOpen}
-          message="ボードを追加しました"
-          action="Show"
-          onActionClick={() => console.log("TODO")}
+          message={addBoardSnackbarMessage}
+          action={boards.error ? null : "Show"}
+          onActionClick={this.handleAddBoardActionClick}
           onRequestClose={this.handleAddBoardSnackbarClose}
         />
 
         {/* Add item file */}
         <AddItemFileDialog
-          processing={boards.isFetching || boards.isItemAdding}
+          processing={boards.isFetching || items.isAdding}
           open={addItemFileDialogOpen}
           selectBoards={boards.entities.map(board => ({
             name: board.name,
-            value: board.id
+            value: board._id
           }))}
           onRequestClose={this.handleAddItemFileClose}
           onRequestAdd={this.handleAddItemFile}
         />
         <Snackbar
           open={addItemFileSnackbarOpen}
-          message="アイテムを追加しました"
+          message={addItemFileSnackbarMessage}
           action="Show"
           onActionClick={() => console.log("TODO")}
           onRequestClose={this.handleAddItemFileSnackbarClose}
@@ -433,7 +451,8 @@ export default connect(
   state => ({
     auth: state.auth,
     settings: state.settings,
-    boards: state.boards
+    boards: state.boards,
+    items: state.items
   }),
   null,
   null,

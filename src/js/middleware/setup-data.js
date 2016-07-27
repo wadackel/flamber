@@ -1,18 +1,17 @@
-import { fetchSettings } from "../utils/drive/settings";
+import Setting from "../models/setting";
 
 export default function setUpMiddleware(req, res, next) {
-  const { drive } = req;
+  const { user } = req;
 
-  if (!drive) {
+  if (!user) {
     return next();
   }
 
-  fetchSettings(drive)
-    .then(settings => {
+  Setting.findOne({}, (err, settings) => {
+    if (!err) {
       req.settings = settings;
-      next();
-    })
-    .catch(() => {
-      next();
-    });
+    }
+
+    next();
+  });
 }

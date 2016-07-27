@@ -137,9 +137,9 @@ export default class Header extends Component {
             <div className={b("user")}>
               <Avatar
                 className={b("user__avatar")}
-                name={user.displayName}
-                email={user.emailAddress}
-                icon={user.photoLink}
+                name={user.name}
+                email={user.email}
+                icon={user.icon}
                 onIconClick={this.handleUserDropDownClick}
               />
               <UserDropDown

@@ -1,15 +1,40 @@
 import fetch, { fetchJSON } from "../utils/fetch";
 import { API_ROOT } from "../constants/application";
 
-export const BOARDS_ENDPOINT = `${API_ROOT}/boards`;
+export const ITEMS_ENDPOINT = `${API_ROOT}/items`;
 
 
-export function fetchBoards() {
+export function fetchBoardItems(boardId) {
   return new Promise((resolve, reject) => {
-    fetch(BOARDS_ENDPOINT)
+    fetch(`${ITEMS_ENDPOINT}/board/${boardId}`)
       .then(res => {
         if (res.status === "ok") {
-          resolve(res.boards);
+          resolve(res.items);
+        } else {
+          reject(res.error);
+        }
+      })
+      .catch(error => reject({ error }));
+  });
+}
+
+
+export function addItem({ file, palette, boardId }) {
+  return new Promise((resolve, reject) => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("palette", palette);
+    data.append("boardId", boardId);
+
+    const params = {
+      method: "POST",
+      body: data
+    };
+
+    fetch(ITEMS_ENDPOINT, params)
+      .then(res => {
+        if (res.status === "ok") {
+          resolve(res.item);
         } else {
           reject({ error: res.error });
         }
@@ -18,12 +43,12 @@ export function fetchBoards() {
   });
 }
 
-export function addBoard(name) {
+export function deleteItem(id) {
   return new Promise((resolve, reject) => {
-    fetchJSON(BOARDS_ENDPOINT, { name })
+    fetchJSON(ITEMS_ENDPOINT, { _id: id }, "DELETE")
       .then(res => {
         if (res.status === "ok") {
-          resolve(res.board);
+          resolve(res.item);
         } else {
           reject({ error: res.error });
         }
@@ -32,30 +57,3 @@ export function addBoard(name) {
   });
 }
 
-export function updateBoard(board) {
-  return new Promise((resolve, reject) => {
-    fetchJSON(BOARDS_ENDPOINT, board, "PUT")
-      .then(res => {
-        if (res.status === "ok") {
-          resolve(res.board);
-        } else {
-          reject({ error: res.error });
-        }
-      })
-      .catch(error => reject({ error }));
-  });
-}
-
-export function deleteBoard(id) {
-  return new Promise((resolve, reject) => {
-    fetchJSON(BOARDS_ENDPOINT, { _id: id }, "DELETE")
-      .then(res => {
-        if (res.status === "ok") {
-          resolve(id);
-        } else {
-          reject({ error: res.error });
-        }
-      })
-      .catch(error => reject({ error }));
-  });
-}

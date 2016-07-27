@@ -1,16 +1,12 @@
 /* eslint-disable */
-import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import {
-  detailBoardRequest,
-  deleteItemRequest
-} from "../../actions/boards";
+import { currentBoard } from "../../actions/boards";
+import { deleteItemRequest } from "../../actions/items";
+import { boardSelectorByBoards } from "../../selectors/boards";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import {
-  ItemCard
-} from "../../components/ui/";
+import { ItemCard } from "../../components/ui/";
 
 const b = bem("board-detail");
 
@@ -30,8 +26,7 @@ export class BoardDetail extends Component {
   }
 
   componentDidMount() {
-    const { params: { id } } = this.props;
-    this.props.dispatch(detailBoardRequest(id));
+    this.props.dispatch(currentBoard(this.props.params.id));
   }
 
   handleDelete(id) {
@@ -39,25 +34,19 @@ export class BoardDetail extends Component {
   }
 
   render() {
-    const { boards } = this.props;
-    const board = _.find(boards.entities, o => o.id === this.props.params.id);
-
-    if (!board) return null;
-
-    const { items } = board;
+    const { items } = this.props;
 
     return (
       <div className={`container ${b()}`}>
-        {items.map(item =>
+        {items.entities.map(item =>
           <div key={item.id} className={b("item")}>
             <ItemCard
-              id={item.id}
+              id={item._id}
               layout={"grid"}
               title={item.name}
-              url={item.url}
               image={item.thumbnail}
-              imageWidth={item.imageWidth}
-              imageHeight={item.imageHeight}
+              imageWidth={item.width}
+              imageHeight={item.height}
               onDelete={this.handleDelete}
             />
           </div>
@@ -70,6 +59,7 @@ export class BoardDetail extends Component {
 export default connect(
   state => ({
     settings: state.settings,
-    boards: state.boards
+    boards: state.boards,
+    items: state.items
   })
 )(BoardDetail);

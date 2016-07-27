@@ -33,7 +33,6 @@ export default class ItemCard extends React.Component {
     layout: PropTypes.oneOf([Layout.RANDOM_GRID, Layout.GRID, Layout.LIST]),
     style: PropTypes.object,
     selected: PropTypes.bool,
-    href: PropTypes.string,
     url: PropTypes.string,
     title: PropTypes.string,
     image: PropTypes.string,
@@ -87,7 +86,7 @@ export default class ItemCard extends React.Component {
 
   renderMoreActions() {
     return [
-      <IconButton icon={<TrashIcon />} tooltip="Delete" onClick={this.handleDeleteClick} />
+      <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />
     ];
   }
 
