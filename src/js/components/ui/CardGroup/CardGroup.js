@@ -45,13 +45,15 @@ export default class CardGroup extends Component {
   }
 
   createGrid(props) {
-    const maxWidth = 1920;
     let Grid = null;
 
     if (props.layout !== Layout.LIST) {
-      Grid = makeResponsive(measureItems(CSSGrid), { maxWidth });
+      Grid = makeResponsive(measureItems(CSSGrid), {
+        maxWidth: 1920,
+        minPadding: 100
+      });
     } else {
-      Grid = makeResponsive(CSSGrid, { maxWidth });
+      Grid = CSSGrid;
     }
 
     return Grid;
@@ -85,7 +87,7 @@ export default class CardGroup extends Component {
         component="div"
         className={mergeClassNames(b(modifier), className)}
         columns={columns}
-        columnWidth={columnWidth}
+        columnWidth={isList ? "100%" : columnWidth}
         gutterWidth={gutter}
         gutterHeight={gutter}
         layout={layoutType}
