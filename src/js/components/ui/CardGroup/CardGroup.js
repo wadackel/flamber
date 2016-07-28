@@ -12,15 +12,6 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("card-group");
-const CardGrid = makeResponsive(
-  measureItems(CSSGrid, {
-    measureImages: true,
-    background: true
-  }),
-  {
-    maxWidth: 1920
-  }
-);
 
 export default class CardGroup extends Component {
   static propTypes = {
@@ -37,6 +28,35 @@ export default class CardGroup extends Component {
     gutter: 10
   };
 
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      Grid: this.createGrid(props)
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.layout !== nextProps.layout) {
+      this.setState({
+        Grid: this.createGrid(nextProps)
+      });
+    }
+  }
+
+  createGrid(props) {
+    const maxWidth = 1920;
+    let Grid = null;
+
+    if (props.layout !== Layout.LIST) {
+      Grid = makeResponsive(measureItems(CSSGrid), { maxWidth });
+    } else {
+      Grid = makeResponsive(CSSGrid, { maxWidth });
+    }
+
+    return Grid;
+  }
+
   render() {
     const {
       children,
@@ -46,33 +66,46 @@ export default class CardGroup extends Component {
       gutter
     } = this.props;
 
+    const { Grid } = this.state;
+
     const modifier = { [layout]: true };
 
+    const isList = layout === Layout.LIST;
+    const columns = isList ? 1 : null;
+    const itemHeight = isList ? 80 : null;
+    const itemStyles = isList
+      ? { width: "100%" }
+      : { width: columnWidth };
+    const layoutType = isList
+      ? GridLayout.simple
+      : GridLayout.pinterest;
+
     return (
-      <CardGrid
+      <Grid
         component="div"
         className={mergeClassNames(b(modifier), className)}
+        columns={columns}
         columnWidth={columnWidth}
         gutterWidth={gutter}
         gutterHeight={gutter}
-        layout={GridLayout.pinterest}
+        layout={layoutType}
         enter={enterExitStyle.fromTop.enter}
         entered={enterExitStyle.fromTop.entered}
         exit={enterExitStyle.fromTop.exit}
         duration={460}
         easing={easings.expoOut}
-        itemHeight={null}
+        itemHeight={itemHeight}
       >
         {React.Children.map(children, card =>
           <div
             key={card.id}
             className={b("card")}
-            style={{ width: columnWidth }}
+            style={itemStyles}
           >
             {card}
           </div>
         )}
-      </CardGrid>
+      </Grid>
     );
   }
 }
