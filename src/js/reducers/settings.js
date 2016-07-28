@@ -5,12 +5,18 @@ import * as Settings from "../actions/settings";
 
 const initialState = {
   isFetching: false,
+
   theme: Themes.DEFAULT,
   isThemeUpdating: false,
+
   boardsLayout: Layout.GRID,
   isBoardsLayoutUpdating: false,
+
   itemsLayout: Layout.GRID,
-  isItemsLayoutUpdating: false
+  isItemsLayoutUpdating: false,
+
+  itemsSize: 280,
+  isItemsSizeUpdating: false
 };
 
 export default handleActions({
@@ -87,6 +93,25 @@ export default handleActions({
   [Settings.UPDATE_ITEMS_LAYOUT_FAILURE]: (state, action) => ({
     ...state,
     isItemsLayoutUpdating: false,
+    error: action.payload
+  }),
+
+  // Update size
+  [Settings.UPDATE_ITEMS_SIZE_REQUEST]: (state, action) => ({
+    ...state,
+    isItemsSizeUpdating: true,
+    itemsSize: action.payload
+  }),
+
+  [Settings.UPDATE_ITEMS_SIZE_SUCCESS]: (state, action) => ({
+    ...state,
+    isItemsSizeUpdating: false,
+    itemsSize: action.payload
+  }),
+
+  [Settings.UPDATE_ITEMS_SIZE_FAILURE]: (state, action) => ({
+    ...state,
+    isItemsSizeUpdating: false,
     error: action.payload
   })
 }, initialState);

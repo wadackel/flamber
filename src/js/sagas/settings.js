@@ -54,11 +54,21 @@ export function *handleUpdateItemsLayoutRequest(action) {
   }
 }
 
+export function *handleUpdateItemsSizeRequest(action) {
+  try {
+    const settings = yield callUpdateSettings("itemsSize", action.payload);
+    yield put(Settings.updateItemsSizeSuccess(settings.itemsSize));
+  } catch (err) {
+    yield put(Settings.updateItemsSizeFailure(err));
+  }
+}
+
 export function *watchUpdateSettingsRequest() {
   yield [
     takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest),
     takeLatest(Settings.UPDATE_BOARDS_LAYOUT_REQUEST, handleUpdateBoardsLayoutRequest),
-    takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest)
+    takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest),
+    takeLatest(Settings.UPDATE_ITEMS_SIZE_REQUEST, handleUpdateItemsSizeRequest)
   ];
 }
 

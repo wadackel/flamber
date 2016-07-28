@@ -35,12 +35,18 @@ export class BoardDetail extends Component {
   }
 
   render() {
-    const { items, settings: { itemsLayout } } = this.props;
+    const {
+      items,
+      settings: {
+        itemsLayout,
+        itemsSize
+      }
+    } = this.props;
 
     return (
       <div className={`container ${b()}`}>
         <CardGroup
-          columnWidth={260}
+          columnWidth={itemsSize}
           layout={itemsLayout}
         >
           {items.entities.map(item =>

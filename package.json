@@ -107,6 +107,7 @@
     "redux-actions": "^0.10.0",
     "redux-logger": "^2.6.1",
     "redux-saga": "^0.10.5",
+    "shallowequal": "^0.2.2",
     "url-parse": "^1.1.1"
   }
 }

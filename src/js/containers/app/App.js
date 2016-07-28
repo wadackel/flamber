@@ -1,4 +1,5 @@
 /* eslint-disable */
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -8,7 +9,8 @@ import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import {
   updateBoardsLayoutRequest,
-  updateItemsLayoutRequest
+  updateItemsLayoutRequest,
+  updateItemsSizeRequest
 } from "../../actions/settings";
 import {
   fetchBoardsRequest,
@@ -70,7 +72,10 @@ export class App extends Component {
       addItemFileSnackbarOpen: false,
       addItemFileSnackbarMessage: "",
       boardName: "",
+      itemsSize: props.settings.itemsSize
     };
+
+    this.debounceItemsSizeChange = _.debounce(this.debounceItemsSizeChange, 500);
 
     bindHandlers([
       "handleMyItemsClick",
@@ -95,7 +100,9 @@ export class App extends Component {
       "handleAddItemFileSnackbarClose",
 
       "handleBoardsLayoutChange",
-      "handleItemsLayoutChange"
+      "handleItemsLayoutChange",
+
+      "handleItemsSizeChange"
     ], this);
   }
 
@@ -228,6 +235,19 @@ export class App extends Component {
     this.props.dispatch(updateItemsLayoutRequest(layout));
   }
 
+  handleItemsSizeChange(size) {
+    this.setState({
+      itemsSize: size
+    });
+
+    this.debounceItemsSizeChange(size);
+  }
+
+  debounceItemsSizeChange(size) {
+    console.log(size);
+    this.props.dispatch(updateItemsSizeRequest(size));
+  }
+
   push(path) {
     this.props.dispatch(push(path));
   }
@@ -267,9 +287,14 @@ export class App extends Component {
   }
 
   getHeaderBoardDetailProps() {
-    const { boards, params, settings: { itemsLayout } } = this.props;
+    const {
+      boards,
+      params,
+      settings: { itemsLayout }
+    } = this.props;
+
     const { isUpdating } = boards;
-    const { boardName } = this.state;
+    const { boardName, itemsSize } = this.state;
     const board = boardSelectorByBoards(boards, params.id);
 
     return {
@@ -295,7 +320,10 @@ export class App extends Component {
       subRight: (
         <div>
           <Slider
-            defaultValue={50}
+            min={140}
+            max={400}
+            value={itemsSize}
+            onChange={this.handleItemsSizeChange}
           />
           <LayoutButtonGroup
             value={itemsLayout}

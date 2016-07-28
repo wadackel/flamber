@@ -31,16 +31,21 @@ export default class CardGroup extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      Grid: this.createGrid(props)
-    };
+    this.state = { Grid: null };
+  }
+
+  componentWillMount() {
+    this.createGrid(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.layout !== nextProps.layout) {
-      this.setState({
-        Grid: this.createGrid(nextProps)
-      });
+    const { props } = this;
+
+    if (
+      props.columnWidth !== nextProps.columnWidth ||
+      props.layout !== nextProps.layout
+    ) {
+      this.createGrid(nextProps);
     }
   }
 
@@ -56,7 +61,7 @@ export default class CardGroup extends Component {
       Grid = CSSGrid;
     }
 
-    return Grid;
+    this.setState({ Grid });
   }
 
   render() {

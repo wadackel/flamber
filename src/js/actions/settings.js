@@ -39,3 +39,13 @@ export const UPDATE_ITEMS_LAYOUT_FAILURE = "UPDATE_ITEMS_LAYOUT_FAILURE";
 export const updateItemsLayoutRequest = createAction(UPDATE_ITEMS_LAYOUT_REQUEST);
 export const updateItemsLayoutSuccess = createAction(UPDATE_ITEMS_LAYOUT_SUCCESS);
 export const updateItemsLayoutFailure = createAction(UPDATE_ITEMS_LAYOUT_FAILURE);
+
+
+// Update itemsSize
+export const UPDATE_ITEMS_SIZE_REQUEST = "UPDATE_ITEMS_SIZE_REQUEST";
+export const UPDATE_ITEMS_SIZE_SUCCESS = "UPDATE_ITEMS_SIZE_SUCCESS";
+export const UPDATE_ITEMS_SIZE_FAILURE = "UPDATE_ITEMS_SIZE_FAILURE";
+
+export const updateItemsSizeRequest = createAction(UPDATE_ITEMS_SIZE_REQUEST);
+export const updateItemsSizeSuccess = createAction(UPDATE_ITEMS_SIZE_SUCCESS);
+export const updateItemsSizeFailure = createAction(UPDATE_ITEMS_SIZE_FAILURE);
