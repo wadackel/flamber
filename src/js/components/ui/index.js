@@ -4,6 +4,7 @@ export AlertDialog from "./AlertDialog/AlertDialog";
 export AutoComplete from "./AutoComplete/AutoComplete";
 export Avatar from "./Avatar/Avatar";
 export BoardCard from "./BoardCard/BoardCard";
+export CardGroup from "./CardGroup/CardGroup";
 export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 export Checkbox from "./Checkbox/Checkbox";
 export ColorBar from "./ColorBar/ColorBar";

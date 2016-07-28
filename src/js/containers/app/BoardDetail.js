@@ -1,12 +1,13 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import * as Layout from "../../constants/layouts";
 import { currentBoard } from "../../actions/boards";
 import { deleteItemRequest } from "../../actions/items";
 import { boardSelectorByBoards } from "../../selectors/boards";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import { ItemCard } from "../../components/ui/";
+import { CardGroup, ItemCard } from "../../components/ui/";
 
 const b = bem("board-detail");
 
@@ -38,9 +39,13 @@ export class BoardDetail extends Component {
 
     return (
       <div className={`container ${b()}`}>
-        {items.entities.map(item =>
-          <div key={item.id} className={b("item")}>
+        <CardGroup
+          columnWidth={300}
+          layout={itemsLayout}
+        >
+          {items.entities.map(item =>
             <ItemCard
+              key={item._id}
               id={item._id}
               layout={itemsLayout}
               title={item.name}
@@ -49,8 +54,8 @@ export class BoardDetail extends Component {
               imageHeight={item.height}
               onDelete={this.handleDelete}
             />
-          </div>
-        )}
+          )}
+        </CardGroup>
       </div>
     );
   }

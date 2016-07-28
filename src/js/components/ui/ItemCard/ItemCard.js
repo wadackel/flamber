@@ -33,6 +33,7 @@ export default class ItemCard extends React.Component {
     layout: PropTypes.oneOf([Layout.RANDOM_GRID, Layout.GRID, Layout.LIST]),
     style: PropTypes.object,
     selected: PropTypes.bool,
+    id: PropTypes.any,
     url: PropTypes.string,
     title: PropTypes.string,
     image: PropTypes.string,
