@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import * as Layout from "../../constants/layouts";
 import { currentBoard } from "../../actions/boards";
-import { deleteItemRequest } from "../../actions/items";
+import { selectItemToggle, deleteItemRequest } from "../../actions/items";
 import { boardSelectorByBoards } from "../../selectors/boards";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
@@ -22,12 +22,17 @@ export class BoardDetail extends Component {
     super(props, context);
 
     bindHandlers([
+      "handleSelect",
       "handleDelete"
     ], this);
   }
 
   componentDidMount() {
     this.props.dispatch(currentBoard(this.props.params.id));
+  }
+
+  handleSelect(id) {
+    this.props.dispatch(selectItemToggle(id));
   }
 
   handleDelete(id) {
@@ -53,11 +58,13 @@ export class BoardDetail extends Component {
             <ItemCard
               key={item._id}
               id={item._id}
+              selected={item.select}
               layout={itemsLayout}
               title={item.name}
               image={item.thumbnail}
               imageWidth={item.width}
               imageHeight={item.height}
+              onSelect={this.handleSelect}
               onDelete={this.handleDelete}
             />
           )}

@@ -11,6 +11,13 @@ const initialState = {
   error: null
 };
 
+function mapItemToEntity(item) {
+  return {
+    ...item,
+    select: false
+  };
+}
+
 export default handleActions({
   // Add
   [Items.ADD_ITEM_REQUEST]: state => ({
@@ -48,6 +55,17 @@ export default handleActions({
     error: action.payload
   }),
 
+  // Select
+  [Items.SELECT_ITEM_TOGGLE]: (state, action) => ({
+    ...state,
+    entities: state.entities.map(item =>
+      item._id !== action.payload ? item : {
+        ...item,
+        select: !item.select
+      }
+    )
+  }),
+
   // Fetch board items
   [Items.FETCH_BOARD_ITEMS_REQUEST]: state => ({
     ...state,
@@ -58,7 +76,7 @@ export default handleActions({
   [Items.FETCH_BOARD_ITEMS_SUCCESS]: (state, action) => ({
     ...state,
     isFetching: false,
-    entities: action.payload
+    entities: action.payload.map(mapItemToEntity)
   }),
 
   [Items.FETCH_BOARD_ITEMS_FAILURE]: (state, action) => ({
@@ -70,7 +88,7 @@ export default handleActions({
   // Add board items
   [Items.ADD_BOARD_ITEM]: (state, action) => ({
     ...state,
-    entities: [...state.entities, action.payload]
+    entities: [...state.entities, mapItemToEntity(action.payload)]
   }),
 
   // Delete board items

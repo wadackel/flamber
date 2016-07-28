@@ -21,6 +21,11 @@ export const deleteItemSuccess = createAction(DELETE_ITEM_SUCCESS);
 export const deleteItemFailure = createAction(DELETE_ITEM_FAILURE);
 
 
+// Select
+export const SELECT_ITEM_TOGGLE = "SELECT_ITEM_TOGGLE";
+export const selectItemToggle = createAction(SELECT_ITEM_TOGGLE);
+
+
 // Fetch board items
 export const FETCH_BOARD_ITEMS_REQUEST = "FETCH_BOARD_ITEMS_REQUEST";
 export const FETCH_BOARD_ITEMS_SUCCESS = "FETCH_BOARD_ITEMS_SUCCESS";
