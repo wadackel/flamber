@@ -1,5 +1,3 @@
-/* eslint-disable */
-import assign from "object-assign";
 import urlParse from "url-parse";
 import React, { PropTypes } from "react";
 import * as Layout from "../../../constants/layouts";
@@ -24,6 +22,7 @@ import {
 } from "../";
 import {
   StarIcon,
+  StarFillIcon,
   TrashIcon
 } from "../../svg-icons";
 
@@ -33,6 +32,7 @@ export default class ItemCard extends React.Component {
     layout: PropTypes.oneOf([Layout.RANDOM_GRID, Layout.GRID, Layout.LIST]),
     style: PropTypes.object,
     selected: PropTypes.bool,
+    favorite: PropTypes.bool,
     id: PropTypes.any,
     url: PropTypes.string,
     title: PropTypes.string,
@@ -51,6 +51,7 @@ export default class ItemCard extends React.Component {
     layout: Layout.GRID,
     style: {},
     selected: false,
+    favorite: false,
     onSelect: () => {},
     onFavorite: () => {},
     onDelete: () => {},
@@ -70,7 +71,7 @@ export default class ItemCard extends React.Component {
   }
 
   handleFavoriteClick() {
-    // TODO
+    this.props.onFavorite(this.props.id);
   }
 
   handleDetailClick() {
@@ -81,7 +82,7 @@ export default class ItemCard extends React.Component {
     this.props.onSelect(this.props.id, checked);
   }
 
-  handleDeleteClick(e) {
+  handleDeleteClick() {
     this.props.onDelete(this.props.id);
   }
 
@@ -96,6 +97,7 @@ export default class ItemCard extends React.Component {
       className,
       style,
       selected,
+      favorite,
       url,
       title,
       image,
@@ -104,7 +106,7 @@ export default class ItemCard extends React.Component {
       colors
     } = this.props;
 
-    const baseClassName = "item-card" + (isRandomGrid ? "--random-grid" : "");
+    const baseClassName = `item-card${isRandomGrid ? "--random-grid" : ""}`;
     const b = bem(baseClassName);
     const modifier = { selected };
 
@@ -137,7 +139,11 @@ export default class ItemCard extends React.Component {
             <a href={url} target="_blank">{parsedURL.host}</a>
           </CardText>
           <CardAction baseClassName={baseClassName}>
-            <IconButton icon={<StarIcon />} onClick={this.handleFavoriteClick} />
+            <IconButton
+              className={b("favorite", { active: favorite })}
+              icon={favorite ? <StarFillIcon /> : <StarIcon />}
+              onClick={this.handleFavoriteClick}
+            />
           </CardAction>
         </CardBody>
         <ColorBar
@@ -151,12 +157,11 @@ export default class ItemCard extends React.Component {
   renderList() {
     const {
       className,
-      style,
       selected,
+      favorite,
       url,
       title,
-      image,
-      colors
+      image
     } = this.props;
 
     const baseClassName = "item-card--list";
@@ -167,7 +172,7 @@ export default class ItemCard extends React.Component {
 
     return (
       <Card
-        baseClassName={mergeClassNames(b(), className)}
+        baseClassName={mergeClassNames(b(modifier), className)}
         style={{}}
       >
         <CardCol baseClassName={baseClassName} className={b("col--media")}>
@@ -185,7 +190,12 @@ export default class ItemCard extends React.Component {
           </CardBody>
         </CardCol>
         <CardCol baseClassName={baseClassName} className={b("col--meta")}>
-          <IconButton icon={<StarIcon />} tooltip="Favorite" onClick={this.handleFavoriteClick} />
+          <IconButton
+            className={b("favorite", { active: favorite })}
+            icon={favorite ? <StarFillIcon /> : <StarIcon />}
+            tooltip="スターを付ける"
+            onClick={this.handleFavoriteClick}
+          />
         </CardCol>
         <CardCol baseClassName={baseClassName} className={b("col--more")}>
           <CardMore

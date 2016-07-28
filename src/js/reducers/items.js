@@ -37,6 +37,26 @@ export default handleActions({
     error: action.payload
   }),
 
+  // Favorite
+  [Items.FAVORITE_ITEM_TOGGLE_REQUEST]: state => ({
+    ...state
+  }),
+
+  [Items.FAVORITE_ITEM_TOGGLE_SUCCESS]: (state, action) => ({
+    ...state,
+    entities: state.entities.map(item =>
+      item._id !== action.payload._id ? item : {
+        ...item,
+        favorite: action.payload.favorite
+      }
+    )
+  }),
+
+  [Items.FAVORITE_ITEM_TOGGLE_FAILURE]: (state, action) => ({
+    ...state,
+    error: action.payload
+  }),
+
   // Delete
   [Items.DELETE_ITEM_REQUEST]: state => ({
     ...state,

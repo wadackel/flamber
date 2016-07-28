@@ -43,6 +43,12 @@ export function addItem({ file, palette, boardId }) {
   });
 }
 
+export function updateItem(item) {
+  return new Promise((resolve, reject) => {
+    // TODO
+  });
+}
+
 export function deleteItem(id) {
   return new Promise((resolve, reject) => {
     fetchJSON(ITEMS_ENDPOINT, { _id: id }, "DELETE")

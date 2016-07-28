@@ -23,4 +23,11 @@
       }
     }
   }
+
+  &__favorite,
+  &--random-grid__favorite {
+    &--active {
+      color: #dcce1c;
+    }
+  }
 }

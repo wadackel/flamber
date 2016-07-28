@@ -3,9 +3,11 @@ import { fork, take, put, call, select } from "redux-saga/effects";
 import {
   fetchBoardItems,
   addItem,
+  updateItem,
   deleteItem
 } from "../api/items";
 import { getCurrentBoard } from "../selectors/boards";
+import { getItemById } from "../selectors/items";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
@@ -31,6 +33,22 @@ export function *handleAddItemSuccess() {
       yield put(Items.addBoardItem(action.payload));
     }
   }
+}
+
+export function *handleFavoriteItemToggleRequest(action) {
+  try {
+    const item = yield select(getItemById, action.payload);
+    item.favorite = !item.favorite;
+
+    const newItem = yield call(updateItem, item);
+    yield put(Items.favoriteItemToggleSuccess(newItem));
+  } catch (err) {
+    yield put(Items.favoriteItemToggleFailure(err));
+  }
+}
+
+export function *watchFavoriteItemToggleRequest() {
+  yield *takeLatest(Items.FAVORITE_ITEM_TOGGLE_REQUEST, handleFavoriteItemToggleRequest);
 }
 
 export function *handleFetchBoardItemsRequest() {
@@ -81,6 +99,7 @@ export default function *rootSaga() {
   yield [
     fork(handleAddItemRequest),
     fork(handleAddItemSuccess),
+    fork(watchFavoriteItemToggleRequest),
     fork(handleFetchBoardItemsRequest),
     fork(watchCurrentBoard),
     fork(watchDeleteItemRequest),

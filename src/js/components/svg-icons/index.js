@@ -24,6 +24,7 @@ export SearchIcon from "./SearchIcon";
 export ShapeIcon from "./ShapeIcon";
 export SortIcon from "./SortIcon";
 export StarIcon from "./StarIcon";
+export StarFillIcon from "./StarFillIcon";
 export TagsIcon from "./TagsIcon";
 export TrashIcon from "./TrashIcon";
 export UploadIcon from "./UploadIcon";

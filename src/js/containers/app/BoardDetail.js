@@ -3,7 +3,11 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import * as Layout from "../../constants/layouts";
 import { currentBoard } from "../../actions/boards";
-import { selectItemToggle, deleteItemRequest } from "../../actions/items";
+import {
+  selectItemToggle,
+  favoriteItemToggleRequest,
+  deleteItemRequest
+} from "../../actions/items";
 import { getBoardByIdFromBoards } from "../../selectors/boards";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
@@ -23,6 +27,7 @@ export class BoardDetail extends Component {
 
     bindHandlers([
       "handleSelect",
+      "handleFavorite",
       "handleDelete"
     ], this);
   }
@@ -33,6 +38,10 @@ export class BoardDetail extends Component {
 
   handleSelect(id) {
     this.props.dispatch(selectItemToggle(id));
+  }
+
+  handleFavorite(id) {
+    this.props.dispatch(favoriteItemToggleRequest(id));
   }
 
   handleDelete(id) {
@@ -64,8 +73,10 @@ export class BoardDetail extends Component {
               image={item.thumbnail}
               imageWidth={item.width}
               imageHeight={item.height}
+              favorite={item.favorite}
               colors={item.palette}
               onSelect={this.handleSelect}
+              onFavorite={this.handleFavorite}
               onDelete={this.handleDelete}
             />
           )}

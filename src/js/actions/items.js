@@ -11,6 +11,16 @@ export const addItemSuccess = createAction(ADD_ITEM_SUCCESS);
 export const addItemFailure = createAction(ADD_ITEM_FAILURE);
 
 
+// Favorite
+export const FAVORITE_ITEM_TOGGLE_REQUEST = "FAVORITE_ITEM_TOGGLE_REQUEST";
+export const FAVORITE_ITEM_TOGGLE_SUCCESS = "FAVORITE_ITEM_TOGGLE_SUCCESS";
+export const FAVORITE_ITEM_TOGGLE_FAILURE = "FAVORITE_ITEM_TOGGLE_FAILURE";
+
+export const favoriteItemToggleRequest = createAction(FAVORITE_ITEM_TOGGLE_REQUEST);
+export const favoriteItemToggleSuccess = createAction(FAVORITE_ITEM_TOGGLE_SUCCESS);
+export const favoriteItemToggleFailure = createAction(FAVORITE_ITEM_TOGGLE_FAILURE);
+
+
 // Delete
 export const DELETE_ITEM_REQUEST = "DELETE_ITEM_REQUEST";
 export const DELETE_ITEM_SUCCESS = "DELETE_ITEM_SUCCESS";
