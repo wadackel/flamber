@@ -25,7 +25,7 @@ export default class CardGroup extends Component {
   static defaultProps = {
     layout: Layout.GRID,
     columnWidth: 280,
-    gutter: 10
+    gutter: 20
   };
 
   constructor(props, context) {

@@ -9,24 +9,24 @@ $card-border-radius: 3px;
 @mixin card-extend-all() {
   @extend %card-root;
 
+  &--selected {
+    @extend %card-root-selected;
+  }
+
   // Grid
   &__media {
     @extend %card-media;
 
     &__overlay {
       @extend %card-media-overlay;
+    }
 
-      &--overlay-show {
-        @extend %card-media-overlay-show;
-      }
+    &__item-wrapper {
+      @extend %card-media-item-wrapper;
     }
 
     &__item {
       @extend %card-media-item;
-
-      &--overlay-show {
-        @extend %card-media-item-active;
-      }
     }
 
     &__spinner {
@@ -37,12 +37,28 @@ $card-border-radius: 3px;
   &__overlay {
     @extend %card-overlay;
 
+    &--show {
+      @extend %card-overlay-show;
+    }
+
+    &--selected {
+      @extend %card-overlay-selected;
+    }
+
     &__inner {
       @extend %card-overlay-inner;
+
+      &--selected {
+        @extend %card-overlay-inner-selected;
+      }
     }
 
     &__more {
       @extend %card-overlay-more;
+
+      &--selected {
+        @extend %card-overlay-more-selected;
+      }
     }
 
     &__select {
@@ -75,6 +91,10 @@ $card-border-radius: 3px;
       &--show {
         @extend %card-more-trigger-show;
       }
+
+      &--selected {
+        @extend %card-more-trigger-selected;
+      }
     }
   }
 
@@ -99,21 +119,25 @@ $card-border-radius: 3px;
   &--random-grid {
     @extend %card-root;
 
+    &--selected {
+      @extend %card-root-selected;
+    }
+
     &__media {
       @extend %card-media;
 
       &__overlay {
         @extend %card-media-overlay;
+      }
 
-        &--overlay-show {
-          @extend %card-media-overlay-show;
-        }
+      &__item-wrapper {
+        @extend %card-media-item-wrapper;
       }
 
       &__item {
         @extend %card-media-item;
 
-        &--overlay-show {
+        &--selected {
           @extend %card-media-item-active;
         }
       }
@@ -126,12 +150,28 @@ $card-border-radius: 3px;
     &__overlay {
       @extend %card-overlay;
 
+      &--show {
+        @extend %card-overlay-show;
+      }
+
+      &--selected {
+        @extend %card-overlay-selected;
+      }
+
       &__inner {
         @extend %card-overlay-inner;
+
+        &--selected {
+          @extend %card-overlay-inner-selected;
+        }
       }
 
       &__more {
         @extend %card-overlay-more;
+
+        &--selected {
+          @extend %card-overlay-more-selected;
+        }
       }
 
       &__select {
@@ -163,6 +203,10 @@ $card-border-radius: 3px;
 
         &--show {
           @extend %card-more-trigger-show;
+        }
+
+        &--selected {
+          @extend %card-more-trigger-selected;
         }
       }
     }

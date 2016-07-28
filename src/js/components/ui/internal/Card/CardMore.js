@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import bem from "../../../../helpers/bem";
 import mergeClassNames from "../../../../helpers/merge-class-names";
@@ -10,7 +9,12 @@ export default class CardMore extends Component {
   static propTypes = {
     baseClassName: PropTypes.string,
     className: PropTypes.string,
-    actions: PropTypes.node
+    actions: PropTypes.node,
+    selected: PropTypes.bool
+  };
+
+  static defaultProps = {
+    selected: false
   };
 
   constructor(props, context) {
@@ -38,12 +42,13 @@ export default class CardMore extends Component {
     const {
       baseClassName,
       className,
-      actions
+      actions,
+      selected
     } = this.props;
 
     const { show } = this.state;
 
-    const modifier = { show };
+    const modifier = { show, selected };
     const b = bem(`${baseClassName.trim()}__more`);
 
     const actionElements = React.Children.map(actions, (action, index) =>

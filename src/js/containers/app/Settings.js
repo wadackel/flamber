@@ -87,7 +87,7 @@ export class Settings extends Component {
 
         <section className={b("group")}>
           <h3 className={b("group__title")}>
-            {settings.isFetching && <MDSpinner
+            {settings.isThemeUpdating && <MDSpinner
               size={14}
               style={{ marginRight: 5 }}
             />}

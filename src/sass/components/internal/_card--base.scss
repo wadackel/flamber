@@ -1,10 +1,15 @@
 // Root
 %card-root {
+  @include transition(box-shadow, 120ms);
   display: block;
   position: relative;
   border-radius: $card-border-radius;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .33);
+}
+
+%card-root-selected {
+  box-shadow: 0 0 0 2px $brand-primary;
 }
 
 
@@ -18,13 +23,14 @@
 
 %card-media-overlay {
   @include absolute(0, 0, 0, 0, 10);
-  @include transition(all, $card-duration);
-  opacity: 0;
   backface-visibility: hidden;
 }
 
-%card-media-overlay-show {
-  opacity: 1;
+%card-media-item-wrapper {
+  @include absolute(0, 0, 0, 0, 1);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 %card-media-item {
@@ -33,13 +39,13 @@
   display: block;
   width: 100%;
   height: 100%;
-  background-position: center center;
   background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
 }
 
 %card-media-item-active {
-  filter: blur(1px);
+  filter: blur(2px);
 }
 
 %card-media-spinner {
@@ -55,6 +61,7 @@
 // Overlay
 %card-overlay {
   @include absolute(0, 0, 0, 0, 1);
+  @include transition(opacity, $card-duration);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,10 +70,24 @@
   font-size: 1.125rem;
   letter-spacing: .05em;
   text-align: center;
+  opacity: 0;
+}
+
+%card-overlay-show,
+%card-overlay-selected {
+  opacity: 1;
 }
 
 %card-overlay-inner {
+  @include transition((opacity, visiblity), 120ms);
   position: relative;
+  opacity: 1;
+  visibility: visible;
+}
+
+%card-overlay-inner-selected {
+  opacity: 0;
+  visibility: hidden;
 }
 
 %card-overlay-select {
@@ -99,6 +120,14 @@
 
 %card-overlay-more {
   @include absolute(5px, 5px, auto, auto);
+  @include transition((opacity, visibility), 120ms);
+  opacity: 1;
+  visibility: visible;
+}
+
+%card-overlay-more-selected {
+  opacity: 0;
+  visibility: hidden;
 }
 
 
@@ -120,6 +149,11 @@
   opacity: 0;
   visibility: hidden;
   z-index: 1;
+}
+
+%card-more-trigger-selected {
+  opacity: 0;
+  visibility: hidden;
 }
 
 %card-more-actions {

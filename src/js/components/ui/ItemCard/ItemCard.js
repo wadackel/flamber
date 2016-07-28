@@ -118,6 +118,7 @@ export default class ItemCard extends React.Component {
         <CardMedia
           baseClassName={baseClassName}
           image={image}
+          selected={selected}
           style={isRandomGrid ? {
             paddingBottom: `${(imageHeight / imageWidth) * 100}%`
           } : {}}

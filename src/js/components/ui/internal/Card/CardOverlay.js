@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import bem from "../../../../helpers/bem";
+import bindHandlers from "../../../../helpers/bind-handlers";
 import { Checkbox } from "../../";
 import { CardMore } from "./";
 
@@ -7,7 +8,6 @@ export default class CardOverlay extends React.Component {
   static propTypes = {
     baseClassName: PropTypes.string,
     style: PropTypes.object,
-    show: PropTypes.bool,
     actions: PropTypes.node,
     moreActions: PropTypes.node,
     selectable: PropTypes.bool,
@@ -17,23 +17,42 @@ export default class CardOverlay extends React.Component {
 
   static defaultProps = {
     style: {},
-    show: false,
     selectable: false,
     selected: false,
     onSelect: () => {}
   };
 
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = { show: false };
+
+    bindHandlers([
+      "handleMouseEnter",
+      "handleMouseLeave"
+    ], this);
+  }
+
+  handleMouseEnter() {
+    this.setState({ show: true });
+  }
+
+  handleMouseLeave() {
+    this.setState({ show: false });
+  }
+
   render() {
     const {
       baseClassName,
       style,
-      show,
       actions,
       moreActions,
       selectable,
       selected,
       onSelect
     } = this.props;
+
+    const { show } = this.state;
 
     const b = bem(`${baseClassName.trim()}__overlay`);
 
@@ -45,8 +64,9 @@ export default class CardOverlay extends React.Component {
 
     const moreElement = moreActions && <CardMore
       baseClassName={baseClassName}
-      className={b("more")}
+      className={b("more", modifier)}
       actions={moreActions}
+      selected={selected}
     />;
 
     const selectElement = selectable && <Checkbox
@@ -55,7 +75,7 @@ export default class CardOverlay extends React.Component {
       onCheck={onSelect}
     />;
 
-    const actionElements = actions && <div className={b("actions")}>
+    const actionElements = actions && <div className={b("actions", modifier)}>
       {React.Children.map(actions, (action, index) =>
         React.cloneElement(action, {
           key: index,
@@ -65,10 +85,15 @@ export default class CardOverlay extends React.Component {
     </div>;
 
     return (
-      <div className={b(modifier)} style={style}>
+      <div
+        className={b(modifier)}
+        style={style}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
         {selectElement}
         {moreElement}
-        <div className={b("inner")}>
+        <div className={b("inner", modifier)}>
           {actionElements}
         </div>
       </div>

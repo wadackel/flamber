@@ -20,7 +20,9 @@ export default function Card({
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
-    {children}
+    <div className={b("inner")}>
+      {children}
+    </div>
   </div>;
 }
 
