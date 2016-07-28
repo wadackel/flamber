@@ -203,7 +203,7 @@ export default class AddItemFileDialog extends Component {
           <FlatButton
             type="primary"
             onClick={this.handleAdd}
-            disable={processing || !selectImage.src}
+            disable={processing || !selectImage.src || !selectBoard}
           >
             Add
           </FlatButton>
