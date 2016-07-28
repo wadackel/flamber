@@ -55,9 +55,11 @@ export function *handleUpdateItemsLayoutRequest(action) {
 }
 
 export function *watchUpdateSettingsRequest() {
-  yield *takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest);
-  yield *takeLatest(Settings.UPDATE_BOARDS_LAYOUT_REQUEST, handleUpdateBoardsLayoutRequest);
-  yield *takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest);
+  yield [
+    takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest),
+    takeLatest(Settings.UPDATE_BOARDS_LAYOUT_REQUEST, handleUpdateBoardsLayoutRequest),
+    takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest)
+  ];
 }
 
 export default function *rootSaga() {
