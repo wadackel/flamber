@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import {
-  SpringGrid,
+  CSSGrid,
   layout as GridLayout,
+  easings,
   measureItems,
   makeResponsive,
   enterExitStyle
@@ -11,9 +12,15 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("card-group");
-const CardGrid = makeResponsive(measureItems(SpringGrid), {
-  maxWidth: 1920
-});
+const CardGrid = makeResponsive(
+  measureItems(CSSGrid, {
+    measureImages: true,
+    background: true
+  }),
+  {
+    maxWidth: 1920
+  }
+);
 
 export default class CardGroup extends Component {
   static propTypes = {
@@ -26,8 +33,8 @@ export default class CardGroup extends Component {
 
   static defaultProps = {
     layout: Layout.GRID,
-    columnWidth: 300,
-    gutter: 5
+    columnWidth: 280,
+    gutter: 10
   };
 
   render() {
@@ -40,9 +47,6 @@ export default class CardGroup extends Component {
     } = this.props;
 
     const modifier = { [layout]: true };
-    const layoutType = layout === Layout.RANDOM_GRID
-      ? GridLayout.pinterest
-      : GridLayout.simple;
 
     return (
       <CardGrid
@@ -51,17 +55,20 @@ export default class CardGroup extends Component {
         columnWidth={columnWidth}
         gutterWidth={gutter}
         gutterHeight={gutter}
-        layout={layoutType}
+        layout={GridLayout.pinterest}
         enter={enterExitStyle.fromTop.enter}
         entered={enterExitStyle.fromTop.entered}
         exit={enterExitStyle.fromTop.exit}
-        springConfig={{
-          stiffness: 160,
-          damping: 20
-        }}
+        duration={460}
+        easing={easings.expoOut}
+        itemHeight={null}
       >
         {React.Children.map(children, card =>
-          <div key={card.id} className={b("card")}>
+          <div
+            key={card.id}
+            className={b("card")}
+            style={{ width: columnWidth }}
+          >
             {card}
           </div>
         )}

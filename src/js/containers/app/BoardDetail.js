@@ -40,7 +40,7 @@ export class BoardDetail extends Component {
     return (
       <div className={`container ${b()}`}>
         <CardGroup
-          columnWidth={300}
+          columnWidth={280}
           layout={itemsLayout}
         >
           {items.entities.map(item =>
