@@ -1,4 +1,9 @@
+import _ from "lodash";
+import ColorClassifier from "color-classifier";
+import colorPalette from "../constants/palette";
 import palette from "palette";
+
+const colorClassifier = new ColorClassifier(colorPalette);
 
 export default function getImagePalette(image) {
   const canvas = document.createElement("canvas");
@@ -9,11 +14,13 @@ export default function getImagePalette(image) {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(image, 0, 0);
 
-  const results = palette(canvas);
+  const colors = palette(canvas).map(arr =>
+    colorClassifier.classify({
+      r: arr[0],
+      g: arr[1],
+      b: arr[2]
+    }, "hex")
+  );
 
-  return results.map(arr => ({
-    r: arr[0],
-    g: arr[1],
-    b: arr[2]
-  }));
+  return _.uniq(colors);
 }

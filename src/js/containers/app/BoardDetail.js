@@ -64,6 +64,7 @@ export class BoardDetail extends Component {
               image={item.thumbnail}
               imageWidth={item.width}
               imageHeight={item.height}
+              colors={item.palette}
               onSelect={this.handleSelect}
               onDelete={this.handleDelete}
             />

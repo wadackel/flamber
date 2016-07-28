@@ -11,8 +11,7 @@ import {
   MenuItem,
   FlatButton,
   FileDnD,
-  IconButton,
-  TextField
+  IconButton
 } from "../";
 import {
   CloseIcon,
@@ -121,7 +120,7 @@ export default class AddItemFileDialog extends Component {
     }
   }
 
-  handleFileChange(e) {
+  handleFileChange() {
     const { files } = this.refs.file;
 
     if (files.length > 0) {
@@ -228,12 +227,12 @@ export default class AddItemFileDialog extends Component {
             />
             <img className={b("preview__image")} src={selectImage.src} />
             <ul className={b("preview__palette")}>
-              {selectImage.palette.map((color, index) =>
+              {selectImage.palette.map((hex, index) =>
                 <li
                   key={index}
                   className={b("preview__color")}
                   style={{
-                    backgroundColor: `rgb(${color.r}, ${color.g}, ${color.b})`
+                    backgroundColor: hex
                   }}>
                 </li>
               )}

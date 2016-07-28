@@ -42,7 +42,7 @@ router.post("/", upload.single("file"), (req, res) => {
         width: result.imageMediaMetadata.width,
         height: result.imageMediaMetadata.height,
         thumbnail: result.thumbnailLink,
-        palette: body.palette
+        palette: body.palette.split(",")
       });
 
       return item.save();
