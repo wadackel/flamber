@@ -319,12 +319,12 @@ export class App extends Component {
       subLeft: this.getHeaderMyItemsSubLeft(),
       subRight: (
         <div>
-          <Slider
+          {itemsLayout !== Layout.LIST && <Slider
             min={140}
             max={400}
             value={itemsSize}
             onChange={this.handleItemsSizeChange}
-          />
+          />}
           <LayoutButtonGroup
             value={itemsLayout}
             onChange={this.handleItemsLayoutChange}
