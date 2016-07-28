@@ -76,9 +76,21 @@ export default class AddItemFileDialog extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!deepEqual(this.props.selectBoards, nextProps.selectBoards)) {
+    const { props } = this;
+
+    if (!deepEqual(props.selectBoards, nextProps.selectBoards)) {
       this.setState({
         selectBoard: nextProps.selectBoards[0] && nextProps.selectBoards[0].value
+      });
+    }
+
+    if (props.open && !nextProps.open) {
+      this.setState({
+        selectImage: {
+          file: null,
+          src: null,
+          palette: []
+        }
       });
     }
   }
