@@ -27,6 +27,10 @@ $card-border-radius: 3px;
 
     &__item {
       @extend %card-media-item;
+
+      &--selected {
+        @extend %card-media-item-active;
+      }
     }
 
     &__spinner {

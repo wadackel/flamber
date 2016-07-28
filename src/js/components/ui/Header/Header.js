@@ -32,7 +32,7 @@ export default class Header extends Component {
   static propTypes = {
     user: PropTypes.object,
     navItems: PropTypes.node,
-    mainTItle: PropTypes.node,
+    mainTitle: PropTypes.node,
     subTitle: PropTypes.node,
     subLeft: PropTypes.node,
     subRight: PropTypes.node,

@@ -24,9 +24,10 @@ export function itemSelectorByBoards(boards, id) {
   return item;
 }
 
-export function getCurrentBoard(state) {
-  const { boards } = state;
-  const { currentBoardId } = boards;
+export function getCurrentBoardByBoards(boards) {
+  return _.find(boards.entities, o => o._id === boards.currentBoardId);
+}
 
-  return _.find(boards.entities, o => o._id === currentBoardId);
+export function getCurrentBoard(state) {
+  return getCurrentBoardByBoards(state.boards);
 }

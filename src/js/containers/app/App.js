@@ -18,7 +18,7 @@ import {
   updateBoardRequest
 } from "../../actions/boards";
 import { addItemRequest } from "../../actions/items";
-import { boardSelectorByBoards } from "../../selectors/boards";
+import { boardSelectorByBoards, getCurrentBoardByBoards } from "../../selectors/boards";
 import {
   AddBoardDialog,
   AddItemFileDialog,
@@ -295,7 +295,7 @@ export class App extends Component {
 
     const { isUpdating } = boards;
     const { boardName, itemsSize } = this.state;
-    const board = boardSelectorByBoards(boards, params.id);
+    const board = getCurrentBoardByBoards(boards);
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
@@ -317,6 +317,9 @@ export class App extends Component {
         </div>
       ),
       subLeft: this.getHeaderMyItemsSubLeft(),
+      subTitle: board && (
+        <div>Total {board.itemCount} items</div>
+      ),
       subRight: (
         <div>
           {itemsLayout !== Layout.LIST && <Slider

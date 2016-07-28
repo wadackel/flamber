@@ -25,6 +25,11 @@ $header-main-height: 60px;
     white-space: nowrap;
 
     &--main-right,
+    &--main-left {
+      flex-basis: 300px;
+    }
+
+    &--main-right,
     &--sub-right {
       padding-right: 20px;
       text-align: right;
@@ -40,6 +45,12 @@ $header-main-height: 60px;
     &--sub-left,
     &--sub-right {
       flex-grow: 2;
+    }
+
+    &--main-center {
+      .editable-text {
+        padding-left: 65px;
+      }
     }
 
     &--sub-left {
