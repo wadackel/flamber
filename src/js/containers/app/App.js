@@ -18,7 +18,7 @@ import {
   updateBoardRequest
 } from "../../actions/boards";
 import { addItemRequest } from "../../actions/items";
-import { boardSelectorByBoards, getCurrentBoardByBoards } from "../../selectors/boards";
+import { getBoardByIdFromBoards, getCurrentBoardFromBoards } from "../../selectors/boards";
 import {
   AddBoardDialog,
   AddItemFileDialog,
@@ -133,7 +133,7 @@ export class App extends Component {
       });
     }
 
-    const nextBoard = boardSelectorByBoards(nextProps.boards, nextProps.params.id);
+    const nextBoard = getBoardByIdFromBoards(nextProps.boards, nextProps.params.id);
 
     if (nextBoard && nextBoard.name !== this.state.boardName && !nextProps.boards.isUpdating) {
       this.setState({
@@ -190,7 +190,7 @@ export class App extends Component {
 
   handleBoardNameComplete(value) {
     const { boards, params } = this.props;
-    const board = boardSelectorByBoards(boards, params.id);
+    const board = getBoardByIdFromBoards(boards, params.id);
 
     this.props.dispatch(updateBoardRequest({
       ...board,
@@ -295,7 +295,7 @@ export class App extends Component {
 
     const { isUpdating } = boards;
     const { boardName, itemsSize } = this.state;
-    const board = getCurrentBoardByBoards(boards);
+    const board = getCurrentBoardFromBoards(boards);
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,

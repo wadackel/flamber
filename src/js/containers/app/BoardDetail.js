@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as Layout from "../../constants/layouts";
 import { currentBoard } from "../../actions/boards";
 import { selectItemToggle, deleteItemRequest } from "../../actions/items";
-import { boardSelectorByBoards } from "../../selectors/boards";
+import { getBoardByIdFromBoards } from "../../selectors/boards";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import { CardGroup, ItemCard } from "../../components/ui/";

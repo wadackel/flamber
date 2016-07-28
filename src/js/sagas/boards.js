@@ -1,7 +1,7 @@
 import deepEqual from "deep-equal";
 import { takeLatest } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
-import { boardSelector } from "../selectors/boards";
+import { getBoardById } from "../selectors/boards";
 import {
   fetchBoards,
   addBoard,
@@ -9,6 +9,7 @@ import {
   deleteBoard
 } from "../api/boards";
 import * as Boards from "../actions/boards";
+import * as Items from "../actions/items";
 
 export function *handleFetchBoardsRequest() {
   while (true) {
@@ -38,7 +39,7 @@ export function *handleAddBoardRequest() {
 
 export function *handleUpdateBoardRequest(action) {
   try {
-    const prevBoard = yield select(boardSelector, action.payload.id);
+    const prevBoard = yield select(getBoardById, action.payload.id);
 
     if (deepEqual(prevBoard, action.payload)) {
       yield put(Boards.updateBoardSuccess(prevBoard));
@@ -72,11 +73,33 @@ export function *handleDeleteBoardRequest() {
   }
 }
 
+export function *handleAddItemSuccess() {
+  while (true) {
+    const action = yield take(Items.ADD_ITEM_SUCCESS);
+    const board = yield select(getBoardById, action.payload.boardId);
+    board.itemCount++;
+
+    yield put(Boards.updateBoardRequest(board));
+  }
+}
+
+export function *handleDeleteItemSuccess() {
+  while (true) {
+    const action = yield take(Items.DELETE_ITEM_SUCCESS);
+    const board = yield select(getBoardById, action.payload.boardId);
+    board.itemCount--;
+
+    yield put(Boards.updateBoardRequest(board));
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
     fork(handleAddBoardRequest),
     fork(watchUpdateBoardRequest),
-    fork(handleDeleteBoardRequest)
+    fork(handleDeleteBoardRequest),
+    fork(handleAddItemSuccess),
+    fork(handleDeleteItemSuccess)
   ];
 }
