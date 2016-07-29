@@ -23,6 +23,7 @@ import {
 import {
   StarIcon,
   StarFillIcon,
+  FolderIcon,
   TrashIcon
 } from "../../svg-icons";
 
@@ -42,6 +43,7 @@ export default class ItemCard extends React.Component {
     colors: PropTypes.array,
     onSelect: PropTypes.func,
     onFavorite: PropTypes.func,
+    onMove: PropTypes.func,
     onDelete: PropTypes.func,
     onDetailClick: PropTypes.func,
     onColorClick: PropTypes.func
@@ -54,6 +56,7 @@ export default class ItemCard extends React.Component {
     favorite: false,
     onSelect: () => {},
     onFavorite: () => {},
+    onMove: () => {},
     onDelete: () => {},
     onDetailClick: () => {},
     onColorClick: () => {}
@@ -66,6 +69,7 @@ export default class ItemCard extends React.Component {
       "handleSelect",
       "handleFavoriteClick",
       "handleDetailClick",
+      "handleMoveClick",
       "handleDeleteClick"
     ], this);
   }
@@ -82,12 +86,17 @@ export default class ItemCard extends React.Component {
     this.props.onSelect(this.props.id, checked);
   }
 
+  handleMoveClick() {
+    this.props.onMove(this.prosp.id);
+  }
+
   handleDeleteClick() {
     this.props.onDelete(this.props.id);
   }
 
   renderMoreActions() {
     return [
+      <IconButton icon={<FolderIcon />} tooltip="移動する" onClick={this.handleMoveClick} />,
       <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />
     ];
   }

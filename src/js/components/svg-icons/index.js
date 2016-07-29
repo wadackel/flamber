@@ -8,6 +8,7 @@ export CloseIcon from "./CloseIcon";
 export CogIcon from "./CogIcon";
 export CropIcon from "./CropIcon";
 export FilesIcon from "./FilesIcon";
+export FolderIcon from "./FolderIcon";
 export GithubIcon from "./GithubIcon";
 export GridIcon from "./GridIcon";
 export LinkIcon from "./LinkIcon";
