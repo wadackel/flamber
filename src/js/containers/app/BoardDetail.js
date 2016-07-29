@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import * as Layout from "../../constants/layouts";
 import { currentBoard } from "../../actions/boards";
 import {
+  clearItems,
   selectItemToggle,
   favoriteItemToggleRequest,
   deleteItemRequest
@@ -34,6 +35,10 @@ export class BoardDetail extends Component {
 
   componentDidMount() {
     this.props.dispatch(currentBoard(this.props.params.id));
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(clearItems());
   }
 
   handleSelect(id) {

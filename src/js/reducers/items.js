@@ -105,6 +105,9 @@ export default handleActions({
     error: action.payload
   }),
 
+  // Clear items
+  [Items.CLEAR_ITEMS]: state => ({ ...state, entities: [] }),
+
   // Add board items
   [Items.ADD_BOARD_ITEM]: (state, action) => ({
     ...state,

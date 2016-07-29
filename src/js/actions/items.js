@@ -46,6 +46,11 @@ export const fetchBoardItemsSuccess = createAction(FETCH_BOARD_ITEMS_SUCCESS);
 export const fetchBoardItemsFailure = createAction(FETCH_BOARD_ITEMS_FAILURE);
 
 
+// Clear items
+export const CLEAR_ITEMS = "CLEAR_ITEMS";
+export const clearItems = createAction(CLEAR_ITEMS);
+
+
 // Add board items
 export const ADD_BOARD_ITEM = "ADD_BOARD_ITEM";
 export const addBoardItem = createAction(ADD_BOARD_ITEM);
