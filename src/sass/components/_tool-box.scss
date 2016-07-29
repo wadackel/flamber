@@ -1,0 +1,68 @@
+.tool-box {
+  @include fixed(auto, 0, 10px, 0, 2000);
+  transform-origin: center bottom;
+  transition-property: all;
+  text-align: center;
+
+  &.open {
+    &-enter {
+      transform: translateY(15px) scale(.8);
+      opacity: .01;
+    }
+
+    &-enter-active {
+      transform: translateY(0) scale(1);
+      transition-duration: #{$tool-box-enter-duration}ms;
+      opacity: 1;
+    }
+
+    &-leave {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    &-leave-active {
+      transform: translateY(2px) scale(.8);
+      transition-duration: #{$tool-box-leave-duration}ms;
+      opacity: .01;
+    }
+  }
+
+  &--open {
+    opacity: 1;
+  }
+
+  &__inner {
+    display: inline-block;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 3px 6px rgba(#000, .28), 0 3px 8px rgba(#000, .28);
+  }
+
+  &__body {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+  }
+
+  &__text {
+    padding: 15px 15px 15px 10px;
+    color: $gray-light;
+  }
+
+  &__actions {
+    margin: 0;
+    padding: 0 5px 0 0;
+    list-style: none;
+  }
+
+  &__action {
+    display: inline-block;
+
+    .icon-button__ripple {
+      background-color: rgba(#000, .1);
+    }
+  }
+}
