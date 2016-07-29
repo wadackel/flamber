@@ -93,6 +93,20 @@ export function *handleDeleteItemSuccess() {
   }
 }
 
+export function *handleMoveItemBoardSuccess() {
+  while (true) {
+    const action = yield take(Items.MOVE_ITEM_BOARD_SUCCESS);
+    const prevBoard = yield select(getBoardById, action.payload.prevBoardId);
+    const nextBoard = yield select(getBoardById, action.payload.item.boardId);
+
+    prevBoard.itemCount--;
+    nextBoard.itemCount++;
+
+    yield put(Boards.updateBoardRequest(prevBoard));
+    yield put(Boards.updateBoardRequest(nextBoard));
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
@@ -100,6 +114,7 @@ export default function *rootSaga() {
     fork(watchUpdateBoardRequest),
     fork(handleDeleteBoardRequest),
     fork(handleAddItemSuccess),
-    fork(handleDeleteItemSuccess)
+    fork(handleDeleteItemSuccess),
+    fork(handleMoveItemBoardSuccess)
   ];
 }

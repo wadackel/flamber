@@ -1,4 +1,4 @@
-/* eslint-disable */
+import deepEqual from "deep-equal";
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -21,14 +21,12 @@ export default class SelectBoardDialog extends Component {
     open: PropTypes.bool,
     processing: PropTypes.bool,
     boards: PropTypes.array,
-    defaultValue: PropTypes.any,
     onSelect: PropTypes.func,
     onRequestClose: PropTypes.func
   };
 
   static defaultProps = {
     processing: false,
-    defaultValue: null,
     onSelect: () => {}
   };
 
@@ -36,7 +34,7 @@ export default class SelectBoardDialog extends Component {
     super(props, context);
 
     this.state = {
-      value: props.defaultValue
+      value: props.boards[0] && props.boards[0].value
     };
 
     bindHandlers([
@@ -49,8 +47,10 @@ export default class SelectBoardDialog extends Component {
   componentWillReceiveProps(nextProps) {
     const { props } = this;
 
-    if (!props.open && props.defaultValue !== nextProps.defaultValue) {
-      this.setState({ value: nextProps.defaultValue });
+    if (!deepEqual(props.boards, nextProps.boards)) {
+      this.setState({
+        value: nextProps.boards[0] && nextProps.boards[0].value
+      });
     }
   }
 
@@ -74,7 +74,6 @@ export default class SelectBoardDialog extends Component {
       className,
       processing,
       boards,
-      defaultValue, // eslint-disable-line no-unused-vars
       ...props
     } = this.props;
 

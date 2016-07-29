@@ -51,6 +51,37 @@ export function *watchFavoriteItemToggleRequest() {
   yield *takeLatest(Items.FAVORITE_ITEM_TOGGLE_REQUEST, handleFavoriteItemToggleRequest);
 }
 
+export function *handleMoveItemBoardRequest() {
+  while (true) {
+    const action = yield take(Items.MOVE_ITEM_BOARD_REQUEST);
+    const { id, boardId } = action.payload;
+    const item = yield select(getItemById, id);
+    const prevBoardId = item.boardId;
+    item.boardId = boardId;
+
+    try {
+      const updatedItem = yield call(updateItem, item);
+      yield put(Items.moveItemBoardSuccess({
+        item: updatedItem,
+        prevBoardId
+      }));
+    } catch (err) {
+      yield put(Items.moveItemBoardFailure(err));
+    }
+  }
+}
+
+export function *handleMoveItemBoardSuccess() {
+  while (true) {
+    const action = yield take(Items.MOVE_ITEM_BOARD_SUCCESS);
+    const board = yield select(getCurrentBoard);
+
+    if (board && board._id !== action.payload.boardId) {
+      yield put(Items.deleteBoardItem(action.payload));
+    }
+  }
+}
+
 export function *handleFetchBoardItemsRequest() {
   while (true) {
     const action = yield take(Items.FETCH_BOARD_ITEMS_REQUEST);
@@ -101,6 +132,8 @@ export default function *rootSaga() {
     fork(handleAddItemSuccess),
     fork(watchFavoriteItemToggleRequest),
     fork(handleFetchBoardItemsRequest),
+    fork(handleMoveItemBoardRequest),
+    fork(handleMoveItemBoardSuccess),
     fork(watchCurrentBoard),
     fork(watchDeleteItemRequest),
     fork(handleDeleteItemSuccess)

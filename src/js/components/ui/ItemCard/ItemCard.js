@@ -87,7 +87,7 @@ export default class ItemCard extends React.Component {
   }
 
   handleMoveClick() {
-    this.props.onMove(this.prosp.id);
+    this.props.onMove(this.props.id);
   }
 
   handleDeleteClick() {

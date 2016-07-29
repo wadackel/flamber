@@ -21,6 +21,16 @@ export const favoriteItemToggleSuccess = createAction(FAVORITE_ITEM_TOGGLE_SUCCE
 export const favoriteItemToggleFailure = createAction(FAVORITE_ITEM_TOGGLE_FAILURE);
 
 
+// Move board
+export const MOVE_ITEM_BOARD_REQUEST = "MOVE_ITEM_BOARD_REQUEST";
+export const MOVE_ITEM_BOARD_SUCCESS = "MOVE_ITEM_BOARD_SUCCESS";
+export const MOVE_ITEM_BOARD_FAILURE = "MOVE_ITEM_BOARD_FAILURE";
+
+export const moveItemBoardRequest = createAction(MOVE_ITEM_BOARD_REQUEST);
+export const moveItemBoardSuccess = createAction(MOVE_ITEM_BOARD_SUCCESS);
+export const moveItemBoardFailure = createAction(MOVE_ITEM_BOARD_FAILURE);
+
+
 // Delete
 export const DELETE_ITEM_REQUEST = "DELETE_ITEM_REQUEST";
 export const DELETE_ITEM_SUCCESS = "DELETE_ITEM_SUCCESS";

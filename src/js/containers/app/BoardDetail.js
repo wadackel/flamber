@@ -1,18 +1,26 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import { push } from "react-router-redux";
 import * as Layout from "../../constants/layouts";
 import { currentBoard } from "../../actions/boards";
 import {
   clearItems,
   selectItemToggle,
   favoriteItemToggleRequest,
+  moveItemBoardRequest,
   deleteItemRequest
 } from "../../actions/items";
 import { getBoardByIdFromBoards } from "../../selectors/boards";
+import { getItemByIdFromItems } from "../../selectors/items";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import { CardGroup, ItemCard } from "../../components/ui/";
+import {
+  CardGroup,
+  ItemCard,
+  SelectBoardDialog,
+  Snackbar
+} from "../../components/ui/";
 
 const b = bem("board-detail");
 
@@ -26,10 +34,23 @@ export class BoardDetail extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.state = {
+      moveItem: null,
+      nextBoardId: null,
+      selectBoardDialogOpen: false,
+      moveItemSnackbarOpen: false,
+      moveItemSnackbarMessage: ""
+    };
+
     bindHandlers([
       "handleSelect",
       "handleFavorite",
-      "handleDelete"
+      "handleMove",
+      "handleDelete",
+      "handleBoardSelect",
+      "handleDialogClose",
+      "handleMoveActionClick",
+      "handleMoveItemSnackbarClose"
     ], this);
   }
 
@@ -41,6 +62,26 @@ export class BoardDetail extends Component {
     this.props.dispatch(clearItems());
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { props } = this;
+
+    if (props.params.id !== nextProps.params.id) {
+      this.props.dispatch(currentBoard(nextProps.params.id));
+    }
+
+    if (props.items.isMoving && !nextProps.items.isMoving) {
+      const { moveItem } = this.state;
+
+      this.setState({
+        selectBoardDialogOpen: false,
+        moveItemSnackbarOpen: true,
+        moveItemSnackbarMessage: nextProps.items.error
+          ? "アイテムの移動に失敗しました"
+          : `「${moveItem.name}」を移動しました`
+      });
+    }
+  }
+
   handleSelect(id) {
     this.props.dispatch(selectItemToggle(id));
   }
@@ -49,18 +90,75 @@ export class BoardDetail extends Component {
     this.props.dispatch(favoriteItemToggleRequest(id));
   }
 
+  handleMove(id) {
+    this.setState({
+      moveItem: getItemByIdFromItems(this.props.items, id),
+      selectBoardDialogOpen: true
+    });
+  }
+
   handleDelete(id) {
     this.props.dispatch(deleteItemRequest(id));
   }
 
+  handleBoardSelect(boardId) {
+    const { moveItem } = this.state;
+
+    this.props.dispatch(moveItemBoardRequest({
+      id: moveItem._id,
+      boardId
+    }));
+
+    this.setState({
+      nextBoardId: boardId
+    });
+  }
+
+  handleDialogClose() {
+    this.setState({
+      moveItem: null,
+      selectBoardDialogOpen: false
+    });
+  }
+
+  handleMoveActionClick() {
+    const { nextBoardId } = this.state;
+    this.props.dispatch(push(`/app/board/${nextBoardId}`));
+    this.setState({ moveItemSnackbarOpen: false });
+  }
+
+  handleMoveItemSnackbarClose() {
+    this.setState({
+      moveItemSnackbarOpen: false,
+      moveItemSnackbarMessage: ""
+    });
+  }
+
   render() {
     const {
+      boards,
       items,
       settings: {
         itemsLayout,
         itemsSize
       }
     } = this.props;
+
+    const {
+      moveItem,
+      selectBoardDialogOpen,
+      moveItemSnackbarOpen,
+      moveItemSnackbarMessage
+    } = this.state;
+
+    const selectBoards = boards.entities
+      .filter(board =>
+        board._id !== (moveItem ? moveItem.boardId : null)
+      )
+      .map(board => ({
+          name: board.name,
+          value: board._id
+      }));
 
     return (
       <div className={`container ${b()}`}>
@@ -82,10 +180,27 @@ export class BoardDetail extends Component {
               colors={item.palette}
               onSelect={this.handleSelect}
               onFavorite={this.handleFavorite}
+              onMove={this.handleMove}
               onDelete={this.handleDelete}
             />
           )}
         </CardGroup>
+
+        <SelectBoardDialog
+          processing={items.isMoving}
+          open={selectBoardDialogOpen}
+          boards={selectBoards}
+          onSelect={this.handleBoardSelect}
+          onRequestClose={this.handleDialogClose}
+        />
+
+        <Snackbar
+          open={moveItemSnackbarOpen}
+          message={moveItemSnackbarMessage}
+          action="Show"
+          onActionClick={this.handleMoveActionClick}
+          onRequestClose={this.handleMoveItemSnackbarClose}
+        />
       </div>
     );
   }

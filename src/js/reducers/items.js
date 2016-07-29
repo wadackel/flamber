@@ -6,6 +6,7 @@ const initialState = {
   isAdding: false,
   isUpdating: false,
   isDeleting: false,
+  isMoving: false,
   currentItemId: null,
   entities: [],
   error: null
@@ -54,6 +55,23 @@ export default handleActions({
 
   [Items.FAVORITE_ITEM_TOGGLE_FAILURE]: (state, action) => ({
     ...state,
+    error: action.payload
+  }),
+
+  // Move board
+  [Items.MOVE_ITEM_BOARD_REQUEST]: state => ({
+    ...state,
+    isMoving: true
+  }),
+
+  [Items.MOVE_ITEM_BOARD_SUCCESS]: state => ({
+    ...state,
+    isMoving: false
+  }),
+
+  [Items.MOVE_ITEM_BOARD_FAILURE]: (state, action) => ({
+    ...state,
+    isMoving: false,
     error: action.payload
   }),
 

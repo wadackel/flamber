@@ -133,7 +133,7 @@ export class App extends Component {
       });
     }
 
-    const nextBoard = getBoardByIdFromBoards(nextProps.boards, nextProps.params.id);
+    const nextBoard = getBoardByIdFromBoards(nextProps.boards, nextProps.boards.currentBoardId);
 
     if (nextBoard && nextBoard.name !== this.state.boardName && !nextProps.boards.isUpdating) {
       this.setState({
