@@ -2,11 +2,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import { TransitionMotion, spring, presets } from "react-motion";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import { fetchBoardsRequest, deleteBoardRequest } from "../../actions/boards";
-import { BoardCard } from "../../components/ui/";
+import { CardGroup, BoardCard } from "../../components/ui/";
 
 const b = bem("boards");
 
@@ -60,42 +59,27 @@ export class Boards extends Component {
       boards
     } = this.props;
 
-    const motionStyles = boards.entities.map(board => ({
-      key: board._id,
-      style: {
-        opacity: spring(1)
-      },
-      data: board
-    }));
-
     return (
-      <TransitionMotion
-        styles={motionStyles}
-        willLeave={this.handleWillLeave}
-        willEnter={this.handleWillEnter}
-      >
-        {styles =>
-          <div className={`container ${b()}`}>
-            {styles.map(({ key, style, data }) =>
-              <div
-                className={b("item", { [boardsLayout]: true })}
-                key={key}
-                style={style}
-              >
-                <BoardCard
-                  id={data._id}
-                  title={data.name}
-                  layout={boardsLayout}
-                  itemCount={data.itemCount}
-                  lastModified={new Date(data.modified)}
-                  onEdit={this.handleEdit}
-                  onDelete={this.handleDelete}
-                />
-              </div>
-            )}
-          </div>
-        }
-      </TransitionMotion>
+      <div className={`container ${b()}`}>
+        <CardGroup
+          columnWidth={300}
+          gutter={30}
+          layout={boardsLayout}
+        >
+          {boards.entities.map(board =>
+            <BoardCard
+              key={board._id}
+              id={board._id}
+              title={board.name}
+              layout={boardsLayout}
+              itemCount={board.itemCount}
+              lastModified={new Date(board.modified)}
+              onEdit={this.handleEdit}
+              onDelete={this.handleDelete}
+            />
+          )}
+        </CardGroup>
+      </div>
     );
   }
 }
