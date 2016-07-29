@@ -61,7 +61,7 @@ export default handleActions({
     ...state,
     isUpdating: false,
     entities: state.entities.map(board =>
-      board.id === action.payload.id ? action.payload : board
+      board._id === action.payload._id ? action.payload : board
     )
   }),
 

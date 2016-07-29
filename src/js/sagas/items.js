@@ -57,10 +57,10 @@ export function *handleMoveItemBoardRequest() {
     const { id, boardId } = action.payload;
     const item = yield select(getItemById, id);
     const prevBoardId = item.boardId;
-    item.boardId = boardId;
+    const newItem = { ...item, boardId };
 
     try {
-      const updatedItem = yield call(updateItem, item);
+      const updatedItem = yield call(updateItem, newItem);
       yield put(Items.moveItemBoardSuccess({
         item: updatedItem,
         prevBoardId
@@ -76,8 +76,8 @@ export function *handleMoveItemBoardSuccess() {
     const action = yield take(Items.MOVE_ITEM_BOARD_SUCCESS);
     const board = yield select(getCurrentBoard);
 
-    if (board && board._id !== action.payload.boardId) {
-      yield put(Items.deleteBoardItem(action.payload));
+    if (board && board._id !== action.payload.item.boardId) {
+      yield put(Items.deleteBoardItem(action.payload.item));
     }
   }
 }

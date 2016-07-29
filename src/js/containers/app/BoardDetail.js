@@ -93,7 +93,8 @@ export class BoardDetail extends Component {
   handleMove(id) {
     this.setState({
       moveItem: getItemByIdFromItems(this.props.items, id),
-      selectBoardDialogOpen: true
+      selectBoardDialogOpen: true,
+      moveItemSnackbarOpen: false
     });
   }
 
@@ -116,15 +117,19 @@ export class BoardDetail extends Component {
 
   handleDialogClose() {
     this.setState({
-      moveItem: null,
       selectBoardDialogOpen: false
     });
   }
 
   handleMoveActionClick() {
     const { nextBoardId } = this.state;
+
     this.props.dispatch(push(`/app/board/${nextBoardId}`));
-    this.setState({ moveItemSnackbarOpen: false });
+
+    this.setState({
+      moveItemSnackbarOpen: false,
+      moveItemSnackbarMessage: ""
+    });
   }
 
   handleMoveItemSnackbarClose() {
@@ -152,9 +157,9 @@ export class BoardDetail extends Component {
     } = this.state;
 
     const selectBoards = boards.entities
-      .filter(board =>
-        board._id !== (moveItem ? moveItem.boardId : null)
-      )
+      .filter(board => {
+        return board._id !== (moveItem ? moveItem.boardId : null)
+      })
       .map(board => ({
           name: board.name,
           value: board._id

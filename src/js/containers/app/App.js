@@ -244,7 +244,6 @@ export class App extends Component {
   }
 
   debounceItemsSizeChange(size) {
-    console.log(size);
     this.props.dispatch(updateItemsSizeRequest(size));
   }
 
