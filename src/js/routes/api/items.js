@@ -1,8 +1,10 @@
+import _ from "lodash";
 import { Router } from "express";
 import multer from "multer";
 import Item from "../../models/item";
 import {
   uploadItemFile,
+  updateItemThumbnail,
   updateItemsThumbnailIfNeeded,
   deleteItemFile
 } from "../../utils/drive/items";
@@ -44,6 +46,39 @@ router.post("/", upload.single("file"), (req, res) => {
         thumbnail: result.thumbnailLink,
         palette: body.palette.split(",")
       });
+
+      return item.save();
+    })
+    .then(item => {
+      res.json({
+        status: "ok",
+        item
+      });
+    })
+    .catch(res.errorJSON);
+});
+
+router.put("/", (req, res) => {
+  const { drive, body } = req;
+
+  Item.findById(body._id)
+    .then(item => updateItemThumbnail(drive, item))
+    .then(item => {
+      const whiteList = [
+        "boardId",
+        "name",
+        "tags",
+        "palette",
+        "favorite"
+      ];
+
+      _.forEach(body, (value, key) => {
+        if (whiteList.indexOf(key) > -1) {
+          item[key] = value;
+        }
+      });
+
+      item.modified = new Date();
 
       return item.save();
     })

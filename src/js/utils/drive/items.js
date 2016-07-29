@@ -13,14 +13,9 @@ export function getItemThumbnail(drive, id) {
   });
 }
 
-function updateItemThumbnailIfNeeded(drive, item) {
+export function updateItemThumbnail(drive, item) {
   return new Promise((resolve, reject) => {
     const date = new Date();
-    const diff = (date - item.modified) / 1000 / 60;
-
-    if (diff < 50) {
-      return resolve(item);
-    }
 
     drive.files.update({
       fileId: item.fileId,
@@ -39,6 +34,21 @@ function updateItemThumbnailIfNeeded(drive, item) {
         })
         .catch(reject);
     });
+  });
+}
+
+export function updateItemThumbnailIfNeeded(drive, item) {
+  return new Promise((resolve, reject) => {
+    const date = new Date();
+    const diff = (date - item.modified) / 1000 / 60;
+
+    if (diff < 50) {
+      return resolve(item);
+    }
+
+    updateItemThumbnail(drive, item)
+      .then(resolve)
+      .catch(reject);
   });
 }
 

@@ -45,7 +45,15 @@ export function addItem({ file, palette, boardId }) {
 
 export function updateItem(item) {
   return new Promise((resolve, reject) => {
-    // TODO
+    fetchJSON(ITEMS_ENDPOINT, item, "PUT")
+      .then(res => {
+        if (res.status === "ok") {
+          resolve(res.item);
+        } else {
+          reject({ error: res.error });
+        }
+      })
+      .catch(error => reject({ error }));
   });
 }
 
