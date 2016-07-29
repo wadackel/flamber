@@ -18,9 +18,16 @@ import bindHandlers from "../../helpers/bind-handlers";
 import {
   CardGroup,
   ItemCard,
+  IconButton,
   SelectBoardDialog,
-  Snackbar
+  Snackbar,
+  ToolBox
 } from "../../components/ui/";
+import {
+  FolderIcon,
+  TrashIcon,
+  StarIcon
+} from "../../components/svg-icons/";
 
 const b = bem("board-detail");
 
@@ -165,6 +172,8 @@ export class BoardDetail extends Component {
           value: board._id
       }));
 
+    const selectedItems = items.entities.filter(item => item.select);
+
     return (
       <div className={`container ${b()}`}>
         <CardGroup
@@ -205,6 +214,16 @@ export class BoardDetail extends Component {
           action="Show"
           onActionClick={this.handleMoveActionClick}
           onRequestClose={this.handleMoveItemSnackbarClose}
+        />
+
+        <ToolBox
+          open={selectedItems.length > 0}
+          text={`${selectedItems.length}個のアイテム`}
+          actions={[
+            <IconButton tooltip="移動する" icon={<FolderIcon />} onClick={() => console.log("TODO: Move item")} />,
+            <IconButton tooltip="スターを付ける" icon={<StarIcon />} onClick={() => console.log("TODO: Star item")} />,
+            <IconButton tooltip="削除する" icon={<TrashIcon />} onClick={() => console.log("TODO: Delete item")} />
+          ]}
         />
       </div>
     );

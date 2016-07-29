@@ -48,13 +48,15 @@
   }
 
   &__text {
-    padding: 15px 15px 15px 10px;
+    padding: 15px 25px 15px 10px;
     color: $gray-light;
+    font-size: .85rem;
   }
 
   &__actions {
     margin: 0;
     padding: 0 5px 0 0;
+    color: lighten($gray-light, 40%);
     list-style: none;
   }
 
