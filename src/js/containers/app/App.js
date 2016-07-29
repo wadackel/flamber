@@ -467,6 +467,7 @@ export class App extends Component {
             name: board.name,
             value: board._id
           }))}
+          defaultBoard={boards.currentBoardId}
           onRequestClose={this.handleAddItemFileClose}
           onRequestAdd={this.handleAddItemFile}
         />

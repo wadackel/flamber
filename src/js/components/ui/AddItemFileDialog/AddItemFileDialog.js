@@ -30,6 +30,7 @@ export default class AddItemFileDialog extends Component {
       name: PropTypes.string,
       value: PropTypes.any
     })),
+    defaultBoard: PropTypes.any,
     onRequestAdd: PropTypes.func,
     onRequestClose: PropTypes.func
   };
@@ -60,7 +61,7 @@ export default class AddItemFileDialog extends Component {
         src: null,
         palette: []
       },
-      selectBoard: props.selectBoards[0] && props.selectBoards[0].value
+      selectBoard: this.getInitialBoard(props)
     };
 
     bindHandlers([
@@ -75,12 +76,19 @@ export default class AddItemFileDialog extends Component {
     ], this);
   }
 
+  getInitialBoard(props) {
+    return props.defaultBoard || (props.selectBoards[0] && props.selectBoards[0].value);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { props } = this;
 
-    if (!deepEqual(props.selectBoards, nextProps.selectBoards)) {
+    if (
+      !deepEqual(props.selectBoards, nextProps.selectBoards) ||
+      (!props.open && nextProps.open)
+    ) {
       this.setState({
-        selectBoard: nextProps.selectBoards[0] && nextProps.selectBoards[0].value
+        selectBoard: this.getInitialBoard(nextProps)
       });
     }
 
