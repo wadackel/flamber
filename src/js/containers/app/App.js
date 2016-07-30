@@ -19,6 +19,7 @@ import {
 } from "../../actions/boards";
 import { addItemRequest } from "../../actions/items";
 import { getBoardByIdFromBoards, getCurrentBoardFromBoards } from "../../selectors/boards";
+import { getSelectedItemsFromItems } from "../../selectors/items";
 import {
   AddBoardDialog,
   AddItemFileDialog,
@@ -288,6 +289,7 @@ export class App extends Component {
   getHeaderBoardDetailProps() {
     const {
       boards,
+      items,
       params,
       settings: { itemsLayout }
     } = this.props;
@@ -295,6 +297,7 @@ export class App extends Component {
     const { isUpdating } = boards;
     const { boardName, itemsSize } = this.state;
     const board = getCurrentBoardFromBoards(boards);
+    const hasSelectedItem = getSelectedItemsFromItems(items).length > 0;
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
@@ -320,7 +323,7 @@ export class App extends Component {
         <div>Total {board.itemCount} items</div>
       ),
       subRight: (
-        <div>
+        <div style={{ display: hasSelectedItem ? "none" : "block" }}>
           {itemsLayout !== Layout.LIST && <Slider
             min={140}
             max={400}

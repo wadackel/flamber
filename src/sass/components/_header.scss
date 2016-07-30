@@ -29,6 +29,11 @@ $header-main-height: 60px;
       flex-basis: 300px;
     }
 
+    &--sub-right,
+    &--sub-left {
+      flex-basis: 350px;
+    }
+
     &--main-right,
     &--sub-right {
       padding-right: 20px;
@@ -40,11 +45,6 @@ $header-main-height: 60px;
       flex-grow: 1;
       padding: 0 20px;
       text-align: center;
-    }
-
-    &--sub-left,
-    &--sub-right {
-      flex-grow: 2;
     }
 
     &--main-center {
