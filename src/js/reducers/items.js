@@ -142,7 +142,7 @@ export default handleActions({
   }),
 
   // Delete board items
-  [Items.DELETE_BOARD_ITEM]: (state, action) => ({
+  [Items.REMOVE_BOARD_ITEM]: (state, action) => ({
     ...state,
     entities: state.entities.filter(item =>
       item._id !== action.payload._id

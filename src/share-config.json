@@ -6,5 +6,5 @@
   "file-dnd-overlay-enter-duration": 110,
   "file-dnd-overlay-leave-duration": 50,
   "tool-box-enter-duration": 180,
-  "tool-box-leave-duration": 300
+  "tool-box-leave-duration": 220
 }

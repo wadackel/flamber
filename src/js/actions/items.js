@@ -66,6 +66,6 @@ export const ADD_BOARD_ITEM = "ADD_BOARD_ITEM";
 export const addBoardItem = createAction(ADD_BOARD_ITEM);
 
 
-// Delete board items
-export const DELETE_BOARD_ITEM = "DELETE_BOARD_ITEM";
-export const deleteBoardItem = createAction(DELETE_BOARD_ITEM);
+// Remove board items
+export const REMOVE_BOARD_ITEM = "REMOVE_BOARD_ITEM";
+export const removeBoardItem = createAction(REMOVE_BOARD_ITEM);

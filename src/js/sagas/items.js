@@ -77,7 +77,7 @@ export function *handleMoveItemBoardSuccess() {
     const board = yield select(getCurrentBoard);
 
     if (board && board._id !== action.payload.item.boardId) {
-      yield put(Items.deleteBoardItem(action.payload.item));
+      yield put(Items.removeBoardItem(action.payload.item));
     }
   }
 }
@@ -121,7 +121,7 @@ export function *handleDeleteItemSuccess() {
     const board = yield select(getCurrentBoard);
 
     if (board && board._id === action.payload.boardId) {
-      yield put(Items.deleteBoardItem(action.payload));
+      yield put(Items.removeBoardItem(action.payload));
     }
   }
 }
