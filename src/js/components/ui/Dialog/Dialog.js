@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import keycode from "keycode";
+import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import MDSpinner from "react-md-spinner";
 import shareConfig from "../../../../share-config.json";
@@ -13,7 +14,7 @@ import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("dialog");
 
-export default class Dialog extends React.Component {
+class DialogInline extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
@@ -23,30 +24,48 @@ export default class Dialog extends React.Component {
     titleIcon: PropTypes.element,
     actions: PropTypes.node,
     open: PropTypes.bool.isRequired,
+    escClose: PropTypes.bool,
     onRequestClose: PropTypes.func.isRequired,
     onDragEnter: PropTypes.func,
     onDragOver: PropTypes.func,
     onDragLeave: PropTypes.func
   };
 
-  static defaultProps = {
-    processing: false,
-    width: 450,
-    open: false,
-    onRequestClose: () => {},
-    onDragEnter: () => {},
-    onDragOver: () => {},
-    onDragLeave: () => {}
-  };
-
   constructor(props, context) {
     super(props, context);
 
+    this.afterRendeFocus = false;
+
     bindHandlers([
-      "renderLayer",
+      "handleKeyDown",
       "handleCloseClick",
       "handleOverlayClick"
     ], this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.open && nextProps.open) {
+      this.afterRenderFocus = true;
+    }
+  }
+
+  componentDidUpdate() {
+    const { dialog } = this.refs;
+
+    if (dialog && this.afterRenderFocus) {
+      this.afterRenderFocus = false;
+      dialog.focus();
+    }
+  }
+
+  handleKeyDown(e) {
+    const { open } = this.props;
+    const { dialog } = this.refs;
+    const key = keycode(e);
+
+    if (open && key === "esc" && e.target === dialog) {
+      this.requestClose();
+    }
   }
 
   handleCloseClick(e) {
@@ -117,7 +136,7 @@ export default class Dialog extends React.Component {
     );
   }
 
-  renderLayer() {
+  render() {
     const {
       children,
       className,
@@ -142,7 +161,10 @@ export default class Dialog extends React.Component {
             <div className={b("horizontal", modifier)}>
               <div className={b("vertical", modifier)}>
                 <div
+                  ref="dialog"
+                  tabIndex="-1"
                   className={mergeClassNames(b(modifier), className)}
+                  onKeyDown={this.handleKeyDown}
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
@@ -167,6 +189,44 @@ export default class Dialog extends React.Component {
         </ReactCSSTransitionGroup>
       </div>
     );
+  }
+}
+
+export default class Dialog extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+    processing: PropTypes.bool,
+    width: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    titleIcon: PropTypes.element,
+    actions: PropTypes.node,
+    open: PropTypes.bool.isRequired,
+    escClose: PropTypes.bool,
+    onRequestClose: PropTypes.func.isRequired,
+    onDragEnter: PropTypes.func,
+    onDragOver: PropTypes.func,
+    onDragLeave: PropTypes.func
+  };
+
+  static defaultProps = {
+    processing: false,
+    width: 450,
+    open: false,
+    escClose: true,
+    onRequestClose: () => {},
+    onDragEnter: () => {},
+    onDragOver: () => {},
+    onDragLeave: () => {}
+  };
+
+  constructor(props, context) {
+    super(props, context);
+    bindHandlers(["renderLayer"], this);
+  }
+
+  renderLayer() {
+    return <DialogInline {...this.props} />;
   }
 
   render() {

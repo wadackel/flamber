@@ -9,6 +9,10 @@
   opacity: 0;
   overflow: hidden;
 
+  &:focus {
+    outline: none;
+  }
+
   .open-enter & {
     transition-duration: #{$dialog-enter-duration}ms;
     opacity: .01;
