@@ -97,7 +97,8 @@ export default class BoardCard extends React.Component {
 
     return (
       <Card
-        baseClassName={mergeClassNames(b({ selected }), className)}
+        baseClassName={baseClassName}
+        className={mergeClassNames(b({ selected }), className)}
         style={style}
         processing={processing}
       >
@@ -145,7 +146,8 @@ export default class BoardCard extends React.Component {
 
     return (
       <Card
-        baseClassName={mergeClassNames(b({ selected }), className)}
+        baseClassName={baseClassName}
+        className={mergeClassNames(b({ selected }), className)}
         style={style}
         processing={processing}
       >

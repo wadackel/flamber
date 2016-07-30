@@ -126,7 +126,8 @@ export default class ItemCard extends React.Component {
 
     return (
       <Card
-        baseClassName={mergeClassNames(b(modifier), className)}
+        baseClassName={baseClassName}
+        className={mergeClassNames(b(modifier), className)}
         style={style}
         processing={processing}
       >
@@ -186,7 +187,8 @@ export default class ItemCard extends React.Component {
 
     return (
       <Card
-        baseClassName={mergeClassNames(b(modifier), className)}
+        baseClassName={baseClassName}
+        className={mergeClassNames(b(modifier), className)}
         style={{}}
         processing={processing}
       >
