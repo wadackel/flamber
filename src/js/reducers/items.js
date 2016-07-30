@@ -14,8 +14,11 @@ const initialState = {
 
 function mapItemToEntity(item) {
   return {
-    ...item,
-    select: false
+    select: false,
+    isUpdating: false,
+    isMoving: false,
+    isDeleting: false,
+    ...item
   };
 }
 
@@ -59,9 +62,12 @@ export default handleActions({
   }),
 
   // Move board
-  [Items.MOVE_ITEM_BOARD_REQUEST]: state => ({
+  [Items.MOVE_ITEM_BOARD_REQUEST]: (state, action) => ({
     ...state,
-    isMoving: true
+    isMoving: true,
+    entities: state.entities.map(item =>
+      item._id !== action.payload.id ? item : { ...item, isMoving: true }
+    )
   }),
 
   [Items.MOVE_ITEM_BOARD_SUCCESS]: state => ({
@@ -76,15 +82,18 @@ export default handleActions({
   }),
 
   // Delete
-  [Items.DELETE_ITEM_REQUEST]: state => ({
+  [Items.DELETE_ITEM_REQUEST]: (state, action) => ({
     ...state,
     isDeleting: true,
-    error: null
+    entities: state.entities.map(item =>
+      item._id !== action.payload ? item : { ...item, isDeleting: true }
+    )
   }),
 
   [Items.DELETE_ITEM_SUCCESS]: state => ({
     ...state,
-    isDeleting: false
+    isDeleting: false,
+    error: null
   }),
 
   [Items.DELETE_ITEM_FAILURE]: (state, action) => ({

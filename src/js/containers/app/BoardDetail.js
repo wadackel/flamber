@@ -184,6 +184,7 @@ export class BoardDetail extends Component {
             <ItemCard
               key={item._id}
               id={item._id}
+              processing={item.isUpdating || item.isMoving || item.isDeleting}
               selected={item.select}
               layout={itemsLayout}
               title={item.name}
