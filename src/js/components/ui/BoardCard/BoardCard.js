@@ -29,6 +29,7 @@ export default class BoardCard extends React.Component {
     className: PropTypes.string,
     style: PropTypes.object,
     id: PropTypes.string,
+    processing: PropTypes.bool,
     selected: PropTypes.bool,
     title: PropTypes.string,
     image: PropTypes.string,
@@ -43,6 +44,7 @@ export default class BoardCard extends React.Component {
   static defaultProps = {
     style: {},
     layout: Layout.GRID,
+    processing: false,
     selected: false,
     itemCount: 0,
     onSelect: () => {},
@@ -82,6 +84,7 @@ export default class BoardCard extends React.Component {
     const {
       className,
       style,
+      processing,
       selected,
       title,
       image,
@@ -96,6 +99,7 @@ export default class BoardCard extends React.Component {
       <Card
         baseClassName={mergeClassNames(b({ selected }), className)}
         style={style}
+        processing={processing}
       >
         <CardCol baseClassName={baseClassName} className={b("col--media")}>
           <CardMedia
@@ -128,6 +132,7 @@ export default class BoardCard extends React.Component {
     const {
       className,
       style,
+      processing,
       selected,
       title,
       image,
@@ -142,6 +147,7 @@ export default class BoardCard extends React.Component {
       <Card
         baseClassName={mergeClassNames(b({ selected }), className)}
         style={style}
+        processing={processing}
       >
         <CardMedia
           baseClassName={baseClassName}

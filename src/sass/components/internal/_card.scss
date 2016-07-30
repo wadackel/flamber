@@ -14,6 +14,18 @@ $card-border-radius: 3px;
   }
 
   // Grid
+  &__process-overlay {
+    @extend %card-process-overlay;
+
+    &--processing {
+      @extend %card-process-overlay-processing;
+    }
+
+    &__spinner {
+      @extend %card-process-overlay-spinner;
+    }
+  }
+
   &__media {
     @extend %card-media;
 
@@ -125,6 +137,18 @@ $card-border-radius: 3px;
 
     &--selected {
       @extend %card-root-selected;
+    }
+
+    &__process-overlay {
+      @extend %card-process-overlay;
+
+      &--processing {
+        @extend %card-process-overlay-processing;
+      }
+
+      &__spinner {
+        @extend %card-process-overlay-spinner;
+      }
     }
 
     &__media {

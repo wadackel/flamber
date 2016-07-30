@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import MDSpinner from "react-md-spinner";
 import bem from "../../../../helpers/bem";
 import mergeClassNames from "../../../../helpers/merge-class-names";
 
@@ -7,6 +8,7 @@ export default function Card({
   baseClassName,
   className,
   style,
+  processing,
   onClick,
   onMouseEnter,
   onMouseLeave
@@ -20,6 +22,9 @@ export default function Card({
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
+    <div className={b("process-overlay", { processing })}>
+      <MDSpinner className={b("process-overlay__spinner")} size={22} />
+    </div>
     <div className={b("inner")}>
       {children}
     </div>
@@ -31,6 +36,7 @@ Card.propTypes = {
   baseClassName: PropTypes.string,
   className: PropTypes.string,
   style: PropTypes.object,
+  processing: PropTypes.bool,
   selected: PropTypes.bool,
   onClick: PropTypes.func,
   onMouseEnter: PropTypes.func,

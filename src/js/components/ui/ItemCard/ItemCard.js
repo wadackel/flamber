@@ -32,6 +32,7 @@ export default class ItemCard extends React.Component {
     className: PropTypes.string,
     layout: PropTypes.oneOf([Layout.RANDOM_GRID, Layout.GRID, Layout.LIST]),
     style: PropTypes.object,
+    processing: PropTypes.bool,
     selected: PropTypes.bool,
     favorite: PropTypes.bool,
     id: PropTypes.any,
@@ -52,6 +53,7 @@ export default class ItemCard extends React.Component {
   static defaultProps = {
     layout: Layout.GRID,
     style: {},
+    procssing: false,
     selected: false,
     favorite: false,
     onSelect: () => {},
@@ -105,6 +107,7 @@ export default class ItemCard extends React.Component {
     const {
       className,
       style,
+      processing,
       selected,
       favorite,
       url,
@@ -125,6 +128,7 @@ export default class ItemCard extends React.Component {
       <Card
         baseClassName={mergeClassNames(b(modifier), className)}
         style={style}
+        processing={processing}
       >
         <CardMedia
           baseClassName={baseClassName}
@@ -166,6 +170,7 @@ export default class ItemCard extends React.Component {
   renderList() {
     const {
       className,
+      processing,
       selected,
       favorite,
       url,
@@ -183,6 +188,7 @@ export default class ItemCard extends React.Component {
       <Card
         baseClassName={mergeClassNames(b(modifier), className)}
         style={{}}
+        processing={processing}
       >
         <CardCol baseClassName={baseClassName} className={b("col--media")}>
           <CardMedia
