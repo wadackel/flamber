@@ -99,6 +99,10 @@ $card-border-radius: 3px;
 
     &__action {
       @extend %card-more-action;
+
+      &--show {
+        @extend %card-more-action-show;
+      }
     }
 
     &__trigger {
@@ -224,6 +228,10 @@ $card-border-radius: 3px;
 
       &__action {
         @extend %card-more-action;
+
+        &--show {
+          @extend %card-more-action-show;
+        }
       }
 
       &__trigger {
@@ -260,6 +268,18 @@ $card-border-radius: 3px;
   // List
   &--list {
     @extend %card-list-root;
+
+    &__process-overlay {
+      @extend %card-process-overlay;
+
+      &--processing {
+        @extend %card-process-overlay-processing;
+      }
+
+      &__spinner {
+        @extend %card-process-overlay-spinner;
+      }
+    }
 
     &__col {
       @extend %card-list-col;
@@ -322,6 +342,10 @@ $card-border-radius: 3px;
 
       &__action {
         @extend %card-list-more-action;
+
+        &--show {
+          @extend %card-more-action-show;
+        }
       }
 
       &__trigger {

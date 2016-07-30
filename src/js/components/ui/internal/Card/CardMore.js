@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import bem from "../../../../helpers/bem";
 import mergeClassNames from "../../../../helpers/merge-class-names";
 import bindHandlers from "../../../../helpers/bind-handlers";
+import prefixer from "../../../../helpers/prefixer";
 import { IconButton } from "../../";
 import { MoreVertIcon } from "../../../svg-icons";
 
@@ -24,7 +25,7 @@ export default class CardMore extends Component {
 
     bindHandlers([
       "handleMouseLeave",
-      "handleMoreClick"
+      "handleMouseEnter"
     ], this);
   }
 
@@ -32,7 +33,7 @@ export default class CardMore extends Component {
     this.setState({ show: false });
   }
 
-  handleMoreClick(e) {
+  handleMouseEnter(e) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ show: true });
@@ -51,10 +52,14 @@ export default class CardMore extends Component {
     const modifier = { show, selected };
     const b = bem(`${baseClassName.trim()}__more`);
 
-    const actionElements = React.Children.map(actions, (action, index) =>
+    const actionArray = React.Children.toArray(actions);
+    const actionElements = actionArray.map((action, index) =>
       React.cloneElement(action, {
         key: index,
-        className: b("action", modifier)
+        className: b("action", modifier),
+        style: prefixer.prefix({
+          transitionDuration: `${(actionArray.length - (index + 1)) * 300}ms`
+        })
       })
     );
 
@@ -66,7 +71,7 @@ export default class CardMore extends Component {
         <IconButton
           className={b("trigger", modifier)}
           icon={<MoreVertIcon />}
-          onClick={this.handleMoreClick}
+          onMouseEnter={this.handleMouseEnter}
         />
       </div>
     );

@@ -185,21 +185,30 @@
   @extend %card-more;
   @include transition(all, $card-duration);
   position: relative;
-  transform: translateY(-15px);
   opacity: 0;
   visibility: hidden;
   z-index: 1;
 }
 
 %card-more-actions-show {
-  transform: translateY(0);
   opacity: 1;
   visibility: visible;
   z-index: 2;
 }
 
 %card-more-action {
+  @include transition(all, $card-duration);
   display: inline-block;
+  transform: translateY(-15px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+%card-more-action-show {
+  display: inline-block;
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
 }
 
 
