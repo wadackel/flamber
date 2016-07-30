@@ -4,10 +4,11 @@ import {
   fetchBoardItems,
   addItem,
   updateItem,
+  updateItems,
   deleteItem
 } from "../api/items";
 import { getCurrentBoard } from "../selectors/boards";
-import { getItemById } from "../selectors/items";
+import { getSelectedItems, getItemById } from "../selectors/items";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
@@ -126,6 +127,39 @@ export function *handleDeleteItemSuccess() {
   }
 }
 
+export function *handleSelectedItemsMoveRequest() {
+  while (true) {
+    const action = yield take(Items.SELECTED_ITEMS_MOVE_REQUEST);
+    const boardId = action.payload;
+    const selectedItems = yield select(getSelectedItems);
+    const newItems = selectedItems.map(item => ({ ...item, boardId }));
+
+    try {
+      const updatedItems = yield call(updateItems, newItems);
+      yield put(Items.selectedItemsMoveSuccess({
+        items: updatedItems,
+        prevItems: selectedItems
+      }));
+    } catch (err) {
+      yield put(Items.selectedItemsMoveFailure(err));
+    }
+  }
+}
+
+export function *handleSelectedItemsMoveSuccess() {
+  while (true) {
+    const action = yield take(Items.SELECTED_ITEMS_MOVE_SUCCESS);
+    const { prevItems } = action.payload;
+    const board = yield select(getCurrentBoard);
+    if (!board) continue;
+
+    const removeItems = prevItems.filter(item => item.boardId === board._id);
+    if (removeItems.length === 0) continue;
+
+    yield put(Items.removeBoardItems(removeItems));
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleAddItemRequest),
@@ -136,6 +170,8 @@ export default function *rootSaga() {
     fork(handleMoveItemBoardSuccess),
     fork(watchCurrentBoard),
     fork(watchDeleteItemRequest),
-    fork(handleDeleteItemSuccess)
+    fork(handleDeleteItemSuccess),
+    fork(handleSelectedItemsMoveRequest),
+    fork(handleSelectedItemsMoveSuccess)
   ];
 }

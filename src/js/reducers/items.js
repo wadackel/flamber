@@ -135,17 +135,48 @@ export default handleActions({
   // Clear items
   [Items.CLEAR_ITEMS]: state => ({ ...state, entities: [] }),
 
-  // Add board items
+  // Add board item
   [Items.ADD_BOARD_ITEM]: (state, action) => ({
     ...state,
     entities: [...state.entities, mapItemToEntity(action.payload)]
   }),
 
-  // Delete board items
+  // Remove board item
   [Items.REMOVE_BOARD_ITEM]: (state, action) => ({
     ...state,
     entities: state.entities.filter(item =>
       item._id !== action.payload._id
     )
+  }),
+
+  [Items.REMOVE_BOARD_ITEMS]: (state, action) => ({
+    ...state,
+    entities: state.entities.filter(item =>
+      !action.payload.some(o => o._id === item._id)
+    )
+  }),
+
+  // Selected items move
+  [Items.SELECTED_ITEMS_MOVE_REQUEST]: state => ({
+    ...state,
+    isMoving: true,
+    entities: state.entities.map(item =>
+      item.select === false ? item : {
+        ...item,
+        isMoving: true
+      }
+    )
+  }),
+
+  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: state => ({
+    ...state,
+    isMoving: false,
+    error: null
+  }),
+
+  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, action) => ({
+    ...state,
+    isMoving: false,
+    error: action.payload
   })
 }, initialState);

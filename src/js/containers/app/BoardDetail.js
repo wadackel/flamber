@@ -9,10 +9,13 @@ import {
   selectItemToggle,
   favoriteItemToggleRequest,
   moveItemBoardRequest,
-  deleteItemRequest
+  deleteItemRequest,
+  selectedItemsMoveRequest,
+  selectedItemsFavoriteRequest,
+  selectedItemsDeleteRequest,
 } from "../../actions/items";
 import { getBoardByIdFromBoards } from "../../selectors/boards";
-import { getItemByIdFromItems } from "../../selectors/items";
+import { getSelectedItemsFromItems, getItemByIdFromItems } from "../../selectors/items";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import {
@@ -57,7 +60,11 @@ export class BoardDetail extends Component {
       "handleBoardSelect",
       "handleDialogClose",
       "handleMoveActionClick",
-      "handleMoveItemSnackbarClose"
+      "handleMoveItemSnackbarClose",
+
+      "handleSelectedItemsMove",
+      "handleSelectedItemsStar",
+      "handleSelectedItemsDelete"
     ], this);
   }
 
@@ -84,7 +91,7 @@ export class BoardDetail extends Component {
         moveItemSnackbarOpen: true,
         moveItemSnackbarMessage: nextProps.items.error
           ? "アイテムの移動に失敗しました"
-          : `「${moveItem.name}」を移動しました`
+          : `${moveItem != null ? `「${moveItem.name}」` : "選択したアイテム"}を移動しました`
       });
     }
   }
@@ -112,10 +119,17 @@ export class BoardDetail extends Component {
   handleBoardSelect(boardId) {
     const { moveItem } = this.state;
 
-    this.props.dispatch(moveItemBoardRequest({
-      id: moveItem._id,
-      boardId
-    }));
+    // Single
+    if (moveItem != null) {
+      this.props.dispatch(moveItemBoardRequest({
+        id: moveItem._id,
+        boardId
+      }));
+
+    // Multiple
+    } else {
+      this.props.dispatch(selectedItemsMoveRequest(boardId));
+    }
 
     this.setState({
       nextBoardId: boardId
@@ -146,6 +160,22 @@ export class BoardDetail extends Component {
     });
   }
 
+  handleSelectedItemsMove() {
+    this.setState({
+      moveItem: null,
+      selectBoardDialogOpen: true,
+      moveItemSnackbarOpen: false
+    });
+  }
+
+  handleSelectedItemsStar() {
+    this.props.dispatch(selectedItemsFavoriteRequest());
+  }
+
+  handleSelectedItemsDelete() {
+    this.props.dispatch(selectedItemsDeleteRequest());
+  }
+
   render() {
     const {
       boards,
@@ -157,7 +187,6 @@ export class BoardDetail extends Component {
     } = this.props;
 
     const {
-      moveItem,
       selectBoardDialogOpen,
       moveItemSnackbarOpen,
       moveItemSnackbarMessage
@@ -165,14 +194,14 @@ export class BoardDetail extends Component {
 
     const selectBoards = boards.entities
       .filter(board => {
-        return board._id !== (moveItem ? moveItem.boardId : null)
+        return board._id !== boards.currentBoardId
       })
       .map(board => ({
           name: board.name,
           value: board._id
       }));
 
-    const selectedItems = items.entities.filter(item => item.select);
+    const selectedItems = getSelectedItemsFromItems(items);
 
     return (
       <div className={`container ${b()}`}>
@@ -212,7 +241,7 @@ export class BoardDetail extends Component {
         <Snackbar
           open={moveItemSnackbarOpen}
           message={moveItemSnackbarMessage}
-          action="Show"
+          action={items.error ? null : "Show"}
           onActionClick={this.handleMoveActionClick}
           onRequestClose={this.handleMoveItemSnackbarClose}
         />
@@ -221,9 +250,21 @@ export class BoardDetail extends Component {
           open={selectedItems.length > 0}
           text={`${selectedItems.length}個のアイテム`}
           actions={[
-            <IconButton tooltip="移動する" icon={<FolderIcon />} onClick={() => console.log("TODO: Move item")} />,
-            <IconButton tooltip="スターを付ける" icon={<StarIcon />} onClick={() => console.log("TODO: Star item")} />,
-            <IconButton tooltip="削除する" icon={<TrashIcon />} onClick={() => console.log("TODO: Delete item")} />
+            <IconButton
+              tooltip="移動する"
+              icon={<FolderIcon />}
+              onClick={this.handleSelectedItemsMove}
+            />,
+            <IconButton
+              tooltip={items.entities.length === selectedItems.length ? "スターをはずす" : "スターを付ける"}
+              icon={<StarIcon />}
+              onClick={this.handleSelectedItemsStar}
+            />,
+            <IconButton
+              tooltip="削除する"
+              icon={<TrashIcon />}
+              onClick={this.handleSelectedItemsDelete}
+            />
           ]}
         />
       </div>

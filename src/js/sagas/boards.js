@@ -107,6 +107,13 @@ export function *handleMoveItemBoardSuccess() {
   }
 }
 
+export function *handleSelectedItemsMoveSuccess() {
+  while (true) {
+    const action = yield take(Items.SELECTED_ITEMS_MOVE_SUCCESS);
+    // TODO
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
@@ -115,6 +122,7 @@ export default function *rootSaga() {
     fork(handleDeleteBoardRequest),
     fork(handleAddItemSuccess),
     fork(handleDeleteItemSuccess),
-    fork(handleMoveItemBoardSuccess)
+    fork(handleMoveItemBoardSuccess),
+    fork(handleSelectedItemsMoveSuccess)
   ];
 }

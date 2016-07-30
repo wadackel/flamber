@@ -13,6 +13,31 @@ const router = Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+function updateItem(drive, newItem) {
+  return Item.findById(newItem._id)
+    .then(item => updateItemThumbnail(drive, item))
+    .then(item => {
+      const whiteList = [
+        "boardId",
+        "name",
+        "tags",
+        "palette",
+        "favorite"
+      ];
+
+      _.forEach(newItem, (value, key) => {
+        if (whiteList.indexOf(key) > -1) {
+          item[key] = value;
+        }
+      });
+
+      item.modified = new Date();
+
+      return item.save();
+    });
+}
+
+
 router.get("/", (req, res) => {
   res.errorJSON("TODO");
 });
@@ -61,31 +86,24 @@ router.post("/", upload.single("file"), (req, res) => {
 router.put("/", (req, res) => {
   const { drive, body } = req;
 
-  Item.findById(body._id)
-    .then(item => updateItemThumbnail(drive, item))
-    .then(item => {
-      const whiteList = [
-        "boardId",
-        "name",
-        "tags",
-        "palette",
-        "favorite"
-      ];
-
-      _.forEach(body, (value, key) => {
-        if (whiteList.indexOf(key) > -1) {
-          item[key] = value;
-        }
-      });
-
-      item.modified = new Date();
-
-      return item.save();
-    })
+  updateItem(drive, body)
     .then(item => {
       res.json({
         status: "ok",
         item
+      });
+    })
+    .catch(res.errorJSON);
+});
+
+router.put("/multiple", (req, res) => {
+  const { drive, body } = req;
+
+  Promise.all(body.map(item => updateItem(drive, item)))
+    .then(items => {
+      res.json({
+        status: "ok",
+        items
       });
     })
     .catch(res.errorJSON);

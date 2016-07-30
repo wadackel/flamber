@@ -99,7 +99,7 @@ export default class RenderToLayer extends React.Component {
           this.layer.style.bottom = 0;
           this.layer.style.left = 0;
           this.layer.style.right = 0;
-          this.layer.style.zIndex = 1000;
+          this.layer.style.zIndex = 1520;
         } else {
           setTimeout(() => {
             window.addEventListener("touchstart", this.onClickAway);
