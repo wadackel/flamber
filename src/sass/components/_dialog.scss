@@ -1,5 +1,5 @@
 .dialog {
-  @include relative(auto, auto, auto, auto, 1000);
+  @include relative(auto, auto, auto, auto, 1500);
   @include transition(all);
   display: block;
   width: 400px;
@@ -38,7 +38,7 @@
   }
 
   &__wrapper {
-    @include fixed(0, 0, 0, 0, 999);
+    @include fixed(0, 0, 0, 0, 1500);
     @include transition(all);
     display: flex;
     align-items: center;

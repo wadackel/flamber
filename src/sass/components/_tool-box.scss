@@ -1,5 +1,5 @@
 .tool-box {
-  @include fixed(auto, 0, 10px, 0, 2000);
+  @include fixed(auto, 0, 10px, 0, 1000);
   transform-origin: center bottom;
   transition-property: all;
   text-align: center;
