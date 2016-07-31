@@ -169,7 +169,10 @@ export class BoardDetail extends Component {
   }
 
   handleSelectedItemsStar() {
-    this.props.dispatch(selectedItemsFavoriteRequest());
+    const selectedItems = getSelectedItemsFromItems(this.props.items);
+    const isAllFavorite = selectedItems.every(o => o.favorite);
+
+    this.props.dispatch(selectedItemsFavoriteRequest(!isAllFavorite));
   }
 
   handleSelectedItemsDelete() {

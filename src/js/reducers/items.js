@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { handleActions } from "redux-actions";
 import * as Items from "../actions/items";
 
@@ -177,6 +178,40 @@ export default handleActions({
   [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, action) => ({
     ...state,
     isMoving: false,
+    error: action.payload
+  }),
+
+  // Selected items favorite
+  [Items.SELECTED_ITEMS_FAVORITE_REQUEST]: (state, action) => ({
+    ...state,
+    isUpdating: true,
+    entities: state.entities.map(item =>
+      item.select === false ? item : {
+        ...item,
+        isUpdating: true,
+        favorite: action.payload
+      }
+    )
+  }),
+
+  [Items.SELECTED_ITEMS_FAVORITE_SUCCESS]: (state, action) => ({
+    ...state,
+    isUpdating: false,
+    entities: state.entities.map(item => {
+      const findItem = _.find(action.payload, item._id);
+
+      return !findItem ? item : {
+        ...item,
+        select: false,
+        isUpdating: false,
+        favorite: findItem.favorite
+      };
+    })
+  }),
+
+  [Items.SELECTED_ITEMS_FAVORITE_FAILURE]: (state, action) => ({
+    ...state,
+    isUpdating: false,
     error: action.payload
   })
 }, initialState);

@@ -160,6 +160,21 @@ export function *handleSelectedItemsMoveSuccess() {
   }
 }
 
+export function *handleSelectedItemsFavoriteRequest() {
+  while (true) {
+    const action = yield take(Items.SELECTED_ITEMS_FAVORITE_REQUEST);
+    const selectedItems = yield select(getSelectedItems);
+    const newItems = selectedItems.map(item => ({ ...item, favorite: action.payload }));
+
+    try {
+      const updatedItems = yield call(updateItems, newItems);
+      yield put(Items.selectedItemsFavoriteSuccess(updatedItems));
+    } catch (err) {
+      yield put(Items.selectedItemsFavoriteFailure(err));
+    }
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleAddItemRequest),
@@ -172,6 +187,7 @@ export default function *rootSaga() {
     fork(watchDeleteItemRequest),
     fork(handleDeleteItemSuccess),
     fork(handleSelectedItemsMoveRequest),
-    fork(handleSelectedItemsMoveSuccess)
+    fork(handleSelectedItemsMoveSuccess),
+    fork(handleSelectedItemsFavoriteRequest)
   ];
 }
