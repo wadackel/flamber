@@ -1,6 +1,6 @@
 import _ from "lodash";
 import deepEqual from "deep-equal";
-import { takeLatest } from "redux-saga";
+import { takeEvery } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
 import { getBoardById } from "../selectors/boards";
 import {
@@ -40,7 +40,7 @@ export function *handleAddBoardRequest() {
 
 export function *handleUpdateBoardRequest(action) {
   try {
-    const prevBoard = yield select(getBoardById, action.payload.id);
+    const prevBoard = yield select(getBoardById, action.payload._id);
 
     if (deepEqual(prevBoard, action.payload)) {
       yield put(Boards.updateBoardSuccess(prevBoard));
@@ -58,7 +58,7 @@ export function *handleUpdateBoardRequest(action) {
 }
 
 export function *watchUpdateBoardRequest() {
-  yield *takeLatest(Boards.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest);
+  yield *takeEvery(Boards.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest);
 }
 
 export function *handleDeleteBoardRequest() {
