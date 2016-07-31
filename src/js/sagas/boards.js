@@ -1,3 +1,4 @@
+import _ from "lodash";
 import deepEqual from "deep-equal";
 import { takeLatest } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
@@ -110,7 +111,14 @@ export function *handleMoveItemBoardSuccess() {
 export function *handleSelectedItemsMoveSuccess() {
   while (true) {
     const action = yield take(Items.SELECTED_ITEMS_MOVE_SUCCESS);
-    // TODO
+    const { items, prevItems } = action.payload;
+    const prevBoards = yield prevItems.map(o => select(getBoardById, o.boardId));
+    const nextBoards = yield items.map(o => select(getBoardById, o.boardId));
+    const uniqPrevBoards = _.uniq(prevBoards, "_id").map(o => ({ ...o, itemCount: o.itemCount - prevItems.length }));
+    const uniqNextBoards = _.uniq(nextBoards, "_id").map(o => ({ ...o, itemCount: o.itemCount + items.length }));
+
+    yield uniqPrevBoards.map(o => put(Boards.updateBoardRequest(o)));
+    yield uniqNextBoards.map(o => put(Boards.updateBoardRequest(o)));
   }
 }
 
