@@ -37,6 +37,19 @@ function updateItem(drive, newItem) {
     });
 }
 
+function deleteItem(drive, targetItem) {
+  let tmpItem = null;
+
+  return Item.findById(targetItem._id)
+    .then(item => {
+      tmpItem = item;
+
+      return deleteItemFile(drive, tmpItem.fileId);
+    })
+    .then(() => tmpItem.remove())
+    .then(() => Promise.resolve(tmpItem));
+}
+
 
 router.get("/", (req, res) => {
   res.errorJSON("TODO");
@@ -111,19 +124,25 @@ router.put("/multiple", (req, res) => {
 
 router.delete("/", (req, res) => {
   const { drive, body } = req;
-  let deleteItem = null;
 
-  Item.findById(body._id)
+  deleteItem(drive, body)
     .then(item => {
-      deleteItem = item;
-
-      return deleteItemFile(drive, deleteItem.fileId);
-    })
-    .then(() => deleteItem.remove())
-    .then(() => {
       res.json({
         status: "ok",
-        item: deleteItem
+        item
+      });
+    })
+    .catch(res.errorJSON);
+});
+
+router.delete("/multiple", (req, res) => {
+  const { drive, body } = req;
+
+  Promise.all(body.map(item => deleteItem(drive, item)))
+    .then(items => {
+      res.json({
+        stauts: "ok",
+        items
       });
     })
     .catch(res.errorJSON);

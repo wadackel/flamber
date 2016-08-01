@@ -214,5 +214,28 @@ export default handleActions({
     ...state,
     isUpdating: false,
     error: action.payload
+  }),
+
+  // Selected items delete
+  [Items.SELECTED_ITEMS_DELETE_REQUEST]: state => ({
+    ...state,
+    isDeleting: true,
+    entities: state.entities.map(item =>
+      item.select === false ? item : {
+        ...item,
+        isDeleting: true
+      }
+    )
+  }),
+
+  [Items.SELECTED_ITEMS_DELETE_SUCCESS]: state => ({
+    ...state,
+    isDeleting: false
+  }),
+
+  [Items.SELECTED_ITEMS_DELETE_SUCCESS]: (state, action) => ({
+    ...state,
+    isDeleting: false,
+    error: action.payload
   })
 }, initialState);
