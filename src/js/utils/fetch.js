@@ -1,9 +1,18 @@
 import assign from "object-assign";
 import libFetch from "isomorphic-fetch";
 
+function handleErrors(res) {
+  if (!res.ok) {
+    throw new Error(res.statusText);
+  }
+
+  return res;
+}
+
 export function checkStatus(res) {
   if (res.status >= 200 && res.status < 300) {
     return res;
+
   } else {
     const error = new Error(res.statusText);
     error.response = res;
@@ -17,6 +26,7 @@ export default function fetch(url, params = {}) {
   }, params);
 
   return libFetch(url, options)
+    .then(handleErrors)
     .then(checkStatus)
     .then(res => res.json());
 }

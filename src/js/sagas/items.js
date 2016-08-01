@@ -1,13 +1,6 @@
 import { takeLatest } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
-import {
-  fetchBoardItems,
-  addItem,
-  updateItem,
-  updateItems,
-  deleteItem,
-  deleteItems
-} from "../services/items";
+import * as Services from "../services/items";
 import { getCurrentBoard } from "../selectors/boards";
 import { getSelectedItems, getItemById } from "../selectors/items";
 import * as Boards from "../actions/boards";
@@ -15,37 +8,37 @@ import * as Items from "../actions/items";
 
 export function *handleAddItemRequest() {
   while (true) {
-    const action = yield take(Items.ADD_ITEM_REQUEST);
+    const { payload } = yield take(Items.ADD_ITEM_REQUEST);
 
     try {
-      const item = yield call(addItem, action.payload);
+      const item = yield call(Services.addItem, payload);
       yield put(Items.addItemSuccess(item));
-    } catch (err) {
-      yield put(Items.addItemFailure(err));
+    } catch (error) {
+      yield put(Items.addItemFailure(error));
     }
   }
 }
 
 export function *handleAddItemSuccess() {
   while (true) {
-    const action = yield take(Items.ADD_ITEM_SUCCESS);
+    const { payload } = yield take(Items.ADD_ITEM_SUCCESS);
     const board = yield select(getCurrentBoard);
 
-    if (board && board._id === action.payload.boardId) {
-      yield put(Items.addBoardItem(action.payload));
+    if (board && board._id === payload.boardId) {
+      yield put(Items.addBoardItem(payload));
     }
   }
 }
 
-export function *handleFavoriteItemToggleRequest(action) {
+export function *handleFavoriteItemToggleRequest({ payload }) {
   try {
-    const item = yield select(getItemById, action.payload);
+    const item = yield select(getItemById, payload);
     item.favorite = !item.favorite;
 
-    const newItem = yield call(updateItem, item);
+    const [newItem] = yield call(Services.updateItems, [item]);
     yield put(Items.favoriteItemToggleSuccess(newItem));
-  } catch (err) {
-    yield put(Items.favoriteItemToggleFailure(err));
+  } catch (error) {
+    yield put(Items.favoriteItemToggleFailure(error));
   }
 }
 
@@ -55,61 +48,62 @@ export function *watchFavoriteItemToggleRequest() {
 
 export function *handleMoveItemBoardRequest() {
   while (true) {
-    const action = yield take(Items.MOVE_ITEM_BOARD_REQUEST);
-    const { id, boardId } = action.payload;
+    const { payload } = yield take(Items.MOVE_ITEM_BOARD_REQUEST);
+    const { id, boardId } = payload;
     const item = yield select(getItemById, id);
     const prevBoardId = item.boardId;
     const newItem = { ...item, boardId };
 
     try {
-      const updatedItem = yield call(updateItem, newItem);
+      const [updatedItem] = yield call(Services.updateItems, [newItem]);
       yield put(Items.moveItemBoardSuccess({
         item: updatedItem,
         prevBoardId
       }));
-    } catch (err) {
-      yield put(Items.moveItemBoardFailure(err));
+    } catch (error) {
+      yield put(Items.moveItemBoardFailure(error));
     }
   }
 }
 
 export function *handleMoveItemBoardSuccess() {
   while (true) {
-    const action = yield take(Items.MOVE_ITEM_BOARD_SUCCESS);
+    const { payload } = yield take(Items.MOVE_ITEM_BOARD_SUCCESS);
     const board = yield select(getCurrentBoard);
 
-    if (board && board._id !== action.payload.item.boardId) {
-      yield put(Items.removeBoardItem(action.payload.item));
+    if (board && board._id !== payload.item.boardId) {
+      yield put(Items.removeBoardItem(payload.item));
     }
   }
 }
 
 export function *handleFetchBoardItemsRequest() {
   while (true) {
-    const action = yield take(Items.FETCH_BOARD_ITEMS_REQUEST);
+    const { payload } = yield take(Items.FETCH_BOARD_ITEMS_REQUEST);
 
     try {
-      const items = yield call(fetchBoardItems, action.payload);
+      const items = yield call(Services.fetchBoardItems, payload);
       yield put(Items.fetchBoardItemsSuccess(items));
-    } catch (err) {
-      yield put(Items.fetchBoardItemsFailure(err));
+    } catch (error) {
+      yield put(Items.fetchBoardItemsFailure(error));
     }
   }
 }
 
 export function *watchCurrentBoard() {
   while (true) {
-    const action = yield take(Boards.CURRENT_BOARD);
-    yield put(Items.fetchBoardItemsRequest(action.payload));
+    const { payload } = yield take(Boards.CURRENT_BOARD);
+    yield put(Items.fetchBoardItemsRequest(payload));
   }
 }
 
-export function *handleDeleteItemRequest(action) {
+export function *handleDeleteItemRequest({ payload }) {
   try {
-    const item = yield call(deleteItem, action.payload);
-    yield put(Items.deleteItemSuccess(item));
-  } catch (err) {
-    yield put(Items.deleteItemFailure(err));
+    const item = yield select(getItemById, payload);
+    const [deletedItem] = yield call(Services.deleteItems, [item]);
+    yield put(Items.deleteItemSuccess(deletedItem));
+  } catch (error) {
+    yield put(Items.deleteItemFailure(error));
   }
 }
 
@@ -119,38 +113,38 @@ export function *watchDeleteItemRequest() {
 
 export function *handleDeleteItemSuccess() {
   while (true) {
-    const action = yield take(Items.DELETE_ITEM_SUCCESS);
+    const { payload } = yield take(Items.DELETE_ITEM_SUCCESS);
     const board = yield select(getCurrentBoard);
 
-    if (board && board._id === action.payload.boardId) {
-      yield put(Items.removeBoardItem(action.payload));
+    if (board && board._id === payload.boardId) {
+      yield put(Items.removeBoardItem(payload));
     }
   }
 }
 
 export function *handleSelectedItemsMoveRequest() {
   while (true) {
-    const action = yield take(Items.SELECTED_ITEMS_MOVE_REQUEST);
-    const boardId = action.payload;
+    const { payload } = yield take(Items.SELECTED_ITEMS_MOVE_REQUEST);
+    const boardId = payload;
     const selectedItems = yield select(getSelectedItems);
     const newItems = selectedItems.map(item => ({ ...item, boardId }));
 
     try {
-      const updatedItems = yield call(updateItems, newItems);
+      const updatedItems = yield call(Services.updateItems, newItems);
       yield put(Items.selectedItemsMoveSuccess({
         items: updatedItems,
         prevItems: selectedItems
       }));
-    } catch (err) {
-      yield put(Items.selectedItemsMoveFailure(err));
+    } catch (error) {
+      yield put(Items.selectedItemsMoveFailure(error));
     }
   }
 }
 
 export function *handleSelectedItemsMoveSuccess() {
   while (true) {
-    const action = yield take(Items.SELECTED_ITEMS_MOVE_SUCCESS);
-    const { prevItems } = action.payload;
+    const { payload } = yield take(Items.SELECTED_ITEMS_MOVE_SUCCESS);
+    const { prevItems } = payload;
     const board = yield select(getCurrentBoard);
     if (!board) continue;
 
@@ -163,18 +157,18 @@ export function *handleSelectedItemsMoveSuccess() {
 
 export function *handleSelectedItemsFavoriteRequest() {
   while (true) {
-    const action = yield take(Items.SELECTED_ITEMS_FAVORITE_REQUEST);
+    const { payload } = yield take(Items.SELECTED_ITEMS_FAVORITE_REQUEST);
     const selectedItems = yield select(getSelectedItems);
-    const newItems = selectedItems.map(item => ({ ...item, favorite: action.payload }));
+    const newItems = selectedItems.map(item => ({ ...item, favorite: payload }));
 
     try {
-      const updatedItems = yield call(updateItems, newItems);
+      const updatedItems = yield call(Services.updateItems, newItems);
       yield put(Items.selectedItemsFavoriteSuccess({
         items: updatedItems,
-        favorite: action.payload
+        favorite: payload
       }));
-    } catch (err) {
-      yield put(Items.selectedItemsFavoriteFailure(err));
+    } catch (error) {
+      yield put(Items.selectedItemsFavoriteFailure(error));
     }
   }
 }
@@ -185,21 +179,21 @@ export function *handleSelectedItemsDeleteRequest() {
     const selectedItems = yield select(getSelectedItems);
 
     try {
-      const items = yield call(deleteItems, selectedItems);
+      const items = yield call(Services.deleteItems, selectedItems);
       yield put(Items.selectedItemsDeleteSuccess(items));
-    } catch (err) {
-      yield put(Items.selectedItemsDeleteFailure(err));
+    } catch (error) {
+      yield put(Items.selectedItemsDeleteFailure(error));
     }
   }
 }
 
 export function *handleSelectedItemsDeleteSuccess() {
   while (true) {
-    const action = yield take(Items.SELECTED_ITEMS_DELETE_SUCCESS);
+    const { payload } = yield take(Items.SELECTED_ITEMS_DELETE_SUCCESS);
     const board = yield select(getCurrentBoard);
     if (!board) continue;
 
-    const removeItems = action.payload.filter(item => item.boardId === board._id);
+    const removeItems = payload.filter(item => item.boardId === board._id);
     if (removeItems.length === 0) continue;
 
     yield put(Items.removeBoardItems(removeItems));

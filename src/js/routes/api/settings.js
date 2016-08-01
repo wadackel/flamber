@@ -25,10 +25,7 @@ router.put("/", (req, res) => {
       return settings.save();
     })
     .then(settings => {
-      res.json({
-        status: "ok",
-        settings
-      });
+      res.json({ settings });
     })
     .catch(res.errorJSON);
 });

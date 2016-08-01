@@ -7,10 +7,7 @@ const router = Router();
 router.get("/", (req, res) => {
   Board.find({})
     .then(boards => {
-      res.json({
-        status: "ok",
-        boards
-      });
+      res.json({ boards });
     })
     .catch(res.errorJSON);
 });
@@ -22,10 +19,7 @@ router.post("/", (req, res) => {
 
   board.save()
     .then(newBoard => {
-      res.json({
-        status: "ok",
-        board: newBoard
-      });
+      res.json({ board: newBoard });
     })
     .catch(res.errorJSON);
 });
@@ -42,10 +36,7 @@ router.put("/", (req, res) => {
       return board.save();
     })
     .then(board => {
-      res.json({
-        status: "ok",
-        board
-      });
+      res.json({ board });
     })
     .catch(res.errorJSON);
 });
@@ -53,7 +44,7 @@ router.put("/", (req, res) => {
 router.delete("/", (req, res) => {
   Board.findByIdAndRemove(req.body._id)
     .then(() => {
-      res.json({ status: "ok" });
+      res.json({});
     })
     .catch(res.errorJSON);
 });

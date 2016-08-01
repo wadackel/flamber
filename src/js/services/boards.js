@@ -5,57 +5,21 @@ export const BOARDS_ENDPOINT = `${API_ROOT}/boards`;
 
 
 export function fetchBoards() {
-  return new Promise((resolve, reject) => {
-    fetch(BOARDS_ENDPOINT)
-      .then(res => {
-        if (res.status === "ok") {
-          resolve(res.boards);
-        } else {
-          reject({ error: res.error });
-        }
-      })
-      .catch(error => reject({ error }));
-  });
+  return fetch(BOARDS_ENDPOINT)
+    .then(res => res.boards);
 }
 
 export function addBoard(name) {
-  return new Promise((resolve, reject) => {
-    fetchJSON(BOARDS_ENDPOINT, { name })
-      .then(res => {
-        if (res.status === "ok") {
-          resolve(res.board);
-        } else {
-          reject({ error: res.error });
-        }
-      })
-      .catch(error => reject({ error }));
-  });
+  return fetchJSON(BOARDS_ENDPOINT, { name })
+    .then(res => res.board);
 }
 
 export function updateBoard(board) {
-  return new Promise((resolve, reject) => {
-    fetchJSON(BOARDS_ENDPOINT, board, "PUT")
-      .then(res => {
-        if (res.status === "ok") {
-          resolve(res.board);
-        } else {
-          reject({ error: res.error });
-        }
-      })
-      .catch(error => reject({ error }));
-  });
+  return fetchJSON(BOARDS_ENDPOINT, board, "PUT")
+    .then(res => res.board);
 }
 
 export function deleteBoard(id) {
-  return new Promise((resolve, reject) => {
-    fetchJSON(BOARDS_ENDPOINT, { _id: id }, "DELETE")
-      .then(res => {
-        if (res.status === "ok") {
-          resolve(id);
-        } else {
-          reject({ error: res.error });
-        }
-      })
-      .catch(error => reject({ error }));
-  });
+  return fetchJSON(BOARDS_ENDPOINT, { _id: id }, "DELETE")
+    .then(() => id);
 }

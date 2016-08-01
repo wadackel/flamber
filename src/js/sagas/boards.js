@@ -3,12 +3,7 @@ import deepEqual from "deep-equal";
 import { takeEvery } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
 import { getBoardById } from "../selectors/boards";
-import {
-  fetchBoards,
-  addBoard,
-  updateBoard,
-  deleteBoard
-} from "../services/boards";
+import * as Services from "../services/boards";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
@@ -17,7 +12,7 @@ export function *handleFetchBoardsRequest() {
     yield take(Boards.FETCH_BOARDS_REQUEST);
 
     try {
-      const boards = yield call(fetchBoards);
+      const boards = yield call(Services.fetchBoards);
       yield put(Boards.fetchBoardsSuccess(boards));
     } catch (err) {
       yield put(Boards.fetchBoardsFailure(err));
@@ -27,10 +22,10 @@ export function *handleFetchBoardsRequest() {
 
 export function *handleAddBoardRequest() {
   while (true) {
-    const action = yield take(Boards.ADD_BOARD_REQUEST);
+    const { payload } = yield take(Boards.ADD_BOARD_REQUEST);
 
     try {
-      const board = yield call(addBoard, action.payload);
+      const board = yield call(Services.addBoard, payload);
       yield put(Boards.addBoardSuccess(board));
     } catch (err) {
       yield put(Boards.addBoardFailure(err));
@@ -38,18 +33,18 @@ export function *handleAddBoardRequest() {
   }
 }
 
-export function *handleUpdateBoardRequest(action) {
+export function *handleUpdateBoardRequest({ payload }) {
   try {
-    const prevBoard = yield select(getBoardById, action.payload._id);
+    const prevBoard = yield select(getBoardById, payload._id);
 
-    if (deepEqual(prevBoard, action.payload)) {
+    if (deepEqual(prevBoard, payload)) {
       yield put(Boards.updateBoardSuccess(prevBoard));
 
     } else {
-      const nextBoard = action.payload;
+      const nextBoard = payload;
       nextBoard.modified = new Date().toString();
 
-      const board = yield call(updateBoard, nextBoard);
+      const board = yield call(Services.updateBoard, nextBoard);
       yield put(Boards.updateBoardSuccess(board));
     }
   } catch (err) {
@@ -63,11 +58,11 @@ export function *watchUpdateBoardRequest() {
 
 export function *handleDeleteBoardRequest() {
   while (true) {
-    const action = yield take(Boards.DELETE_BOARD_REQUEST);
+    const { payload } = yield take(Boards.DELETE_BOARD_REQUEST);
 
     try {
-      yield call(deleteBoard, action.payload);
-      yield put(Boards.deleteBoardSuccess(action.payload));
+      yield call(Services.deleteBoard, payload);
+      yield put(Boards.deleteBoardSuccess(payload));
     } catch (err) {
       yield put(Boards.deleteBoardFailure(err));
     }
@@ -76,42 +71,41 @@ export function *handleDeleteBoardRequest() {
 
 export function *handleAddItemSuccess() {
   while (true) {
-    const action = yield take(Items.ADD_ITEM_SUCCESS);
-    const board = yield select(getBoardById, action.payload.boardId);
-    board.itemCount++;
+    const { payload } = yield take(Items.ADD_ITEM_SUCCESS);
+    const board = yield select(getBoardById, payload.boardId);
+    const newBoard = { ...board, itemCount: board.itemCount + 1 };
 
-    yield put(Boards.updateBoardRequest(board));
+    yield put(Boards.updateBoardRequest(newBoard));
   }
 }
 
 export function *handleDeleteItemSuccess() {
   while (true) {
-    const action = yield take(Items.DELETE_ITEM_SUCCESS);
-    const board = yield select(getBoardById, action.payload.boardId);
-    board.itemCount--;
+    const { payload } = yield take(Items.DELETE_ITEM_SUCCESS);
+    const board = yield select(getBoardById, payload.boardId);
+    const newBoard = { ...board, itemCount: board.itemCount - 1 };
 
-    yield put(Boards.updateBoardRequest(board));
+    yield put(Boards.updateBoardRequest(newBoard));
   }
 }
 
 export function *handleMoveItemBoardSuccess() {
   while (true) {
-    const action = yield take(Items.MOVE_ITEM_BOARD_SUCCESS);
-    const prevBoard = yield select(getBoardById, action.payload.prevBoardId);
-    const nextBoard = yield select(getBoardById, action.payload.item.boardId);
+    const { payload } = yield take(Items.MOVE_ITEM_BOARD_SUCCESS);
+    const prevBoard = yield select(getBoardById, payload.prevBoardId);
+    const nextBoard = yield select(getBoardById, payload.item.boardId);
+    const newPrevBoard = { ...prevBoard, itemCount: prevBoard.itemCount - 1 };
+    const newNextBoard = { ...nextBoard, itemCount: nextBoard.itemCount + 1 };
 
-    prevBoard.itemCount--;
-    nextBoard.itemCount++;
-
-    yield put(Boards.updateBoardRequest(prevBoard));
-    yield put(Boards.updateBoardRequest(nextBoard));
+    yield put(Boards.updateBoardRequest(newPrevBoard));
+    yield put(Boards.updateBoardRequest(newNextBoard));
   }
 }
 
 export function *handleSelectedItemsMoveSuccess() {
   while (true) {
-    const action = yield take(Items.SELECTED_ITEMS_MOVE_SUCCESS);
-    const { items, prevItems } = action.payload;
+    const { payload } = yield take(Items.SELECTED_ITEMS_MOVE_SUCCESS);
+    const { items, prevItems } = payload;
     const prevBoards = yield prevItems.map(o => select(getBoardById, o.boardId));
     const nextBoards = yield items.map(o => select(getBoardById, o.boardId));
     const uniqPrevBoards = _.uniq(prevBoards, "_id").map(o => ({ ...o, itemCount: o.itemCount - prevItems.length }));

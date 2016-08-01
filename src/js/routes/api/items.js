@@ -62,10 +62,7 @@ router.get("/board/:boardId", (req, res) => {
   Item.find({ boardId })
     .then(items => updateItemsThumbnailIfNeeded(drive, items))
     .then(items => {
-      res.json({
-        status: "ok",
-        items
-      });
+      res.json({ items });
     })
     .catch(res.errorJSON);
 });
@@ -88,10 +85,7 @@ router.post("/", upload.single("file"), (req, res) => {
       return item.save();
     })
     .then(item => {
-      res.json({
-        status: "ok",
-        item
-      });
+      res.json({ item });
     })
     .catch(res.errorJSON);
 });
@@ -99,25 +93,9 @@ router.post("/", upload.single("file"), (req, res) => {
 router.put("/", (req, res) => {
   const { drive, body } = req;
 
-  updateItem(drive, body)
-    .then(item => {
-      res.json({
-        status: "ok",
-        item
-      });
-    })
-    .catch(res.errorJSON);
-});
-
-router.put("/multiple", (req, res) => {
-  const { drive, body } = req;
-
   Promise.all(body.map(item => updateItem(drive, item)))
     .then(items => {
-      res.json({
-        status: "ok",
-        items
-      });
+      res.json({ items });
     })
     .catch(res.errorJSON);
 });
@@ -125,25 +103,9 @@ router.put("/multiple", (req, res) => {
 router.delete("/", (req, res) => {
   const { drive, body } = req;
 
-  deleteItem(drive, body)
-    .then(item => {
-      res.json({
-        status: "ok",
-        item
-      });
-    })
-    .catch(res.errorJSON);
-});
-
-router.delete("/multiple", (req, res) => {
-  const { drive, body } = req;
-
   Promise.all(body.map(item => deleteItem(drive, item)))
     .then(items => {
-      res.json({
-        status: "ok",
-        items
-      });
+      res.json({ items });
     })
     .catch(res.errorJSON);
 });

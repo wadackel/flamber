@@ -1,10 +1,6 @@
 export default function errorJSON(req, res, next) {
-  res.errorJSON = function(error, code = 0) {
-    res.json({
-      status: "error",
-      error,
-      code
-    });
+  res.errorJSON = function(error, code = 400) {
+    res.status(code).json({ error });
   };
 
   next();
