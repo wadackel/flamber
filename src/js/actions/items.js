@@ -56,7 +56,7 @@ export const selectedItemsMoveSuccess = createAction(SELECTED_ITEMS_MOVE_SUCCESS
 export const selectedItemsMoveFailure = createAction(SELECTED_ITEMS_MOVE_FAILURE);
 
 
-// Selected items delete
+// Selected items favorite
 export const SELECTED_ITEMS_FAVORITE_REQUEST = "SELECTED_ITEMS_FAVORITE_REQUEST";
 export const SELECTED_ITEMS_FAVORITE_SUCCESS = "SELECTED_ITEMS_FAVORITE_SUCCESS";
 export const SELECTED_ITEMS_FAVORITE_FAILURE = "SELECTED_ITEMS_FAVORITE_FAILURE";

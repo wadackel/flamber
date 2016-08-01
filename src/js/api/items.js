@@ -85,3 +85,16 @@ export function deleteItem(id) {
   });
 }
 
+export function deleteItems(items) {
+  return new Promise((resolve, reject) => {
+    fetchJSON(`${ITEMS_ENDPOINT}/multiple`, items, "DELETE")
+      .then(res => {
+        if (res.status === "ok") {
+          resolve(res.items);
+        } else {
+          reject({ error: res.error });
+        }
+      })
+      .catch(error => reject({ error }));
+  });
+}

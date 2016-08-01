@@ -5,7 +5,8 @@ import {
   addItem,
   updateItem,
   updateItems,
-  deleteItem
+  deleteItem,
+  deleteItems
 } from "../api/items";
 import { getCurrentBoard } from "../selectors/boards";
 import { getSelectedItems, getItemById } from "../selectors/items";
@@ -160,6 +161,51 @@ export function *handleSelectedItemsMoveSuccess() {
   }
 }
 
+export function *handleSelectedItemsFavoriteRequest() {
+  while (true) {
+    const action = yield take(Items.SELECTED_ITEMS_FAVORITE_REQUEST);
+    const selectedItems = yield select(getSelectedItems);
+    const newItems = selectedItems.map(item => ({ ...item, favorite: action.payload }));
+
+    try {
+      const updatedItems = yield call(updateItems, newItems);
+      yield put(Items.selectedItemsFavoriteSuccess({
+        items: updatedItems,
+        favorite: action.payload
+      }));
+    } catch (err) {
+      yield put(Items.selectedItemsFavoriteFailure(err));
+    }
+  }
+}
+
+export function *handleSelectedItemsDeleteRequest() {
+  while (true) {
+    yield take(Items.SELECTED_ITEMS_DELETE_REQUEST);
+    const selectedItems = yield select(getSelectedItems);
+
+    try {
+      const items = yield call(deleteItems, selectedItems);
+      yield put(Items.selectedItemsDeleteSuccess(items));
+    } catch (err) {
+      yield put(Items.selectedItemsDeleteFailure(err));
+    }
+  }
+}
+
+export function *handleSelectedItemsDeleteSuccess() {
+  while (true) {
+    const action = yield take(Items.SELECTED_ITEMS_DELETE_SUCCESS);
+    const board = yield select(getCurrentBoard);
+    if (!board) continue;
+
+    const removeItems = action.payload.filter(item => item.boardId === board._id);
+    if (removeItems.length === 0) continue;
+
+    yield put(Items.removeBoardItems(removeItems));
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleAddItemRequest),
@@ -172,6 +218,9 @@ export default function *rootSaga() {
     fork(watchDeleteItemRequest),
     fork(handleDeleteItemSuccess),
     fork(handleSelectedItemsMoveRequest),
-    fork(handleSelectedItemsMoveSuccess)
+    fork(handleSelectedItemsMoveSuccess),
+    fork(handleSelectedItemsFavoriteRequest),
+    fork(handleSelectedItemsDeleteRequest),
+    fork(handleSelectedItemsDeleteSuccess)
   ];
 }
