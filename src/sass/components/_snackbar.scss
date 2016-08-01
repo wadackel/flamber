@@ -15,6 +15,7 @@
 
   &__horizontal,
   &__vertical {
+    display: inline-block;
     transform-origin: bottom center;
     opacity: 0;
     visibility: hidden;
@@ -44,8 +45,11 @@
 
   &__body {
     @include transition(all, $duration);
-    display: inline-block;
-    padding: .5em 1.4em;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: .5em .5em .5em 1.4em;
     transform: translateY(30px);
     border-radius: 2px;
     background: rgba(#000, .92);
@@ -64,8 +68,22 @@
   }
 
   &__action {
-    margin-right: -.7em;
     margin-left: 2em;
     font-size: .87rem;
+  }
+
+  &__close {
+    margin-left: .1em;
+    color: darken(#fff, 20%);
+
+    &,
+    .icon-button__body {
+      @include size(36px);
+    }
+
+    .icon-button__icon,
+    .icon-button__icon svg {
+      @include size(14px);
+    }
   }
 }

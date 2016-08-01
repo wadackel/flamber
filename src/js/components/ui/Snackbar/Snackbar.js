@@ -2,7 +2,8 @@ import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
-import { FlatButton } from "../";
+import { FlatButton, IconButton } from "../";
+import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("snackbar");
 
@@ -29,7 +30,8 @@ export default class Snackbar extends React.Component {
 
     bindHandlers([
       "handleActionClick",
-      "handleTimeout"
+      "handleTimeout",
+      "handleCloseClick"
     ], this);
   }
 
@@ -51,6 +53,14 @@ export default class Snackbar extends React.Component {
   }
 
   handleTimeout() {
+    this.requestClose();
+  }
+
+  handleCloseClick() {
+    this.requestClose();
+  }
+
+  requestClose() {
     this.props.onRequestClose();
   }
 
@@ -83,6 +93,11 @@ export default class Snackbar extends React.Component {
             <div className={b("body", modifier)}>
               <span className={b("message")}>{message}</span>
               {actionElement}
+              <IconButton
+                className={b("close", modifier)}
+                icon={<CloseIcon />}
+                onClick={this.handleCloseClick}
+              />
             </div>
           </div>
         </div>
