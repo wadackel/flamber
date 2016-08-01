@@ -2,12 +2,13 @@ import mongoose, { Schema } from "mongoose";
 
 const BoardSchema = new Schema({
   name: { type: String, required: true },
-  thumbnail: { type: String, default: "" },
+  firstItem: { type: Schema.Types.ObjectId, ref: "Item" },
   itemCount: { type: Number, default: 0 },
   created: { type: Date, default: Date.now },
   modified: { type: Date, default: Date.now }
 });
 
-const Board = mongoose.model("Board", BoardSchema);
+BoardSchema.set("toJSON", { virtuals: true });
+BoardSchema.set("toObject", { virtuals: true });
 
-export default Board;
+export default mongoose.model("Board", BoardSchema);

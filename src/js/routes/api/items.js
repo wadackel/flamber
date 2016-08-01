@@ -2,6 +2,7 @@ import _ from "lodash";
 import { Router } from "express";
 import multer from "multer";
 import Item from "../../models/item";
+import Board from "../../models/board";
 import {
   uploadItemFile,
   updateItemThumbnail,
@@ -84,7 +85,17 @@ router.post("/", upload.single("file"), (req, res) => {
 
       return item.save();
     })
-    .then(item => {
+    .then(item =>
+      Board.findById(item.boardId).then(board => ({ item, board }))
+    )
+    .then(({ item, board }) => {
+      if (!board.firstItem) {
+        board.firstItem = item._id;
+      }
+
+      return board.save().then(savedBoard => ({ item, board: savedBoard }));
+    })
+    .then(({ item }) => {
       res.json({ item });
     })
     .catch(res.errorJSON);
@@ -100,10 +111,31 @@ router.put("/", (req, res) => {
     .catch(res.errorJSON);
 });
 
+/* eslint-disable */
+// TODO: delete items update firstItem
 router.delete("/", (req, res) => {
   const { drive, body } = req;
 
   Promise.all(body.map(item => deleteItem(drive, item)))
+    .then(items => {
+      return Promise.all(items.map(item => {
+        let tmpBoard = null;
+
+        return Board.findOne({ firstItem: item._id })
+          .then(board => {
+            tmpBoard = board;
+            return !board ? null : Item
+              .findOne({ boardId: board._id })
+              .sort({ created: -1 });
+          })
+          .then(item => {
+            tmpBoard.firstItem = item._id;
+            return tmpBoard.save();
+          })
+          .catch(err => console.log(err));
+
+      })).then(() => items);
+    })
     .then(items => {
       res.json({ items });
     })

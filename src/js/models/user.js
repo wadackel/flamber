@@ -12,10 +12,8 @@ const UserSchema = new Schema({
   modified: { type: Date, default: Date.now }
 });
 
-const User = mongoose.model("User", UserSchema);
-
-User.createFromGoogle = function(profile) {
-  return new User({
+UserSchema.createFromGoogle = function(profile) {
+  return this.create({
     name: profile.displayName,
     icon: profile.photoLink,
     email: profile.emailAddress,
@@ -25,11 +23,11 @@ User.createFromGoogle = function(profile) {
   });
 };
 
-User.createProviderFactory = function(provider, profile, callback) {
+UserSchema.createProviderFactory = function(provider, profile, callback) {
   let user = null;
   switch (provider) {
     case "google":
-      user = User.createFromGoogle(profile);
+      user = this.createFromGoogle(profile);
       break;
   }
 
@@ -45,5 +43,7 @@ User.createProviderFactory = function(provider, profile, callback) {
       callback(error, null);
     });
 };
+
+const User = mongoose.model("User", UserSchema);
 
 export default User;

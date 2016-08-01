@@ -1,11 +1,23 @@
 import _ from "lodash";
 import { Router } from "express";
 import Board from "../../models/board";
+import { updateItemThumbnailIfNeeded } from "../../utils/drive/items";
+
 
 const router = Router();
 
 router.get("/", (req, res) => {
-  Board.find({})
+  const { drive } = req;
+
+  Board.find()
+    .populate("firstItem")
+    .then(boards =>
+      Promise.all(boards.map(board =>
+        !board.firstItem
+          ? board
+          : updateItemThumbnailIfNeeded(drive, board.firstItem)
+      )).then(() => boards)
+    )
     .then(boards => {
       res.json({ boards });
     })

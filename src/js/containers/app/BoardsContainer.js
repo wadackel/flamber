@@ -71,6 +71,7 @@ export class BoardsContainer extends Component {
               key={board._id}
               id={board._id}
               title={board.name}
+              image={board.firstItem ? board.firstItem.thumbnail : "/TODO.png"}
               layout={boardsLayout}
               itemCount={board.itemCount}
               lastModified={new Date(board.modified)}
