@@ -168,7 +168,10 @@ export function *handleSelectedItemsFavoriteRequest() {
 
     try {
       const updatedItems = yield call(updateItems, newItems);
-      yield put(Items.selectedItemsFavoriteSuccess(updatedItems));
+      yield put(Items.selectedItemsFavoriteSuccess({
+        items: updatedItems,
+        favorite: action.payload
+      }));
     } catch (err) {
       yield put(Items.selectedItemsFavoriteFailure(err));
     }

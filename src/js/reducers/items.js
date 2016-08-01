@@ -198,14 +198,15 @@ export default handleActions({
     ...state,
     isUpdating: false,
     entities: state.entities.map(item => {
-      const findItem = _.find(action.payload, item._id);
+      const { items, favorite } = action.payload;
+      const findItem = _.find(items, o => o._id === item._id);
 
-      return !findItem ? item : {
+      return !findItem ? item : mapItemToEntity({
         ...item,
         select: false,
         isUpdating: false,
-        favorite: findItem.favorite
-      };
+        favorite
+      });
     })
   }),
 

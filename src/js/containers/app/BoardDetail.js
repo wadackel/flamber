@@ -170,13 +170,17 @@ export class BoardDetail extends Component {
 
   handleSelectedItemsStar() {
     const selectedItems = getSelectedItemsFromItems(this.props.items);
-    const isAllFavorite = selectedItems.every(o => o.favorite);
+    const isAllFavorite = this.isEntitiesAllFavorite(selectedItems);
 
     this.props.dispatch(selectedItemsFavoriteRequest(!isAllFavorite));
   }
 
   handleSelectedItemsDelete() {
     this.props.dispatch(selectedItemsDeleteRequest());
+  }
+
+  isEntitiesAllFavorite(entities) {
+    return entities.every(o => o.favorite);
   }
 
   render() {
@@ -205,6 +209,7 @@ export class BoardDetail extends Component {
       }));
 
     const selectedItems = getSelectedItemsFromItems(items);
+    const isSelectedItemsAllFavorite = this.isEntitiesAllFavorite(selectedItems);
 
     return (
       <div className={`container ${b()}`}>
@@ -259,7 +264,7 @@ export class BoardDetail extends Component {
               onClick={this.handleSelectedItemsMove}
             />,
             <IconButton
-              tooltip={items.entities.length === selectedItems.length ? "スターをはずす" : "スターを付ける"}
+              tooltip={isSelectedItemsAllFavorite ? "スターをはずす" : "スターを付ける"}
               icon={<StarIcon />}
               onClick={this.handleSelectedItemsStar}
             />,
