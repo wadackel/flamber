@@ -6,10 +6,14 @@ import { push } from "react-router-redux";
 import MDSpinner from "react-md-spinner";
 import * as Layout from "../../constants/layouts";
 import bindHandlers from "../../helpers/bind-handlers";
-import { updateItemsSizeRequest } from "../../actions/settings";
-import { updateBoardRequest } from "../../actions/boards";
 import { getBoardByIdFromBoards, getCurrentBoardFromBoards } from "../../selectors/boards";
 import { getSelectedItemsFromItems } from "../../selectors/items";
+import {
+  updateItemsSizeRequest,
+  updateBoardsLayoutRequest,
+  updateItemsLayoutRequest
+} from "../../actions/settings";
+import { updateBoardRequest } from "../../actions/boards";
 import {
   Header,
   EditableText,
@@ -53,6 +57,9 @@ export class HeaderSubContainer extends Component {
       "handleFeedsClick",
       "handleLogoClick",
       "handleSettingsClick",
+
+      "handleBoardNameChange",
+      "handleBoardNameComplete",
 
       "handleBoardsLayoutChange",
       "handleItemsLayoutChange",
