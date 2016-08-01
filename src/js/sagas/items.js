@@ -7,7 +7,7 @@ import {
   updateItems,
   deleteItem,
   deleteItems
-} from "../api/items";
+} from "../services/items";
 import { getCurrentBoard } from "../selectors/boards";
 import { getSelectedItems, getItemById } from "../selectors/items";
 import * as Boards from "../actions/boards";

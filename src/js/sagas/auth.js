@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { replace } from "react-router-redux";
 import { fork, take, put, call } from "redux-saga/effects";
 import * as C from "../constants/cookie";
-import { authenticate, revokeCredentials } from "../api/auth";
+import { authenticate, revokeCredentials } from "../services/auth";
 import * as Auth from "../actions/auth";
 
 export function *handleSignInRequest() {

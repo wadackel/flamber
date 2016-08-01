@@ -1,6 +1,6 @@
 import { takeLatest } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
-import { fetchSettings, updateSettings } from "../api/settings";
+import { fetchSettings, updateSettings } from "../services/settings";
 import * as Settings from "../actions/settings";
 import { getSettings } from "../selectors/settings";
 

@@ -1,7 +1,7 @@
 import { takeLatest } from "redux-saga";
 import { fork, take, put, call } from "redux-saga/effects";
 import * as App from "../actions/application";
-import { deleteApp } from "../api/application";
+import { deleteApp } from "../services/application";
 
 function *handleDeleteAppRequest() {
   while (true) {

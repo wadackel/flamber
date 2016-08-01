@@ -8,7 +8,7 @@ import {
   addBoard,
   updateBoard,
   deleteBoard
-} from "../api/boards";
+} from "../services/boards";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
