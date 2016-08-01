@@ -1,15 +1,15 @@
 import React from "react";
 import { Route, IndexRoute } from "react-router";
 import {
-  SignIn,
-  SignOut,
-  Landing
+  SignInContainer,
+  SignOutContainer,
+  LandingContainer
 } from "./containers";
 import {
-  App,
-  Boards,
-  BoardDetail,
-  Settings
+  AppContainer,
+  BoardsContainer,
+  BoardDetailContainer,
+  SettingsContainer
 } from "./containers/app/";
 import ThemeProvider from "./components/ThemeProvider";
 
@@ -37,20 +37,20 @@ export default function getRoutes(store) {
 
   const routes = (
     <Route path="/" component={ThemeProvider}>
-      <IndexRoute component={Landing} />
+      <IndexRoute component={LandingContainer} />
 
       <Route onEnter={userOnly}>
-        <Route path="/signout" component={SignOut} />
-        <Route path="/app/" component={App}>
-          <Route path="settings" component={Settings} />
-          <Route path="boards" component={Boards} />
-          <Route path="board/:id" component={BoardDetail} />
-          <IndexRoute component={Boards} />
+        <Route path="/signout" component={SignOutContainer} />
+        <Route path="/app/" component={AppContainer}>
+          <Route path="settings" component={SettingsContainer} />
+          <Route path="boards" component={BoardsContainer} />
+          <Route path="board/:id" component={BoardDetailContainer} />
+          <IndexRoute component={BoardsContainer} />
         </Route>
       </Route>
 
       <Route onEnter={guestOnly}>
-        <Route path="/signin" component={SignIn} />
+        <Route path="/signin" component={SignInContainer} />
       </Route>
     </Route>
   );

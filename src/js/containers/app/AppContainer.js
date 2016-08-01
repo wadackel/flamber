@@ -1,16 +1,12 @@
 /* eslint-disable */
-import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import MDSpinner from "react-md-spinner";
-import * as Layout from "../../constants/layouts";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import {
   updateBoardsLayoutRequest,
-  updateItemsLayoutRequest,
-  updateItemsSizeRequest
+  updateItemsLayoutRequest
 } from "../../actions/settings";
 import {
   fetchBoardsRequest,
@@ -18,43 +14,26 @@ import {
   updateBoardRequest
 } from "../../actions/boards";
 import { addItemRequest } from "../../actions/items";
-import { getBoardByIdFromBoards, getCurrentBoardFromBoards } from "../../selectors/boards";
-import { getSelectedItemsFromItems } from "../../selectors/items";
+import { getBoardByIdFromBoards } from "../../selectors/boards";
+import {
+  HeaderSubContainer
+} from "./";
 import {
   AddBoardDialog,
   AddItemFileDialog,
   FloatingMenu,
   FloatingButton,
-  Header,
-  EditableText,
-  NavItem,
-  IconButton,
-  LayoutButtonGroup,
-  LayoutButton,
-  SearchField,
-  Slider,
   Snackbar
 } from "../../components/ui/";
 import {
   BoardIcon,
   PictureLinkIcon,
-  UploadIcon,
-  TagsIcon,
-  StarIcon,
-  PencilIcon,
-  RandomGridIcon,
-  GridIcon,
-  ListIcon
+  UploadIcon
 } from "../../components/svg-icons/";
-
-const NavItemActive = {
-  MY_ITEMS: "MY_ITEMS",
-  FEEDS: "FEEDS"
-};
 
 const b = bem("app");
 
-export class App extends Component {
+export class AppContainer extends Component {
   static propTypes = {
     children: PropTypes.node
   };
@@ -71,39 +50,22 @@ export class App extends Component {
       addBoardSnackbarMessage: "",
       addItemFileDialogOpen: false,
       addItemFileSnackbarOpen: false,
-      addItemFileSnackbarMessage: "",
-      boardName: "",
-      itemsSize: props.settings.itemsSize
+      addItemFileSnackbarMessage: ""
     };
 
-    this.debounceItemsSizeChange = _.debounce(this.debounceItemsSizeChange, 500);
-
     bindHandlers([
-      "handleMyItemsClick",
-      "handleFeedsClick",
-      "handleLogoClick",
-      "handleSettingsClick",
-
       "handleAddBoardOpen",
       "handleAddBoardClose",
       "handleAddBoard",
       "handleAddBoardActionClick",
       "handleAddBoardSnackbarClose",
 
-      "handleBoardNameChange",
-      "handleBoardNameComplete",
-
       "handleAddLinkItemOpen",
 
       "handleAddItemFileOpen",
       "handleAddItemFileClose",
       "handleAddItemFile",
-      "handleAddItemFileSnackbarClose",
-
-      "handleBoardsLayoutChange",
-      "handleItemsLayoutChange",
-
-      "handleItemsSizeChange"
+      "handleAddItemFileSnackbarClose"
     ], this);
   }
 
@@ -112,7 +74,7 @@ export class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { boards, items, params } = this.props;
+    const { boards, items } = this.props;
 
     if (boards.isAdding && !nextProps.boards.isAdding) {
       this.setState({
@@ -133,31 +95,6 @@ export class App extends Component {
           : "アイテムを追加しました"
       });
     }
-
-    const nextBoard = getBoardByIdFromBoards(nextProps.boards, nextProps.boards.currentBoardId);
-
-    if (nextBoard && nextBoard.name !== this.state.boardName && !nextProps.boards.isUpdating) {
-      this.setState({
-        boardName: nextBoard.name
-      });
-    }
-  }
-
-  // Navigation
-  handleMyItemsClick() {
-    this.push("/app/");
-  }
-
-  handleFeedsClick() {
-    this.push("/app/feeds");
-  }
-
-  handleLogoClick() {
-    this.push("/app/");
-  }
-
-  handleSettingsClick() {
-    this.push("/app/settings");
   }
 
   // Add board
@@ -176,7 +113,7 @@ export class App extends Component {
   handleAddBoardActionClick() {
     const { boards: { entities } } = this.props;
     const lastBoardId = entities[entities.length - 1]._id;
-    this.push(`/app/board/${lastBoardId}`);
+    this.props.dispatch(push(`/app/board/${lastBoardId}`));
     this.setState({ addBoardSnackbarOpen: false });
   }
 
@@ -208,7 +145,6 @@ export class App extends Component {
 
   // Add item
   handleAddItemFileOpen() {
-    const { boards: { entities } } = this.props;
     this.setState({ addItemFileDialogOpen: true });
   }
 
@@ -228,160 +164,15 @@ export class App extends Component {
     this.setState({ addItemFileSnackbarOpen: false });
   }
 
-  handleBoardsLayoutChange(layout) {
-    this.props.dispatch(updateBoardsLayoutRequest(layout));
-  }
-
-  handleItemsLayoutChange(layout) {
-    this.props.dispatch(updateItemsLayoutRequest(layout));
-  }
-
-  handleItemsSizeChange(size) {
-    this.setState({
-      itemsSize: size
-    });
-
-    this.debounceItemsSizeChange(size);
-  }
-
-  debounceItemsSizeChange(size) {
-    this.props.dispatch(updateItemsSizeRequest(size));
-  }
-
-  push(path) {
-    this.props.dispatch(push(path));
-  }
-
-  getHeaderMyItemsSubLeft() {
-    return (
-      <div>
-        <IconButton icon={<TagsIcon />} />
-        <IconButton icon={<StarIcon />} />
-        <SearchField
-          placeholder="Type search keyword"
-        />
-      </div>
-    );
-  }
-
-  getHeaderBoardsProps() {
-    const {
-      boardsLayout
-    } = this.props.settings;
-
-    return {
-      activeNavItem: NavItemActive.MY_ITEMS,
-      subLeft: this.getHeaderMyItemsSubLeft(),
-      subRight: (
-        <div>
-          <LayoutButtonGroup
-            value={boardsLayout}
-            onChange={this.handleBoardsLayoutChange}
-          >
-            <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>
-            <LayoutButton icon={<ListIcon />} value={Layout.LIST}></LayoutButton>
-          </LayoutButtonGroup>
-        </div>
-      )
-    };
-  }
-
-  getHeaderBoardDetailProps() {
-    const {
-      boards,
-      items,
-      params,
-      settings: { itemsLayout }
-    } = this.props;
-
-    const { isUpdating } = boards;
-    const { boardName, itemsSize } = this.state;
-    const board = getCurrentBoardFromBoards(boards);
-    const hasSelectedItem = getSelectedItemsFromItems(items).length > 0;
-
-    return {
-      activeNavItem: NavItemActive.MY_ITEMS,
-      mainTitle: board && (
-        <div>
-          <EditableText
-            icon={<PencilIcon />}
-            value={boardName}
-            onChange={this.handleBoardNameChange}
-            onComplete={this.handleBoardNameComplete}
-          />
-          <MDSpinner
-            size={20}
-            style={{
-              visibility: isUpdating ? "visible" : "hidden",
-              marginLeft: 10
-            }}
-          />
-        </div>
-      ),
-      subLeft: this.getHeaderMyItemsSubLeft(),
-      subTitle: board && (
-        <div>Total {board.itemCount} items</div>
-      ),
-      subRight: (
-        <div style={{ display: hasSelectedItem ? "none" : "block" }}>
-          {itemsLayout !== Layout.LIST && <Slider
-            min={140}
-            max={400}
-            value={itemsSize}
-            onChange={this.handleItemsSizeChange}
-          />}
-          <LayoutButtonGroup
-            value={itemsLayout}
-            onChange={this.handleItemsLayoutChange}
-          >
-            <LayoutButton icon={<RandomGridIcon />} value={Layout.RANDOM_GRID}></LayoutButton>
-            <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>
-            <LayoutButton icon={<ListIcon />} value={Layout.LIST}></LayoutButton>
-          </LayoutButtonGroup>
-        </div>
-      )
-    };
-  }
-
-  getHeaderFeedsProps() {
-    return {
-      activeNavItem: NavItemActive.FEEDS
-      /* TODO */
-    };
-  }
-
-  getHeaderSettingsProps() {
-    return {
-      mainTitle: <span>Settings</span>
-    };
-  }
-
-  getHeader404Props() {
-    return {/* TODO */};
-  }
-
-  getHeaderProps() {
-    const { location: { pathname } } = this.props;
-    const methodMaps = [
-      { method: this.getHeaderBoardsProps, regex: /^\/app\/?(boards\/?.*)?$/ },
-      { method: this.getHeaderBoardDetailProps, regex: /^\/app\/board\/(.+)$/ },
-      { method: this.getHeaderFeedsProps, regex: /^\/app\/feeds\/?.*$/ },
-      { method: this.getHeaderSettingsProps, regex: /^\/app\/settings\/?.*$/ },
-      { method: this.getHeader404Props, regex: /^.*$/ }
-    ];
-
-    const res = methodMaps.filter(obj =>
-      obj.regex.test(pathname)
-    ).shift();
-
-    return res.method.call(this);
-  }
-
   render() {
     const {
-      auth: { user },
+      auth, // eslint-disable-line no-unused-vars
+      settings, // eslint-disable-line no-unused-vars
+      dispatch, // eslint-disable-line no-unused-vars
+      children, // eslint-disable-line no-unused-vars
       boards,
-      items
+      items,
+      ...routerParams
     } = this.props;
 
     const {
@@ -393,11 +184,6 @@ export class App extends Component {
       addItemFileSnackbarMessage
     } = this.state;
 
-    const {
-      activeNavItem,
-      ...headerProps
-    } = this.getHeaderProps();
-
     const floatingButtonTooltipOrigin = {
       vertical: "middle",
       horizontal: "left"
@@ -406,16 +192,7 @@ export class App extends Component {
     return (
       <div className={b()}>
         {/* Header */}
-        <Header
-          user={user}
-          navItems={[
-            <NavItem onClick={this.handleMyItemsClick} active={activeNavItem === NavItemActive.MY_ITEMS}>My Items</NavItem>,
-            <NavItem onClick={this.handleFeedsClick} acive={activeNavItem === NavItemActive.FEEDS}>Feeds</NavItem>
-          ]}
-          onLogoClick={this.handleLogoClick}
-          onSettingsClick={this.handleSettingsClick}
-          {...headerProps}
-        />
+        <HeaderSubContainer {...routerParams} />
 
         {/* Content */}
         <div className={b("content")}>
@@ -496,4 +273,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(App);
+)(AppContainer);

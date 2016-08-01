@@ -18,7 +18,7 @@ import { fetchSettingsRequest, updateThemeRequest } from "../../actions/settings
 
 const b = bem("settings");
 
-export class Settings extends Component {
+export class SettingsContainer extends Component {
   static propTypes = {
   };
 
@@ -145,4 +145,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(Settings);
+)(SettingsContainer);

@@ -1,8 +1,13 @@
-import React from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { signInRequest } from "../actions/auth";
 
-class SignIn extends React.Component {
+class SignInContainer extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func,
+    auth: PropTypes.object
+  };
+
   handleSignInClick(e) {
     e.preventDefault();
     const { authenticateURL } = this.props.auth;
@@ -21,4 +26,4 @@ class SignIn extends React.Component {
 
 export default connect(state => ({
   auth: state.auth
-}))(SignIn);
+}))(SignInContainer);

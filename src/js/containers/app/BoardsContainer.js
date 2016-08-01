@@ -9,7 +9,7 @@ import { CardGroup, BoardCard } from "../../components/ui/";
 
 const b = bem("boards");
 
-export class Boards extends Component {
+export class BoardsContainer extends Component {
   static propTypes = {
   };
 
@@ -89,4 +89,4 @@ export default connect(
     settings: state.settings,
     boards: state.boards
   })
-)(Boards);
+)(BoardsContainer);

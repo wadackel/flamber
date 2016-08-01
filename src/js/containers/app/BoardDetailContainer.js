@@ -34,7 +34,7 @@ import {
 
 const b = bem("board-detail");
 
-export class BoardDetail extends Component {
+export class BoardDetailContainer extends Component {
   static propTypes = {
   };
 
@@ -286,4 +286,4 @@ export default connect(
     boards: state.boards,
     items: state.items
   })
-)(BoardDetail);
+)(BoardDetailContainer);

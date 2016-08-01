@@ -1,8 +1,9 @@
+/* eslint-disable */
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 
-class Landing extends React.Component {
+class LandingContainer extends React.Component {
   renderUser() {
     const { user } = this.props.auth;
     if (!user) return null;
@@ -33,4 +34,4 @@ class Landing extends React.Component {
 
 export default connect(
   state => ({ auth: state.auth })
-)(Landing);
+)(LandingContainer);
