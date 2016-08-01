@@ -141,7 +141,7 @@ router.delete("/multiple", (req, res) => {
   Promise.all(body.map(item => deleteItem(drive, item)))
     .then(items => {
       res.json({
-        stauts: "ok",
+        status: "ok",
         items
       });
     })
