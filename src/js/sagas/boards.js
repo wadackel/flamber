@@ -116,6 +116,19 @@ export function *handleSelectedItemsMoveSuccess() {
   }
 }
 
+export function *handleSelectedItemsDeleteSuccess() {
+  while (true) {
+    const { payload } = yield take(Items.SELECTED_ITEMS_DELETE_SUCCESS);
+    const boards = yield payload.map(o => select(getBoardById, o.boardId));
+    const newBoards = _.uniq(boards, "_id").map(o => ({
+      ...o,
+      itemCount: o.itemCount - payload.filter(i => o._id === i.boardId).length
+    }));
+
+    yield newBoards.map(o => put(Boards.updateBoardRequest(o)));
+  }
+}
+
 export default function *rootSaga() {
   yield [
     fork(handleFetchBoardsRequest),
@@ -125,6 +138,7 @@ export default function *rootSaga() {
     fork(handleAddItemSuccess),
     fork(handleDeleteItemSuccess),
     fork(handleMoveItemBoardSuccess),
-    fork(handleSelectedItemsMoveSuccess)
+    fork(handleSelectedItemsMoveSuccess),
+    fork(handleSelectedItemsDeleteSuccess)
   ];
 }
