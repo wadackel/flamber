@@ -9,6 +9,11 @@ export function fetchBoards() {
     .then(res => res.boards);
 }
 
+export function fetchBoard(id) {
+  return fetch(`${BOARDS_ENDPOINT}/${id}`)
+    .then(res => res.board);
+}
+
 export function addBoard(name) {
   return fetchJSON(BOARDS_ENDPOINT, { name })
     .then(res => res.board);
@@ -20,6 +25,6 @@ export function updateBoard(board) {
 }
 
 export function deleteBoard(id) {
-  return fetchJSON(BOARDS_ENDPOINT, { _id: id }, "DELETE")
+  return fetchJSON(BOARDS_ENDPOINT, { id }, "DELETE")
     .then(() => id);
 }

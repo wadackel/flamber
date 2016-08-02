@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import { fetchBoardsRequest, deleteBoardRequest } from "../../actions/boards";
+import { deleteBoardRequest } from "../../actions/boards";
 import { CardGroup, BoardCard } from "../../components/ui/";
 
 const b = bem("boards");
@@ -25,10 +25,6 @@ export class BoardsContainer extends Component {
       "handleWillLeave",
       "handleWillEnter"
     ], this);
-  }
-
-  componentDidMount() {
-    this.props.dispatch(fetchBoardsRequest());
   }
 
   handleEdit(id) {
@@ -68,8 +64,8 @@ export class BoardsContainer extends Component {
         >
           {boards.entities.map(board =>
             <BoardCard
-              key={board._id}
-              id={board._id}
+              key={board.id}
+              id={board.id}
               title={board.name}
               image={board.firstItem ? board.firstItem.thumbnail : "/images/default.png"}
               layout={boardsLayout}
