@@ -60,13 +60,12 @@
 
 %card-media-item {
   @include absolute(0, 0, 0, 0, 1);
-  @include transition(all, $card-duration);
   display: block;
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover;
+  background-size: contain;
 }
 
 %card-media-item-active {
