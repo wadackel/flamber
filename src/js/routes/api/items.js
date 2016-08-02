@@ -51,10 +51,35 @@ function deleteItem(drive, targetItem) {
     .then(() => Promise.resolve(tmpItem));
 }
 
+function findOldestItem(boardId) {
+  return Item.findOne({ boardId })
+    .sort({ created: -1 });
+}
+
+function updateBoardFirstItemIfNeeded(items) {
+  return Promise.all(items.map(item => {
+    let board = null;
+
+    return Board.findOne({ firstItem: item._id })
+      .then(res => {
+        board = res;
+        return !board ? null : findOldestItem(board._id);
+      })
+      .then(res => {
+        if (res) {
+          board.firstItem = res._id;
+        }
+        return !res ? Promise.resolve(board) : board.save();
+      })
+      .then(() => item);
+  }));
+}
+
 
 router.get("/", (req, res) => {
   res.errorJSON("TODO");
 });
+
 
 router.get("/board/:boardId", (req, res) => {
   const { drive, params } = req;
@@ -67,6 +92,7 @@ router.get("/board/:boardId", (req, res) => {
     })
     .catch(res.errorJSON);
 });
+
 
 router.post("/", upload.single("file"), (req, res) => {
   const { drive, body, file } = req;
@@ -101,6 +127,7 @@ router.post("/", upload.single("file"), (req, res) => {
     .catch(res.errorJSON);
 });
 
+
 router.put("/", (req, res) => {
   const { drive, body } = req;
 
@@ -111,35 +138,17 @@ router.put("/", (req, res) => {
     .catch(res.errorJSON);
 });
 
-/* eslint-disable */
-// TODO: delete items update firstItem
+
 router.delete("/", (req, res) => {
   const { drive, body } = req;
 
   Promise.all(body.map(item => deleteItem(drive, item)))
-    .then(items => {
-      return Promise.all(items.map(item => {
-        let tmpBoard = null;
-
-        return Board.findOne({ firstItem: item._id })
-          .then(board => {
-            tmpBoard = board;
-            return !board ? null : Item
-              .findOne({ boardId: board._id })
-              .sort({ created: -1 });
-          })
-          .then(item => {
-            tmpBoard.firstItem = item._id;
-            return tmpBoard.save();
-          })
-          .catch(err => console.log(err));
-
-      })).then(() => items);
-    })
+    .then(updateBoardFirstItemIfNeeded)
     .then(items => {
       res.json({ items });
     })
     .catch(res.errorJSON);
 });
+
 
 export default router;
