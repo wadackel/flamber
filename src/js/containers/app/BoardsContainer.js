@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
+import { getBoardEntities } from "../../selectors/boards";
 import { deleteBoardRequest } from "../../actions/boards";
 import { CardGroup, BoardCard } from "../../components/ui/";
 
@@ -52,10 +53,9 @@ export class BoardsContainer extends Component {
       settings: {
         boardsLayout
       },
-      boards
+      boards,
+      boardEntities
     } = this.props;
-
-    console.log(boards);
 
     return (
       <div className={`container ${b()}`}>
@@ -64,10 +64,11 @@ export class BoardsContainer extends Component {
           gutter={30}
           layout={boardsLayout}
         >
-          {boards.map(board =>
+          {boardEntities.map(board =>
             <BoardCard
               key={board.id}
               id={board.id}
+              processing={board.isDeleting}
               title={board.name}
               image={board.firstItem ? board.firstItem.thumbnail : "/images/default.png"}
               layout={boardsLayout}
@@ -84,16 +85,12 @@ export class BoardsContainer extends Component {
 }
 
 export default connect(
-  state => {
-    const { settings } = state;
-    const boards = state.boards.results.map(id => state.entities.boards[id]);
-    return { settings, boards };
-  },
+  state => ({
+    settings: state.settings,
+    boards: state.boards,
+    boardEntities: getBoardEntities(state)
+  }),
   null,
   null,
   { pure: false }
-  // state => ({
-  //   settings: state.settings,
-  //   boards: state.boards
-  // })
 )(BoardsContainer);

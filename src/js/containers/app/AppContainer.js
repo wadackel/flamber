@@ -14,7 +14,7 @@ import {
   updateBoardRequest
 } from "../../actions/boards";
 import { addItemRequest } from "../../actions/items";
-import { getBoardByIdFromBoards } from "../../selectors/boards";
+import { getBoardEntities, getBoardByIdFromBoards } from "../../selectors/boards";
 import {
   HeaderSubContainer
 } from "./";
@@ -127,15 +127,16 @@ export class AppContainer extends Component {
   }
 
   handleBoardNameComplete(value) {
-    const { boards, params } = this.props;
-    const board = getBoardByIdFromBoards(boards, params.id);
-
-    this.props.dispatch(updateBoardRequest({
-      ...board,
-      name: value
-    }));
-
-    this.setState({ boardName: value });
+    // TODO
+    // const { boards, params } = this.props;
+    // const board = getBoardByIdFromBoards(boards, params.id);
+    //
+    // this.props.dispatch(updateBoardRequest({
+    //   ...board,
+    //   name: value
+    // }));
+    //
+    // this.setState({ boardName: value });
   }
 
   // Add item (link)
@@ -171,6 +172,7 @@ export class AppContainer extends Component {
       dispatch, // eslint-disable-line no-unused-vars
       children, // eslint-disable-line no-unused-vars
       boards,
+      boardEntities,
       items,
       ...routerParams
     } = this.props;
@@ -243,9 +245,9 @@ export class AppContainer extends Component {
         <AddItemFileDialog
           processing={boards.isFetching || items.isAdding}
           open={addItemFileDialogOpen}
-          selectBoards={boards.map(id => ({
+          selectBoards={boardEntities.map(board => ({
             name: board.name,
-            value: id
+            value: board.id
           }))}
           defaultBoard={boards.currentBoardId}
           onRequestClose={this.handleAddItemFileClose}
@@ -264,11 +266,13 @@ export class AppContainer extends Component {
 }
 
 export default connect(
-  state => {
-    const { entities, auth, settings, items } = state;
-    const boards = state.boards.results.map(id => state.entities.boards[id]);
-    return { auth, settings, boards, items };
-  },
+  state => ({
+    auth: state.auth,
+    settings: state.settings,
+    boards: state.boards,
+    boardEntities: getBoardEntities(state),
+    items: state.items
+  }),
   null,
   null,
   { pure: false }
