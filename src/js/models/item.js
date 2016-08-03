@@ -32,7 +32,7 @@ ItemSchema.statics.appendByFile = function(drive, { file, boardId, palette }) {
   return uploadItemFile(drive, file)
     .then(res => {
       const { width, height } = res.imageMediaMetadata;
-      const item = this.create({
+      const item = new this({
         fileId: res.id,
         name: file.originalname,
         thumbnail: res.thumbnailLink,

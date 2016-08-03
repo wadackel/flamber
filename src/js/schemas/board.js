@@ -1,9 +1,16 @@
-import { Schema } from "normalizr";
+import { Schema, arrayOf } from "normalizr";
+import ItemSchema from "./item";
 
-export default new Schema("boards", {
+const BoardSchema = new Schema("boards", {
   defaults: {
     select: false,
     isUpdating: false,
     isDeleting: false
   }
 });
+
+BoardSchema.define({
+  items: arrayOf(ItemSchema)
+});
+
+export default BoardSchema;

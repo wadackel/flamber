@@ -4,7 +4,7 @@ import * as Boards from "../../actions/boards";
 
 export default handleActions({
   [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
-    payload.entities.boards
+    payload.entities.boards || {}
   ),
 
   [Boards.ADD_BOARD_SUCCESS]: (state, { payload }) => (

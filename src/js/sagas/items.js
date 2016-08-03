@@ -1,27 +1,31 @@
 /* eslint-disable */
+import { normalize, arrayOf } from "normalizr";
 import { takeEvery, takeLatest } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
+import ItemSchema from "../schemas/item";
 import * as Services from "../services/items";
-import { getCurrentBoard } from "../selectors/boards";
-import { getSelectedItems, getItemById } from "../selectors/items";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
 
+export function *handleAddItemRequest() {
+  while (true) {
+    const { payload } = yield take(Items.ADD_ITEM_REQUEST);
 
-export function *handleAddItemRequest({ payload }) {
-  console.log(payload);
-}
-
-export function *handleAddItemSuccess({ payload }) {
-  // TODO:
+    try {
+      const rawItem = yield call(Services.addItemByFile, payload);
+      const item = normalize(rawItem, ItemSchema);
+      yield put(Items.addItemSuccess(item));
+    } catch (error) {
+      yield put(Items.addItemFailure(error));
+    }
+  }
 }
 
 export function *addItemSaga() {
   yield [
-    takeEvery(Items.ADD_ITEM_REQUEST, handleAddItemRequest),
-    takeEvery(Items.ADD_ITEM_SUCCESS, handleAddItemSuccess),
-  ];
+    fork(handleAddItemRequest)
+  ]
 }
 
 

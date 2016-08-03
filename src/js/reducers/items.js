@@ -1,6 +1,7 @@
 /* eslint-disable */
 import _ from "lodash";
 import { handleActions } from "redux-actions";
+import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
 const initialState = {
@@ -10,19 +11,25 @@ const initialState = {
   isDeleting: false,
   isMoving: false,
   currentItemId: null,
-  entities: [],
+  results: [],
   error: null
 };
 
-function mapItemToEntity(item) {
-  return {
-    select: false,
-    isUpdating: false,
-    isMoving: false,
-    isDeleting: false,
-    ...item
-  };
-}
-
 export default handleActions({
+  [Items.ADD_ITEM_REQUEST]: state => ({
+    ...state,
+    isAdding: true
+  }),
+
+  [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    results: [...state.results, payload.result]
+  }),
+
+  [Items.ADD_ITEM_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    error: payload
+  }),
 }, initialState);
