@@ -1,6 +1,14 @@
 import { createAction } from "redux-actions";
 
 
+// Add & Remove entity
+export const ADD_BOARD = "ADD_BOARD";
+export const addBoard = createAction(ADD_BOARD);
+
+export const REMOVE_BOARD = "REMOVE_BOARD";
+export const removeBoard = createAction(REMOVE_BOARD);
+
+
 // Fetch list
 export const FETCH_BOARDS_REQUEST = "FETCH_BOARDS_REQUEST";
 export const FETCH_BOARDS_SUCCESS = "FETCH_BOARDS_SUCCESS";

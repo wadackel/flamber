@@ -1,10 +1,9 @@
+/* eslint-disable */
 import mongoose, { Schema } from "mongoose";
-import { updateItemThumbnailIfNeeded } from "../utils/drive/items";
 
 const BoardSchema = new Schema({
   name: { type: String, required: true },
-  firstItem: { type: Schema.Types.ObjectId, ref: "Item" },
-  itemCount: { type: Number, default: 0 },
+  items: [{ type: Schema.Types.ObjectId, ref: "Item" }],
   created: { type: Date, default: Date.now },
   modified: { type: Date, default: Date.now }
 });
@@ -12,15 +11,12 @@ const BoardSchema = new Schema({
 BoardSchema.set("toJSON", { virtuals: true });
 BoardSchema.set("toObject", { virtuals: true });
 
-BoardSchema.statics.findAll = drive =>
-  this.find()
-    .populate("firstItem")
-    .then(boards =>
-      Promise.all(boards.map(board =>
-        !board.firstItem
-          ? board
-          : updateItemThumbnailIfNeeded(drive, board.firstItem)
-      )).then(() => boards)
-    );
+
+// Instance methods
+BoardSchema.statics.findAll = function(drive, query = {}) {
+  return this.find(query)
+    .populate("items");
+};
+
 
 export default mongoose.model("Board", BoardSchema);

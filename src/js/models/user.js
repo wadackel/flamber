@@ -10,6 +10,8 @@ const UserSchema = new Schema({
   installed: { type: Boolean, default: false },
   created: { type: Date, default: Date.now },
   modified: { type: Date, default: Date.now }
+}, {
+  versionKey: false
 });
 
 UserSchema.createFromGoogle = function(profile) {
