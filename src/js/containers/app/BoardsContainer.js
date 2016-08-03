@@ -55,6 +55,8 @@ export class BoardsContainer extends Component {
       boards
     } = this.props;
 
+    console.log(boards);
+
     return (
       <div className={`container ${b()}`}>
         <CardGroup
@@ -62,7 +64,7 @@ export class BoardsContainer extends Component {
           gutter={30}
           layout={boardsLayout}
         >
-          {boards.entities.map(board =>
+          {boards.map(board =>
             <BoardCard
               key={board.id}
               id={board.id}
@@ -82,8 +84,16 @@ export class BoardsContainer extends Component {
 }
 
 export default connect(
-  state => ({
-    settings: state.settings,
-    boards: state.boards
-  })
+  state => {
+    const { settings } = state;
+    const boards = state.boards.results.map(id => state.entities.boards[id]);
+    return { settings, boards };
+  },
+  null,
+  null,
+  { pure: false }
+  // state => ({
+  //   settings: state.settings,
+  //   boards: state.boards
+  // })
 )(BoardsContainer);

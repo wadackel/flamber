@@ -243,9 +243,9 @@ export class AppContainer extends Component {
         <AddItemFileDialog
           processing={boards.isFetching || items.isAdding}
           open={addItemFileDialogOpen}
-          selectBoards={boards.entities.map(board => ({
+          selectBoards={boards.map(id => ({
             name: board.name,
-            value: board._id
+            value: id
           }))}
           defaultBoard={boards.currentBoardId}
           onRequestClose={this.handleAddItemFileClose}
@@ -264,12 +264,11 @@ export class AppContainer extends Component {
 }
 
 export default connect(
-  state => ({
-    auth: state.auth,
-    settings: state.settings,
-    boards: state.boards,
-    items: state.items
-  }),
+  state => {
+    const { entities, auth, settings, items } = state;
+    const boards = state.boards.results.map(id => state.entities.boards[id]);
+    return { auth, settings, boards, items };
+  },
   null,
   null,
   { pure: false }

@@ -1,8 +1,11 @@
 /* eslint-disable */
 import _ from "lodash";
 import deepEqual from "deep-equal";
+import { normalize, arrayOf } from "normalizr";
 import { takeEvery } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
+import BoardSchema from "../schemas/boards";
+import ItemSchema from "../schemas/items";
 import { getBoardById } from "../selectors/boards";
 import * as Services from "../services/boards";
 import * as Boards from "../actions/boards";
@@ -14,8 +17,9 @@ export function *handleFetchBoardsRequest() {
     yield take(Boards.FETCH_BOARDS_REQUEST);
 
     try {
-      const entities = yield call(Services.fetchBoards);
-      yield put(Boards.fetchBoardsSuccess(entities));
+      const rawBoards = yield call(Services.fetchBoards);
+      const boards = normalize(rawBoards, arrayOf(BoardSchema));
+      yield put(Boards.fetchBoardsSuccess(boards));
     } catch (error) {
       yield put(Boards.fetchBoardsFailure(error));
     }

@@ -6,7 +6,7 @@ const initialState = {
   isFetching: false,
   isAdding: false,
   currentBoardId: null,
-  entities: [],
+  results: [],
   error: null
 };
 
@@ -43,7 +43,7 @@ export default handleActions({
   [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => ({
     ...state,
     isFetching: false,
-    entities: payload.map(mapBoardToEntity)
+    results: payload.result
   }),
 
   [Boards.FETCH_BOARDS_FAILURE]: (state, { payload }) => ({
@@ -75,7 +75,7 @@ export default handleActions({
   [Boards.DELETE_BOARD_REQUEST]: (state, { payload }) => ({
     ...state,
     isDeleting: true,
-    entities: state.entities.map(entity =>
+    entities: state.results.map(entity =>
       entity.id !== payload ? entity : {
         ...entity,
         isDeleting: true
