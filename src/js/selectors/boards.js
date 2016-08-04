@@ -15,3 +15,12 @@ export function getCurrentBoardFromBoards(boards) {
 export function getCurrentBoard(state) {
   return getCurrentBoardFromBoards(state.boards);
 }
+
+
+export function getBoardEntityById(state, id) {
+  return state.entities.boards[id];
+}
+
+export function getBoardEntities(state) {
+  return state.boards.results.map(id => state.entities.boards[id]);
+}

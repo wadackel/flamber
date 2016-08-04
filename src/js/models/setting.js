@@ -7,6 +7,8 @@ const SettingSchema = new Schema({
   boardsLayout: { type: String, default: Layout.GRID },
   itemsLayout: { type: String, default: Layout.GRID },
   itemsSize: { type: Number, default: 280 }
+}, {
+  versionKey: false
 });
 
 const Setting = mongoose.model("Setting", SettingSchema);

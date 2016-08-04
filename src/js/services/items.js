@@ -10,18 +10,18 @@ export function fetchBoardItems(boardId) {
 }
 
 
-export function addItem({ file, palette, boardId }) {
+export function addItemByFile({ file, palette, boardId }) {
   const data = new FormData();
   data.append("file", file);
-  data.append("palette", palette);
   data.append("boardId", boardId);
+  data.append("palette", palette);
 
   const params = {
     method: "POST",
     body: data
   };
 
-  return fetch(ITEMS_ENDPOINT, params)
+  return fetch(`${ITEMS_ENDPOINT}/file`, params)
     .then(res => res.item);
 }
 

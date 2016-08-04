@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import { fetchBoardsRequest, deleteBoardRequest } from "../../actions/boards";
+import { getBoardEntities } from "../../selectors/boards";
+import { deleteBoardRequest } from "../../actions/boards";
 import { CardGroup, BoardCard } from "../../components/ui/";
 
 const b = bem("boards");
@@ -25,10 +26,6 @@ export class BoardsContainer extends Component {
       "handleWillLeave",
       "handleWillEnter"
     ], this);
-  }
-
-  componentDidMount() {
-    this.props.dispatch(fetchBoardsRequest());
   }
 
   handleEdit(id) {
@@ -56,7 +53,9 @@ export class BoardsContainer extends Component {
       settings: {
         boardsLayout
       },
-      boards
+      boards,
+      boardEntities,
+      itemEntities
     } = this.props;
 
     return (
@@ -66,19 +65,22 @@ export class BoardsContainer extends Component {
           gutter={30}
           layout={boardsLayout}
         >
-          {boards.entities.map(board =>
-            <BoardCard
-              key={board._id}
-              id={board._id}
+          {boardEntities.map(board => {
+            const firstItem = board.items.length > 0 ? itemEntities[board.items[0]] : null;
+
+            return <BoardCard
+              key={board.id}
+              id={board.id}
+              processing={board.isDeleting}
               title={board.name}
-              image={board.firstItem ? board.firstItem.thumbnail : "/TODO.png"}
+              image={firstItem ? firstItem.thumbnail : "/images/default.png"}
               layout={boardsLayout}
-              itemCount={board.itemCount}
+              itemCount={board.items.length}
               lastModified={new Date(board.modified)}
               onEdit={this.handleEdit}
               onDelete={this.handleDelete}
             />
-          )}
+          })}
         </CardGroup>
       </div>
     );
@@ -88,6 +90,11 @@ export class BoardsContainer extends Component {
 export default connect(
   state => ({
     settings: state.settings,
-    boards: state.boards
-  })
+    boards: state.boards,
+    boardEntities: getBoardEntities(state),
+    itemEntities: state.entities.items
+  }),
+  null,
+  null,
+  { pure: false }
 )(BoardsContainer);

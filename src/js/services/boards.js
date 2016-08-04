@@ -4,9 +4,9 @@ import { API_ROOT } from "../constants/application";
 export const BOARDS_ENDPOINT = `${API_ROOT}/boards`;
 
 
-export function fetchBoards() {
-  return fetch(BOARDS_ENDPOINT)
-    .then(res => res.boards);
+export function fetchBoard(id) {
+  return fetch(`${BOARDS_ENDPOINT}/${id}`)
+    .then(res => res.board);
 }
 
 export function addBoard(name) {
@@ -14,12 +14,17 @@ export function addBoard(name) {
     .then(res => res.board);
 }
 
-export function updateBoard(board) {
-  return fetchJSON(BOARDS_ENDPOINT, board, "PUT")
-    .then(res => res.board);
+export function fetchBoards() {
+  return fetch(BOARDS_ENDPOINT)
+    .then(res => res);
 }
 
-export function deleteBoard(id) {
-  return fetchJSON(BOARDS_ENDPOINT, { _id: id }, "DELETE")
-    .then(() => id);
+export function updateBoards(boards) {
+  return fetchJSON(BOARDS_ENDPOINT, boards, "PUT")
+    .then(res => res.boards);
+}
+
+export function deleteBoards(boards) {
+  return fetchJSON(BOARDS_ENDPOINT, boards, "DELETE")
+    .then(() => boards);
 }
