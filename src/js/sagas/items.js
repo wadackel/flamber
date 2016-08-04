@@ -13,9 +13,11 @@ export function *handleAddItemRequest() {
     const { payload } = yield take(Items.ADD_ITEM_REQUEST);
 
     try {
-      const rawItem = yield call(Services.addItemByFile, payload);
-      const item = normalize(rawItem, ItemSchema);
-      yield put(Items.addItemSuccess(item));
+      const response = yield call(Services.addItemByFile, payload);
+      const normalized = normalize(response, {
+        item: ItemSchema
+      });
+      yield put(Items.addItemSuccess(normalized));
     } catch (error) {
       yield put(Items.addItemFailure(error));
     }

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { handleActions } from "redux-actions";
 import * as Boards from "../../actions/boards";
+import * as Items from "../../actions/items";
 
 export default handleActions({
   [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
@@ -24,5 +25,15 @@ export default handleActions({
     _.pickBy(state, (entity, id) =>
       id !== payload.id
     )
+  ),
+
+  [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity => {
+      const item = payload.entities.items[payload.result.item];
+      return item.boardId !== entity.id ? entity : {
+        ...entity,
+        items: [...entity.items, item.id]
+      };
+    })
   )
 }, {});

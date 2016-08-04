@@ -24,7 +24,7 @@ export default handleActions({
   [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => ({
     ...state,
     isAdding: false,
-    results: [...state.results, payload.result]
+    results: [...state.results, payload.result.item]
   }),
 
   [Items.ADD_ITEM_FAILURE]: (state, { payload }) => ({
