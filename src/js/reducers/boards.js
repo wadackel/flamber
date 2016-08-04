@@ -66,4 +66,11 @@ export default handleActions({
     isDeleting: false,
     error: payload
   }),
+
+
+  // Current
+  [Boards.SET_CURRENT_BOARD]: (state, { payload }) => ({
+    ...state,
+    currentBoardId: payload
+  })
 }, initialState);

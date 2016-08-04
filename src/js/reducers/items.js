@@ -11,7 +11,6 @@ const initialState = {
   isDeleting: false,
   isMoving: false,
   currentItemId: null,
-  results: [],
   error: null
 };
 
@@ -24,7 +23,7 @@ export default handleActions({
   [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => ({
     ...state,
     isAdding: false,
-    results: [...state.results, payload.result.item]
+    error: null
   }),
 
   [Items.ADD_ITEM_FAILURE]: (state, { payload }) => ({
@@ -32,4 +31,7 @@ export default handleActions({
     isAdding: false,
     error: payload
   }),
+
+  [Boards.SET_CURRENT_BOARD]: (state, { payload }) => ({
+  })
 }, initialState);

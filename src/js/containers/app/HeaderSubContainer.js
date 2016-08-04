@@ -6,14 +6,8 @@ import { push } from "react-router-redux";
 import MDSpinner from "react-md-spinner";
 import * as Layout from "../../constants/layouts";
 import bindHandlers from "../../helpers/bind-handlers";
-import { getBoardByIdFromBoards, getCurrentBoardFromBoards } from "../../selectors/boards";
-import { getSelectedItemsFromItems } from "../../selectors/items";
-import {
-  updateItemsSizeRequest,
-  updateBoardsLayoutRequest,
-  updateItemsLayoutRequest
-} from "../../actions/settings";
-import { updateBoardRequest } from "../../actions/boards";
+import SettingActions from "../../actions/settings";
+import BoardActions from "../../actions/boards";
 import {
   Header,
   EditableText,
@@ -68,16 +62,6 @@ export class HeaderSubContainer extends Component {
     ], this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const nextBoard = getBoardByIdFromBoards(nextProps.boards, nextProps.boards.currentBoardId);
-
-    if (nextBoard && nextBoard.name !== this.state.boardName && !nextProps.boards.isUpdating) {
-      this.setState({
-        boardName: nextBoard.name
-      });
-    }
-  }
-
   // Navigation
   handleMyItemsClick() {
     this.push("/app/");
@@ -101,24 +85,16 @@ export class HeaderSubContainer extends Component {
   }
 
   handleBoardNameComplete(value) {
-    const { boards, params } = this.props;
-    const board = getBoardByIdFromBoards(boards, params.id);
-
-    this.props.dispatch(updateBoardRequest({
-      ...board,
-      name: value
-    }));
-
-    this.setState({ boardName: value });
+    // TODO
   }
 
   // Update layouts
   handleBoardsLayoutChange(layout) {
-    this.props.dispatch(updateBoardsLayoutRequest(layout));
+    this.props.dispatch(SettingActions.updateBoardsLayoutRequest(layout));
   }
 
   handleItemsLayoutChange(layout) {
-    this.props.dispatch(updateItemsLayoutRequest(layout));
+    this.props.dispatch(SettingActions.updateItemsLayoutRequest(layout));
   }
 
   handleItemsSizeChange(size) {
@@ -171,32 +147,31 @@ export class HeaderSubContainer extends Component {
 
     const { isUpdating } = boards;
     const { boardName, itemsSize } = this.state;
-    const board = getCurrentBoardFromBoards(boards);
-    const hasSelectedItem = getSelectedItemsFromItems(items).length > 0;
+    const hasSelectedItem = false;
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
-      mainTitle: board && (
-        <div>
-          <EditableText
-            icon={<PencilIcon />}
-            value={boardName}
-            onChange={this.handleBoardNameChange}
-            onComplete={this.handleBoardNameComplete}
-          />
-          <MDSpinner
-            size={20}
-            style={{
-              visibility: isUpdating ? "visible" : "hidden",
-              marginLeft: 10
-            }}
-          />
-        </div>
-      ),
+      // mainTitle: board && (
+      //   <div>
+      //     <EditableText
+      //       icon={<PencilIcon />}
+      //       value={boardName}
+      //       onChange={this.handleBoardNameChange}
+      //       onComplete={this.handleBoardNameComplete}
+      //     />
+      //     <MDSpinner
+      //       size={20}
+      //       style={{
+      //         visibility: isUpdating ? "visible" : "hidden",
+      //         marginLeft: 10
+      //       }}
+      //     />
+      //   </div>
+      // ),
       subLeft: this.getHeaderMyItemsSubLeft(),
-      subTitle: board && (
-        <div>Total {board.itemCount} items</div>
-      ),
+      // subTitle: board && (
+      //   <div>Total {board.itemCount} items</div>
+      // ),
       subRight: (
         <div style={{ display: hasSelectedItem ? "none" : "block" }}>
           {itemsLayout !== Layout.LIST && <Slider
@@ -254,7 +229,7 @@ export class HeaderSubContainer extends Component {
   }
 
   debounceItemsSizeChange(size) {
-    this.props.dispatch(updateItemsSizeRequest(size));
+    this.props.dispatch(SettingActions.updateItemsSizeRequest(size));
   }
 
   push(path) {

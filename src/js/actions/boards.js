@@ -1,15 +1,7 @@
 import { createAction } from "redux-actions";
 
 
-// Add & Remove entity
-export const ADD_BOARD = "ADD_BOARD";
-export const addBoard = createAction(ADD_BOARD);
-
-export const REMOVE_BOARD = "REMOVE_BOARD";
-export const removeBoard = createAction(REMOVE_BOARD);
-
-
-// Fetch list
+// Fetch
 export const FETCH_BOARDS_REQUEST = "FETCH_BOARDS_REQUEST";
 export const FETCH_BOARDS_SUCCESS = "FETCH_BOARDS_SUCCESS";
 export const FETCH_BOARDS_FAILURE = "FETCH_BOARDS_FAILURE";
@@ -17,16 +9,6 @@ export const FETCH_BOARDS_FAILURE = "FETCH_BOARDS_FAILURE";
 export const fetchBoardsRequest = createAction(FETCH_BOARDS_REQUEST);
 export const fetchBoardsSuccess = createAction(FETCH_BOARDS_SUCCESS);
 export const fetchBoardsFailure = createAction(FETCH_BOARDS_FAILURE);
-
-
-// Fetch
-export const FETCH_BOARD_REQUEST = "FETCH_BOARD_REQUEST";
-export const FETCH_BOARD_SUCCESS = "FETCH_BOARD_SUCCESS";
-export const FETCH_BOARD_FAILURE = "FETCH_BOARD_FAILURE";
-
-export const fetchBoardRequest = createAction(FETCH_BOARD_REQUEST);
-export const fetchBoardSuccess = createAction(FETCH_BOARD_SUCCESS);
-export const fetchBoardFailure = createAction(FETCH_BOARD_FAILURE);
 
 
 // Add
@@ -60,5 +42,5 @@ export const deleteBoardFailure = createAction(DELETE_BOARD_FAILURE);
 
 
 // Current
-export const CURRENT_BOARD = "CURRENT_BOARD";
-export const currentBoard = createAction(CURRENT_BOARD);
+export const SET_CURRENT_BOARD = "SET_CURRENT_BOARD";
+export const setCurrentBoard = createAction(SET_CURRENT_BOARD);
