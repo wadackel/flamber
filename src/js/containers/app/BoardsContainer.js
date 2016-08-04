@@ -54,7 +54,8 @@ export class BoardsContainer extends Component {
         boardsLayout
       },
       boards,
-      boardEntities
+      boardEntities,
+      itemEntities
     } = this.props;
 
     return (
@@ -64,20 +65,22 @@ export class BoardsContainer extends Component {
           gutter={30}
           layout={boardsLayout}
         >
-          {boardEntities.map(board =>
-            <BoardCard
+          {boardEntities.map(board => {
+            const firstItem = board.items.length > 0 ? itemEntities[board.items[0]] : null;
+
+            return <BoardCard
               key={board.id}
               id={board.id}
               processing={board.isDeleting}
               title={board.name}
-              image={board.firstItem ? board.firstItem.thumbnail : "/images/default.png"}
+              image={firstItem ? firstItem.thumbnail : "/images/default.png"}
               layout={boardsLayout}
-              itemCount={board.itemCount}
+              itemCount={board.items.length}
               lastModified={new Date(board.modified)}
               onEdit={this.handleEdit}
               onDelete={this.handleDelete}
             />
-          )}
+          })}
         </CardGroup>
       </div>
     );
@@ -88,7 +91,8 @@ export default connect(
   state => ({
     settings: state.settings,
     boards: state.boards,
-    boardEntities: getBoardEntities(state)
+    boardEntities: getBoardEntities(state),
+    itemEntities: state.entities.items
   }),
   null,
   null,

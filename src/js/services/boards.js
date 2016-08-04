@@ -16,7 +16,7 @@ export function addBoard(name) {
 
 export function fetchBoards() {
   return fetch(BOARDS_ENDPOINT)
-    .then(res => res.boards);
+    .then(res => res);
 }
 
 export function updateBoards(boards) {

@@ -1,5 +1,6 @@
 /* eslint-disable */
 import mongoose, { Schema } from "mongoose";
+import Item from "./item";
 
 const BoardSchema = new Schema({
   name: { type: String, required: true },
@@ -15,7 +16,12 @@ BoardSchema.set("toObject", { virtuals: true });
 // Instance methods
 BoardSchema.statics.findAll = function(drive, query = {}) {
   return this.find(query)
-    .populate("items");
+    .populate("items")
+    .then(boards =>
+      Promise.all(boards.map(board =>
+        Item.updateEntitiesThumbnailIfNeeded(drive, board.items)
+      )).then(() => boards)
+    );
 };
 
 

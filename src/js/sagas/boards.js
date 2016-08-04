@@ -17,9 +17,11 @@ export function *handleFetchBoardsRequest() {
     yield take(Boards.FETCH_BOARDS_REQUEST);
 
     try {
-      const rawBoards = yield call(Services.fetchBoards);
-      const boards = normalize(rawBoards, arrayOf(BoardSchema));
-      yield put(Boards.fetchBoardsSuccess(boards));
+      const response = yield call(Services.fetchBoards);
+      const normalized = normalize(response, {
+        boards: arrayOf(BoardSchema)
+      });
+      yield put(Boards.fetchBoardsSuccess(normalized));
     } catch (error) {
       yield put(Boards.fetchBoardsFailure(error));
     }

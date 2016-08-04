@@ -20,7 +20,7 @@ export default handleActions({
   [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => ({
     ...state,
     isFetching: false,
-    results: payload.result
+    results: payload.result.boards
   }),
 
   [Boards.FETCH_BOARDS_FAILURE]: (state, { payload }) => ({

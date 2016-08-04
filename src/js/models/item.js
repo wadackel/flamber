@@ -53,10 +53,10 @@ ItemSchema.statics.appendByFile = function(drive, { file, boardId, palette }) {
     });
 };
 
-
-// Instance methods
-ItemSchema.methods.updateThumbnailIfNeeded = function(drive) {
-  return updateItemThumbnailIfNeeded(drive, this);
+ItemSchema.statics.updateEntitiesThumbnailIfNeeded = function(drive, entities) {
+  return Promise.all(entities.map(entity =>
+    updateItemThumbnailIfNeeded(drive, entity)
+  ));
 };
 
 
