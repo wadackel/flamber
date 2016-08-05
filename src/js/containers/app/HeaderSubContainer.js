@@ -103,7 +103,7 @@ export class HeaderSubContainer extends Component {
       name
     };
 
-    this.props.dispatch(BoardActions.updateBoardRequest(board));
+    this.props.dispatch(BoardActions.updateBoardIfNeeded(board));
   }
 
   // Update layouts

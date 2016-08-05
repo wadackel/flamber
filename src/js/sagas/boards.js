@@ -46,6 +46,14 @@ export function *addBoardSaga() {
 }
 
 
+export function *handleUpdateBoardIfNeeded({ payload }) {
+  const entity = yield select(getBoardEntityById, payload.id);
+
+  if (!deepEqual(entity, payload)) {
+    yield put(Boards.updateBoardRequest(payload));
+  }
+}
+
 export function *handleUpdateBoardRequest({ payload }) {
   try {
     const response = yield call(Services.updateBoards, [payload]);
@@ -61,6 +69,7 @@ export function *handleUpdateBoardRequest({ payload }) {
 
 export function *updateBoardSaga() {
   yield [
+    takeEvery(Boards.UPDATE_BOARD_IF_NEEDED, handleUpdateBoardIfNeeded),
     takeEvery(Boards.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest)
   ]
 }
