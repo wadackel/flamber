@@ -8,17 +8,26 @@ import rootSaga from "../sagas";
 export default function configureStore(history, initialState) {
   const sagaMiddleware = createSagaMiddleware();
   const logger = createLogger();
+  let middlewares = null;
+
+  if (typeof window !== "undefined") {
+    middlewares = applyMiddleware(
+      routerMiddleware(history),
+      sagaMiddleware,
+      logger
+    );
+
+  } else {
+    middlewares = applyMiddleware(
+      routerMiddleware(history),
+      sagaMiddleware
+    );
+  }
 
   const store = createStore(
     rootReducer,
     initialState,
-    compose(
-      applyMiddleware(
-        routerMiddleware(history),
-        sagaMiddleware,
-        logger
-      )
-    )
+    compose(middlewares)
   );
 
   sagaMiddleware.run(rootSaga);
