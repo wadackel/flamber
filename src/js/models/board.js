@@ -1,4 +1,5 @@
 /* eslint-disable */
+import _ from "lodash";
 import mongoose, { Schema } from "mongoose";
 import Item from "./item";
 
@@ -34,6 +35,23 @@ BoardSchema.statics.removeById = function(drive, id) {
       this.findByIdAndRemove(entity.id)
         .then(() => entity)
     );
+};
+
+BoardSchema.statics.updateByIdFromObject = function(id, newProps) {
+  const fields = _.keys(this.schema.paths);
+
+  return this.findById(id)
+    .then(entity => {
+      fields.forEach(key => {
+        if (newProps.hasOwnProperty(key)) {
+          entity[key] = newProps[key];
+        }
+      });
+
+      entity.modified = new Date();
+
+      return entity.save();
+    });
 };
 
 

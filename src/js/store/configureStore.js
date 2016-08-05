@@ -15,10 +15,8 @@ export default function configureStore(history, initialState) {
     compose(
       applyMiddleware(
         routerMiddleware(history),
-        sagaMiddleware
-        // routerMiddleware(history),
-        // sagaMiddleware,
-        // logger
+        sagaMiddleware,
+        logger
       )
     )
   );

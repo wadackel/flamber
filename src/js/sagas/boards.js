@@ -31,9 +31,9 @@ export function *handleFetchBoardsRequest() {
 
 export function *handleAddBoardRequest({ payload }) {
   try {
-    const rawBoard = yield call(Services.addBoard, payload);
-    const boards = normalize(rawBoard, BoardSchema);
-    yield put(Boards.addBoardSuccess(boards));
+    const response = yield call(Services.addBoard, payload);
+    const normalized = normalize(response, BoardSchema);
+    yield put(Boards.addBoardSuccess(normalized));
   } catch (error) {
     yield put(Boards.addBoardFailure(error));
   }
@@ -43,6 +43,26 @@ export function *addBoardSaga() {
   yield [
     takeEvery(Boards.ADD_BOARD_REQUEST, handleAddBoardRequest)
   ];
+}
+
+
+export function *handleUpdateBoardRequest({ payload }) {
+  try {
+    const response = yield call(Services.updateBoards, [payload]);
+    const normalized = normalize(response, {
+      boards: arrayOf(BoardSchema)
+    });
+
+    yield put(Boards.updateBoardSuccess(normalized));
+  } catch (error) {
+    yield put(Boards.updateBoardFailure(error));
+  }
+}
+
+export function *updateBoardSaga() {
+  yield [
+    takeEvery(Boards.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest)
+  ]
 }
 
 
@@ -71,6 +91,7 @@ export default function *boardsSaga() {
   yield [
     fork(handleFetchBoardsRequest),
     fork(addBoardSaga),
+    fork(updateBoardSaga),
     fork(deleteBoardSaga)
   ];
 }

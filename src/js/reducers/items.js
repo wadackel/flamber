@@ -7,9 +7,6 @@ import * as Items from "../actions/items";
 const initialState = {
   isFetching: false,
   isAdding: false,
-  isUpdating: false,
-  isDeleting: false,
-  isMoving: false,
   currentItemId: null,
   error: null
 };

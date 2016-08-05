@@ -21,7 +21,7 @@ export function fetchBoards() {
 
 export function updateBoards(boards) {
   return fetchJSON(BOARDS_ENDPOINT, boards, "PUT")
-    .then(res => res.boards);
+    .then(res => res);
 }
 
 export function deleteBoards(boards) {

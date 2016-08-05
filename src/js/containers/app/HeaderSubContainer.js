@@ -1,13 +1,15 @@
 /* eslint-disable */
 import _ from "lodash";
+import deepEqual from "deep-equal";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import MDSpinner from "react-md-spinner";
 import * as Layout from "../../constants/layouts";
 import bindHandlers from "../../helpers/bind-handlers";
-import SettingActions from "../../actions/settings";
-import BoardActions from "../../actions/boards";
+import * as SettingActions from "../../actions/settings";
+import * as BoardActions from "../../actions/boards";
+import { getCurrentBoard } from "../../selectors/boards";
 import {
   Header,
   EditableText,
@@ -62,6 +64,16 @@ export class HeaderSubContainer extends Component {
     ], this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { props } = this;
+
+    if (!deepEqual(props.currentBoard, nextProps.currentBoard)) {
+      if (!nextProps.currentBoard.isUpdating) {
+        this.setState({ boardName: nextProps.currentBoard.name });
+      }
+    }
+  }
+
   // Navigation
   handleMyItemsClick() {
     this.push("/app/");
@@ -84,8 +96,14 @@ export class HeaderSubContainer extends Component {
     this.setState({ boardName: value });
   }
 
-  handleBoardNameComplete(value) {
-    // TODO
+  handleBoardNameComplete(name) {
+    const { currentBoard } = this.props;
+    const board = {
+      ...currentBoard,
+      name
+    };
+
+    this.props.dispatch(BoardActions.updateBoardRequest(board));
   }
 
   // Update layouts
@@ -141,37 +159,37 @@ export class HeaderSubContainer extends Component {
   getHeaderBoardDetailProps() {
     const {
       boards,
+      currentBoard,
       items,
       settings: { itemsLayout }
     } = this.props;
 
-    const { isUpdating } = boards;
     const { boardName, itemsSize } = this.state;
-    const hasSelectedItem = false;
+    const hasSelectedItem = false; //TODO
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
-      // mainTitle: board && (
-      //   <div>
-      //     <EditableText
-      //       icon={<PencilIcon />}
-      //       value={boardName}
-      //       onChange={this.handleBoardNameChange}
-      //       onComplete={this.handleBoardNameComplete}
-      //     />
-      //     <MDSpinner
-      //       size={20}
-      //       style={{
-      //         visibility: isUpdating ? "visible" : "hidden",
-      //         marginLeft: 10
-      //       }}
-      //     />
-      //   </div>
-      // ),
+      mainTitle: currentBoard && (
+        <div>
+          <EditableText
+            icon={<PencilIcon />}
+            value={boardName}
+            onChange={this.handleBoardNameChange}
+            onComplete={this.handleBoardNameComplete}
+          />
+          <MDSpinner
+            size={20}
+            style={{
+              visibility: currentBoard.isUpdating ? "visible" : "hidden",
+              marginLeft: 10
+            }}
+          />
+        </div>
+      ),
       subLeft: this.getHeaderMyItemsSubLeft(),
-      // subTitle: board && (
-      //   <div>Total {board.itemCount} items</div>
-      // ),
+      subTitle: currentBoard && (
+        <div>Total {currentBoard.items.length} items</div>
+      ),
       subRight: (
         <div style={{ display: hasSelectedItem ? "none" : "block" }}>
           {itemsLayout !== Layout.LIST && <Slider
@@ -274,6 +292,7 @@ export default connect(
     auth: state.auth,
     settings: state.settings,
     boards: state.boards,
+    currentBoard: getCurrentBoard(state),
     items: state.items
   }),
   null,

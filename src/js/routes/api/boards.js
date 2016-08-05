@@ -29,6 +29,17 @@ router.post("/", (req, res) => {
 });
 
 
+router.put("/", (req, res) => {
+  const fields = _.keys(Board.schema.paths);
+
+  Promise.all(req.body.map(board => Board.updateByIdFromObject(board.id, board)))
+    .then(boards => {
+      res.json({ boards });
+    })
+    .catch(res.errorJSON);
+});
+
+
 router.delete("/", (req, res) => {
   const { drive, body } = req;
 
