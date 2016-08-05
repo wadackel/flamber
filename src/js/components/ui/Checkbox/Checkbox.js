@@ -8,11 +8,13 @@ export default class Checkbox extends React.Component {
     name: PropTypes.string,
     value: PropTypes.any,
     checked: PropTypes.bool,
+    indeterminate: PropTypes.bool,
     onCheck: PropTypes.func
   };
 
   static defaultProps = {
     checked: false,
+    indeterminate: false,
     onCheck: () => {}
   };
 

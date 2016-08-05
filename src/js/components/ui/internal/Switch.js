@@ -15,6 +15,7 @@ export default class Checkbox extends React.Component {
     name: PropTypes.string,
     value: PropTypes.any,
     checked: PropTypes.bool,
+    indeterminate: PropTypes.bool,
     inline: PropTypes.bool,
     onCheck: PropTypes.func,
     onClick: PropTypes.func
@@ -23,6 +24,7 @@ export default class Checkbox extends React.Component {
   static defaultProps = {
     style: {},
     checked: false,
+    indeterminate: false,
     inline: false,
     onCheck: () => {},
     onClick: () => {}
@@ -79,6 +81,7 @@ export default class Checkbox extends React.Component {
       name,
       value,
       checked,
+      indeterminate,
       inline,
       onClick
     } = this.props;
@@ -87,6 +90,7 @@ export default class Checkbox extends React.Component {
 
     const modifier = {
       checked,
+      indeterminate,
       inline
     };
 
