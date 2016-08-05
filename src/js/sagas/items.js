@@ -6,6 +6,7 @@ import ItemSchema from "../schemas/item";
 import * as Services from "../services/items";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
+import { getItemEntityById } from "../selectors/items";
 
 
 export function *bgSync() {
@@ -64,9 +65,31 @@ export function *addItemSaga() {
 }
 
 
+export function *handleDeleteItemRequest() {
+  while (true) {
+    const { payload } = yield take(Items.DELETE_ITEM_REQUEST);
+    const entity = yield select(getItemEntityById, payload);
+
+    try {
+      yield call(Services.deleteItems, [entity]);
+      yield put(Items.deleteItemSuccess(entity));
+    } catch (error) {
+      put(Items.deleteItemFailure(error));
+    }
+  }
+}
+
+export function *deleteItemSaga() {
+  yield [
+    fork(handleDeleteItemRequest)
+  ];
+}
+
+
 export default function *itemsSaga() {
   yield [
     fork(bgSyncSaga),
-    fork(addItemSaga)
+    fork(addItemSaga),
+    fork(deleteItemSaga)
   ];
 }

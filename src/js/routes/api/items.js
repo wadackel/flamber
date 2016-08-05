@@ -43,5 +43,15 @@ router.post("/file", upload.single("file"), (req, res) => {
 });
 
 
+router.delete("/", (req, res) => {
+  const { drive, body } = req;
+
+  Promise.all(body.map(item => Item.removeById(drive, item.id)))
+    .then(() => {
+      res.json({});
+    })
+    .catch(res.errorJSON);
+});
+
 
 export default router;

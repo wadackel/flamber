@@ -50,6 +50,8 @@ export default handleActions({
     )
   ),
 
+
+  // Items
   [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
     _.mapValues(state, entity => {
       const item = payload.entities.items[payload.result.item];
@@ -58,5 +60,12 @@ export default handleActions({
         items: [...entity.items, item.id]
       };
     })
+  ),
+
+  [Items.DELETE_ITEM_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity => ({
+      ...entity,
+      items: entity.items.filter(id => id !== payload.id)
+    }))
   )
 }, {});

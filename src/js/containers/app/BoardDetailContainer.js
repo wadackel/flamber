@@ -43,11 +43,61 @@ export class BoardDetailContainer extends Component {
     };
 
     bindHandlers([
+      "handleSelect",
+      "handleFavorite",
+      "handleMove",
+      "handleDelete"
     ], this);
   }
 
   componentDidMount() {
     this.props.dispatch(BoardActions.setCurrentBoard(this.props.params.id));
+  }
+
+  handleSelect(id) {
+    // this.props.dispatch(selectItemToggle(id));
+  }
+
+  handleFavorite(id) {
+    // this.props.dispatch(favoriteItemToggleRequest(id));
+  }
+
+  handleMove(id) {
+    // this.setState({
+    //   moveItem: getItemByIdFromItems(this.props.items, id),
+    //   selectBoardDialogOpen: true,
+    //   moveItemSnackbarOpen: false
+    // });
+  }
+
+  handleDelete(id) {
+    this.props.dispatch(ItemActions.deleteItemRequest(id));
+  }
+
+  handleBoardSelect(boardId) {
+    // const { moveItem } = this.state;
+    //
+    // // Single
+    // if (moveItem != null) {
+    //   this.props.dispatch(moveItemBoardRequest({
+    //     id: moveItem._id,
+    //     boardId
+    //   }));
+    //
+    // // Multiple
+    // } else {
+    //   this.props.dispatch(selectedItemsMoveRequest(boardId));
+    // }
+    //
+    // this.setState({
+    //   nextBoardId: boardId
+    // });
+  }
+
+  handleDialogClose() {
+    // this.setState({
+    //   selectBoardDialogOpen: false
+    // });
   }
 
   render() {

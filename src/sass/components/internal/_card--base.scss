@@ -136,6 +136,10 @@
     margin-top: 10px;
   }
 
+  &.flat-button:hover {
+    background: rgba(#fff, .2) !important;
+  }
+
   .flat-button__body {
     padding-right: 0;
     padding-left: 0;

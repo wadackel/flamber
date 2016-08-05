@@ -15,5 +15,20 @@ export default handleActions({
 
   [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
     _.assign(state, payload.entities.items || {})
+  ),
+
+  [Items.DELETE_ITEM_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload ? entity : {
+        ...entity,
+        isDeleting: true
+      }
+    )
+  ),
+
+  [Items.DELETE_ITEM_SUCCESS]: (state, { payload }) => (
+    _.pickBy(state, (entity, id) =>
+      id !== payload.id
+    )
   )
 }, {});
