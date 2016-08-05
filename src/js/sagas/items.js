@@ -4,6 +4,7 @@ import { takeEvery, takeLatest, delay } from "redux-saga";
 import { fork, take, put, call, select, race, cancel, cancelled } from "redux-saga/effects";
 import ItemSchema from "../schemas/item";
 import * as Services from "../services/items";
+import * as Auth from "../actions/auth";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 import { getItemEntityById } from "../selectors/items";
@@ -38,7 +39,16 @@ export function *watchBgSync() {
 
 export function *bgSyncSaga() {
   yield fork(watchBgSync);
-  yield put(Items.bgSyncItemsStart());
+
+  const { authenticated } = yield select(state => state.auth);
+
+  if (authenticated) {
+    yield put(Items.bgSyncItemsStart());
+
+  } else {
+    yield take(Auth.SIGN_IN_SUCCESS);
+    yield put(Items.bgSyncItemsStart());
+  }
 }
 
 
