@@ -84,7 +84,7 @@ export function *handleDeleteItemRequest() {
       yield call(Services.deleteItems, [entity]);
       yield put(Items.deleteItemSuccess(entity));
     } catch (error) {
-      put(Items.deleteItemFailure(error));
+      yield put(Items.deleteItemFailure(error));
     }
   }
 }

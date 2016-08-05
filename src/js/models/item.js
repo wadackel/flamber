@@ -70,7 +70,17 @@ ItemSchema.statics.removeById = function(drive, id) {
     .then(entity =>
       deleteItemFile(drive, entity.fileId).then(() => entity)
     )
-    .then(entity => this.findByIdAndRemove(entity.id));
+    .then(entity =>
+      this.findByIdAndRemove(entity.id).then(() => entity)
+    )
+    .then(entity =>
+      Board.findById(entity.boardId)
+        .then(board => {
+          board.items = board.items.filter(id => id.toString() !== entity.id);
+          return board.save();
+        })
+        .then(() => entity)
+    );
 };
 
 

@@ -8,6 +8,8 @@ const BoardSchema = new Schema({
   items: [{ type: Schema.Types.ObjectId, ref: "Item" }],
   created: { type: Date, default: Date.now },
   modified: { type: Date, default: Date.now }
+}, {
+  versionKey: false
 });
 
 BoardSchema.set("toJSON", { virtuals: true });

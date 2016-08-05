@@ -67,10 +67,12 @@ export class HeaderSubContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const { props } = this;
 
-    if (!deepEqual(props.currentBoard, nextProps.currentBoard)) {
-      if (!nextProps.currentBoard.isUpdating) {
-        this.setState({ boardName: nextProps.currentBoard.name });
-      }
+    if (
+      nextProps.currentBoard
+      && !nextProps.currentBoard.isUpdating
+      && !deepEqual(props.currentBoard, nextProps.currentBoard)
+    ) {
+      this.setState({ boardName: nextProps.currentBoard.name });
     }
   }
 
