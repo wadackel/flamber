@@ -7,11 +7,17 @@ export default function setUpMiddleware(req, res, next) {
     return next();
   }
 
-  Setting.findOne({}, (err, settings) => {
-    if (!err) {
-      req.settings = settings;
-    }
+  Setting.findOne({ user: user.id })
+    .then(entity => {
+      if (entity) return Promise.resolve(entity);
 
-    next();
-  });
+      const settings = new Setting();
+      settings.user = user.id;
+      return settings.save();
+    })
+    .then(entity => {
+      req.settings = entity;
+      next();
+    })
+    .catch(() => next());
 }

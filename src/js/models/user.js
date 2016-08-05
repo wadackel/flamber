@@ -14,6 +14,9 @@ const UserSchema = new Schema({
   versionKey: false
 });
 
+UserSchema.set("toJSON", { virtuals: true });
+UserSchema.set("toObject", { virtuals: true });
+
 
 UserSchema.statics.createFromGoogle = function(profile) {
   return this.create({

@@ -4,22 +4,21 @@ import Setting from "../../models/setting";
 
 const router = Router();
 
-Setting.findOne({}, (error, result) => {
-  if (result == null) {
-    const setting = new Setting();
-    setting.save();
-  }
-});
 
 router.get("/", (req, res) => {
   res.errorJSON("TODO");
 });
 
+
 router.put("/", (req, res) => {
-  Setting.findOne()
+  Setting.findOne({ user: req.user.id })
     .then(settings => {
-      _.forEach(req.body, (value, key) => {
-        settings[key] = value;
+      const fields = _.keys(Setting.schema.paths);
+
+      fields.forEach(key => {
+        if (req.body.hasOwnProperty(key)) {
+          settings[key] = req.body[key];
+        }
       });
 
       return settings.save();
@@ -29,5 +28,6 @@ router.put("/", (req, res) => {
     })
     .catch(res.errorJSON);
 });
+
 
 export default router;
