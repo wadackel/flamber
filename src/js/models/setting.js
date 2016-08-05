@@ -11,6 +11,5 @@ const SettingSchema = new Schema({
   versionKey: false
 });
 
-const Setting = mongoose.model("Setting", SettingSchema);
 
-export default Setting;
+export default mongoose.model("Setting", SettingSchema);

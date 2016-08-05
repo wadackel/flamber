@@ -14,7 +14,8 @@ const UserSchema = new Schema({
   versionKey: false
 });
 
-UserSchema.createFromGoogle = function(profile) {
+
+UserSchema.statics.createFromGoogle = function(profile) {
   return this.create({
     name: profile.displayName,
     icon: profile.photoLink,
@@ -25,27 +26,19 @@ UserSchema.createFromGoogle = function(profile) {
   });
 };
 
-UserSchema.createProviderFactory = function(provider, profile, callback) {
+UserSchema.statics.createProviderFactory = function(provider, profile) {
   let user = null;
+
   switch (provider) {
     case "google":
       user = this.createFromGoogle(profile);
       break;
   }
 
-  if (!user) {
-    return callback(new Error(`${provider} provider name not defined`), null);
-  }
-
-  user.save()
-    .then(savedUser => {
-      callback(null, savedUser);
-    })
-    .catch(error => {
-      callback(error, null);
-    });
+  return !user
+    ? Promise.reject(new Error(`${provider} provider name not defined`))
+    : user.save();
 };
 
-const User = mongoose.model("User", UserSchema);
 
-export default User;
+export default mongoose.model("User", UserSchema);

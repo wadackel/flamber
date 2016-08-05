@@ -17,21 +17,15 @@ export function fetchUser(oauth2Client, token) {
 
       const profile = Object.assign({}, res.user, res.storageQuota);
 
-      User.findOne({ email: profile.emailAddress }, (dbError, user) => {
-        if (dbError || !user) {
-          // TODO: Responding to other providers
-          User.createProviderFactory("google", profile, (createError, newUser) => {
-            if (createError) {
-              reject(createError);
-            } else {
-              resolve(newUser);
-            }
-          });
-
-        } else {
-          resolve(user);
-        }
-      });
+      // TODO: Responding to other providers
+      User.findOne({ email: profile.emailAddress })
+        .then(user =>
+          user
+            ? Promise.resolve(user)
+            : User.createProviderFactory("google", profile)
+        )
+        .then(resolve)
+        .catch(reject);
     });
   });
 }
@@ -42,7 +36,6 @@ export function fetchToken(oauth2Client, code) {
       if (err) {
         console.log("Error while trying to retrieve access token", err); // eslint-disable-line no-console
         reject(err);
-
         return;
       }
 
@@ -58,7 +51,6 @@ export default function verifyAuth(oauth2Client, code) {
     fetchToken(oauth2Client, code)
       .then(_token => {
         token = _token;
-
         return fetchUser(oauth2Client, token);
       })
       .then(user => {
@@ -72,7 +64,6 @@ export function refreshAccessToken(oauth2Client, expiryDate) {
   return new Promise((resolve, reject) => {
     if (!expiryDate || new Date() <= new Date(expiryDate)) {
       resolve();
-
       return;
     }
 
