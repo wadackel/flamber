@@ -29,11 +29,12 @@ router.post("/", (req, res) => {
 });
 
 
-// TODO: Remove populate items
 router.delete("/", (req, res) => {
-  Promise.all(req.body.map(board => Board.findByIdAndRemove(board.id)))
-    .then(() => {
-      res.json({});
+  const { drive, body } = req;
+
+  Promise.all(body.map(board => Board.removeById(drive, board.id)))
+    .then(boards => {
+      res.json({ boards });
     })
     .catch(res.errorJSON);
 });

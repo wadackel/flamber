@@ -24,5 +24,17 @@ BoardSchema.statics.findAll = function(drive, query = {}) {
     );
 };
 
+BoardSchema.statics.removeById = function(drive, id) {
+  return this.findById(id)
+    .then(entity =>
+      Promise.all(entity.items.map(id => Item.removeById(drive, id)))
+        .then(() => entity)
+    )
+    .then(entity =>
+      this.findByIdAndRemove(entity.id)
+        .then(() => entity)
+    );
+};
+
 
 export default mongoose.model("Board", BoardSchema);

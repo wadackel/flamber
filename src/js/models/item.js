@@ -3,7 +3,8 @@ import mongoose, { Schema } from "mongoose";
 import Board from "./board";
 import {
   uploadItemFile,
-  updateItemThumbnailIfNeeded
+  updateItemThumbnailIfNeeded,
+  deleteItemFile
 } from "../utils/drive/items";
 
 const ItemSchema = new Schema({
@@ -62,6 +63,14 @@ ItemSchema.statics.updateEntitiesThumbnailIfNeeded = function(drive, entities) {
 ItemSchema.statics.findAll = function(drive, query = {}) {
   return this.find(query)
     .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities));
+};
+
+ItemSchema.statics.removeById = function(drive, id) {
+  return this.findById(id)
+    .then(entity =>
+      deleteItemFile(drive, entity.fileId).then(() => entity)
+    )
+    .then(entity => this.findByIdAndRemove(entity.id));
 };
 
 
