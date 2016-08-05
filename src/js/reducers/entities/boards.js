@@ -55,7 +55,7 @@ export default handleActions({
   [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
     _.mapValues(state, entity => {
       const item = payload.entities.items[payload.result.item];
-      return item.boardId !== entity.id ? entity : {
+      return item.board !== entity.id ? entity : {
         ...entity,
         items: [...entity.items, item.id]
       };

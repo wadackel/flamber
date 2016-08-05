@@ -9,7 +9,7 @@ import {
 
 const ItemSchema = new Schema({
   fileId: { type: String, required: true },
-  boardId: { type: Schema.Types.ObjectId, ref: "Board" },
+  board: { type: Schema.Types.ObjectId, ref: "Board" },
   name: { type: String, required: true },
   url: { type: String, default: "" },
   width: { type: Number, default: 0 },
@@ -34,19 +34,19 @@ ItemSchema.statics.appendByFile = function(drive, { file, boardId, palette }) {
     .then(res => {
       const { width, height } = res.imageMediaMetadata;
       const item = new this({
+        board: boardId,
         fileId: res.id,
         name: file.originalname,
         thumbnail: res.thumbnailLink,
         width,
         height,
-        boardId,
         palette
       });
 
       return item.save();
     })
     .then(item =>
-      Board.findById(item.boardId).then(board => ({ item, board }))
+      Board.findById(item.board).then(board => ({ item, board }))
     )
     .then(({ item, board }) => {
       board.items.push(item.id);
@@ -74,7 +74,7 @@ ItemSchema.statics.removeById = function(drive, id) {
       this.findByIdAndRemove(entity.id).then(() => entity)
     )
     .then(entity =>
-      Board.findById(entity.boardId)
+      Board.findById(entity.board)
         .then(board => {
           board.items = board.items.filter(id => id.toString() !== entity.id);
           return board.save();

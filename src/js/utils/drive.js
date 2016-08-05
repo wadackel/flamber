@@ -21,13 +21,10 @@ export function getOauth2Client() {
 }
 
 export function getAuthUrl(oauth2Client) {
-
-  /* eslint-disable camelcase */
   return oauth2Client.generateAuthUrl({
-    access_type: "offline",
+    access_type: "offline", // eslint-disable-line camelcase
     scope: SCOPES
   });
-  /* eslint-enable camelcase */
 }
 
 export function getDrive(oauth2Client, token) {
