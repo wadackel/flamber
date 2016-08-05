@@ -1,11 +1,44 @@
 /* eslint-disable */
 import { normalize, arrayOf } from "normalizr";
-import { takeEvery, takeLatest } from "redux-saga";
-import { fork, take, put, call, select } from "redux-saga/effects";
+import { takeEvery, takeLatest, delay } from "redux-saga";
+import { fork, take, put, call, select, race, cancel, cancelled } from "redux-saga/effects";
 import ItemSchema from "../schemas/item";
 import * as Services from "../services/items";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
+
+
+export function *bgSync() {
+  try {
+    while (true) {
+      yield put(Items.bgSyncItemsRequest());
+      const response = yield call(Services.fetchItems);
+      const normalized = normalize(response, {
+        items: arrayOf(ItemSchema)
+      });
+
+      yield put(Items.bgSyncItemsSuccess(normalized));
+      yield call(delay, 5000);
+    }
+  } finally {
+    if (yield cancelled()) {
+      yield put(Items.bgSyncItemsFailure());
+    }
+  }
+}
+
+export function *watchBgSync() {
+  while (yield take(Items.BG_SYNC_ITEMS_START)) {
+    const bgSyncTask = yield fork(bgSync);
+    yield take(Items.BG_SYNC_ITEMS_STOP);
+    yield cancel(bgSyncTask);
+  }
+}
+
+export function *bgSyncSaga() {
+  yield fork(watchBgSync);
+  yield put(Items.bgSyncItemsStart());
+}
 
 
 export function *handleAddItemRequest() {
@@ -33,6 +66,7 @@ export function *addItemSaga() {
 
 export default function *itemsSaga() {
   yield [
+    fork(bgSyncSaga),
     fork(addItemSaga)
   ];
 }

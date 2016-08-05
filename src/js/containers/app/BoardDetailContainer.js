@@ -61,8 +61,6 @@ export class BoardDetailContainer extends Component {
       }
     } = this.props;
 
-    console.log(this.props);
-
     return (
       <div className={`container ${b()}`}>
         <CardGroup

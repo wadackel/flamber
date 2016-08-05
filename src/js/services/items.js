@@ -4,6 +4,11 @@ import { API_ROOT } from "../constants/application";
 export const ITEMS_ENDPOINT = `${API_ROOT}/items`;
 
 
+export function fetchItems() {
+  return fetch(ITEMS_ENDPOINT);
+}
+
+
 export function fetchBoardItems(boardId) {
   return fetch(`${ITEMS_ENDPOINT}/board/${boardId}`)
     .then(res => res);
@@ -25,10 +30,12 @@ export function addItemByFile({ file, palette, boardId }) {
     .then(res => res);
 }
 
+
 export function updateItems(items) {
   return fetchJSON(ITEMS_ENDPOINT, items, "PUT")
     .then(res => res);
 }
+
 
 export function deleteItems(items) {
   return fetchJSON(ITEMS_ENDPOINT, items, "DELETE")

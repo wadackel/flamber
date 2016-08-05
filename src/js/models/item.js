@@ -59,5 +59,10 @@ ItemSchema.statics.updateEntitiesThumbnailIfNeeded = function(drive, entities) {
   ));
 };
 
+ItemSchema.statics.findAll = function(drive, query = {}) {
+  return this.find(query)
+    .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities));
+};
+
 
 export default mongoose.model("Item", ItemSchema);

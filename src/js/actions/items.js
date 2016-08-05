@@ -1,6 +1,20 @@
 import { createAction } from "redux-actions";
 
 
+// Background sync
+export const BG_SYNC_ITEMS_START = "BG_SYNC_ITEMS_START";
+export const BG_SYNC_ITEMS_STOP = "BG_SYNC_ITEMS_STOP";
+export const BG_SYNC_ITEMS_REQUEST = "BG_SYNC_ITEMS_REQUEST";
+export const BG_SYNC_ITEMS_SUCCESS = "BG_SYNC_ITEMS_SUCCESS";
+export const BG_SYNC_ITEMS_FAILURE = "BG_SYNC_ITEMS_FAILURE";
+
+export const bgSyncItemsStart = createAction(BG_SYNC_ITEMS_START);
+export const bgSyncItemsStop = createAction(BG_SYNC_ITEMS_STOP);
+export const bgSyncItemsRequest = createAction(BG_SYNC_ITEMS_REQUEST);
+export const bgSyncItemsSuccess = createAction(BG_SYNC_ITEMS_SUCCESS);
+export const bgSyncItemsFailure = createAction(BG_SYNC_ITEMS_FAILURE);
+
+
 // Add
 export const ADD_ITEM_REQUEST = "ADD_ITEM_REQUEST";
 export const ADD_ITEM_SUCCESS = "ADD_ITEM_SUCCESS";
