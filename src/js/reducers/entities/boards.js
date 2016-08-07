@@ -5,14 +5,19 @@ import * as Items from "../../actions/items";
 
 
 export default handleActions({
+  // Fetch
   [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
     _.assign(state, payload.entities.boards || {})
   ),
 
+
+  // Add
   [Boards.ADD_BOARD_SUCCESS]: (state, { payload }) => (
     _.assign(state, payload.entities.boards || {})
   ),
 
+
+  // Update
   [Boards.UPDATE_BOARD_REQUEST]: (state, { payload }) => (
     _.mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
@@ -35,6 +40,8 @@ export default handleActions({
     );
   },
 
+
+  // Delete
   [Boards.DELETE_BOARD_REQUEST]: (state, { payload }) => (
     _.mapValues(state, entity =>
       entity.id !== payload ? entity : {
@@ -50,6 +57,17 @@ export default handleActions({
     )
   ),
 
+  [Boards.DELETE_BOARD_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.id ? entity : {
+        ...entity,
+        isDeleting: false
+      }
+    )
+  ),
+
+
+  // Select
   [Boards.SELECT_BOARD_TOGGLE]: (state, { payload }) => (
     _.mapValues(state, entity =>
       entity.id !== payload ? entity : {
@@ -59,11 +77,22 @@ export default handleActions({
     )
   ),
 
+
+  // Select delete
   [Boards.SELECTED_BOARDS_DELETE_REQUEST]: state => (
     _.mapValues(state, entity =>
       !entity.select ? entity : {
         ...entity,
         isDeleting: true
+      }
+    )
+  ),
+
+  [Boards.SELECTED_BOARDS_DELETE_FAILURE]: state => (
+    _.mapValues(state, entity =>
+      !entity.select ? entity : {
+        ...entity,
+        isDeleting: false
       }
     )
   ),

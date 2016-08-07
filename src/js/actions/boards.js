@@ -40,7 +40,10 @@ export const DELETE_BOARD_FAILURE = "DELETE_BOARD_FAILURE";
 
 export const deleteBoardRequest = createAction(DELETE_BOARD_REQUEST);
 export const deleteBoardSuccess = createAction(DELETE_BOARD_SUCCESS);
-export const deleteBoardFailure = createAction(DELETE_BOARD_FAILURE);
+export const deleteBoardFailure = createAction(DELETE_BOARD_FAILURE,
+  null,
+  (payload, entity) => entity
+);
 
 
 // Current
@@ -60,4 +63,7 @@ export const SELECTED_BOARDS_DELETE_FAILURE = "SELECTED_BOARDS_DELETE_FAILURE";
 
 export const selectedBoardsDeleteRequest = createAction(SELECTED_BOARDS_DELETE_REQUEST);
 export const selectedBoardsDeleteSuccess = createAction(SELECTED_BOARDS_DELETE_SUCCESS);
-export const selectedBoardsDeleteFailure = createAction(SELECTED_BOARDS_DELETE_FAILURE);
+export const selectedBoardsDeleteFailure = createAction(SELECTED_BOARDS_DELETE_FAILURE,
+  null,
+  (payload, entities) => entities
+);

@@ -95,9 +95,14 @@ export function *handleDeleteBoardRequest() {
       const [board] = yield call(Services.deleteBoards, [entity]);
       yield put(Boards.deleteBoardSuccess(board));
     } catch (error) {
-      yield put(Boards.deleteBoardFailure(error));
+      yield put(Boards.deleteBoardFailure(error, entity));
     }
   }
+}
+
+export function *handleDeleteBoardFailure() {
+  // TODO: More error message
+  yield put(Errors.showError("ボードの削除に失敗しました"));
 }
 
 export function *handleSelectedBoardsDeleteRequest() {
@@ -109,15 +114,22 @@ export function *handleSelectedBoardsDeleteRequest() {
       const boards = yield call(Services.deleteBoards, entities);
       yield put(Boards.selectedBoardsDeleteSuccess(boards));
     } catch (error) {
-      yield put(Boards.selectedBoardsDeleteFailure(error));
+      yield put(Boards.selectedBoardsDeleteFailure(error, entities));
     }
   }
+}
+
+export function *handleSelectedBoardsDeleteFailure() {
+  // TODO: More error message
+  yield put(Errors.showError("選択ボードの削除に失敗しました"));
 }
 
 export function *deleteBoardSaga() {
   yield [
     fork(handleDeleteBoardRequest),
-    fork(handleSelectedBoardsDeleteRequest)
+    takeEvery(Boards.DELETE_BOARD_FAILURE, handleDeleteBoardFailure),
+    fork(handleSelectedBoardsDeleteRequest),
+    takeEvery(Boards.SELECTED_BOARDS_DELETE_FAILURE, handleSelectedBoardsDeleteFailure)
   ];
 }
 
