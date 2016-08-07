@@ -36,7 +36,7 @@ BoardSchema.statics.findAllByUser = function(drive, user, query = {}) {
 BoardSchema.statics.removeByUserAndId = function(drive, user, id) {
   return this.findOne({ _id: id, user })
     .then(entity =>
-      Promise.all(entity.items.map(id => Item.removeByUserAndId(drive, id)))
+      Promise.all(entity.items.map(id => Item.removeByUserAndId(drive, user, id)))
         .then(() => entity)
     )
     .then(entity =>

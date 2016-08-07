@@ -1,11 +1,13 @@
-import _ from "lodash";
-
 export function getBoardEntityById(state, id) {
   return state.entities.boards[id];
 }
 
 export function getBoardEntities(state) {
   return state.boards.results.map(id => state.entities.boards[id]);
+}
+
+export function getSelectedBoardEntities(state) {
+  return getBoardEntities(state).filter(entity => entity.select);
 }
 
 export function getCurrentBoard(state) {

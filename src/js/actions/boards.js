@@ -46,3 +46,18 @@ export const deleteBoardFailure = createAction(DELETE_BOARD_FAILURE);
 // Current
 export const SET_CURRENT_BOARD = "SET_CURRENT_BOARD";
 export const setCurrentBoard = createAction(SET_CURRENT_BOARD);
+
+
+// Select
+export const SELECT_BOARD_TOGGLE = "SELECT_BOARD_TOGGLE";
+export const selectBoardToggle = createAction(SELECT_BOARD_TOGGLE);
+
+
+// Selected boards delete
+export const SELECTED_BOARDS_DELETE_REQUEST = "SELECTED_BOARDS_DELETE_REQUEST";
+export const SELECTED_BOARDS_DELETE_SUCCESS = "SELECTED_BOARDS_DELETE_SUCCESS";
+export const SELECTED_BOARDS_DELETE_FAILURE = "SELECTED_BOARDS_DELETE_FAILURE";
+
+export const selectedBoardsDeleteRequest = createAction(SELECTED_BOARDS_DELETE_REQUEST);
+export const selectedBoardsDeleteSuccess = createAction(SELECTED_BOARDS_DELETE_SUCCESS);
+export const selectedBoardsDeleteFailure = createAction(SELECTED_BOARDS_DELETE_FAILURE);

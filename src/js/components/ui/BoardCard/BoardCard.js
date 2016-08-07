@@ -62,8 +62,8 @@ export default class BoardCard extends React.Component {
     ], this);
   }
 
-  handleSelect(value, checked) {
-    this.props.onSelect(checked);
+  handleSelect() {
+    this.props.onSelect(this.props.id);
   }
 
   handleEditClick() {

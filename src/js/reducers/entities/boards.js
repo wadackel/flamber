@@ -50,6 +50,24 @@ export default handleActions({
     )
   ),
 
+  [Boards.SELECT_BOARD_TOGGLE]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload ? entity : {
+        ...entity,
+        select: !entity.select
+      }
+    )
+  ),
+
+  [Boards.SELECTED_BOARDS_DELETE_REQUEST]: state => (
+    _.mapValues(state, entity =>
+      !entity.select ? entity : {
+        ...entity,
+        isDeleting: true
+      }
+    )
+  ),
+
 
   // Items
   [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (

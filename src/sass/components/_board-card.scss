@@ -3,7 +3,7 @@
 
   &::before,
   &::after {
-    @include absolute(0, 0, 0, 0, 0);
+    @include absolute(0, 0, 0, 0, -1);
     @include size(100%);
     @include transition(all, $card-duration);
     display: block;
@@ -21,13 +21,23 @@
     transform: rotate(3deg) translate(0, 2px);
   }
 
-  &:hover {
+  &:not(&--selected):hover {
     &::before {
       transform: rotate(-1deg) translate(-1px, -2px);
     }
 
     &::after {
       transform: rotate(1deg) translate(0, 0);
+    }
+  }
+
+  &--selected {
+    &::before {
+      transform: rotate(0) translate(0, 9px);
+    }
+
+    &::after {
+      transform: rotate(0) translate(0, 5px);
     }
   }
 

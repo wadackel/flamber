@@ -72,5 +72,24 @@ export default handleActions({
   [Boards.SET_CURRENT_BOARD]: (state, { payload }) => ({
     ...state,
     currentBoardId: payload
+  }),
+
+
+  // Selected boards delete
+  [Boards.SELECTED_BOARDS_DELETE_REQUEST]: state => ({
+    ...state,
+    isDeleting: true
+  }),
+
+  [Boards.SELECTED_BOARDS_DELETE_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isDeleting: false,
+    results: state.results.filter(id => !payload.some(o => id === o.id))
+  }),
+
+  [Boards.SELECTED_BOARDS_DELETE_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isDeleting: false,
+    error: payload
   })
 }, initialState);

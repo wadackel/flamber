@@ -4,9 +4,15 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import { getBoardEntities } from "../../selectors/boards";
-import { deleteBoardRequest } from "../../actions/boards";
-import { CardGroup, BoardCard } from "../../components/ui/";
+import * as BoardActions from "../../actions/boards";
+import { getBoardEntities, getSelectedBoardEntities } from "../../selectors/boards";
+import { TrashIcon } from "../../components/svg-icons/";
+import {
+  CardGroup,
+  BoardCard,
+  IconButton,
+  ToolBox
+} from "../../components/ui/";
 
 const b = bem("boards");
 
@@ -22,9 +28,9 @@ export class BoardsContainer extends Component {
 
     bindHandlers([
       "handleEdit",
+      "handleSelect",
       "handleDelete",
-      "handleWillLeave",
-      "handleWillEnter"
+      "handleSelectDelete",
     ], this);
   }
 
@@ -32,20 +38,16 @@ export class BoardsContainer extends Component {
     this.props.dispatch(push(`/app/board/${id}`));
   }
 
+  handleSelect(id) {
+    this.props.dispatch(BoardActions.selectBoardToggle(id));
+  }
+
   handleDelete(id) {
-    this.props.dispatch(deleteBoardRequest(id));
+    this.props.dispatch(BoardActions.deleteBoardRequest(id));
   }
 
-  handleWillEnter() {
-    return {
-      opacity: 0
-    };
-  }
-
-  handleWillLeave() {
-    return {
-      opacity: spring(0)
-    };
+  handleSelectDelete() {
+    this.props.dispatch(BoardActions.selectedBoardsDeleteRequest());
   }
 
   render() {
@@ -55,8 +57,11 @@ export class BoardsContainer extends Component {
       },
       boards,
       boardEntities,
+      selectedBoardEntities,
       itemEntities
     } = this.props;
+
+    const hasSelectedBoard = selectedBoardEntities.length > 0;
 
     return (
       <div className={`container ${b()}`}>
@@ -72,16 +77,31 @@ export class BoardsContainer extends Component {
               key={board.id}
               id={board.id}
               processing={board.isDeleting}
+              selected={board.select}
               title={board.name}
               image={firstItem ? firstItem.thumbnail : "/images/default.png"}
               layout={boardsLayout}
               itemCount={board.items.length}
               lastModified={new Date(board.modified)}
               onEdit={this.handleEdit}
+              onSelect={this.handleSelect}
               onDelete={this.handleDelete}
             />
           })}
         </CardGroup>
+
+        <ToolBox
+          open={hasSelectedBoard}
+          text={`${selectedBoardEntities.length}個のボード`}
+          actions={[
+            <IconButton
+              type="primary"
+              tooltip="削除"
+              icon={<TrashIcon />}
+              onClick={this.handleSelectDelete}
+            />
+          ]}
+        />
       </div>
     );
   }
@@ -92,6 +112,7 @@ export default connect(
     settings: state.settings,
     boards: state.boards,
     boardEntities: getBoardEntities(state),
+    selectedBoardEntities: getSelectedBoardEntities(state),
     itemEntities: state.entities.items
   }),
   null,

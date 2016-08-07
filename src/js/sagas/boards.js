@@ -6,7 +6,11 @@ import { takeEvery } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
 import BoardSchema from "../schemas/board";
 import ItemSchema from "../schemas/item";
-import { getBoardEntityById, getBoardById } from "../selectors/boards";
+import {
+  getBoardEntityById,
+  getSelectedBoardEntities,
+  getBoardById
+} from "../selectors/boards";
 import * as Services from "../services/boards";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
@@ -89,9 +93,24 @@ export function *handleDeleteBoardRequest() {
   }
 }
 
+export function *handleSelectedBoardsDeleteRequest() {
+  while (true) {
+    yield take(Boards.SELECTED_BOARDS_DELETE_REQUEST);
+    const entities = yield select(getSelectedBoardEntities);
+
+    try {
+      const boards = yield call(Services.deleteBoards, entities);
+      yield put(Boards.selectedBoardsDeleteSuccess(boards));
+    } catch (error) {
+      yield put(Boards.selectedBoardsDeleteFailure(error));
+    }
+  }
+}
+
 export function *deleteBoardSaga() {
   yield [
-    fork(handleDeleteBoardRequest)
+    fork(handleDeleteBoardRequest),
+    fork(handleSelectedBoardsDeleteRequest)
   ];
 }
 
