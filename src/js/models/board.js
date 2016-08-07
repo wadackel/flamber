@@ -4,6 +4,7 @@ import mongoose, { Schema } from "mongoose";
 import Item from "./item";
 
 const BoardSchema = new Schema({
+  user: { type: Schema.Types.ObjectId, ref: "User" },
   name: { type: String, required: true },
   items: [{ type: Schema.Types.ObjectId, ref: "Item" }],
   created: { type: Date, default: Date.now },
@@ -16,9 +17,14 @@ BoardSchema.set("toJSON", { virtuals: true });
 BoardSchema.set("toObject", { virtuals: true });
 
 
-// Instance methods
-BoardSchema.statics.findAll = function(drive, query = {}) {
-  return this.find(query)
+// Static methods
+BoardSchema.statics.findAll = function(drive, user, query = {}) {
+  const params = {
+    ...query,
+    user
+  };
+
+  return this.find(params)
     .populate("items")
     .then(boards =>
       Promise.all(boards.map(board =>
@@ -27,8 +33,8 @@ BoardSchema.statics.findAll = function(drive, query = {}) {
     );
 };
 
-BoardSchema.statics.removeById = function(drive, id) {
-  return this.findById(id)
+BoardSchema.statics.removeById = function(drive, user, id) {
+  return this.findOne({ _id: id, user })
     .then(entity =>
       Promise.all(entity.items.map(id => Item.removeById(drive, id)))
         .then(() => entity)
@@ -39,10 +45,10 @@ BoardSchema.statics.removeById = function(drive, id) {
     );
 };
 
-BoardSchema.statics.updateByIdFromObject = function(id, newProps) {
+BoardSchema.statics.updateByIdFromObject = function(user, id, newProps) {
   const fields = _.keys(this.schema.paths);
 
-  return this.findById(id)
+  return this.findOne({ _id: id, user })
     .then(entity => {
       fields.forEach(key => {
         if (newProps.hasOwnProperty(key)) {

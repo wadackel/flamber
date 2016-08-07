@@ -8,7 +8,7 @@ const router = Router();
 
 
 router.get("/", (req, res) => {
-  Board.findAll(req.drive)
+  Board.findAll(req.drive, req.user.id)
     .then(boards => {
       res.json({ boards });
     })
@@ -18,6 +18,7 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   const board = new Board({
+    user: req.user.id,
     name: req.body.name
   });
 
@@ -30,9 +31,7 @@ router.post("/", (req, res) => {
 
 
 router.put("/", (req, res) => {
-  const fields = _.keys(Board.schema.paths);
-
-  Promise.all(req.body.map(board => Board.updateByIdFromObject(board.id, board)))
+  Promise.all(req.body.map(board => Board.updateByIdFromObject(req.user.id, board.id, board)))
     .then(boards => {
       res.json({ boards });
     })
@@ -41,13 +40,14 @@ router.put("/", (req, res) => {
 
 
 router.delete("/", (req, res) => {
-  const { drive, body } = req;
+  const { drive, body, user } = req;
 
-  Promise.all(body.map(board => Board.removeById(drive, board.id)))
+  Promise.all(body.map(board => Board.removeById(drive, user.id, board.id)))
     .then(boards => {
       res.json({ boards });
     })
     .catch(res.errorJSON);
 });
+
 
 export default router;
