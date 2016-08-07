@@ -12,6 +12,7 @@ import {
   getBoardById
 } from "../selectors/boards";
 import * as Services from "../services/boards";
+import * as Errors from "../actions/errors";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
@@ -43,9 +44,15 @@ export function *handleAddBoardRequest({ payload }) {
   }
 }
 
+export function *handleAddBoardFailure() {
+  // TODO: More error message
+  yield put(Errors.showError("ボード追加でエラーが発生しました"));
+}
+
 export function *addBoardSaga() {
   yield [
-    takeEvery(Boards.ADD_BOARD_REQUEST, handleAddBoardRequest)
+    takeEvery(Boards.ADD_BOARD_REQUEST, handleAddBoardRequest),
+    takeEvery(Boards.ADD_BOARD_FAILURE, handleAddBoardFailure)
   ];
 }
 

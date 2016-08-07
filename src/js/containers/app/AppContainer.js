@@ -2,22 +2,13 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
+import * as BoardActions from "../../actions/boards";
+import * as ItemActions from "../../actions/items";
+import * as ErrorActions from "../../actions/errors";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import {
-  updateBoardsLayoutRequest,
-  updateItemsLayoutRequest
-} from "../../actions/settings";
-import {
-  fetchBoardsRequest,
-  addBoardRequest,
-  updateBoardRequest
-} from "../../actions/boards";
-import { addItemRequest } from "../../actions/items";
 import { getBoardEntities, getBoardByIdFromBoards } from "../../selectors/boards";
-import {
-  HeaderSubContainer
-} from "./";
+import { HeaderSubContainer } from "./";
 import {
   AddBoardDialog,
   AddItemFileDialog,
@@ -46,11 +37,8 @@ export class AppContainer extends Component {
 
     this.state = {
       addBoardDialogOpen: false,
-      addBoardSnackbarOpen: false,
-      addBoardSnackbarMessage: "",
       addItemFileDialogOpen: false,
-      addItemFileSnackbarOpen: false,
-      addItemFileSnackbarMessage: ""
+      addItemSnackbarOpen: false
     };
 
     bindHandlers([
@@ -65,12 +53,16 @@ export class AppContainer extends Component {
       "handleAddItemFileOpen",
       "handleAddItemFileClose",
       "handleAddItemFile",
-      "handleAddItemFileSnackbarClose"
+
+      "handleAddItemActionClick",
+      "handleAddItemSnackbarClose",
+
+      "handleErrorSnackbarClose"
     ], this);
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchBoardsRequest());
+    this.props.dispatch(BoardActions.fetchBoardsRequest());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,20 +71,14 @@ export class AppContainer extends Component {
     if (boards.isAdding && !nextProps.boards.isAdding) {
       this.setState({
         addBoardDialogOpen: false,
-        addBoardSnackbarOpen: true,
-        addBoardSnackbarMessage: nextProps.boards.error
-          ? "ボード追加でエラーが発生しました"
-          : "ボードを追加しました"
+        addBoardSnackbarOpen: !nextProps.boards.error
       });
     }
 
     if (items.isAdding && !nextProps.items.isAdding) {
       this.setState({
         addItemFileDialogOpen: false,
-        addItemFileSnackbarOpen: true,
-        addItemFileSnackbarMessage: nextProps.boards.error
-          ? "アイテム追加でエラーが発生しました"
-          : "アイテムを追加しました"
+        addItemSnackbarOpen: !nextProps.items.error
       });
     }
   }
@@ -107,36 +93,15 @@ export class AppContainer extends Component {
   }
 
   handleAddBoard(boardName) {
-    this.props.dispatch(addBoardRequest(boardName));
+    this.props.dispatch(BoardActions.addBoardRequest(boardName));
   }
 
   handleAddBoardActionClick() {
-    const { boards: { entities } } = this.props;
-    const lastBoardId = entities[entities.length - 1]._id;
-    this.props.dispatch(push(`/app/board/${lastBoardId}`));
-    this.setState({ addBoardSnackbarOpen: false });
+    // TODO
   }
 
   handleAddBoardSnackbarClose() {
     this.setState({ addBoardSnackbarOpen: false });
-  }
-
-  // Update board
-  handleBoardNameChange(e, value) {
-    this.setState({ boardName: value });
-  }
-
-  handleBoardNameComplete(value) {
-    // TODO
-    // const { boards, params } = this.props;
-    // const board = getBoardByIdFromBoards(boards, params.id);
-    //
-    // this.props.dispatch(updateBoardRequest({
-    //   ...board,
-    //   name: value
-    // }));
-    //
-    // this.setState({ boardName: value });
   }
 
   // Add item (link)
@@ -154,15 +119,23 @@ export class AppContainer extends Component {
   }
 
   handleAddItemFile(file, palette, boardId) {
-    this.props.dispatch(addItemRequest({
+    this.props.dispatch(ItemActions.addItemRequest({
       file,
       palette,
       boardId
     }));
   }
 
-  handleAddItemFileSnackbarClose() {
-    this.setState({ addItemFileSnackbarOpen: false });
+  handleAddItemActionClick() {
+    // TODO
+  }
+
+  handleAddItemSnackbarClose() {
+    this.setState({ addItemSnackbarOpen: false });
+  }
+
+  handleErrorSnackbarClose() {
+    this.props.dispatch(ErrorActions.hideError());
   }
 
   render() {
@@ -171,6 +144,7 @@ export class AppContainer extends Component {
       settings, // eslint-disable-line no-unused-vars
       dispatch, // eslint-disable-line no-unused-vars
       children, // eslint-disable-line no-unused-vars
+      errors,
       boards,
       boardEntities,
       items,
@@ -180,10 +154,8 @@ export class AppContainer extends Component {
     const {
       addBoardDialogOpen,
       addBoardSnackbarOpen,
-      addBoardSnackbarMessage,
       addItemFileDialogOpen,
-      addItemFileSnackbarOpen,
-      addItemFileSnackbarMessage
+      addItemSnackbarOpen
     } = this.state;
 
     const floatingButtonTooltipOrigin = {
@@ -235,11 +207,14 @@ export class AppContainer extends Component {
         />
         <Snackbar
           open={addBoardSnackbarOpen}
-          message={addBoardSnackbarMessage}
-          action={boards.error ? null : "Show"}
+          message="ボードを追加しました"
+          action="Show"
           onActionClick={this.handleAddBoardActionClick}
           onRequestClose={this.handleAddBoardSnackbarClose}
         />
+
+        {/* Add item */}
+        {/* TODO */}
 
         {/* Add item file */}
         <AddItemFileDialog
@@ -253,12 +228,20 @@ export class AppContainer extends Component {
           onRequestClose={this.handleAddItemFileClose}
           onRequestAdd={this.handleAddItemFile}
         />
+
         <Snackbar
-          open={addItemFileSnackbarOpen}
-          message={addItemFileSnackbarMessage}
+          open={addItemSnackbarOpen}
+          message="アイテムを追加しました"
           action="Show"
-          onActionClick={() => console.log("TODO")}
-          onRequestClose={this.handleAddItemFileSnackbarClose}
+          onActionClick={this.handleAddItemActionClick}
+          onRequestClose={this.handleAddItemSnackbarClose}
+        />
+
+        {/* Errors */}
+        <Snackbar
+          open={errors.hasError}
+          message={errors.message}
+          onRequestClose={this.handleErrorSnackbarClose}
         />
       </div>
     );
@@ -268,6 +251,7 @@ export class AppContainer extends Component {
 export default connect(
   state => ({
     auth: state.auth,
+    errors: state.errors,
     settings: state.settings,
     boards: state.boards,
     boardEntities: getBoardEntities(state),
