@@ -35,7 +35,8 @@ export default handleActions({
   // Add (UI)
   [Boards.ADD_BOARD_DIALOG_OPEN]: state => ({
     ...state,
-    addDialogOpen: true
+    addDialogOpen: true,
+    addSnackbarOpen: false
   }),
 
   [Boards.ADD_BOARD_DIALOG_CLOSE]: state => ({

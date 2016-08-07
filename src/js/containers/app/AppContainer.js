@@ -35,11 +35,6 @@ export class AppContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      addItemFileDialogOpen: false,
-      addItemSnackbarOpen: false
-    };
-
     bindHandlers([
       "handleAddBoardOpen",
       "handleAddBoardClose",
@@ -62,17 +57,6 @@ export class AppContainer extends Component {
 
   componentDidMount() {
     this.props.dispatch(BoardActions.fetchBoardsRequest());
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { items } = this.props;
-
-    if (items.isAdding && !nextProps.items.isAdding) {
-      this.setState({
-        addItemFileDialogOpen: false,
-        addItemSnackbarOpen: !nextProps.items.error
-      });
-    }
   }
 
   // Add board
@@ -103,11 +87,11 @@ export class AppContainer extends Component {
 
   // Add item
   handleAddItemFileOpen() {
-    this.setState({ addItemFileDialogOpen: true });
+    this.props.dispatch(ItemActions.addItemDialogOpen());
   }
 
   handleAddItemFileClose() {
-    this.setState({ addItemFileDialogOpen: false });
+    this.props.dispatch(ItemActions.addItemDialogClose());
   }
 
   handleAddItemFile(file, palette, boardId) {
@@ -123,13 +107,17 @@ export class AppContainer extends Component {
   }
 
   handleAddItemSnackbarClose() {
-    this.setState({ addItemSnackbarOpen: false });
+    this.props.dispatch(ItemActions.addItemSnackbarClose());
   }
 
+
+  // Error snackbar
   handleErrorSnackbarClose() {
     this.props.dispatch(ErrorActions.hideError());
   }
 
+
+  // Render
   render() {
     const {
       auth, // eslint-disable-line no-unused-vars
@@ -142,11 +130,6 @@ export class AppContainer extends Component {
       items,
       ...routerParams
     } = this.props;
-
-    const {
-      addItemFileDialogOpen,
-      addItemSnackbarOpen
-    } = this.state;
 
     const floatingButtonTooltipOrigin = {
       vertical: "middle",
@@ -209,7 +192,7 @@ export class AppContainer extends Component {
         {/* Add item file */}
         <AddItemFileDialog
           processing={boards.isFetching || items.isAdding}
-          open={addItemFileDialogOpen}
+          open={items.addDialogOpen}
           selectBoards={boardEntities.map(board => ({
             name: board.name,
             value: board.id
@@ -220,7 +203,7 @@ export class AppContainer extends Component {
         />
 
         <Snackbar
-          open={addItemSnackbarOpen}
+          open={items.addSnackbarOpen}
           message="アイテムを追加しました"
           action="Show"
           onActionClick={this.handleAddItemActionClick}

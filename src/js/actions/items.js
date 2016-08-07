@@ -15,6 +15,16 @@ export const bgSyncItemsSuccess = createAction(BG_SYNC_ITEMS_SUCCESS);
 export const bgSyncItemsFailure = createAction(BG_SYNC_ITEMS_FAILURE);
 
 
+// Add (UI)
+export const ADD_ITEM_DIALOG_OPEN = "ADD_ITEM_DIALOG_OPEN";
+export const ADD_ITEM_DIALOG_CLOSE = "ADD_ITEM_DIALOG_CLOSE";
+export const ADD_ITEM_SNACKBAR_CLOSE = "ADD_ITEM_SNACKBAR_CLOSE";
+
+export const addItemDialogOpen = createAction(ADD_ITEM_DIALOG_OPEN);
+export const addItemDialogClose = createAction(ADD_ITEM_DIALOG_CLOSE);
+export const addItemSnackbarClose = createAction(ADD_ITEM_SNACKBAR_CLOSE);
+
+
 // Add
 export const ADD_ITEM_REQUEST = "ADD_ITEM_REQUEST";
 export const ADD_ITEM_SUCCESS = "ADD_ITEM_SUCCESS";
