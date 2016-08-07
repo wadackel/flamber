@@ -10,8 +10,7 @@ export function fetchItems() {
 
 
 export function fetchBoardItems(boardId) {
-  return fetch(`${ITEMS_ENDPOINT}/board/${boardId}`)
-    .then(res => res);
+  return fetch(`${ITEMS_ENDPOINT}/board/${boardId}`);
 }
 
 
@@ -26,18 +25,15 @@ export function addItemByFile({ file, palette, boardId }) {
     body: data
   };
 
-  return fetch(`${ITEMS_ENDPOINT}/file`, params)
-    .then(res => res);
+  return fetch(`${ITEMS_ENDPOINT}/file`, params);
 }
 
 
 export function updateItems(items) {
-  return fetchJSON(ITEMS_ENDPOINT, items, "PUT")
-    .then(res => res);
+  return fetchJSON(ITEMS_ENDPOINT, items, "PUT");
 }
 
 
 export function deleteItems(items) {
-  return fetchJSON(ITEMS_ENDPOINT, items, "DELETE")
-    .then(res => res);
+  return fetchJSON(ITEMS_ENDPOINT, items, "DELETE");
 }

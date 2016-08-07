@@ -17,7 +17,7 @@ const upload = multer({ storage });
 
 
 router.get("/", (req, res) => {
-  Item.findAll(req.drive)
+  Item.findAll(req.drive, req.user.id)
     .then(items => {
       res.json({ items });
     })
@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
 
 
 router.post("/file", upload.single("file"), (req, res) => {
-  const { drive, body, file } = req;
+  const { drive, user, body, file } = req;
   const { boardId } = body;
   const palette = body.palette.split(",");
   const params = {
@@ -35,7 +35,7 @@ router.post("/file", upload.single("file"), (req, res) => {
     palette
   };
 
-  Item.appendByFile(drive, params)
+  Item.appendByFile(drive, user.id, params)
     .then(item => {
       res.json({ item });
     })
@@ -44,9 +44,9 @@ router.post("/file", upload.single("file"), (req, res) => {
 
 
 router.delete("/", (req, res) => {
-  const { drive, body } = req;
+  const { drive, user, body } = req;
 
-  Promise.all(body.map(item => Item.removeById(drive, item.id)))
+  Promise.all(body.map(item => Item.removeById(drive, user.id, item.id)))
     .then(() => {
       res.json({});
     })

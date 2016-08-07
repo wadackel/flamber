@@ -8,6 +8,7 @@ import {
 } from "../utils/drive/items";
 
 const ItemSchema = new Schema({
+  user: { type: Schema.Types.ObjectId, ref: "User" },
   fileId: { type: String, required: true },
   board: { type: Schema.Types.ObjectId, ref: "Board" },
   name: { type: String, required: true },
@@ -29,7 +30,7 @@ ItemSchema.set("toObject", { virtuals: true });
 
 
 // Static methods
-ItemSchema.statics.appendByFile = function(drive, { file, boardId, palette }) {
+ItemSchema.statics.appendByFile = function(drive, user, { file, boardId, palette }) {
   return uploadItemFile(drive, file)
     .then(res => {
       const { width, height } = res.imageMediaMetadata;
@@ -38,6 +39,7 @@ ItemSchema.statics.appendByFile = function(drive, { file, boardId, palette }) {
         fileId: res.id,
         name: file.originalname,
         thumbnail: res.thumbnailLink,
+        user,
         width,
         height,
         palette
@@ -60,13 +62,18 @@ ItemSchema.statics.updateEntitiesThumbnailIfNeeded = function(drive, entities) {
   ));
 };
 
-ItemSchema.statics.findAll = function(drive, query = {}) {
-  return this.find(query)
+ItemSchema.statics.findAll = function(drive, user, query = {}) {
+  const params = {
+    ...query,
+    user
+  };
+
+  return this.find(params)
     .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities));
 };
 
-ItemSchema.statics.removeById = function(drive, id) {
-  return this.findById(id)
+ItemSchema.statics.removeById = function(drive, user, id) {
+  return this.findOne({ _id: id, user })
     .then(entity =>
       deleteItemFile(drive, entity.fileId).then(() => entity)
     )

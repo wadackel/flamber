@@ -7,8 +7,11 @@ import settings from "./api/settings";
 const router = Router();
 
 router.use((req, res, next) => {
-  // TODO: Check auth user
-  next();
+  if (req.authenticated) {
+    next();
+  } else {
+    res.errorJSON("Unauthorixed", 401);
+  }
 });
 
 router.use("/application", application);

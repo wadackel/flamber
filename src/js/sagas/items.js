@@ -22,6 +22,7 @@ export function *bgSync() {
       yield put(Items.bgSyncItemsSuccess(normalized));
       yield call(delay, 5000);
     }
+  } catch (error) {
   } finally {
     if (yield cancelled()) {
       yield put(Items.bgSyncItemsFailure());
@@ -43,6 +44,7 @@ export function *bgSyncSaga() {
   const { authenticated } = yield select(state => state.auth);
 
   if (authenticated) {
+    yield call(delay, 5000);
     yield put(Items.bgSyncItemsStart());
 
   } else {
