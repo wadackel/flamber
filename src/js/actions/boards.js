@@ -11,6 +11,16 @@ export const fetchBoardsSuccess = createAction(FETCH_BOARDS_SUCCESS);
 export const fetchBoardsFailure = createAction(FETCH_BOARDS_FAILURE);
 
 
+// Add (UI)
+export const ADD_BOARD_DIALOG_OPEN = "ADD_BOARD_DIALOG_OPEN";
+export const ADD_BOARD_DIALOG_CLOSE = "ADD_BOARD_DIALOG_CLOSE";
+export const ADD_BOARD_SNACKBAR_CLOSE = "ADD_BOARD_SNACKBAR_CLOSE";
+
+export const addBoardDialogOpen = createAction(ADD_BOARD_DIALOG_OPEN);
+export const addBoardDialogClose = createAction(ADD_BOARD_DIALOG_CLOSE);
+export const addBoardSnackbarClose = createAction(ADD_BOARD_SNACKBAR_CLOSE);
+
+
 // Add
 export const ADD_BOARD_REQUEST = "ADD_BOARD_REQUEST";
 export const ADD_BOARD_SUCCESS = "ADD_BOARD_SUCCESS";

@@ -5,9 +5,11 @@ import * as Boards from "../actions/boards";
 const initialState = {
   isFetching: false,
   isAdding: false,
-  currentBoardId: null,
   results: [],
-  error: null
+  currentBoardId: null,
+  error: null,
+  addDialogOpen: false,
+  addSnackbarOpen: false
 };
 
 export default handleActions({
@@ -30,6 +32,23 @@ export default handleActions({
   }),
 
 
+  // Add (UI)
+  [Boards.ADD_BOARD_DIALOG_OPEN]: state => ({
+    ...state,
+    addDialogOpen: true
+  }),
+
+  [Boards.ADD_BOARD_DIALOG_CLOSE]: state => ({
+    ...state,
+    addDialogOpen: false
+  }),
+
+  [Boards.ADD_BOARD_SNACKBAR_CLOSE]: state => ({
+    ...state,
+    addSnackbarOpen: false
+  }),
+
+
   // Add
   [Boards.ADD_BOARD_REQUEST]: state => ({
     ...state,
@@ -39,7 +58,9 @@ export default handleActions({
   [Boards.ADD_BOARD_SUCCESS]: (state, { payload }) => ({
     ...state,
     isAdding: false,
-    results: [...state.results, payload.result]
+    results: [...state.results, payload.result],
+    addDialogOpen: false,
+    addSnackbarOpen: true
   }),
 
   [Boards.ADD_BOARD_FAILURE]: (state, { payload }) => ({

@@ -36,7 +36,6 @@ export class AppContainer extends Component {
     super(props, context);
 
     this.state = {
-      addBoardDialogOpen: false,
       addItemFileDialogOpen: false,
       addItemSnackbarOpen: false
     };
@@ -66,14 +65,7 @@ export class AppContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { boards, items } = this.props;
-
-    if (boards.isAdding && !nextProps.boards.isAdding) {
-      this.setState({
-        addBoardDialogOpen: false,
-        addBoardSnackbarOpen: !nextProps.boards.error
-      });
-    }
+    const { items } = this.props;
 
     if (items.isAdding && !nextProps.items.isAdding) {
       this.setState({
@@ -85,11 +77,11 @@ export class AppContainer extends Component {
 
   // Add board
   handleAddBoardOpen() {
-    this.setState({ addBoardDialogOpen: true });
+    this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 
   handleAddBoardClose() {
-    this.setState({ addBoardDialogOpen: false });
+    this.props.dispatch(BoardActions.addBoardDialogClose());
   }
 
   handleAddBoard(boardName) {
@@ -101,7 +93,7 @@ export class AppContainer extends Component {
   }
 
   handleAddBoardSnackbarClose() {
-    this.setState({ addBoardSnackbarOpen: false });
+    this.props.dispatch(BoardActions.addBoardSnackbarClose());
   }
 
   // Add item (link)
@@ -152,8 +144,6 @@ export class AppContainer extends Component {
     } = this.props;
 
     const {
-      addBoardDialogOpen,
-      addBoardSnackbarOpen,
       addItemFileDialogOpen,
       addItemSnackbarOpen
     } = this.state;
@@ -201,12 +191,12 @@ export class AppContainer extends Component {
         {/* Add board */}
         <AddBoardDialog
           processing={boards.isAdding}
-          open={addBoardDialogOpen}
+          open={boards.addDialogOpen}
           onRequestClose={this.handleAddBoardClose}
           onRequestAdd={this.handleAddBoard}
         />
         <Snackbar
-          open={addBoardSnackbarOpen}
+          open={boards.addSnackbarOpen}
           message="ボードを追加しました"
           action="Show"
           onActionClick={this.handleAddBoardActionClick}
