@@ -27,8 +27,5 @@ export default handleActions({
     ...state,
     isAdding: false,
     error: payload
-  }),
-
-  [Boards.SET_CURRENT_BOARD]: (state, { payload }) => ({
   })
 }, initialState);

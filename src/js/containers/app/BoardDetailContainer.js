@@ -6,6 +6,10 @@ import * as Layout from "../../constants/layouts";
 import * as BoardActions from "../../actions/boards";
 import * as ItemActions from "../../actions/items";
 import { getCurrentBoard } from "../../selectors/boards";
+import {
+  getItemEntitiesByBoardId,
+  getSelectedItemEntitiesByBoardId
+} from "../../selectors/items";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import {
@@ -55,7 +59,7 @@ export class BoardDetailContainer extends Component {
   }
 
   handleSelect(id) {
-    // this.props.dispatch(selectItemToggle(id));
+    this.props.dispatch(ItemActions.selectItemToggle(id));
   }
 
   handleFavorite(id) {
@@ -145,11 +149,14 @@ export class BoardDetailContainer extends Component {
 export default connect(
   (state, ownProps) => {
     const currentBoard = getCurrentBoard(state);
+    const currentBoardId = (currentBoard && currentBoard.id) || "";
+
     return {
       settings: state.settings,
       boards: state.boards,
       items: state.items,
-      itemEntities: !currentBoard ? [] : currentBoard.items.map(id => state.entities.items[id]),
+      itemEntities: getItemEntitiesByBoardId(state, currentBoardId),
+      selectedItemEntities: getSelectedItemEntitiesByBoardId(state, currentBoardId),
       currentBoard
     };
   },
