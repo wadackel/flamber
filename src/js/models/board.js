@@ -18,7 +18,7 @@ BoardSchema.set("toObject", { virtuals: true });
 
 
 // Static methods
-BoardSchema.statics.findAll = function(drive, user, query = {}) {
+BoardSchema.statics.findAllByUser = function(drive, user, query = {}) {
   const params = {
     ...query,
     user
@@ -33,10 +33,10 @@ BoardSchema.statics.findAll = function(drive, user, query = {}) {
     );
 };
 
-BoardSchema.statics.removeById = function(drive, user, id) {
+BoardSchema.statics.removeByUserAndId = function(drive, user, id) {
   return this.findOne({ _id: id, user })
     .then(entity =>
-      Promise.all(entity.items.map(id => Item.removeById(drive, id)))
+      Promise.all(entity.items.map(id => Item.removeByUserAndId(drive, id)))
         .then(() => entity)
     )
     .then(entity =>
@@ -45,7 +45,7 @@ BoardSchema.statics.removeById = function(drive, user, id) {
     );
 };
 
-BoardSchema.statics.updateByIdFromObject = function(user, id, newProps) {
+BoardSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
   const fields = _.keys(this.schema.paths);
 
   return this.findOne({ _id: id, user })

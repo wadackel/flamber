@@ -8,7 +8,7 @@ const router = Router();
 
 
 router.get("/", (req, res) => {
-  Board.findAll(req.drive, req.user.id)
+  Board.findAllByUser(req.drive, req.user.id)
     .then(boards => {
       res.json({ boards });
     })
@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
 
 
 router.put("/", (req, res) => {
-  Promise.all(req.body.map(board => Board.updateByIdFromObject(req.user.id, board.id, board)))
+  Promise.all(req.body.map(board => Board.updateByUserAndIdFromObject(req.user.id, board.id, board)))
     .then(boards => {
       res.json({ boards });
     })
@@ -42,7 +42,7 @@ router.put("/", (req, res) => {
 router.delete("/", (req, res) => {
   const { drive, body, user } = req;
 
-  Promise.all(body.map(board => Board.removeById(drive, user.id, board.id)))
+  Promise.all(body.map(board => Board.removeByUserAndId(drive, user.id, board.id)))
     .then(boards => {
       res.json({ boards });
     })

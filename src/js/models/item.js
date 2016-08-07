@@ -30,7 +30,7 @@ ItemSchema.set("toObject", { virtuals: true });
 
 
 // Static methods
-ItemSchema.statics.appendByFile = function(drive, user, { file, boardId, palette }) {
+ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, palette }) {
   return uploadItemFile(drive, file)
     .then(res => {
       const { width, height } = res.imageMediaMetadata;
@@ -62,7 +62,7 @@ ItemSchema.statics.updateEntitiesThumbnailIfNeeded = function(drive, entities) {
   ));
 };
 
-ItemSchema.statics.findAll = function(drive, user, query = {}) {
+ItemSchema.statics.findAllByUser = function(drive, user, query = {}) {
   const params = {
     ...query,
     user
@@ -72,7 +72,7 @@ ItemSchema.statics.findAll = function(drive, user, query = {}) {
     .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities));
 };
 
-ItemSchema.statics.removeById = function(drive, user, id) {
+ItemSchema.statics.removeByUserAndId = function(drive, user, id) {
   return this.findOne({ _id: id, user })
     .then(entity =>
       deleteItemFile(drive, entity.fileId).then(() => entity)

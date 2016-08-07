@@ -17,7 +17,7 @@ const upload = multer({ storage });
 
 
 router.get("/", (req, res) => {
-  Item.findAll(req.drive, req.user.id)
+  Item.findAllByUser(req.drive, req.user.id)
     .then(items => {
       res.json({ items });
     })
@@ -35,7 +35,7 @@ router.post("/file", upload.single("file"), (req, res) => {
     palette
   };
 
-  Item.appendByFile(drive, user.id, params)
+  Item.appendByUserAndFile(drive, user.id, params)
     .then(item => {
       res.json({ item });
     })
@@ -46,7 +46,7 @@ router.post("/file", upload.single("file"), (req, res) => {
 router.delete("/", (req, res) => {
   const { drive, user, body } = req;
 
-  Promise.all(body.map(item => Item.removeById(drive, user.id, item.id)))
+  Promise.all(body.map(item => Item.removeByUserAndId(drive, user.id, item.id)))
     .then(() => {
       res.json({});
     })
