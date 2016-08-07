@@ -52,5 +52,20 @@ export default handleActions({
         select: !entity.select
       }
     )
+  ),
+
+  [Items.SELECTED_ITEMS_DELETE_REQUEST]: state => (
+    _.mapValues(state, entity =>
+      !entity.select ? entity : {
+        ...entity,
+        isDeleting: true
+      }
+    )
+  ),
+
+  [Items.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => (
+    _.pickBy(state, (entity, id) =>
+      !payload.some(o => o.id === id)
+    )
   )
 }, {});

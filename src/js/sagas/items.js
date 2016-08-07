@@ -7,7 +7,10 @@ import * as Services from "../services/items";
 import * as Auth from "../actions/auth";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
-import { getItemEntityById } from "../selectors/items";
+import {
+  getItemEntityById,
+  getSelectedItemEntities
+} from "../selectors/items";
 
 
 export function *bgSync() {
@@ -91,9 +94,24 @@ export function *handleDeleteItemRequest() {
   }
 }
 
+export function *handleSelectedItemsDeleteRequest() {
+  while (true) {
+    const { payload } = yield take(Items.SELECTED_ITEMS_DELETE_REQUEST);
+    const entities = yield select(getSelectedItemEntities);
+
+    try {
+      yield call(Services.deleteItems, entities);
+      yield put(Items.selectedItemsDeleteSuccess(entities));
+    } catch (error) {
+      yield put(Items.selectedItemsDeleteFailure(error));
+    }
+  }
+}
+
 export function *deleteItemSaga() {
   yield [
-    fork(handleDeleteItemRequest)
+    fork(handleDeleteItemRequest),
+    fork(handleSelectedItemsDeleteRequest)
   ];
 }
 

@@ -85,5 +85,12 @@ export default handleActions({
       ...entity,
       items: entity.items.filter(id => id !== payload.id)
     }))
+  ),
+
+  [Items.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity => ({
+      ...entity,
+      items: entity.items.filter(id => !payload.some(o => o.id === id))
+    }))
   )
 }, {});

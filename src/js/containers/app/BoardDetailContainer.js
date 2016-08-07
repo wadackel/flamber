@@ -8,7 +8,7 @@ import * as ItemActions from "../../actions/items";
 import { getCurrentBoard } from "../../selectors/boards";
 import {
   getItemEntitiesByBoardId,
-  getSelectedItemEntitiesByBoardId
+  getSelectedItemEntities
 } from "../../selectors/items";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
@@ -50,7 +50,8 @@ export class BoardDetailContainer extends Component {
       "handleSelect",
       "handleFavorite",
       "handleMove",
-      "handleDelete"
+      "handleDelete",
+      "handleSelectDelete"
     ], this);
   }
 
@@ -78,30 +79,8 @@ export class BoardDetailContainer extends Component {
     this.props.dispatch(ItemActions.deleteItemRequest(id));
   }
 
-  handleBoardSelect(boardId) {
-    // const { moveItem } = this.state;
-    //
-    // // Single
-    // if (moveItem != null) {
-    //   this.props.dispatch(moveItemBoardRequest({
-    //     id: moveItem._id,
-    //     boardId
-    //   }));
-    //
-    // // Multiple
-    // } else {
-    //   this.props.dispatch(selectedItemsMoveRequest(boardId));
-    // }
-    //
-    // this.setState({
-    //   nextBoardId: boardId
-    // });
-  }
-
-  handleDialogClose() {
-    // this.setState({
-    //   selectBoardDialogOpen: false
-    // });
+  handleSelectDelete() {
+    this.props.dispatch(ItemActions.selectedItemsDeleteRequest());
   }
 
   render() {
@@ -109,11 +88,14 @@ export class BoardDetailContainer extends Component {
       boards,
       items,
       itemEntities,
+      selectedItemEntities,
       settings: {
         itemsLayout,
         itemsSize
       }
     } = this.props;
+
+    const hasSelectedItems = selectedItemEntities.length > 0;
 
     return (
       <div className={`container ${b()}`}>
@@ -141,6 +123,19 @@ export class BoardDetailContainer extends Component {
             />
           )}
         </CardGroup>
+
+        <ToolBox
+          open={hasSelectedItems}
+          text={`${selectedItemEntities.length}個のアイテム`}
+          actions={[
+            <IconButton
+              type="primary"
+              tooltip="削除"
+              icon={<TrashIcon />}
+              onClick={this.handleSelectDelete}
+            />
+          ]}
+        />
       </div>
     );
   }
@@ -156,7 +151,7 @@ export default connect(
       boards: state.boards,
       items: state.items,
       itemEntities: getItemEntitiesByBoardId(state, currentBoardId),
-      selectedItemEntities: getSelectedItemEntitiesByBoardId(state, currentBoardId),
+      selectedItemEntities: getSelectedItemEntities(state),
       currentBoard
     };
   },
