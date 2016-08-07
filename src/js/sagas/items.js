@@ -13,6 +13,9 @@ import {
 } from "../selectors/items";
 
 
+const ITEM_SYNC_INTERVAL = 10000;
+
+
 export function *bgSync() {
   try {
     while (true) {
@@ -23,7 +26,7 @@ export function *bgSync() {
       });
 
       yield put(Items.bgSyncItemsSuccess(normalized));
-      yield call(delay, 5000);
+      yield call(delay, ITEM_SYNC_INTERVAL);
     }
   } catch (error) {
   } finally {
