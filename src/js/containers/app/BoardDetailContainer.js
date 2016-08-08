@@ -1,11 +1,12 @@
 /* eslint-disable */
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as Layout from "../../constants/layouts";
 import * as BoardActions from "../../actions/boards";
 import * as ItemActions from "../../actions/items";
-import { getCurrentBoard } from "../../selectors/boards";
+import { getBoardEntities, getCurrentBoard } from "../../selectors/boards";
 import {
   getItemEntitiesByBoardId,
   getSelectedItemEntities
@@ -39,9 +40,6 @@ export class BoardDetailContainer extends Component {
     super(props, context);
 
     this.state = {
-      moveItem: null,
-      nextBoardId: null,
-      selectBoardDialogOpen: false,
       moveItemSnackbarOpen: false,
       moveItemSnackbarMessage: ""
     };
@@ -50,6 +48,8 @@ export class BoardDetailContainer extends Component {
       "handleSelect",
       "handleFavorite",
       "handleMove",
+      "handleSelectBoard",
+      "handleSelectBoardDialogClose",
       "handleDelete",
       "handleSelectDelete",
       "handleSelectFavorite"
@@ -69,11 +69,16 @@ export class BoardDetailContainer extends Component {
   }
 
   handleMove(id) {
-    // this.setState({
-    //   moveItem: getItemByIdFromItems(this.props.items, id),
-    //   selectBoardDialogOpen: true,
-    //   moveItemSnackbarOpen: false
-    // });
+    this.props.dispatch(ItemActions.moveItemSelectBoardOpen(id));
+  }
+
+  handleSelectBoard(boardId) {
+    // TODO
+    console.log(boardId);
+  }
+
+  handleSelectBoardDialogClose() {
+    this.props.dispatch(ItemActions.moveItemSelectBoardClose());
   }
 
   handleDelete(id) {
@@ -97,6 +102,8 @@ export class BoardDetailContainer extends Component {
   render() {
     const {
       boards,
+      boardEntities,
+      currentBoard,
       items,
       itemEntities,
       selectedItemEntities,
@@ -108,6 +115,12 @@ export class BoardDetailContainer extends Component {
 
     const hasSelectedItems = selectedItemEntities.length > 0;
     const isAllFavorite = this.isAllFavoriteByItemEntities(selectedItemEntities);
+    const selectBoards = boardEntities
+      .filter(entity => currentBoard && currentBoard.id !== entity.id)
+      .map(entity => ({
+        value: entity.id,
+        name: entity.name
+      }));
 
     return (
       <div className={`container ${b()}`}>
@@ -135,6 +148,14 @@ export class BoardDetailContainer extends Component {
             />
           )}
         </CardGroup>
+
+        <SelectBoardDialog
+          processing={items.isMoving}
+          open={items.selectBoardDialogOpen}
+          boards={selectBoards}
+          onSelect={this.handleSelectBoard}
+          onRequestClose={this.handleSelectBoardDialogClose}
+        />
 
         <ToolBox
           open={hasSelectedItems}
@@ -165,6 +186,7 @@ export default connect(
     return {
       settings: state.settings,
       boards: state.boards,
+      boardEntities: getBoardEntities(state),
       items: state.items,
       itemEntities: getItemEntitiesByBoardId(state, currentBoardId),
       selectedItemEntities: getSelectedItemEntities(state),

@@ -7,10 +7,13 @@ import * as Items from "../actions/items";
 const initialState = {
   isFetching: false,
   isAdding: false,
+  isMoving: false,
   currentItemId: null,
   error: null,
   addDialogOpen: false,
-  addSnackbarOpen: false
+  addSnackbarOpen: false,
+  moveItems: [],
+  selectBoardDialogOpen: false
 };
 
 export default handleActions({
@@ -50,5 +53,19 @@ export default handleActions({
     ...state,
     isAdding: false,
     error: payload
+  }),
+
+
+  // Update
+  [Items.MOVE_ITEM_SELECT_BOARD_OPEN]: (state, { payload }) => ({
+    ...state,
+    moveItems: [payload],
+    selectBoardDialogOpen: true
+  }),
+
+  [Items.MOVE_ITEM_SELECT_BOARD_CLOSE]: (state, { payload }) => ({
+    ...state,
+    moveItems: [],
+    selectBoardDialogOpen: false
   })
 }, initialState);

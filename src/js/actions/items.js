@@ -49,10 +49,14 @@ export const favoriteItemToggleFailure = createAction(FAVORITE_ITEM_TOGGLE_FAILU
 
 
 // Move board
+export const MOVE_ITEM_SELECT_BOARD_OPEN = "MOVE_ITEM_SELECT_BOARD_OPEN";
+export const MOVE_ITEM_SELECT_BOARD_CLOSE = "MOVE_ITEM_SELECT_BOARD_CLOSE";
 export const MOVE_ITEM_BOARD_REQUEST = "MOVE_ITEM_BOARD_REQUEST";
 export const MOVE_ITEM_BOARD_SUCCESS = "MOVE_ITEM_BOARD_SUCCESS";
 export const MOVE_ITEM_BOARD_FAILURE = "MOVE_ITEM_BOARD_FAILURE";
 
+export const moveItemSelectBoardOpen = createAction(MOVE_ITEM_SELECT_BOARD_OPEN);
+export const moveItemSelectBoardClose = createAction(MOVE_ITEM_SELECT_BOARD_CLOSE);
 export const moveItemBoardRequest = createAction(MOVE_ITEM_BOARD_REQUEST);
 export const moveItemBoardSuccess = createAction(MOVE_ITEM_BOARD_SUCCESS);
 export const moveItemBoardFailure = createAction(MOVE_ITEM_BOARD_FAILURE);
@@ -114,21 +118,3 @@ export const FETCH_BOARD_ITEMS_FAILURE = "FETCH_BOARD_ITEMS_FAILURE";
 export const fetchBoardItemsRequest = createAction(FETCH_BOARD_ITEMS_REQUEST);
 export const fetchBoardItemsSuccess = createAction(FETCH_BOARD_ITEMS_SUCCESS);
 export const fetchBoardItemsFailure = createAction(FETCH_BOARD_ITEMS_FAILURE);
-
-
-// Clear items
-export const CLEAR_ITEMS = "CLEAR_ITEMS";
-export const clearItems = createAction(CLEAR_ITEMS);
-
-
-// Add board item
-export const ADD_BOARD_ITEM = "ADD_BOARD_ITEM";
-export const addBoardItem = createAction(ADD_BOARD_ITEM);
-
-
-// Remove board item
-export const REMOVE_BOARD_ITEM = "REMOVE_BOARD_ITEM";
-export const removeBoardItem = createAction(REMOVE_BOARD_ITEM);
-
-export const REMOVE_BOARD_ITEMS = "REMOVE_BOARD_ITEMS";
-export const removeBoardItems = createAction(REMOVE_BOARD_ITEMS);
