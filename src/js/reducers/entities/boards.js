@@ -4,16 +4,20 @@ import * as Boards from "../../actions/boards";
 import * as Items from "../../actions/items";
 
 
+function mergeEntities(state, entities) {
+  return _.assign(state, entities || {});
+}
+
 export default handleActions({
   // Fetch
   [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
-    _.assign(state, payload.entities.boards || {})
+    mergeEntities(state, payload.entities.boards)
   ),
 
 
   // Add
   [Boards.ADD_BOARD_SUCCESS]: (state, { payload }) => (
-    _.assign(state, payload.entities.boards || {})
+    mergeEntities(state, payload.entities.boards)
   ),
 
 
@@ -121,5 +125,16 @@ export default handleActions({
       ...entity,
       items: entity.items.filter(id => !payload.some(o => o.id === id))
     }))
+  ),
+
+  [Items.MOVE_ITEM_BOARD_SUCCESS]: (state, { payload, meta }) => (
+    _.mapValues(mergeEntities(state, payload.entities.boards), entity =>
+      entity.id !== meta.prevBoard ? entity : {
+        ...entity,
+        items: entity.items.filter(id =>
+          payload.result.items.indexOf(id) < -1
+        )
+      }
+    )
   )
 }, {});

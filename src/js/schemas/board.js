@@ -1,5 +1,4 @@
-import { Schema, arrayOf } from "normalizr";
-import ItemSchema from "./item";
+import { Schema } from "normalizr";
 
 const BoardSchema = new Schema("boards", {
   defaults: {
@@ -7,10 +6,6 @@ const BoardSchema = new Schema("boards", {
     isUpdating: false,
     isDeleting: false
   }
-});
-
-BoardSchema.define({
-  items: arrayOf(ItemSchema)
 });
 
 export default BoardSchema;

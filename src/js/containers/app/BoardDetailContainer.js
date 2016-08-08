@@ -73,8 +73,7 @@ export class BoardDetailContainer extends Component {
   }
 
   handleSelectBoard(boardId) {
-    // TODO
-    console.log(boardId);
+    this.props.dispatch(ItemActions.moveItemBoardRequest(boardId));
   }
 
   handleSelectBoardDialogClose() {

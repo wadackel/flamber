@@ -1,6 +1,6 @@
 import { Schema } from "normalizr";
 
-export default new Schema("items", {
+const ItemSchema = new Schema("items", {
   assignEntity(output, key, value, input) {
     if (key === "thumbnail") {
       const width = Math.min(500, input.width);
@@ -16,3 +16,5 @@ export default new Schema("items", {
     isDeleting: false
   }
 });
+
+export default ItemSchema;

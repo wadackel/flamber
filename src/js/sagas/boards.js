@@ -16,6 +16,9 @@ import * as Errors from "../actions/errors";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
+const boardSchema = BoardSchema.define({
+  items: arrayOf(ItemSchema)
+});
 
 export function *handleFetchBoardsRequest() {
   while (true) {

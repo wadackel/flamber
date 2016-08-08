@@ -62,5 +62,27 @@ BoardSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
     });
 };
 
+BoardSchema.statics.addItemByUserAndId = function(user, id, itemId) {
+  return this.findOne({ _id: id, user })
+    .then(entity => entity.addItem(itemId));
+};
+
+BoardSchema.statics.removeItemByUserAndId = function(user, id, itemId) {
+  return this.findOne({ _id: id, user })
+    .then(entity => entity.removeItem(itemId));
+};
+
+
+// Instance methods
+BoardSchema.methods.addItem = function(itemId) {
+  this.items = [...this.items, itemId];
+  return this.save();
+};
+
+BoardSchema.methods.removeItem = function(itemId) {
+  this.items = this.items.filter(id => id.toString() !== itemId);
+  return this.save();
+};
+
 
 export default mongoose.model("Board", BoardSchema);

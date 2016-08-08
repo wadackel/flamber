@@ -23,3 +23,7 @@ export function getSelectedItemEntitiesByBoardId(state, boardId) {
   const entities = getItemEntitiesByBoardId(state, boardId);
   return entities.filter(entity => entity.select);
 }
+
+export function getMoveItemEntities(state) {
+  return state.items.moveItems.map(id => getItemEntityById(state, id));
+}

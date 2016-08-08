@@ -58,8 +58,14 @@ export const MOVE_ITEM_BOARD_FAILURE = "MOVE_ITEM_BOARD_FAILURE";
 export const moveItemSelectBoardOpen = createAction(MOVE_ITEM_SELECT_BOARD_OPEN);
 export const moveItemSelectBoardClose = createAction(MOVE_ITEM_SELECT_BOARD_CLOSE);
 export const moveItemBoardRequest = createAction(MOVE_ITEM_BOARD_REQUEST);
-export const moveItemBoardSuccess = createAction(MOVE_ITEM_BOARD_SUCCESS);
-export const moveItemBoardFailure = createAction(MOVE_ITEM_BOARD_FAILURE);
+export const moveItemBoardSuccess = createAction(MOVE_ITEM_BOARD_SUCCESS,
+  null,
+  (payload, prevBoard) => ({ prevBoard })
+);
+export const moveItemBoardFailure = createAction(MOVE_ITEM_BOARD_FAILURE,
+  null,
+  (payload, item, prevBoard, nextBoard) => ({ item, prevBoard, nextBoard })
+);
 
 
 // Delete

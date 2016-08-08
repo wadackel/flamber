@@ -49,13 +49,14 @@ ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, 
 
       return item.save();
     })
-    .then(item =>
-      Board.findById(item.board).then(board => ({ item, board }))
+    .then(entity =>
+      Board.findById(entity.board).then(board => ({ entity, board }))
     )
-    .then(({ item, board }) => {
-      board.items.push(item.id);
-      return board.save().then(() => item);
-    });
+    .then(({ entity, board }) => {
+      board.items.push(entity.id);
+      return board.save().then(() => entity);
+    })
+    .then(entity => this.populate(entity, { path: "board" }));
 };
 
 
@@ -73,7 +74,10 @@ ItemSchema.statics.findAllByUser = function(drive, user, query = {}) {
   };
 
   return this.find(params)
-    .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities));
+    .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities))
+    .then(entities => Promise.all(entities.map(entity =>
+      this.populate(entity, { path: "board" })
+    )));
 };
 
 
@@ -82,6 +86,8 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(drive, user, id, newPr
 
   return this.findOne({ _id: id, user })
     .then(entity => {
+      const prevBoard = entity.board.toString();
+
       fields.forEach(key => {
         if (newProps.hasOwnProperty(key)) {
           entity[key] = newProps[key];
@@ -90,9 +96,18 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(drive, user, id, newPr
 
       entity.modified = new Date();
 
-      return entity.save();
+      if (newProps.hasOwnProperty("board") && prevBoard !== newProps.board) {
+        return Promise.all([
+          Board.removeItemByUserAndId(user, prevBoard, entity.id),
+          Board.addItemByUserAndId(user, newProps.board, entity.id)
+        ]).then(() => entity);
+
+      } else {
+        return entity.save();
+      }
     })
-    .then(entity => updateItemThumbnail(drive, entity));
+    .then(entity => updateItemThumbnail(drive, entity))
+    .then(entity => this.populate(entity, { path: "board" }));
 };
 
 
@@ -111,7 +126,8 @@ ItemSchema.statics.removeByUserAndId = function(drive, user, id) {
           return board.save();
         })
         .then(() => entity)
-    );
+    )
+    .then(entity => this.populate(entity, { path: "board" }));
 };
 
 
