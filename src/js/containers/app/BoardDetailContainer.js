@@ -64,7 +64,7 @@ export class BoardDetailContainer extends Component {
   }
 
   handleFavorite(id) {
-    // this.props.dispatch(favoriteItemToggleRequest(id));
+    this.props.dispatch(ItemActions.favoriteItemToggleRequest(id));
   }
 
   handleMove(id) {

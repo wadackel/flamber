@@ -43,6 +43,11 @@ router.post("/file", upload.single("file"), (req, res) => {
 });
 
 
+router.put("/", (req, res) => {
+  res.errorJSON("TODO");
+});
+
+
 router.delete("/", (req, res) => {
   const { drive, user, body } = req;
 

@@ -119,10 +119,34 @@ export function *deleteItemSaga() {
 }
 
 
+export function *handleFavoriteItemToggleRequest({ payload }) {
+  const entity = yield select(getItemEntityById, payload);
+
+  try {
+    const [updatedEntity] = yield call(Services.updateItems, [entity]);
+    yield put(Items.favoriteItemToggleSuccess(updatedEntity));
+  } catch (error) {
+    yield put(Items.favoriteItemToggleFailure(error, payload));
+  }
+}
+
+export function *handleFavoriteItemToggleFailure() {
+  // TODO: Send error message
+}
+
+export function *updateItemSaga() {
+  yield [
+    takeEvery(Items.FAVORITE_ITEM_TOGGLE_REQUEST, handleFavoriteItemToggleRequest),
+    takeEvery(Items.FAVORITE_ITEM_TOGGLE_FAILURE, handleFavoriteItemToggleFailure)
+  ];
+}
+
+
 export default function *itemsSaga() {
   yield [
     fork(bgSyncSaga),
     fork(addItemSaga),
-    fork(deleteItemSaga)
+    fork(deleteItemSaga),
+    fork(updateItemSaga)
   ];
 }

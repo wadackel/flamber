@@ -6,6 +6,7 @@ import * as Items from "../../actions/items";
 import ItemSchema from "../../schemas/item";
 
 export default handleActions({
+  // Background sync
   [Items.BG_SYNC_ITEMS_SUCCESS]: (state, { payload }) => {
     const newItems = payload.entities.items || {};
 
@@ -22,14 +23,14 @@ export default handleActions({
     }));
   },
 
-  [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
-    _.assign(state, payload.entities.items || {})
-  ),
 
+  // Add
   [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
     _.assign(state, payload.entities.items || {})
   ),
 
+
+  // Delete
   [Items.DELETE_ITEM_REQUEST]: (state, { payload }) => (
     _.mapValues(state, entity =>
       entity.id !== payload ? entity : {
@@ -45,6 +46,37 @@ export default handleActions({
     )
   ),
 
+
+  // Favorite
+  [Items.FAVORITE_ITEM_TOGGLE_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload ? entity : {
+        ...entity,
+        favorite: !entity.favorite
+      }
+    )
+  ),
+
+  [Items.FAVORITE_ITEM_TOGGLE_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        favorite: !payload.favorite
+      }
+    )
+  ),
+
+  [Items.FAVORITE_ITEM_TOGGLE_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta ? entity : {
+        ...entity,
+        favorite: !entity.favorite
+      }
+    )
+  ),
+
+
+  // Select
   [Items.SELECT_ITEM_TOGGLE]: (state, { payload }) => (
     _.mapValues(state, entity =>
       entity.id !== payload ? entity : {
@@ -54,6 +86,8 @@ export default handleActions({
     )
   ),
 
+
+  // Selected delete
   [Items.SELECTED_ITEMS_DELETE_REQUEST]: state => (
     _.mapValues(state, entity =>
       !entity.select ? entity : {
@@ -67,5 +101,11 @@ export default handleActions({
     _.pickBy(state, (entity, id) =>
       !payload.some(o => o.id === id)
     )
-  )
+  ),
+
+
+  // Boards
+  [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
+    _.assign(state, payload.entities.items || {})
+  ),
 }, {});

@@ -42,7 +42,10 @@ export const FAVORITE_ITEM_TOGGLE_FAILURE = "FAVORITE_ITEM_TOGGLE_FAILURE";
 
 export const favoriteItemToggleRequest = createAction(FAVORITE_ITEM_TOGGLE_REQUEST);
 export const favoriteItemToggleSuccess = createAction(FAVORITE_ITEM_TOGGLE_SUCCESS);
-export const favoriteItemToggleFailure = createAction(FAVORITE_ITEM_TOGGLE_FAILURE);
+export const favoriteItemToggleFailure = createAction(FAVORITE_ITEM_TOGGLE_FAILURE,
+  null,
+  (payload, id) => id
+);
 
 
 // Move board
