@@ -8,7 +8,10 @@ import * as ErrorActions from "../../actions/errors";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import { getBoardEntities, getBoardByIdFromBoards } from "../../selectors/boards";
-import { HeaderSubContainer } from "./";
+import {
+  HeaderSubContainer,
+  ShortcutKeySubContainer
+} from "./";
 import {
   AddBoardDialog,
   AddItemFileDialog,
@@ -140,6 +143,9 @@ export class AppContainer extends Component {
       <div className={b()}>
         {/* Header */}
         <HeaderSubContainer {...routerParams} />
+
+        {/* Shortcut */}
+        <ShortcutKeySubContainer />
 
         {/* Content */}
         <div className={b("content")}>
