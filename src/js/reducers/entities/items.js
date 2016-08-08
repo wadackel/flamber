@@ -61,7 +61,7 @@ export default handleActions({
     _.mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
-        favorite: !payload.favorite
+        favorite: payload.favorite
       }
     )
   ),

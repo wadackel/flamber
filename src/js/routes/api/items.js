@@ -44,7 +44,13 @@ router.post("/file", upload.single("file"), (req, res) => {
 
 
 router.put("/", (req, res) => {
-  res.errorJSON("TODO");
+  const { drive, user, body } = req;
+
+  Promise.all(body.map(item => Item.updateByUserAndIdFromObject(drive, user.id, item.id, item)))
+    .then(items => {
+      res.json({ items });
+    })
+    .catch(res.errorJSON);
 });
 
 

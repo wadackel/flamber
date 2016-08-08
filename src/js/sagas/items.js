@@ -4,6 +4,7 @@ import { takeEvery, takeLatest, delay } from "redux-saga";
 import { fork, take, put, call, select, race, cancel, cancelled } from "redux-saga/effects";
 import ItemSchema from "../schemas/item";
 import * as Services from "../services/items";
+import * as Errors from "../actions/errors";
 import * as Auth from "../actions/auth";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
@@ -13,7 +14,7 @@ import {
 } from "../selectors/items";
 
 
-const ITEM_SYNC_INTERVAL = 10000;
+const ITEM_SYNC_INTERVAL = 60000;
 
 
 export function *bgSync() {
@@ -123,15 +124,15 @@ export function *handleFavoriteItemToggleRequest({ payload }) {
   const entity = yield select(getItemEntityById, payload);
 
   try {
-    const [updatedEntity] = yield call(Services.updateItems, [entity]);
-    yield put(Items.favoriteItemToggleSuccess(updatedEntity));
+    const { items } = yield call(Services.updateItems, [entity]);
+    yield put(Items.favoriteItemToggleSuccess(items[0]));
   } catch (error) {
     yield put(Items.favoriteItemToggleFailure(error, payload));
   }
 }
 
 export function *handleFavoriteItemToggleFailure() {
-  // TODO: Send error message
+  yield put(Errors.showError("アイテムの更新に失敗しました"));
 }
 
 export function *updateItemSaga() {

@@ -1,8 +1,10 @@
 /* eslint-disable */
+import _ from "lodash";
 import mongoose, { Schema } from "mongoose";
 import Board from "./board";
 import {
   uploadItemFile,
+  updateItemThumbnail,
   updateItemThumbnailIfNeeded,
   deleteItemFile
 } from "../utils/drive/items";
@@ -56,11 +58,13 @@ ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, 
     });
 };
 
+
 ItemSchema.statics.updateEntitiesThumbnailIfNeeded = function(drive, entities) {
   return Promise.all(entities.map(entity =>
     updateItemThumbnailIfNeeded(drive, entity)
   ));
 };
+
 
 ItemSchema.statics.findAllByUser = function(drive, user, query = {}) {
   const params = {
@@ -71,6 +75,26 @@ ItemSchema.statics.findAllByUser = function(drive, user, query = {}) {
   return this.find(params)
     .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities));
 };
+
+
+ItemSchema.statics.updateByUserAndIdFromObject = function(drive, user, id, newProps) {
+  const fields = _.keys(this.schema.paths);
+
+  return this.findOne({ _id: id, user })
+    .then(entity => {
+      fields.forEach(key => {
+        if (newProps.hasOwnProperty(key)) {
+          entity[key] = newProps[key];
+        }
+      });
+
+      entity.modified = new Date();
+
+      return entity.save();
+    })
+    .then(entity => updateItemThumbnail(drive, entity));
+};
+
 
 ItemSchema.statics.removeByUserAndId = function(drive, user, id) {
   return this.findOne({ _id: id, user })
