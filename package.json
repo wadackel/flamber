@@ -71,6 +71,7 @@
     "babel-polyfill": "^6.9.1",
     "body-parser": "^1.15.2",
     "color-classifier": "0.0.1",
+    "combokeys": "^2.4.6",
     "cookie-parser": "^1.4.3",
     "deep-equal": "^1.0.1",
     "dotenv": "^2.0.0",

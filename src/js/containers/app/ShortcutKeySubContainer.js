@@ -1,9 +1,9 @@
 /* eslint-disable */
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import EventListener from "react-event-listener";
-import { detectKeyString } from "key-string";
+import Combokeys from "combokeys";
 import * as BoardActions from "../../actions/boards";
 import * as ItemActions from "../../actions/items";
 import bem from "../../helpers/bem";
@@ -21,50 +21,54 @@ export class ShortcutKeySubContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    bindHandlers([
-      "handleKeyDown"
-    ], this);
+    this.keyMaps = {
+      "?": this.handleHelp,
+      "shift+b": this.handleAddBoard,
+      "shift+l": this.handleAddItem,
+      "shift+u": this.handleAddItemFile,
+      ",": this.handleSettings,
+    };
   }
 
-  handleKeyDown(e) {
-    if (e.target === document.body) {
-      this.execShortcut(detectKeyString(e));
+  componentDidMount() {
+    this.combokeys = new Combokeys(document.documentElement);
+
+    _.forIn(this.keyMaps, (handler, keyString) => {
+      this.combokeys.bind(keyString, handler.bind(this));
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.combokeys) {
+      this.combokeys.detach();
+      this.combokeys = null;
     }
   }
 
-  execShortcut(shortcut) {
-    console.log(shortcut);
+  handleHelp() {
+    console.log("TODO: Help");
+  }
 
-    switch (shortcut) {
-      case "Shift+B":
-        this.props.dispatch(BoardActions.addBoardDialogOpen());
-        break;
+  handleAddBoard() {
+    this.props.dispatch(BoardActions.addBoardDialogOpen());
+  }
 
-      case "Shift+L":
-        console.log("TODO: Item (Link)");
-        break;
+  handleAddItemFile() {
+    this.props.dispatch(ItemActions.addItemDialogOpen());
+  }
 
-      case "Shift+F":
-        this.props.dispatch(ItemActions.addItemDialogOpen());
-        break;
+  handleAddItem() {
+    console.log("TODO: Add item");
+  }
 
-      case "Comma":
-        this.props.dispatch(push("/app/settings"));
-        break;
-
-      case "Shift+Slash":
-        console.log("TODO: Help");
-        break;
-    }
+  handleSettings() {
+    this.props.dispatch(push("/app/settings"));
   }
 
   render() {
     return (
       <div className={b()}>
-        <EventListener
-          target="document"
-          onKeyDown={this.handleKeyDown}
-        />
+        {/* TODO */}
       </div>
     );
   }
