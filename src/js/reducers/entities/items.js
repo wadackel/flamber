@@ -104,6 +104,38 @@ export default handleActions({
   ),
 
 
+  // Selected favorite
+  [Items.SELECTED_ITEMS_FAVORITE_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      !entity.select ? entity : {
+        ...entity,
+        isUpdating: true
+      }
+    )
+  ),
+
+  [Items.SELECTED_ITEMS_FAVORITE_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      !payload.entities.items.hasOwnProperty(entity.id) ? entity : {
+        ...entity,
+        select: false,
+        isUpdating: false,
+        favorite: payload.entities.items[entity.id].favorite
+      }
+    )
+  ),
+
+  [Items.SELECTED_ITEMS_FAVORITE_FAILURE]: (state, { meta }) =>(
+    _.mapValues(state, entity => {
+      const index = _.findIndex(meta, o => o.id === entity.id);
+      return index < 0 ? entity : {
+        ...meta[index],
+        isUpdating: false
+      }
+    })
+  ),
+
+
   // Boards
   [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
     _.assign(state, payload.entities.items || {})

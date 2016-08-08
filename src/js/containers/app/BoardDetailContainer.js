@@ -51,7 +51,8 @@ export class BoardDetailContainer extends Component {
       "handleFavorite",
       "handleMove",
       "handleDelete",
-      "handleSelectDelete"
+      "handleSelectDelete",
+      "handleSelectFavorite"
     ], this);
   }
 
@@ -83,6 +84,16 @@ export class BoardDetailContainer extends Component {
     this.props.dispatch(ItemActions.selectedItemsDeleteRequest());
   }
 
+  handleSelectFavorite() {
+    const { dispatch, selectedItemEntities } = this.props;
+    const isAllFavorite = this.isAllFavoriteByItemEntities(selectedItemEntities);
+    dispatch(ItemActions.selectedItemsFavoriteRequest(!isAllFavorite));
+  }
+
+  isAllFavoriteByItemEntities(entities) {
+    return entities.every(entity => entity.favorite);
+  }
+
   render() {
     const {
       boards,
@@ -96,6 +107,7 @@ export class BoardDetailContainer extends Component {
     } = this.props;
 
     const hasSelectedItems = selectedItemEntities.length > 0;
+    const isAllFavorite = this.isAllFavoriteByItemEntities(selectedItemEntities);
 
     return (
       <div className={`container ${b()}`}>
@@ -129,7 +141,11 @@ export class BoardDetailContainer extends Component {
           text={`${selectedItemEntities.length}個のアイテム`}
           actions={[
             <IconButton
-              type="primary"
+              tooltip={isAllFavorite ? "スターを外す" : "スターを付ける"}
+              icon={<StarIcon />}
+              onClick={this.handleSelectFavorite}
+            />,
+            <IconButton
               tooltip="削除"
               icon={<TrashIcon />}
               onClick={this.handleSelectDelete}

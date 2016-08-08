@@ -14,7 +14,8 @@ import {
 } from "../selectors/items";
 
 
-const ITEM_SYNC_INTERVAL = 60000;
+// const ITEM_SYNC_INTERVAL = 60000;
+const ITEM_SYNC_INTERVAL = 10000;
 
 
 export function *bgSync() {
@@ -132,13 +133,39 @@ export function *handleFavoriteItemToggleRequest({ payload }) {
 }
 
 export function *handleFavoriteItemToggleFailure() {
+  // TODO: Error message
   yield put(Errors.showError("アイテムの更新に失敗しました"));
+}
+
+export function *handleSelectedItemsFavoriteRequest() {
+  while (true) {
+    const { payload } = yield take(Items.SELECTED_ITEMS_FAVORITE_REQUEST);
+    const entities = yield select(getSelectedItemEntities);
+    const newEntities = entities.map(entity => ({ ...entity, favorite: payload }));
+
+    try {
+      const response = yield call(Services.updateItems, newEntities);
+      const normalized = normalize(response, {
+        items: arrayOf(ItemSchema)
+      });
+      yield put(Items.selectedItemsFavoriteSuccess(normalized));
+    } catch (error) {
+      yield put(Items.selectedItemsFavoriteFailure(error, entities));
+    }
+  }
+}
+
+export function *handleSelectedItemsFavoriteFailure() {
+  // TODO: Error message
+  yield put(Errors.showError("選択したアイテムの更新に失敗しました"));
 }
 
 export function *updateItemSaga() {
   yield [
     takeEvery(Items.FAVORITE_ITEM_TOGGLE_REQUEST, handleFavoriteItemToggleRequest),
-    takeEvery(Items.FAVORITE_ITEM_TOGGLE_FAILURE, handleFavoriteItemToggleFailure)
+    takeEvery(Items.FAVORITE_ITEM_TOGGLE_FAILURE, handleFavoriteItemToggleFailure),
+    fork(handleSelectedItemsFavoriteRequest),
+    takeEvery(Items.SELECTED_ITEMS_FAVORITE_FAILURE, handleSelectedItemsFavoriteFailure)
   ];
 }
 

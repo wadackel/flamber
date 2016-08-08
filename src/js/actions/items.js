@@ -90,7 +90,10 @@ export const SELECTED_ITEMS_FAVORITE_FAILURE = "SELECTED_ITEMS_FAVORITE_FAILURE"
 
 export const selectedItemsFavoriteRequest = createAction(SELECTED_ITEMS_FAVORITE_REQUEST);
 export const selectedItemsFavoriteSuccess = createAction(SELECTED_ITEMS_FAVORITE_SUCCESS);
-export const selectedItemsFavoriteFailure = createAction(SELECTED_ITEMS_FAVORITE_FAILURE);
+export const selectedItemsFavoriteFailure = createAction(SELECTED_ITEMS_FAVORITE_FAILURE,
+  null,
+  (payload, entities) => entities
+);
 
 
 // Selected items delete
