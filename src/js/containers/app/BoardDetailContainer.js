@@ -48,6 +48,7 @@ export class BoardDetailContainer extends Component {
       "handleSelect",
       "handleFavorite",
       "handleMove",
+      "handleSelectMove",
       "handleSelectBoard",
       "handleSelectBoardDialogClose",
       "handleDelete",
@@ -72,12 +73,24 @@ export class BoardDetailContainer extends Component {
     this.props.dispatch(ItemActions.moveItemSelectBoardOpen(id));
   }
 
+  handleSelectMove() {
+    this.props.dispatch(ItemActions.selectedItemsMoveOpen());
+  }
+
   handleSelectBoard(boardId) {
-    this.props.dispatch(ItemActions.moveItemBoardRequest(boardId));
+    if (this.props.items.moveItems.lengt > 0) {
+      this.props.dispatch(ItemActions.moveItemBoardRequest(boardId));
+    } else {
+      this.props.dispatch(ItemActions.selectedItemsMoveRequest(boardId));
+    }
   }
 
   handleSelectBoardDialogClose() {
-    this.props.dispatch(ItemActions.moveItemSelectBoardClose());
+    if (this.props.items.moveItems.length > 0) {
+      this.props.dispatch(ItemActions.moveItemSelectBoardClose());
+    } else {
+      this.props.dispatch(ItemActions.selectedItemsMoveClose());
+    }
   }
 
   handleDelete(id) {
@@ -164,6 +177,11 @@ export class BoardDetailContainer extends Component {
               tooltip={isAllFavorite ? "スターを外す" : "スターを付ける"}
               icon={<StarIcon />}
               onClick={this.handleSelectFavorite}
+            />,
+            <IconButton
+              tooltip="移動"
+              icon={<FolderIcon />}
+              onClick={this.handleSelectMove}
             />,
             <IconButton
               tooltip="削除"

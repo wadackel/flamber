@@ -187,10 +187,9 @@ export function *favoriteItemSaga() {
 export function *handleMoveItemBoardRequest() {
   while (true) {
     const { payload } = yield take(Items.MOVE_ITEM_BOARD_REQUEST);
-    const board = yield select(getBoardEntityById, payload);
     const [entity] = yield select(getMoveItemEntities);
     const prevBoard = entity.board;
-    const newEntity = { ...entity, board: board.id };
+    const newEntity = { ...entity, board: payload };
 
     try {
       const response = yield call(Services.updateItems, [newEntity]);
@@ -209,10 +208,31 @@ function *handleMoveItemBoardFailure() {
   yield put(Errors.showError("アイテムの移動に失敗しました"));
 }
 
+export function *handleSelectedItemsMoveRequest() {
+  while (true) {
+    const { payload } = yield take(Items.SELECTED_ITEMS_MOVE_REQUEST);
+    const entities = yield select(getSelectedItemEntities);
+    const prevBoards = entities.map(entity => entity.board);
+    const newEntities = entities.map(entity => ({ ...entity, board: payload }));
+
+    try {
+      const response = yield call(Services.updateItems, newEntities);
+      const normalized = normalize(response, { items: arrayOf(ItemSchema) });
+      yield put(Items.moveItemBoardSuccess(
+        normalized,
+        prevBoards
+      ));
+    } catch (error) {
+      yield put(Items.moveItemBoardFailure(error, entities, prevBoards, payload));
+    }
+  }
+}
+
 export function *moveItemSaga() {
   yield [
     fork(handleMoveItemBoardRequest),
-    takeEvery(Items.MOVE_ITEM_BOARD_FAILURE, handleMoveItemBoardFailure)
+    takeEvery(Items.MOVE_ITEM_BOARD_FAILURE, handleMoveItemBoardFailure),
+    fork(handleSelectedItemsMoveRequest)
   ];
 }
 

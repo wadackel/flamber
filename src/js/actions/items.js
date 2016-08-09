@@ -84,13 +84,23 @@ export const selectItemToggle = createAction(SELECT_ITEM_TOGGLE);
 
 
 // Selected items move
+export const SELECTED_ITEMS_MOVE_OPEN = "SELECTED_ITEMS_MOVE_OPEN";
+export const SELECTED_ITEMS_MOVE_CLOSE = "SELECTED_ITEMS_MOVE_CLOSE";
 export const SELECTED_ITEMS_MOVE_REQUEST = "SELECTED_ITEMS_MOVE_REQUEST";
 export const SELECTED_ITEMS_MOVE_SUCCESS = "SELECTED_ITEMS_MOVE_SUCCESS";
 export const SELECTED_ITEMS_MOVE_FAILURE = "SELECTED_ITEMS_MOVE_FAILURE";
 
+export const selectedItemsMoveOpen = createAction(SELECTED_ITEMS_MOVE_OPEN);
+export const selectedItemsMoveClose = createAction(SELECTED_ITEMS_MOVE_CLOSE);
 export const selectedItemsMoveRequest = createAction(SELECTED_ITEMS_MOVE_REQUEST);
-export const selectedItemsMoveSuccess = createAction(SELECTED_ITEMS_MOVE_SUCCESS);
-export const selectedItemsMoveFailure = createAction(SELECTED_ITEMS_MOVE_FAILURE);
+export const selectedItemsMoveSuccess = createAction(SELECTED_ITEMS_MOVE_SUCCESS,
+  null,
+  (payload, prevBoards) => ({ prevBoards })
+);
+export const selectedItemsMoveFailure = createAction(SELECTED_ITEMS_MOVE_FAILURE,
+  null,
+  (payload, items, prevBoards, nextBoard) => ({ items, prevBoards, nextBoard })
+);
 
 
 // Selected items favorite

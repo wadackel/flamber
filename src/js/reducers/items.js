@@ -56,7 +56,7 @@ export default handleActions({
   }),
 
 
-  // Update
+  // Move
   [Items.MOVE_ITEM_SELECT_BOARD_OPEN]: (state, { payload }) => ({
     ...state,
     moveItems: [payload],
@@ -84,6 +84,35 @@ export default handleActions({
     ...state,
     isMoving: false,
     selectBoardDialogOpen: false,
+    error: payload
+  }),
+
+
+  // Selected move
+  [Items.SELECTED_ITEMS_MOVE_OPEN]: state => ({
+    ...state,
+    selectBoardDialogOpen: true
+  }),
+
+  [Items.SELECTED_ITEMS_MOVE_CLOSE]: state => ({
+    ...state,
+    selectBoardDialogOpen: false
+  }),
+
+  [Items.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => ({
+    ...state,
+    isMoving: true
+  }),
+
+  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isMoving: false,
+    error: null
+  }),
+
+  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload, meta }) => ({
+    ...state,
+    isMoving: false,
     error: payload
   })
 }, initialState);
