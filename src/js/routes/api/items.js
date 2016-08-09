@@ -45,8 +45,18 @@ router.post("/file", upload.single("file"), (req, res) => {
 
 router.put("/", (req, res) => {
   const { drive, user, body } = req;
+  const promises = body.map(item =>
+    () => Item.updateByUserAndIdFromObject(drive, user.id, item.id, item)
+  );
 
-  Promise.all(body.map(item => Item.updateByUserAndIdFromObject(drive, user.id, item.id, item)))
+  const sequence = promises.reduce((prev, current) => {
+    return prev.then(current);
+  }, promises.shift()());
+
+  sequence
+    .then(() =>
+      Promise.all(body.map(item => Item.findOne({ user: user.id, _id: item.id }).populate("board")))
+    )
     .then(items => {
       res.json({ items });
     })

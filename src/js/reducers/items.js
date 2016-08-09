@@ -107,12 +107,14 @@ export default handleActions({
   [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => ({
     ...state,
     isMoving: false,
-    error: null
+    error: null,
+    selectBoardDialogOpen: false
   }),
 
   [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload, meta }) => ({
     ...state,
     isMoving: false,
-    error: payload
+    error: payload,
+    selectBoardDialogOpen: false
   })
 }, initialState);

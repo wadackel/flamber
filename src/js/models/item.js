@@ -96,7 +96,6 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(drive, user, id, newPr
 
       entity.modified = new Date();
 
-      console.log(newProps.board, prevBoard);
       if (newProps.hasOwnProperty("board") && prevBoard !== newProps.board) {
         return Promise.all([
           Board.removeItemByUserAndId(user, prevBoard, entity.id),

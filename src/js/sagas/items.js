@@ -205,6 +205,7 @@ export function *handleMoveItemBoardRequest() {
 }
 
 function *handleMoveItemBoardFailure() {
+  // TODO
   yield put(Errors.showError("アイテムの移動に失敗しました"));
 }
 
@@ -228,11 +229,17 @@ export function *handleSelectedItemsMoveRequest() {
   }
 }
 
+function *handleSelectedItemsMoveFailure() {
+  // TODO
+  yield put(Errors.showError("選択アイテムの移動に失敗しました"));
+}
+
 export function *moveItemSaga() {
   yield [
     fork(handleMoveItemBoardRequest),
     takeEvery(Items.MOVE_ITEM_FAILURE, handleMoveItemBoardFailure),
-    fork(handleSelectedItemsMoveRequest)
+    fork(handleSelectedItemsMoveRequest),
+    takeEvery(Items.SELECTED_ITEMS_MOVE_FAILURE, handleSelectedItemsMoveFailure)
   ];
 }
 
