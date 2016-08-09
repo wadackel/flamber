@@ -69,18 +69,18 @@ export default handleActions({
     selectBoardDialogOpen: false
   }),
 
-  [Items.MOVE_ITEM_BOARD_REQUEST]: state => ({
+  [Items.MOVE_ITEM_REQUEST]: state => ({
     ...state,
     isMoving: true
   }),
 
-  [Items.MOVE_ITEM_BOARD_SUCCESS]: state => ({
+  [Items.MOVE_ITEM_SUCCESS]: state => ({
     ...state,
     isMoving: false,
     selectBoardDialogOpen: false
   }),
 
-  [Items.MOVE_ITEM_BOARD_FAILURE]: (state, { payload, meta }) => ({
+  [Items.MOVE_ITEM_FAILURE]: (state, { payload, meta }) => ({
     ...state,
     isMoving: false,
     selectBoardDialogOpen: false,

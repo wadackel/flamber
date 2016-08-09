@@ -51,18 +51,18 @@ export const favoriteItemToggleFailure = createAction(FAVORITE_ITEM_TOGGLE_FAILU
 // Move board
 export const MOVE_ITEM_SELECT_BOARD_OPEN = "MOVE_ITEM_SELECT_BOARD_OPEN";
 export const MOVE_ITEM_SELECT_BOARD_CLOSE = "MOVE_ITEM_SELECT_BOARD_CLOSE";
-export const MOVE_ITEM_BOARD_REQUEST = "MOVE_ITEM_BOARD_REQUEST";
-export const MOVE_ITEM_BOARD_SUCCESS = "MOVE_ITEM_BOARD_SUCCESS";
-export const MOVE_ITEM_BOARD_FAILURE = "MOVE_ITEM_BOARD_FAILURE";
+export const MOVE_ITEM_REQUEST = "MOVE_ITEM_REQUEST";
+export const MOVE_ITEM_SUCCESS = "MOVE_ITEM_SUCCESS";
+export const MOVE_ITEM_FAILURE = "MOVE_ITEM_FAILURE";
 
 export const moveItemSelectBoardOpen = createAction(MOVE_ITEM_SELECT_BOARD_OPEN);
 export const moveItemSelectBoardClose = createAction(MOVE_ITEM_SELECT_BOARD_CLOSE);
-export const moveItemBoardRequest = createAction(MOVE_ITEM_BOARD_REQUEST);
-export const moveItemBoardSuccess = createAction(MOVE_ITEM_BOARD_SUCCESS,
+export const moveItemRequest = createAction(MOVE_ITEM_REQUEST);
+export const moveItemSuccess = createAction(MOVE_ITEM_SUCCESS,
   null,
   (payload, prevBoard) => ({ prevBoard })
 );
-export const moveItemBoardFailure = createAction(MOVE_ITEM_BOARD_FAILURE,
+export const moveItemFailure = createAction(MOVE_ITEM_FAILURE,
   null,
   (payload, item, prevBoard, nextBoard) => ({ item, prevBoard, nextBoard })
 );

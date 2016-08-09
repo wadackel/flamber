@@ -78,8 +78,8 @@ export class BoardDetailContainer extends Component {
   }
 
   handleSelectBoard(boardId) {
-    if (this.props.items.moveItems.lengt > 0) {
-      this.props.dispatch(ItemActions.moveItemBoardRequest(boardId));
+    if (this.props.items.moveItems.length > 0) {
+      this.props.dispatch(ItemActions.moveItemRequest(boardId));
     } else {
       this.props.dispatch(ItemActions.selectedItemsMoveRequest(boardId));
     }

@@ -186,7 +186,7 @@ export function *favoriteItemSaga() {
 
 export function *handleMoveItemBoardRequest() {
   while (true) {
-    const { payload } = yield take(Items.MOVE_ITEM_BOARD_REQUEST);
+    const { payload } = yield take(Items.MOVE_ITEM_REQUEST);
     const [entity] = yield select(getMoveItemEntities);
     const prevBoard = entity.board;
     const newEntity = { ...entity, board: payload };
@@ -194,12 +194,12 @@ export function *handleMoveItemBoardRequest() {
     try {
       const response = yield call(Services.updateItems, [newEntity]);
       const normalized = normalize(response, { items: arrayOf(ItemSchema) });
-      yield put(Items.moveItemBoardSuccess(
+      yield put(Items.moveItemSuccess(
         normalized,
         prevBoard
       ));
     } catch (error) {
-      yield put(Items.moveItemBoardFailure(error, entity, prevBoard, payload));
+      yield put(Items.moveItemFailure(error, entity, prevBoard, payload));
     }
   }
 }
@@ -218,12 +218,12 @@ export function *handleSelectedItemsMoveRequest() {
     try {
       const response = yield call(Services.updateItems, newEntities);
       const normalized = normalize(response, { items: arrayOf(ItemSchema) });
-      yield put(Items.moveItemBoardSuccess(
+      yield put(Items.selectedItemsMoveSuccess(
         normalized,
         prevBoards
       ));
     } catch (error) {
-      yield put(Items.moveItemBoardFailure(error, entities, prevBoards, payload));
+      yield put(Items.selectedItemsMoveFailure(error, entities, prevBoards, payload));
     }
   }
 }
@@ -231,7 +231,7 @@ export function *handleSelectedItemsMoveRequest() {
 export function *moveItemSaga() {
   yield [
     fork(handleMoveItemBoardRequest),
-    takeEvery(Items.MOVE_ITEM_BOARD_FAILURE, handleMoveItemBoardFailure),
+    takeEvery(Items.MOVE_ITEM_FAILURE, handleMoveItemBoardFailure),
     fork(handleSelectedItemsMoveRequest)
   ];
 }
