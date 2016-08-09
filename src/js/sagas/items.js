@@ -146,7 +146,7 @@ export function *handleFavoriteItemToggleRequest({ payload }) {
   }
 }
 
-export function *handleFavoriteItemToggleFailure() {
+function *handleFavoriteItemToggleFailure() {
   // TODO: Error message
   yield put(Errors.showError("アイテムの更新に失敗しました"));
 }
@@ -169,7 +169,7 @@ export function *handleSelectedItemsFavoriteRequest() {
   }
 }
 
-export function *handleSelectedItemsFavoriteFailure() {
+function *handleSelectedItemsFavoriteFailure() {
   // TODO: Error message
   yield put(Errors.showError("選択したアイテムの更新に失敗しました"));
 }
@@ -205,9 +205,14 @@ export function *handleMoveItemBoardRequest() {
   }
 }
 
+function *handleMoveItemBoardFailure() {
+  yield put(Errors.showError("アイテムの移動に失敗しました"));
+}
+
 export function *moveItemSaga() {
   yield [
-    fork(handleMoveItemBoardRequest)
+    fork(handleMoveItemBoardRequest),
+    takeEvery(Items.MOVE_ITEM_BOARD_FAILURE, handleMoveItemBoardFailure)
   ];
 }
 

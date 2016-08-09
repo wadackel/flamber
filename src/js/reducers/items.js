@@ -80,8 +80,10 @@ export default handleActions({
     selectBoardDialogOpen: false
   }),
 
-  [Items.MOVE_ITEM_BOARD_FAILURE]: (state, { meta }) => {
-    // TODO
-    return state;
-  }
+  [Items.MOVE_ITEM_BOARD_FAILURE]: (state, { payload, meta }) => ({
+    ...state,
+    isMoving: false,
+    selectBoardDialogOpen: false,
+    error: payload
+  })
 }, initialState);
