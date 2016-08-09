@@ -100,7 +100,7 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(drive, user, id, newPr
         return Promise.all([
           Board.removeItemByUserAndId(user, prevBoard, entity.id),
           Board.addItemByUserAndId(user, newProps.board, entity.id)
-        ]).then(() => entity);
+        ]).then(() => entity.save());
 
       } else {
         return entity.save();

@@ -125,7 +125,7 @@ export default handleActions({
     )
   ),
 
-  [Items.SELECTED_ITEMS_FAVORITE_FAILURE]: (state, { meta }) =>(
+  [Items.SELECTED_ITEMS_FAVORITE_FAILURE]: (state, { meta }) => (
     _.mapValues(state, entity => {
       const index = _.findIndex(meta, o => o.id === entity.id);
       return index < 0 ? entity : {
@@ -133,6 +133,37 @@ export default handleActions({
         isUpdating: false
       }
     })
+  ),
+
+
+  // Selected move
+  [Items.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.board !== payload ? entity : {
+        ...entity,
+        isMoving: true
+      }
+    )
+  ),
+
+  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload, meta }) => (
+    _.mapValues(state, entity =>
+      payload.result.items.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        board: payload.entities.items[entity.id].board,
+        select: false,
+        isMoving: false
+      }
+    )
+  ),
+
+  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload, meta }) => (
+    _.mapValues(state, entity =>
+      meta.prevBoards.indexOf(entity.board) < 0 ? entity : {
+        ...entity,
+        isMoving: false
+      }
+    )
   ),
 
 

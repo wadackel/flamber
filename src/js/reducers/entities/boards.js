@@ -127,12 +127,23 @@ export default handleActions({
     }))
   ),
 
-  [Items.MOVE_ITEM_BOARD_SUCCESS]: (state, { payload, meta }) => (
+  [Items.MOVE_ITEM_SUCCESS]: (state, { payload, meta }) => (
     _.mapValues(mergeEntities(state, payload.entities.boards), entity =>
       entity.id !== meta.prevBoard ? entity : {
         ...entity,
         items: entity.items.filter(id =>
-          payload.result.items.indexOf(id) < -1
+          payload.result.items.indexOf(id) < 0
+        )
+      }
+    )
+  ),
+
+  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload, meta }) => (
+    _.mapValues(mergeEntities(state, payload.entities.boards), entity =>
+      meta.prevBoards.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        items: entity.items.filter(id =>
+          payload.result.items.indexOf(id) < 0
         )
       }
     )
