@@ -10,7 +10,8 @@ import * as Auth from "../actions/auth";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 import {
-  getBoardEntityById
+  getBoardEntityById,
+  getCurrentBoard
 } from "../selectors/boards";
 import {
   getItemEntityById,
@@ -244,12 +245,33 @@ export function *moveItemSaga() {
 }
 
 
+export function *handleSetCurrentBoard() {
+  let board = yield select(getCurrentBoard);
+
+  if (!board) {
+    yield take(Boards.FETCH_BOARDS_SUCCESS);
+    board = yield select(getCurrentBoard);
+  }
+
+  if (!board) return;
+
+  yield put(Items.setItemResults(board.items));
+}
+
+export function *watchItemResults() {
+  yield [
+    takeEvery(Boards.SET_CURRENT_BOARD, handleSetCurrentBoard)
+  ];
+}
+
+
 export default function *itemsSaga() {
   yield [
     fork(bgSyncSaga),
     fork(addItemSaga),
     fork(deleteItemSaga),
     fork(favoriteItemSaga),
-    fork(moveItemSaga)
+    fork(moveItemSaga),
+    fork(watchItemResults)
   ];
 }

@@ -1,6 +1,11 @@
 import { createAction } from "redux-actions";
 
 
+// Set results
+export const SET_ITEM_RESULTS = "SET_ITEM_RESULTS";
+export const setItemResults = createAction(SET_ITEM_RESULTS);
+
+
 // Background sync
 export const BG_SYNC_ITEMS_START = "BG_SYNC_ITEMS_START";
 export const BG_SYNC_ITEMS_STOP = "BG_SYNC_ITEMS_STOP";

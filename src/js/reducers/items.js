@@ -8,8 +8,9 @@ const initialState = {
   isFetching: false,
   isAdding: false,
   isMoving: false,
-  currentItemId: null,
   error: null,
+  results: [],
+  currentItemId: null,
   addDialogOpen: false,
   addSnackbarOpen: false,
   moveItems: [],
@@ -17,6 +18,12 @@ const initialState = {
 };
 
 export default handleActions({
+  // Set results
+  [Items.SET_ITEM_RESULTS]: (state, { payload }) => ({
+    ...state,
+    results: payload
+  }),
+
   // Add (UI)
   [Items.ADD_ITEM_DIALOG_OPEN]: state => ({
     ...state,
