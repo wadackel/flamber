@@ -88,6 +88,27 @@ export const SELECT_ITEM_TOGGLE = "SELECT_ITEM_TOGGLE";
 export const selectItemToggle = createAction(SELECT_ITEM_TOGGLE);
 
 
+// Select all
+export const SELECT_ALL_ITEM = "SELECT_ALL_ITEM";
+export const SELECT_ALL_ITEM_EXEC = "SELECT_ALL_ITEM_EXEC";
+export const selectAllItem = createAction(SELECT_ALL_ITEM);
+export const selectAllItemExec = createAction(SELECT_ALL_ITEM_EXEC);
+
+
+// Unselect all
+export const UNSELECT_ALL_ITEM = "UNSELECT_ALL_ITEM";
+export const UNSELECT_ALL_ITEM_EXEC = "UNSELECT_ALL_ITEM_EXEC";
+export const unselectAllItem = createAction(UNSELECT_ALL_ITEM);
+export const unselectAllItemExec = createAction(UNSELECT_ALL_ITEM_EXEC);
+
+
+// Select favorite items
+export const SELECT_FAVORITE_ITEMS = "SELECT_FAVORITE_ITEMS";
+export const SELECT_FAVORITE_ITEMS_EXEC = "SELECT_FAVORITE_ITEMS_EXEC";
+export const selectFavoriteItems = createAction(SELECT_FAVORITE_ITEMS);
+export const selectFavoriteItemsExec = createAction(SELECT_FAVORITE_ITEMS_EXEC);
+
+
 // Selected items move
 export const SELECTED_ITEMS_MOVE_OPEN = "SELECTED_ITEMS_MOVE_OPEN";
 export const SELECTED_ITEMS_MOVE_CLOSE = "SELECTED_ITEMS_MOVE_CLOSE";
