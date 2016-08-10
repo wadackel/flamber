@@ -10,6 +10,7 @@ import bindHandlers from "../../helpers/bind-handlers";
 import * as SettingActions from "../../actions/settings";
 import * as BoardActions from "../../actions/boards";
 import { getCurrentBoard } from "../../selectors/boards";
+import { getSelectedItemEntities } from "../../selectors/items";
 import {
   Header,
   EditableText,
@@ -163,11 +164,12 @@ export class HeaderSubContainer extends Component {
       boards,
       currentBoard,
       items,
+      selectedItemEntities,
       settings: { itemsLayout }
     } = this.props;
 
     const { boardName, itemsSize } = this.state;
-    const hasSelectedItem = false; //TODO
+    const hasSelectedItem = selectedItemEntities.length > 0;
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
@@ -295,7 +297,8 @@ export default connect(
     settings: state.settings,
     boards: state.boards,
     currentBoard: getCurrentBoard(state),
-    items: state.items
+    items: state.items,
+    selectedItemEntities: getSelectedItemEntities(state),
   }),
   null,
   null,
