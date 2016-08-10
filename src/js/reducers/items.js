@@ -63,6 +63,13 @@ export default handleActions({
   }),
 
 
+  // Delete
+  [Items.DELETE_ITEM_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    results: state.results.filter(id => id !== payload.id)
+  }),
+
+
   // Move
   [Items.MOVE_ITEM_SELECT_BOARD_OPEN]: (state, { payload }) => ({
     ...state,

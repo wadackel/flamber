@@ -245,6 +245,20 @@ export function *moveItemSaga() {
 }
 
 
+function *setItemResultsByBoardId(boardId) {
+  const board = yield select(getBoardEntityById, boardId);
+  yield put(Items.setItemResults(board.items));
+}
+
+export function *handleAddItemSuccess({ payload }) {
+  const item = payload.entities.items[payload.result.item];
+  const currentBoardId = yield select(state => state.boards.currentBoardId);
+
+  if (currentBoardId && currentBoardId === item.board) {
+    yield setItemResultsByBoardId(currentBoardId);
+  }
+}
+
 export function *handleSetCurrentBoard() {
   let board = yield select(getCurrentBoard);
 
@@ -254,12 +268,12 @@ export function *handleSetCurrentBoard() {
   }
 
   if (!board) return;
-
-  yield put(Items.setItemResults(board.items));
+  yield setItemResultsByBoardId(board.id);
 }
 
 export function *watchItemResults() {
   yield [
+    takeEvery(Items.ADD_ITEM_SUCCESS, handleAddItemSuccess),
     takeEvery(Boards.SET_CURRENT_BOARD, handleSetCurrentBoard)
   ];
 }
