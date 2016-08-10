@@ -87,6 +87,39 @@ export default handleActions({
   ),
 
 
+  // Select all
+  [Items.SELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      payload.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        select: true
+      }
+    )
+  ),
+
+
+  // Unselect all
+  [Items.UNSELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      payload.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        select: false
+      }
+    )
+  ),
+
+
+  // Select favorite item
+  [Items.SELECT_FAVORITE_ITEM_EXEC]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      payload.indexOf(entity.id) < 0 || !entity.favorite ? entity : {
+        ...entity,
+        select: true
+      }
+    )
+  ),
+
+
   // Selected delete
   [Items.SELECTED_ITEMS_DELETE_REQUEST]: state => (
     _.mapValues(state, entity =>

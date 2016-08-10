@@ -13,6 +13,8 @@ export default class IconMenu extends React.Component {
     children: PropTypes.node,
     className: PropTypes.string,
     icon: PropTypes.element,
+    tooltip: PropTypes.string,
+    tooltipOrigin: OriginalPropTypes.origin,
     open: PropTypes.bool,
     origin: OriginalPropTypes.origin,
     triggerOrigin: OriginalPropTypes.origin,
@@ -82,6 +84,8 @@ export default class IconMenu extends React.Component {
       className,
       icon,
       origin,
+      tooltip,
+      tooltipOrigin,
       triggerOrigin,
       onChange
     } = this.props;
@@ -92,9 +96,11 @@ export default class IconMenu extends React.Component {
     } = this.state;
 
     const iconElement = React.cloneElement(icon, {
+      ref: "triggerElement",
       className: b("icon"),
       onClick: this.handleIconClick,
-      ref: "triggerElement"
+      tooltip,
+      tooltipOrigin
     });
 
     return (

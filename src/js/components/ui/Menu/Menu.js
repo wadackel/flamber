@@ -195,7 +195,7 @@ export default class Menu extends React.Component {
     const childLength = children.length;
     const childDelayIncrement = Math.floor((shareConfig["popover-duration"] / 2) / childLength);
 
-    const cloneChildren = children.map((item, index) => {
+    const cloneChildren = React.Children.map(children, (item, index) => {
       const isFocused = focusIndex === index;
 
       return React.cloneElement(item, {

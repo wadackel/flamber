@@ -19,12 +19,15 @@ import {
   IconButton,
   SelectBoardDialog,
   Snackbar,
-  ToolBox
+  ToolBox,
+  IconMenu,
+  MenuItem
 } from "../../components/ui/";
 import {
   FolderIcon,
   TrashIcon,
-  StarIcon
+  StarIcon,
+  MoreVertIcon
 } from "../../components/svg-icons/";
 
 const b = bem("board-detail");
@@ -53,7 +56,8 @@ export class BoardDetailContainer extends Component {
       "handleSelectBoardDialogClose",
       "handleDelete",
       "handleSelectDelete",
-      "handleSelectFavorite"
+      "handleSelectFavorite",
+      "handleSelectMenuItemClick"
     ], this);
   }
 
@@ -107,6 +111,11 @@ export class BoardDetailContainer extends Component {
     dispatch(ItemActions.selectedItemsFavoriteRequest(!isAllFavorite));
   }
 
+  handleSelectMenuItemClick(menuItem, value) {
+    console.log(menuItem);
+    this.props.dispatch(value());
+  }
+
   isAllFavoriteByItemEntities(entities) {
     return entities.every(entity => entity.favorite);
   }
@@ -124,6 +133,11 @@ export class BoardDetailContainer extends Component {
         itemsSize
       }
     } = this.props;
+
+    const {
+      selectMenuOpen,
+      selectMenuTrigger
+    } = this.state;
 
     const hasSelectedItems = selectedItemEntities.length > 0;
     const isAllFavorite = this.isAllFavoriteByItemEntities(selectedItemEntities);
@@ -187,9 +201,21 @@ export class BoardDetailContainer extends Component {
               tooltip="削除"
               icon={<TrashIcon />}
               onClick={this.handleSelectDelete}
-            />
+            />,
+            <IconMenu
+              icon={<IconButton icon={<MoreVertIcon />} />}
+              tooltip="選択"
+              origin={{ vertical: "bottom", horizontal: "right" }}
+              triggerOrigin={{ vertical: "bottom", horizontal: "right" }}
+              onItemClick={this.handleSelectMenuItemClick}
+            >
+              <MenuItem text="すべて選択" value={ItemActions.selectAllItem} />
+              <MenuItem text="スター付きを選択" value={ItemActions.selectFavoriteItem} />
+              <MenuItem text="選択を解除" value={ItemActions.unselectAllItem} />
+            </IconMenu>
           ]}
         />
+
       </div>
     );
   }

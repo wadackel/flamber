@@ -89,24 +89,33 @@ export const selectItemToggle = createAction(SELECT_ITEM_TOGGLE);
 
 
 // Select all
-export const SELECT_ALL_ITEM = "SELECT_ALL_ITEM";
 export const SELECT_ALL_ITEM_EXEC = "SELECT_ALL_ITEM_EXEC";
-export const selectAllItem = createAction(SELECT_ALL_ITEM);
+export const SELECT_ALL_ITEM = "SELECT_ALL_ITEM";
 export const selectAllItemExec = createAction(SELECT_ALL_ITEM_EXEC);
+export const selectAllItem = createAction(SELECT_ALL_ITEM,
+  null,
+  () => selectAllItemExec
+);
 
 
 // Unselect all
-export const UNSELECT_ALL_ITEM = "UNSELECT_ALL_ITEM";
 export const UNSELECT_ALL_ITEM_EXEC = "UNSELECT_ALL_ITEM_EXEC";
-export const unselectAllItem = createAction(UNSELECT_ALL_ITEM);
+export const UNSELECT_ALL_ITEM = "UNSELECT_ALL_ITEM";
 export const unselectAllItemExec = createAction(UNSELECT_ALL_ITEM_EXEC);
+export const unselectAllItem = createAction(UNSELECT_ALL_ITEM,
+  null,
+  () => unselectAllItemExec
+);
 
 
 // Select favorite items
-export const SELECT_FAVORITE_ITEMS = "SELECT_FAVORITE_ITEMS";
-export const SELECT_FAVORITE_ITEMS_EXEC = "SELECT_FAVORITE_ITEMS_EXEC";
-export const selectFavoriteItems = createAction(SELECT_FAVORITE_ITEMS);
-export const selectFavoriteItemsExec = createAction(SELECT_FAVORITE_ITEMS_EXEC);
+export const SELECT_FAVORITE_ITEM_EXEC = "SELECT_FAVORITE_ITEM_EXEC";
+export const SELECT_FAVORITE_ITEM = "SELECT_FAVORITE_ITEM";
+export const selectFavoriteItemExec = createAction(SELECT_FAVORITE_ITEM_EXEC);
+export const selectFavoriteItem = createAction(SELECT_FAVORITE_ITEM,
+  null,
+  () => selectFavoriteItemExec
+);
 
 
 // Selected items move

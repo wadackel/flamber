@@ -245,6 +245,20 @@ export function *moveItemSaga() {
 }
 
 
+export function *handleSelectItems({ meta }) {
+  const results = yield select(state => state.items.results);
+  yield put(meta(results));
+}
+
+export function *watchSelectItems() {
+  yield [
+    takeEvery(Items.SELECT_ALL_ITEM, handleSelectItems),
+    takeEvery(Items.UNSELECT_ALL_ITEM, handleSelectItems),
+    takeEvery(Items.SELECT_FAVORITE_ITEM, handleSelectItems),
+  ];
+}
+
+
 function *setItemResultsByBoardId(boardId) {
   const board = yield select(getBoardEntityById, boardId);
   yield put(Items.setItemResults(board.items));
@@ -286,6 +300,7 @@ export default function *itemsSaga() {
     fork(deleteItemSaga),
     fork(favoriteItemSaga),
     fork(moveItemSaga),
+    fork(watchSelectItems),
     fork(watchItemResults)
   ];
 }
