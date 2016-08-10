@@ -1,19 +1,23 @@
-#app,
 .app {
   @include size(100%);
-}
-
-.app {
 
   &__content {
     padding-top: 120px;
   }
 
   &__floating-menu {
+    @include transition((transform, opacity), $transition-duration-fast);
     position: fixed !important;
     right: 20px;
     bottom: 20px;
+    transform: translateY(0) scale(1);
+    opacity: 1;
     z-index: 1200;
+
+    &--has-selected-entity {
+      transform: translateY(20px) scale(.9);
+      opacity: 0;
+    }
   }
 }
 

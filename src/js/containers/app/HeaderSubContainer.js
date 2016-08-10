@@ -298,7 +298,7 @@ export default connect(
     boards: state.boards,
     currentBoard: getCurrentBoard(state),
     items: state.items,
-    selectedItemEntities: getSelectedItemEntities(state),
+    selectedItemEntities: getSelectedItemEntities(state)
   }),
   null,
   null,

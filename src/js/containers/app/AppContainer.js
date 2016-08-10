@@ -7,7 +7,12 @@ import * as ItemActions from "../../actions/items";
 import * as ErrorActions from "../../actions/errors";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
-import { getBoardEntities, getBoardByIdFromBoards } from "../../selectors/boards";
+import {
+  getBoardEntities,
+  getBoardByIdFromBoards,
+  getSelectedBoardEntities
+} from "../../selectors/boards";
+import { getSelectedItemEntities } from "../../selectors/items";
 import {
   HeaderSubContainer,
   ShortcutKeySubContainer
@@ -130,7 +135,9 @@ export class AppContainer extends Component {
       errors,
       boards,
       boardEntities,
+      selectedBoardEntities,
       items,
+      selectedItemEntities,
       ...routerParams
     } = this.props;
 
@@ -138,6 +145,10 @@ export class AppContainer extends Component {
       vertical: "middle",
       horizontal: "left"
     };
+
+    const hasSelectedEntity =
+      selectedItemEntities.length > 0
+      || selectedBoardEntities.length > 0;
 
     return (
       <div className={b()}>
@@ -153,7 +164,7 @@ export class AppContainer extends Component {
         </div>
 
         {/* Menu */}
-        <FloatingMenu className={b("floating-menu")}>
+        <FloatingMenu className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })}>
           <FloatingButton
             type="primary"
             icon={<BoardIcon />}
@@ -234,7 +245,9 @@ export default connect(
     settings: state.settings,
     boards: state.boards,
     boardEntities: getBoardEntities(state),
-    items: state.items
+    selectedBoardEntities: getSelectedBoardEntities(state),
+    items: state.items,
+    selectedItemEntities: getSelectedItemEntities(state)
   }),
   null,
   null,

@@ -46,7 +46,7 @@ function HTML({ content, store }) {
         <link rel="stylesheet" href="/css/style.css" />
       </head>
       <body>
-        <div id="app" dangerouslySetInnerHTML={{ __html: content }} />
+        <div id="app" className="app" dangerouslySetInnerHTML={{ __html: content }} />
         <script id="initial-state" type="text/plain" data-json={JSON.stringify(store.getState())}></script>
         <script src="/js/client.bundle.js"></script>
       </body>
