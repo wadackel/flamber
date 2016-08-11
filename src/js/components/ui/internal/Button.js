@@ -1,4 +1,4 @@
-import assign from "object-assign";
+import _ from "lodash";
 import React, { PropTypes } from "react";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import Ripple from "./Ripple";
@@ -70,6 +70,10 @@ export default class Button extends React.Component {
       "handleMouseLeave",
       "handleRippleHide"
     ], this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
   handleMouseDown(e) {
@@ -181,7 +185,7 @@ export default class Button extends React.Component {
     const modifier = { [type]: true, disable };
     const labelElement = label ? <span className={b("label", modifier)}>{label}</span> : null;
     const iconElement = this.createIcon(icon, b("icon", modifier));
-    const iconRightElement = this.createIcon(iconRight, b("icon", assign(modifier, { right: true })));
+    const iconRightElement = this.createIcon(iconRight, b("icon", _.assign(modifier, { right: true })));
     const bodyClass = b("body", modifier);
     const bodyElement = !href
       ? <button className={bodyClass}>{iconElement}{labelElement}{iconRightElement}</button>

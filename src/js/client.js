@@ -14,6 +14,13 @@ const jsonString = document.getElementById("initial-state").getAttribute("data-j
 const store = configureStore(browserHistory, JSON.parse(jsonString));
 const history = syncHistoryWithStore(browserHistory, store);
 
+if (process.env.NODE_ENV !== "production") {
+  // const { whyDidYouUpdate } = require("why-did-you-update");
+  // whyDidYouUpdate(React);
+  //
+  // window.Perf = require("react-addons-perf");
+}
+
 render(
   <Provider store={store}>
     <Router history={history} routes={getRoutes(store)} />

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../../share-config.json";
@@ -46,6 +47,10 @@ export default class FileDnD extends Component {
       "handleDragOver",
       "handleDrop"
     ], this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
   componentDidMount() {

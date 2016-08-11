@@ -1,3 +1,4 @@
+import _ from "lodash";
 import urlParse from "url-parse";
 import React, { PropTypes } from "react";
 import * as Layout from "../../../constants/layouts";
@@ -74,6 +75,10 @@ export default class ItemCard extends React.Component {
       "handleMoveClick",
       "handleDeleteClick"
     ], this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
   handleFavoriteClick() {

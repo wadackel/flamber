@@ -99,7 +99,7 @@ export default class Popover extends React.Component {
   setPositions() {
     const { open, closing } = this.state;
 
-    if (!open) return;
+    if (!open || !this.refs.layer) return;
 
     const { origin, triggerOrigin } = this.props;
     const triggerElement = this.props.triggerElement || this.triggerElement;
