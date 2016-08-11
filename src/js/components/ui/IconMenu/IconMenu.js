@@ -1,5 +1,4 @@
 import React, { PropTypes } from "react";
-import { findDOMNode } from "react-dom";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -15,7 +14,6 @@ export default class IconMenu extends React.Component {
     icon: PropTypes.element,
     tooltip: PropTypes.string,
     tooltipOrigin: OriginalPropTypes.origin,
-    open: PropTypes.bool,
     origin: OriginalPropTypes.origin,
     triggerOrigin: OriginalPropTypes.origin,
     onChange: PropTypes.func,
@@ -23,7 +21,6 @@ export default class IconMenu extends React.Component {
   };
 
   static defaultProps = {
-    open: false,
     origin: {
       vertical: "top",
       horizontal: "left"
@@ -49,15 +46,6 @@ export default class IconMenu extends React.Component {
       "handleItemClick",
       "handleRequestClose"
     ], this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.open !== this.state.open) {
-      this.setState({
-        open: nextProps.open,
-        triggerElement: findDOMNode(this.refs.triggerElement)
-      });
-    }
   }
 
   handleIconClick(e) {
