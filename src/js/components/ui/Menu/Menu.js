@@ -1,12 +1,12 @@
 import keycode from "keycode";
-import React, { PropTypes } from "react";
+import React, { PropTypes, isValidElement } from "react";
 import shareConfig from "../../../../share-config.json";
 import prefixer from "../../../helpers/prefixer";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
 import { isValid } from "../../../helpers/validate";
-import { List } from "../";
+import { List, MenuItem } from "../";
 
 const b = bem("menu");
 
@@ -119,6 +119,18 @@ export default class Menu extends React.Component {
     this.props.onKeyDown(e);
   }
 
+  getMenuItems() {
+    const children = [];
+
+    React.Children.forEach(this.props.children, child => {
+      if (isValidElement(child) && child.type === MenuItem) {
+        children.push(child);
+      }
+    });
+
+    return children;
+  }
+
   applyFocus() {
     if (this.state.focusIndex >= 0) {
       this.refs.menu.focus();
@@ -137,7 +149,7 @@ export default class Menu extends React.Component {
 
   incrementKeyboardFocusIndex() {
     const { focusIndex } = this.state;
-    const maxIndex = this.props.children.length - 1;
+    const maxIndex = this.getMenuItems().length - 1;
     const index = focusIndex + 1;
 
     this.setFocusIndex(index > maxIndex ? 0 : index, true);
@@ -145,16 +157,17 @@ export default class Menu extends React.Component {
 
   decrementKeyboardFocusIndex() {
     const { focusIndex } = this.state;
-    const maxIndex = this.props.children.length - 1;
+    const maxIndex = this.getMenuItems().length - 1;
     const index = focusIndex - 1;
 
     this.setFocusIndex(index < 0 ? maxIndex : index, true);
   }
 
   getSelectedIndex(props) {
+    const menuItems = this.getMenuItems();
     let selectedIndex = -1;
 
-    props.children.forEach((child, index) => {
+    menuItems.forEach((child, index) => {
       if (this.isChildSelected(child, props)) {
         selectedIndex = index;
       }
@@ -185,17 +198,16 @@ export default class Menu extends React.Component {
   render() {
     const {
       className,
-      children,
       value,
       onMouseDown
     } = this.props;
 
     const { focusIndex } = this.state;
 
-    const childLength = children.length;
-    const childDelayIncrement = Math.floor((shareConfig["popover-duration"] / 2) / childLength);
+    const menuItems = this.getMenuItems();
+    const childDelayIncrement = Math.floor((shareConfig["popover-duration"] / 2) / menuItems.length);
 
-    const cloneChildren = React.Children.map(children, (item, index) => {
+    const closeMenuItems = menuItems.map((item, index) => {
       const isFocused = focusIndex === index;
 
       return React.cloneElement(item, {
@@ -218,7 +230,7 @@ export default class Menu extends React.Component {
         onMouseDown={onMouseDown}
         onKeyDown={this.handleKeyDown}
       >
-        {cloneChildren}
+        {closeMenuItems}
       </List>
     );
   }
