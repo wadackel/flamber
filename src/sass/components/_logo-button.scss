@@ -14,8 +14,7 @@
     margin: 0;
 
     svg {
-      width: 23px;
-      height: 30px;
+      @include size(32px);
       vertical-align: middle;
       fill: currentColor;
     }

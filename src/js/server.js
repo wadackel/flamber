@@ -27,7 +27,7 @@ import { initialState as authInitialState } from "./reducers/auth";
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-mongoose.connect("mongodb://localhost/dripup");
+mongoose.connect("mongodb://localhost/flamber");
 
 
 // Layout

@@ -13,7 +13,7 @@ class FeedCardExample extends React.Component {
         url="http://example.com/path/to/"
         site="https://blog.wadackel.me/"
         favicon="/images/sample-favicon.ico"
-        title="Dripup Creative Design Pallete"
+        title="FLAMBER Creative Design Pallete"
         image="/images/feed-card-sample1.png"
         imageWidth={540}
         imageHeight={798}
@@ -42,7 +42,7 @@ class FeedCardListExample extends React.Component {
         url="http://example.com/path/to/"
         site="https://blog.wadackel.me/"
         favicon="/images/sample-favicon.ico"
-        title="Dripup Creative Design Pallete"
+        title="FLAMBER Creative Design Pallete"
         image="/images/feed-card-sample1.png"
         imageWidth={540}
         imageHeight={798}
