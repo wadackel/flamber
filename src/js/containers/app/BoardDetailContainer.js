@@ -209,7 +209,9 @@ export class BoardDetailContainer extends Component {
               triggerOrigin={{ vertical: "bottom", horizontal: "right" }}
               onItemClick={this.handleSelectMenuItemClick}
             >
-              <MenuItem text="すべて選択" value={ItemActions.selectAllItem} />
+              {itemEntities.length !== selectedItemEntities.length &&
+                <MenuItem text="すべて選択" value={ItemActions.selectAllItem} />
+              }
               <MenuItem text="スター付きを選択" value={ItemActions.selectFavoriteItem} />
               <MenuItem text="選択を解除" value={ItemActions.unselectAllItem} />
             </IconMenu>

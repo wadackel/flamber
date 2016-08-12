@@ -112,9 +112,9 @@ export default handleActions({
   // Select favorite item
   [Items.SELECT_FAVORITE_ITEM_EXEC]: (state, { payload }) => (
     _.mapValues(state, entity =>
-      payload.indexOf(entity.id) < 0 || !entity.favorite ? entity : {
+      payload.indexOf(entity.id) < 0 ? entity : {
         ...entity,
-        select: true
+        select: entity.favorite
       }
     )
   ),
