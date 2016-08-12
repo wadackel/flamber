@@ -130,5 +130,12 @@ export default handleActions({
     isMoving: false,
     error: payload,
     selectBoardDialogOpen: false
+  }),
+
+
+  // Selected delete
+  [Items.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    results: state.results.filter(id => !payload.some(o => o.id === id))
   })
 }, initialState);
