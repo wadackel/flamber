@@ -11,8 +11,8 @@ export function *handleFetchSettingsRequest() {
     try {
       const settings = yield call(fetchSettings);
       yield put(Settings.fetchSettingsSuccess(settings));
-    } catch (err) {
-      yield put(Settings.fetchSettingsFailure(err));
+    } catch (error) {
+      yield put(Settings.fetchSettingsFailure(error));
     }
   }
 }
@@ -27,39 +27,57 @@ function *callUpdateSettings(key, value) {
   return yield call(updateSettings, newSettings);
 }
 
-export function *handleUpdateThemeRequest(action) {
+export function *handleUpdateThemeRequest({ payload }) {
   try {
-    const settings = yield callUpdateSettings("theme", action.payload);
+    const settings = yield callUpdateSettings("theme", payload);
     yield put(Settings.updateThemeSuccess(settings.theme));
-  } catch (err) {
-    yield put(Settings.updateThemeFailure(err));
+  } catch (error) {
+    yield put(Settings.updateThemeFailure(error));
   }
 }
 
-export function *handleUpdateBoardsLayoutRequest(action) {
+export function *handleUpdateBoardsLayoutRequest({ payload }) {
   try {
-    const settings = yield callUpdateSettings("boardsLayout", action.payload);
+    const settings = yield callUpdateSettings("boardsLayout", payload);
     yield put(Settings.updateBoardsLayoutSuccess(settings.boardsLayout));
-  } catch (err) {
-    yield put(Settings.updateBoardsLayoutFailure(err));
+  } catch (error) {
+    yield put(Settings.updateBoardsLayoutFailure(error));
   }
 }
 
-export function *handleUpdateItemsLayoutRequest(action) {
+export function *handleUpdateItemsLayoutRequest({ payload }) {
   try {
-    const settings = yield callUpdateSettings("itemsLayout", action.payload);
+    const settings = yield callUpdateSettings("itemsLayout", payload);
     yield put(Settings.updateItemsLayoutSuccess(settings.itemsLayout));
-  } catch (err) {
-    yield put(Settings.updateItemsLayoutFailure(err));
+  } catch (error) {
+    yield put(Settings.updateItemsLayoutFailure(error));
   }
 }
 
-export function *handleUpdateItemsSizeRequest(action) {
+export function *handleUpdateItemsSizeRequest({ payload }) {
   try {
-    const settings = yield callUpdateSettings("itemsSize", action.payload);
+    const settings = yield callUpdateSettings("itemsSize", payload);
     yield put(Settings.updateItemsSizeSuccess(settings.itemsSize));
-  } catch (err) {
-    yield put(Settings.updateItemsSizeFailure(err));
+  } catch (error) {
+    yield put(Settings.updateItemsSizeFailure(error));
+  }
+}
+
+export function *handleUpdateItemsOrderByRequest({ payload }) {
+  try {
+    const settings = yield callUpdateSettings("itemsOrderBy", payload);
+    yield put(Settings.updateItemsOrderBySuccess(settings.itemsOrderBy));
+  } catch (error) {
+    yield put(Settings.updateItemsOrderByFailure(error));
+  }
+}
+
+export function *handleUpdateItemsOrderRequest({ payload }) {
+  try {
+    const settings = yield callUpdateSettings("itemsOrder", payload);
+    yield put(Settings.updateItemsOrderSuccess(settings.itemsOrder));
+  } catch (error) {
+    yield put(Settings.updateItemsOrderFailure(error));
   }
 }
 
@@ -68,7 +86,9 @@ export function *watchUpdateSettingsRequest() {
     takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest),
     takeLatest(Settings.UPDATE_BOARDS_LAYOUT_REQUEST, handleUpdateBoardsLayoutRequest),
     takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest),
-    takeLatest(Settings.UPDATE_ITEMS_SIZE_REQUEST, handleUpdateItemsSizeRequest)
+    takeLatest(Settings.UPDATE_ITEMS_SIZE_REQUEST, handleUpdateItemsSizeRequest),
+    takeLatest(Settings.UPDATE_ITEMS_ORDER_BY_REQUEST, handleUpdateItemsOrderByRequest),
+    takeLatest(Settings.UPDATE_ITEMS_ORDER_REQUEST, handleUpdateItemsOrderRequest)
   ];
 }
 

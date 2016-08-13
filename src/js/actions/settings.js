@@ -49,3 +49,23 @@ export const UPDATE_ITEMS_SIZE_FAILURE = "UPDATE_ITEMS_SIZE_FAILURE";
 export const updateItemsSizeRequest = createAction(UPDATE_ITEMS_SIZE_REQUEST);
 export const updateItemsSizeSuccess = createAction(UPDATE_ITEMS_SIZE_SUCCESS);
 export const updateItemsSizeFailure = createAction(UPDATE_ITEMS_SIZE_FAILURE);
+
+
+// Update itemsOrderBy
+export const UPDATE_ITEMS_ORDER_BY_REQUEST = "UPDATE_ITEMS_ORDER_BY_REQUEST";
+export const UPDATE_ITEMS_ORDER_BY_SUCCESS = "UPDATE_ITEMS_ORDER_BY_SUCCESS";
+export const UPDATE_ITEMS_ORDER_BY_FAILURE = "UPDATE_ITEMS_ORDER_BY_FAILURE";
+
+export const updateItemsOrderByRequest = createAction(UPDATE_ITEMS_ORDER_BY_REQUEST);
+export const updateItemsOrderBySuccess = createAction(UPDATE_ITEMS_ORDER_BY_SUCCESS);
+export const updateItemsOrderByFailure = createAction(UPDATE_ITEMS_ORDER_BY_FAILURE);
+
+
+// Update itemsOrder
+export const UPDATE_ITEMS_ORDER_REQUEST = "UPDATE_ITEMS_ORDER_REQUEST";
+export const UPDATE_ITEMS_ORDER_SUCCESS = "UPDATE_ITEMS_ORDER_SUCCESS";
+export const UPDATE_ITEMS_ORDER_FAILURE = "UPDATE_ITEMS_ORDER_FAILURE";
+
+export const updateItemsOrderRequest = createAction(UPDATE_ITEMS_ORDER_REQUEST);
+export const updateItemsOrderSuccess = createAction(UPDATE_ITEMS_ORDER_SUCCESS);
+export const updateItemsOrderFailure = createAction(UPDATE_ITEMS_ORDER_FAILURE);

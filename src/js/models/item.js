@@ -22,7 +22,8 @@ const ItemSchema = new Schema({
   palette: { type: Array, default: [] },
   favorite: { type: Boolean, default: false },
   created: { type: Date, default: Date.now },
-  modified: { type: Date, default: Date.now }
+  modified: { type: Date, default: Date.now },
+  lastView: { type: Date, default: Date.now }
 }, {
   versionKey: false
 });

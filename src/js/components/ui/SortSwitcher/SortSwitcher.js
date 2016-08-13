@@ -19,14 +19,14 @@ export default class SortSwitcher extends Component {
       name: PropTypes.string
     })),
     onChange: PropTypes.func,
-    onTypeChange: PropTypes.func,
+    onOrderByChange: PropTypes.func,
     onOrderChange: PropTypes.func
   };
 
   static defaultProps = {
     order: Order.ASC,
     onChange: () => {},
-    onTypeChange: () => {},
+    onOrderByChange: () => {},
     onOrderChange: () => {}
   };
 
@@ -34,13 +34,13 @@ export default class SortSwitcher extends Component {
     super(props, context);
 
     bindHandlers([
-      "handleTypeChange",
+      "handleOrderByChange",
       "handleOrderChange"
     ], this);
   }
 
-  handleTypeChange(orderBy) {
-    this.props.onTypeChange(orderBy);
+  handleOrderByChange(orderBy) {
+    this.props.onOrderByChange(orderBy);
     this.props.onChange(orderBy, this.props.order);
   }
 
@@ -76,8 +76,9 @@ export default class SortSwitcher extends Component {
         <DropDownMenu
           className={b("types")}
           value={orderBy}
-          onChange={this.handleTypeChange}
-          triggerOrigin={{ vertical: "top", horizontal: "left" }}
+          onChange={this.handleOrderByChange}
+          origin={{ vertical: "top", horizontal: "right" }}
+          triggerOrigin={{ vertical: "top", horizontal: "right" }}
         >
           {children}
         </DropDownMenu>

@@ -3,7 +3,9 @@ import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
+import * as OrderBy from "../../constants/order-by";
 import * as Layout from "../../constants/layouts";
+import * as SettingActions from "../../actions/settings";
 import * as BoardActions from "../../actions/boards";
 import * as ItemActions from "../../actions/items";
 import { getBoardEntities, getCurrentBoard } from "../../selectors/boards";
@@ -21,7 +23,8 @@ import {
   Snackbar,
   ToolBox,
   IconMenu,
-  MenuItem
+  MenuItem,
+  SortSwitcher
 } from "../../components/ui/";
 import {
   FolderIcon,
@@ -48,6 +51,8 @@ export class BoardDetailContainer extends Component {
     };
 
     bindHandlers([
+      "handleOrderByChange",
+      "handleOrderChange",
       "handleSelect",
       "handleFavorite",
       "handleMove",
@@ -63,6 +68,14 @@ export class BoardDetailContainer extends Component {
 
   componentDidMount() {
     this.props.dispatch(BoardActions.setCurrentBoard(this.props.params.id));
+  }
+
+  handleOrderByChange(orderBy) {
+    this.props.dispatch(SettingActions.updateItemsOrderByRequest(orderBy));
+  }
+
+  handleOrderChange(order) {
+    this.props.dispatch(SettingActions.updateItemsOrderRequest(order));
   }
 
   handleSelect(id) {
@@ -130,7 +143,9 @@ export class BoardDetailContainer extends Component {
       selectedItemEntities,
       settings: {
         itemsLayout,
-        itemsSize
+        itemsSize,
+        itemsOrderBy,
+        itemsOrder
       }
     } = this.props;
 
@@ -150,6 +165,21 @@ export class BoardDetailContainer extends Component {
 
     return (
       <div className={`container ${b()}`}>
+        <div className={b("control")}>
+          <SortSwitcher
+            className={b("sort-switcher")}
+            orderBy={itemsOrderBy}
+            order={itemsOrder}
+            types={[
+              { name: "名前", value: OrderBy.NAME },
+              { name: "作成日時", value: OrderBy.CREATED },
+              { name: "最終閲覧日時", value: OrderBy.LAST_VIEW }
+            ]}
+            onOrderByChange={this.handleOrderByChange}
+            onOrderChange={this.handleOrderChange}
+          />
+        </div>
+
         <CardGroup
           columnWidth={itemsSize}
           layout={itemsLayout}
@@ -227,13 +257,14 @@ export default connect(
   (state, ownProps) => {
     const currentBoard = getCurrentBoard(state);
     const currentBoardId = (currentBoard && currentBoard.id) || "";
+    const { itemsOrderBy, itemsOrder } = state.settings;
 
     return {
       settings: state.settings,
       boards: state.boards,
       boardEntities: getBoardEntities(state),
       items: state.items,
-      itemEntities: getItemEntities(state),
+      itemEntities: getItemEntities(state, itemsOrderBy, itemsOrder),
       selectedItemEntities: getSelectedItemEntities(state),
       currentBoard
     };
