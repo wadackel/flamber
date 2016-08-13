@@ -41,6 +41,7 @@ export SearchField from "./SearchField/SearchField";
 export SelectBoardDialog from "./SelectBoardDialog/SelectBoardDialog";
 export Slider from "./Slider/Slider";
 export Snackbar from "./Snackbar/Snackbar";
+export SortSwitcher from "./SortSwitcher/SortSwitcher";
 export TextField from "./TextField/TextField";
 export ToolBox from "./ToolBox/ToolBox";
 export UserDropDown from "./UserDropDown/UserDropDown";

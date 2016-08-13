@@ -1,3 +1,7 @@
+export ArrowBottomIcon from "./ArrowBottomIcon";
+export ArrowLeftIcon from "./ArrowLeftIcon";
+export ArrowRightIcon from "./ArrowRightIcon";
+export ArrowTopIcon from "./ArrowTopIcon";
 export BoardIcon from "./BoardIcon";
 export CaretIcon from "./CaretIcon";
 export CircleBottomIcon from "./CircleBottomIcon";

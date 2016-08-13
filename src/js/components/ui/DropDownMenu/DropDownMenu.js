@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
+import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
@@ -7,8 +8,6 @@ import { Popover, Menu } from "../";
 import { CaretIcon } from "../../svg-icons/";
 
 const b = bem("drop-down-menu");
-const origin = { vertical: "top", horizontal: "left" };
-const triggerOrigin = { vertical: "top", horizontal: "left" };
 
 export default class DropDownMenu extends React.Component {
   static propTypes = {
@@ -16,12 +15,16 @@ export default class DropDownMenu extends React.Component {
     className: PropTypes.string,
     value: PropTypes.any,
     type: PropTypes.oneOf(["block", "inline"]),
+    origin: OriginalPropTypes.origin,
+    triggerOrigin: OriginalPropTypes.origin,
     before: PropTypes.node,
     onChange: PropTypes.func
   };
 
   static defaultProps = {
     type: "inline",
+    origin: { vertical: "top", horizontal: "left" },
+    triggerOrigin: { vertical: "top", horizontal: "left" },
     onChange: () => {}
   };
 
@@ -73,8 +76,8 @@ export default class DropDownMenu extends React.Component {
   setMenuWidth() {
     if (!this.state.open) return;
 
-    const triggerElement = ReactDOM.findDOMNode(this.refs.triggerElement);
-    const menu = ReactDOM.findDOMNode(this.refs.menu);
+    const triggerElement = ReactDOM.findDOMNode(this.refs.triggerElement); // eslint-disable-line react/no-find-dom-node
+    const menu = ReactDOM.findDOMNode(this.refs.menu); // eslint-disable-line react/no-find-dom-node
 
     if (!menu) return;
 
@@ -87,6 +90,8 @@ export default class DropDownMenu extends React.Component {
       className,
       before,
       value,
+      origin,
+      triggerOrigin,
       type
     } = this.props;
 
