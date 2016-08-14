@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as BoardActions from "../../actions/boards";
 import * as ItemActions from "../../actions/items";
-import * as ErrorActions from "../../actions/errors";
 import bem from "../../helpers/bem";
 import bindHandlers from "../../helpers/bind-handlers";
 import {
@@ -114,7 +113,6 @@ export class AppContainer extends Component {
       settings, // eslint-disable-line no-unused-vars
       dispatch, // eslint-disable-line no-unused-vars
       children, // eslint-disable-line no-unused-vars
-      errors,
       boards,
       boardEntities,
       selectedBoardEntities,
@@ -204,7 +202,6 @@ export class AppContainer extends Component {
 export default connect(
   state => ({
     auth: state.auth,
-    errors: state.errors,
     settings: state.settings,
     boards: state.boards,
     boardEntities: getBoardEntities(state),

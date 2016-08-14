@@ -32,7 +32,7 @@ export class NotificationsSubContainer extends Component {
     const props = {
       open: !!message,
       onRequestClose: this.handleClose,
-      message
+      message: message || ""
     };
 
     if (action) {

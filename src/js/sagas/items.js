@@ -5,7 +5,6 @@ import { fork, take, put, call, select, race, cancel, cancelled } from "redux-sa
 import BoardSchema from "../schemas/board";
 import ItemSchema from "../schemas/item";
 import * as Services from "../services/items";
-import * as Errors from "../actions/errors";
 import * as Auth from "../actions/auth";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
@@ -149,7 +148,6 @@ export function *handleFavoriteItemToggleRequest({ payload }) {
 
 function *handleFavoriteItemToggleFailure() {
   // TODO: Error message
-  yield put(Errors.showError("アイテムの更新に失敗しました"));
 }
 
 export function *handleSelectedItemsFavoriteRequest() {
@@ -172,7 +170,6 @@ export function *handleSelectedItemsFavoriteRequest() {
 
 function *handleSelectedItemsFavoriteFailure() {
   // TODO: Error message
-  yield put(Errors.showError("選択したアイテムの更新に失敗しました"));
 }
 
 export function *favoriteItemSaga() {
@@ -207,7 +204,6 @@ export function *handleMoveItemBoardRequest() {
 
 function *handleMoveItemBoardFailure() {
   // TODO
-  yield put(Errors.showError("アイテムの移動に失敗しました"));
 }
 
 export function *handleSelectedItemsMoveRequest() {
@@ -232,7 +228,6 @@ export function *handleSelectedItemsMoveRequest() {
 
 function *handleSelectedItemsMoveFailure() {
   // TODO
-  yield put(Errors.showError("選択アイテムの移動に失敗しました"));
 }
 
 export function *moveItemSaga() {

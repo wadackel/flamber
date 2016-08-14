@@ -4,7 +4,6 @@ import entities from "./entities/";
 import application from "./application";
 import auth from "./auth";
 import boards from "./boards";
-import errors from "./errors";
 import items from "./items";
 import notifications from "./notifications";
 import settings from "./settings";
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
   application,
   auth,
   boards,
-  errors,
   items,
   notifications,
   settings

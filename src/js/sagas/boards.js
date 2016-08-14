@@ -12,7 +12,6 @@ import {
   getBoardById
 } from "../selectors/boards";
 import * as Services from "../services/boards";
-import * as Errors from "../actions/errors";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 import * as Notifications from "../actions/notifications";
@@ -61,7 +60,6 @@ function *handleGotoAddedBoard() {
 
 function *handleAddBoardFailure() {
   // TODO: More error message
-  yield put(Errors.showError("ボード追加でエラーが発生しました"));
 }
 
 export function *addBoardSaga() {
@@ -119,7 +117,6 @@ export function *handleDeleteBoardRequest() {
 
 export function *handleDeleteBoardFailure() {
   // TODO: More error message
-  yield put(Errors.showError("ボードの削除に失敗しました"));
 }
 
 export function *handleSelectedBoardsDeleteRequest() {
@@ -138,7 +135,6 @@ export function *handleSelectedBoardsDeleteRequest() {
 
 export function *handleSelectedBoardsDeleteFailure() {
   // TODO: More error message
-  yield put(Errors.showError("選択ボードの削除に失敗しました"));
 }
 
 export function *deleteBoardSaga() {
