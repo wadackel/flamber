@@ -15,6 +15,7 @@ import * as Services from "../services/boards";
 import * as Errors from "../actions/errors";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
+import * as Notifications from "../actions/notifications";
 
 const boardSchema = BoardSchema.define({
   items: arrayOf(ItemSchema)
@@ -47,7 +48,18 @@ export function *handleAddBoardRequest({ payload }) {
   }
 }
 
-export function *handleAddBoardFailure() {
+function *handleAddBoardSuccess() {
+  yield put(Notifications.showNotify("ボードを追加しました", {
+    type: Boards.GOTO_ADDED_BOARD,
+    text: "Show"
+  }));
+}
+
+function *handleGotoAddedBoard() {
+  // TODO
+}
+
+function *handleAddBoardFailure() {
   // TODO: More error message
   yield put(Errors.showError("ボード追加でエラーが発生しました"));
 }
@@ -55,7 +67,9 @@ export function *handleAddBoardFailure() {
 export function *addBoardSaga() {
   yield [
     takeEvery(Boards.ADD_BOARD_REQUEST, handleAddBoardRequest),
-    takeEvery(Boards.ADD_BOARD_FAILURE, handleAddBoardFailure)
+    takeEvery(Boards.ADD_BOARD_SUCCESS, handleAddBoardSuccess),
+    takeEvery(Boards.ADD_BOARD_FAILURE, handleAddBoardFailure),
+    takeEvery(Boards.GOTO_ADDED_BOARD, handleGotoAddedBoard)
   ];
 }
 

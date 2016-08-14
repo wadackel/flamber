@@ -31,6 +31,11 @@ export const addBoardSuccess = createAction(ADD_BOARD_SUCCESS);
 export const addBoardFailure = createAction(ADD_BOARD_FAILURE);
 
 
+// Goto added board
+export const GOTO_ADDED_BOARD = "GOTO_ADDED_BOARD";
+export const gotoAddedBoard = createAction(GOTO_ADDED_BOARD);
+
+
 // Update
 export const UPDATE_BOARD_IF_NEEDED = "UPDATE_BOARD_IF_NEEDED";
 export const UPDATE_BOARD_REQUEST = "UPDATE_BOARD_REQUEST";

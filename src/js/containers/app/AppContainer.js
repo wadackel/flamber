@@ -15,14 +15,14 @@ import {
 import { getSelectedItemEntities } from "../../selectors/items";
 import {
   HeaderSubContainer,
-  ShortcutKeySubContainer
+  ShortcutKeySubContainer,
+  NotificationsSubContainer
 } from "./";
 import {
   AddBoardDialog,
   AddItemFileDialog,
   FloatingMenu,
-  FloatingButton,
-  Snackbar
+  FloatingButton
 } from "../../components/ui/";
 import {
   BoardIcon,
@@ -48,7 +48,6 @@ export class AppContainer extends Component {
       "handleAddBoardClose",
       "handleAddBoard",
       "handleAddBoardActionClick",
-      "handleAddBoardSnackbarClose",
 
       "handleAddLinkItemOpen",
 
@@ -56,10 +55,7 @@ export class AppContainer extends Component {
       "handleAddItemFileClose",
       "handleAddItemFile",
 
-      "handleAddItemActionClick",
-      "handleAddItemSnackbarClose",
-
-      "handleErrorSnackbarClose"
+      "handleAddItemActionClick"
     ], this);
   }
 
@@ -82,10 +78,6 @@ export class AppContainer extends Component {
 
   handleAddBoardActionClick() {
     // TODO
-  }
-
-  handleAddBoardSnackbarClose() {
-    this.props.dispatch(BoardActions.addBoardSnackbarClose());
   }
 
   // Add item (link)
@@ -112,16 +104,6 @@ export class AppContainer extends Component {
 
   handleAddItemActionClick() {
     // TODO
-  }
-
-  handleAddItemSnackbarClose() {
-    this.props.dispatch(ItemActions.addItemSnackbarClose());
-  }
-
-
-  // Error snackbar
-  handleErrorSnackbarClose() {
-    this.props.dispatch(ErrorActions.hideError());
   }
 
 
@@ -157,6 +139,9 @@ export class AppContainer extends Component {
 
         {/* Shortcut */}
         <ShortcutKeySubContainer />
+
+        {/* Notifications */}
+        <NotificationsSubContainer />
 
         {/* Content */}
         <div className={b("content")}>
@@ -195,13 +180,6 @@ export class AppContainer extends Component {
           onRequestClose={this.handleAddBoardClose}
           onRequestAdd={this.handleAddBoard}
         />
-        <Snackbar
-          open={boards.addSnackbarOpen}
-          message="ボードを追加しました"
-          action="Show"
-          onActionClick={this.handleAddBoardActionClick}
-          onRequestClose={this.handleAddBoardSnackbarClose}
-        />
 
         {/* Add item */}
         {/* TODO */}
@@ -217,21 +195,6 @@ export class AppContainer extends Component {
           defaultBoard={boards.currentBoardId}
           onRequestClose={this.handleAddItemFileClose}
           onRequestAdd={this.handleAddItemFile}
-        />
-
-        <Snackbar
-          open={items.addSnackbarOpen}
-          message="アイテムを追加しました"
-          action="Show"
-          onActionClick={this.handleAddItemActionClick}
-          onRequestClose={this.handleAddItemSnackbarClose}
-        />
-
-        {/* Errors */}
-        <Snackbar
-          open={errors.hasError}
-          message={errors.message}
-          onRequestClose={this.handleErrorSnackbarClose}
         />
       </div>
     );
