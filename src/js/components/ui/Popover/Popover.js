@@ -1,7 +1,6 @@
 import React, { PropTypes } from "react";
 import shareConfig from "../../../../share-config.json";
 import * as OriginalPropTypes from "../../../constants/prop-types";
-import { HTMLElement } from "../../../helpers/browser-only";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
@@ -16,7 +15,7 @@ export default class Popover extends React.Component {
     className: PropTypes.string,
     open: PropTypes.bool,
     origin: OriginalPropTypes.origin,
-    triggerElement: PropTypes.instanceOf(HTMLElement),
+    triggerElement: PropTypes.object,
     triggerOrigin: OriginalPropTypes.origin,
     onRequestClose: PropTypes.func
   };
