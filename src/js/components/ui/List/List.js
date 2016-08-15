@@ -1,10 +1,10 @@
-import React, { PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("list");
 
-export default class List extends React.Component {
+export default class List extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
@@ -33,7 +33,7 @@ export default class List extends React.Component {
       onKeyDown
     } = this.props;
 
-    const cloneChildren = children.map((item, index) =>
+    const cloneChildren = React.Children.map(children, (item, index) =>
       React.cloneElement(item, {
         key: item.props.text,
         index

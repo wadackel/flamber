@@ -7,6 +7,7 @@ import boards from "./boards";
 import items from "./items";
 import notifications from "./notifications";
 import settings from "./settings";
+import tags from "./tags";
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   boards,
   items,
   notifications,
-  settings
+  settings,
+  tags
 });
 
 export default rootReducer;

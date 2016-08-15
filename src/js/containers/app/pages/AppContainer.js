@@ -15,7 +15,8 @@ import { getSelectedItemEntities } from "../../../selectors/items";
 import {
   HeaderContainer,
   ShortcutKeyContainer,
-  NotificationsContainer
+  NotificationsContainer,
+  TagDrawerContainer
 } from "../ui/";
 import {
   AddBoardDialog,
@@ -134,6 +135,9 @@ export class AppContainer extends Component {
       <div className={b()}>
         {/* Header */}
         <HeaderContainer {...routerParams} />
+
+        {/* Tag sidebar */}
+        <TagDrawerContainer />
 
         {/* Shortcut */}
         <ShortcutKeyContainer />

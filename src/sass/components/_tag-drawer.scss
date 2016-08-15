@@ -1,0 +1,9 @@
+.tag-drawer {
+  top: 120px;
+  z-index: 900;
+
+  &__footer {
+    padding: 5px 25px 15px;
+    background: darken($gray-light, 10%);
+  }
+}

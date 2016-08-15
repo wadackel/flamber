@@ -6,11 +6,12 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import MDSpinner from "react-md-spinner";
 import * as Layout from "../../../constants/layouts";
-import bindHandlers from "../../../helpers/bind-handlers";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
+import * as TagActions from "../../../actions/tags";
 import { getCurrentBoard } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
+import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Header,
   EditableText,
@@ -54,6 +55,7 @@ export class HeaderContainer extends Component {
       "handleFeedsClick",
       "handleLogoClick",
       "handleSettingsClick",
+      "handleTagDrawerToggle",
 
       "handleBoardNameChange",
       "handleBoardNameComplete",
@@ -94,6 +96,10 @@ export class HeaderContainer extends Component {
     this.push("/app/settings");
   }
 
+  handleTagDrawerToggle() {
+    this.props.dispatch(TagActions.tagDrawerToggle());
+  }
+
   // Update board
   handleBoardNameChange(e, value) {
     this.setState({ boardName: value });
@@ -130,7 +136,7 @@ export class HeaderContainer extends Component {
   getHeaderMyItemsSubLeft() {
     return (
       <div>
-        <IconButton icon={<TagsIcon />} />
+        <IconButton icon={<TagsIcon onClick={this.handleTagDrawerToggle} />} />
         <IconButton icon={<StarIcon />} />
         <SearchField
           placeholder="Type search keyword"

@@ -5,6 +5,7 @@ import boards from "./boards";
 import items from "./items";
 import notifications from "./notifications";
 import settings from "./settings";
+import tags from "./tags";
 
 export default function *rootSaga() {
   yield [
@@ -13,6 +14,7 @@ export default function *rootSaga() {
     fork(boards),
     fork(items),
     fork(notifications),
-    fork(settings)
+    fork(settings),
+    fork(tags)
   ];
 }
