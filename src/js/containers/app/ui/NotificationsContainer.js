@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import * as NotificationActions from "../../actions/notifications";
-import bindHandlers from "../../helpers/bind-handlers";
-import { Snackbar } from "../../components/ui/";
+import * as NotificationActions from "../../../actions/notifications";
+import bindHandlers from "../../../helpers/bind-handlers";
+import { Snackbar } from "../../../components/ui/";
 
-export class NotificationsSubContainer extends Component {
+export class NotificationsContainer extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     notifications: PropTypes.object
@@ -55,4 +55,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(NotificationsSubContainer);
+)(NotificationsContainer);

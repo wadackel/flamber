@@ -4,14 +4,14 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import Combokeys from "combokeys";
-import * as BoardActions from "../../actions/boards";
-import * as ItemActions from "../../actions/items";
-import bem from "../../helpers/bem";
-import bindHandlers from "../../helpers/bind-handlers";
+import * as BoardActions from "../../../actions/boards";
+import * as ItemActions from "../../../actions/items";
+import bem from "../../../helpers/bem";
+import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("shortcut-key");
 
-export class ShortcutKeySubContainer extends Component {
+export class ShortcutKeyContainer extends Component {
   static propTypes = {
   };
 
@@ -79,4 +79,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(ShortcutKeySubContainer);
+)(ShortcutKeyContainer);

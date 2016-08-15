@@ -2,17 +2,17 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import bem from "../../helpers/bem";
-import bindHandlers from "../../helpers/bind-handlers";
-import * as BoardActions from "../../actions/boards";
-import { getBoardEntities, getSelectedBoardEntities } from "../../selectors/boards";
-import { TrashIcon } from "../../components/svg-icons/";
+import bem from "../../../helpers/bem";
+import bindHandlers from "../../../helpers/bind-handlers";
+import * as BoardActions from "../../../actions/boards";
+import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/boards";
+import { TrashIcon } from "../../../components/svg-icons/";
 import {
   CardGroup,
   BoardCard,
   IconButton,
   ToolBox
-} from "../../components/ui/";
+} from "../../../components/ui/";
 
 const b = bem("boards");
 

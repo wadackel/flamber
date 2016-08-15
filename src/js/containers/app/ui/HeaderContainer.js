@@ -5,12 +5,12 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import MDSpinner from "react-md-spinner";
-import * as Layout from "../../constants/layouts";
-import bindHandlers from "../../helpers/bind-handlers";
-import * as SettingActions from "../../actions/settings";
-import * as BoardActions from "../../actions/boards";
-import { getCurrentBoard } from "../../selectors/boards";
-import { getSelectedItemEntities } from "../../selectors/items";
+import * as Layout from "../../../constants/layouts";
+import bindHandlers from "../../../helpers/bind-handlers";
+import * as SettingActions from "../../../actions/settings";
+import * as BoardActions from "../../../actions/boards";
+import { getCurrentBoard } from "../../../selectors/boards";
+import { getSelectedItemEntities } from "../../../selectors/items";
 import {
   Header,
   EditableText,
@@ -20,7 +20,7 @@ import {
   LayoutButton,
   SearchField,
   Slider
-} from "../../components/ui/";
+} from "../../../components/ui/";
 import {
   TagsIcon,
   StarIcon,
@@ -28,14 +28,14 @@ import {
   RandomGridIcon,
   GridIcon,
   ListIcon
-} from "../../components/svg-icons/";
+} from "../../../components/svg-icons/";
 
 const NavItemActive = {
   MY_ITEMS: "MY_ITEMS",
   FEEDS: "FEEDS"
 };
 
-export class HeaderSubContainer extends Component {
+export class HeaderContainer extends Component {
   static propTypes = {
   };
 
@@ -303,4 +303,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(HeaderSubContainer);
+)(HeaderContainer);

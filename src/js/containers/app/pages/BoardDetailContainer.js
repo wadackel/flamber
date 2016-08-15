@@ -3,18 +3,18 @@ import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import * as OrderBy from "../../constants/order-by";
-import * as Layout from "../../constants/layouts";
-import * as SettingActions from "../../actions/settings";
-import * as BoardActions from "../../actions/boards";
-import * as ItemActions from "../../actions/items";
-import { getBoardEntities, getCurrentBoard } from "../../selectors/boards";
+import * as OrderBy from "../../../constants/order-by";
+import * as Layout from "../../../constants/layouts";
+import * as SettingActions from "../../../actions/settings";
+import * as BoardActions from "../../../actions/boards";
+import * as ItemActions from "../../../actions/items";
+import { getBoardEntities, getCurrentBoard } from "../../../selectors/boards";
 import {
   getItemEntities,
   getSelectedItemEntities
-} from "../../selectors/items";
-import bem from "../../helpers/bem";
-import bindHandlers from "../../helpers/bind-handlers";
+} from "../../../selectors/items";
+import bem from "../../../helpers/bem";
+import bindHandlers from "../../../helpers/bind-handlers";
 import {
   CardGroup,
   ItemCard,
@@ -25,13 +25,13 @@ import {
   IconMenu,
   MenuItem,
   SortSwitcher
-} from "../../components/ui/";
+} from "../../../components/ui/";
 import {
   FolderIcon,
   TrashIcon,
   StarIcon,
   MoreVertIcon
-} from "../../components/svg-icons/";
+} from "../../../components/svg-icons/";
 
 const b = bem("board-detail");
 

@@ -2,32 +2,32 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import * as BoardActions from "../../actions/boards";
-import * as ItemActions from "../../actions/items";
-import bem from "../../helpers/bem";
-import bindHandlers from "../../helpers/bind-handlers";
+import * as BoardActions from "../../../actions/boards";
+import * as ItemActions from "../../../actions/items";
+import bem from "../../../helpers/bem";
+import bindHandlers from "../../../helpers/bind-handlers";
 import {
   getBoardEntities,
   getBoardByIdFromBoards,
   getSelectedBoardEntities
-} from "../../selectors/boards";
-import { getSelectedItemEntities } from "../../selectors/items";
+} from "../../../selectors/boards";
+import { getSelectedItemEntities } from "../../../selectors/items";
 import {
-  HeaderSubContainer,
-  ShortcutKeySubContainer,
-  NotificationsSubContainer
-} from "./";
+  HeaderContainer,
+  ShortcutKeyContainer,
+  NotificationsContainer
+} from "../ui/";
 import {
   AddBoardDialog,
   AddItemFileDialog,
   FloatingMenu,
   FloatingButton
-} from "../../components/ui/";
+} from "../../../components/ui/";
 import {
   BoardIcon,
   PictureLinkIcon,
   UploadIcon
-} from "../../components/svg-icons/";
+} from "../../../components/svg-icons/";
 
 const b = bem("app");
 
@@ -133,13 +133,13 @@ export class AppContainer extends Component {
     return (
       <div className={b()}>
         {/* Header */}
-        <HeaderSubContainer {...routerParams} />
+        <HeaderContainer {...routerParams} />
 
         {/* Shortcut */}
-        <ShortcutKeySubContainer />
+        <ShortcutKeyContainer />
 
         {/* Notifications */}
-        <NotificationsSubContainer />
+        <NotificationsContainer />
 
         {/* Content */}
         <div className={b("content")}>

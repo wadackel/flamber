@@ -2,19 +2,19 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import MDSpinner from "react-md-spinner";
-import * as Themes from "../../constants/themes";
-import bem from "../../helpers/bem";
-import bindHandlers from "../../helpers/bind-handlers";
+import * as Themes from "../../../constants/themes";
+import bem from "../../../helpers/bem";
+import bindHandlers from "../../../helpers/bind-handlers";
 import {
   DriveCapacity,
   RaisedButton,
   RadioGroup,
   Radio,
   Snackbar
-} from "../../components/ui/";
-import { GithubIcon } from "../../components/svg-icons";
-import { deleteAppRequest } from "../../actions/application";
-import { fetchSettingsRequest, updateThemeRequest } from "../../actions/settings";
+} from "../../../components/ui/";
+import { GithubIcon } from "../../../components/svg-icons";
+import { deleteAppRequest } from "../../../actions/application";
+import { fetchSettingsRequest, updateThemeRequest } from "../../../actions/settings";
 
 const b = bem("settings");
 

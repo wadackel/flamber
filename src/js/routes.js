@@ -10,7 +10,7 @@ import {
   BoardsContainer,
   BoardDetailContainer,
   SettingsContainer
-} from "./containers/app/";
+} from "./containers/app/pages";
 import ThemeProvider from "./components/ThemeProvider";
 
 function getAuthenticated(store) {
