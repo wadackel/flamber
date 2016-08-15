@@ -7,7 +7,11 @@ const router = Router();
 
 
 router.get("/", (req, res) => {
-  res.errorJSON("TODO");
+  Tag.findAllByUser(req.user.id)
+    .then(tags => {
+      res.json({ tags });
+    })
+    .catch(res.errorJSON);
 });
 
 

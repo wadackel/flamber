@@ -11,6 +11,16 @@ export const tagDrawerClose = createAction(TAG_DRAWER_CLOSE);
 export const tagDrawerToggle = createAction(TAG_DRAWER_TOGGLE);
 
 
+// Fetch
+export const FETCH_TAGS_REQUEST = "FETCH_TAGS_REQUEST";
+export const FETCH_TAGS_SUCCESS = "FETCH_TAGS_SUCCESS";
+export const FETCH_TAGS_FAILURE = "FETCH_TAGS_FAILURE";
+
+export const fetchTagsRequest = createAction(FETCH_TAGS_REQUEST);
+export const fetchTagsSuccess = createAction(FETCH_TAGS_SUCCESS);
+export const fetchTagsFailure = createAction(FETCH_TAGS_FAILURE);
+
+
 // Add
 export const ADD_TAG_REQUEST = "ADD_TAG_REQUEST";
 export const ADD_TAG_SUCCESS = "ADD_TAG_SUCCESS";

@@ -8,6 +8,12 @@ function mergeEntities(state, entities) {
 }
 
 export default handleActions({
+  // Fetch
+  [Tags.FETCH_TAGS_SUCCESS]: (state, { payload }) => (
+    mergeEntities(state, payload.entities.tags)
+  ),
+
+
   // Add
   [Tags.ADD_TAG_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.tags)

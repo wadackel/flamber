@@ -3,6 +3,7 @@ import { handleActions } from "redux-actions";
 import * as Tags from "../actions/tags";
 
 const initialState = {
+  isFetching: false,
   isAdding: false,
   results: [],
   currentTag: null,
@@ -25,6 +26,25 @@ export default handleActions({
   [Tags.TAG_DRAWER_TOGGLE]: state => ({
     ...state,
     drawerOpen: !state.drawerOpen
+  }),
+
+
+  // Fetch
+  [Tags.FETCH_TAGS_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
+
+  [Tags.FETCH_TAGS_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    results: payload.result.tags
+  }),
+
+  [Tags.FETCH_TAGS_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    error: payload
   }),
 
 

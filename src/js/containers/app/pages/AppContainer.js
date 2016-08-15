@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
+import * as TagActions from "../../../actions/tags";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import {
@@ -61,6 +62,7 @@ export class AppContainer extends Component {
 
   componentDidMount() {
     this.props.dispatch(BoardActions.fetchBoardsRequest());
+    this.props.dispatch(TagActions.fetchTagsRequest());
   }
 
   // Add board
