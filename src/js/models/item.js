@@ -18,7 +18,7 @@ const ItemSchema = new Schema({
   width: { type: Number, default: 0 },
   height: { type: Number, default: 0 },
   thumbnail: { type: String, default: "" },
-  tags: { type: Array, default: [] },
+  tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   palette: { type: Array, default: [] },
   favorite: { type: Boolean, default: false },
   created: { type: Date, default: Date.now },
