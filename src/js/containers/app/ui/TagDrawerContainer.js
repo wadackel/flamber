@@ -29,6 +29,7 @@ export class TagDrawerContainer extends Component {
     bindHandlers([
       "handleAddTagChange",
       "handleAddTagEnter",
+      "handleTagUpdate",
       "handleTagDelete"
     ], this);
   }
@@ -47,6 +48,13 @@ export class TagDrawerContainer extends Component {
       this.setState({ addTagName: "" });
       addTag.blur();
     }
+  }
+
+  handleTagUpdate(item, text) {
+    this.props.dispatch(TagActions.updateTagRequest({
+      id: item.props.value,
+      name: text
+    }));
   }
 
   handleTagDelete(item) {
@@ -82,9 +90,10 @@ export class TagDrawerContainer extends Component {
       <ListItem
         key={entity.id}
         value={entity.id}
-        processing={entity.isDeleting}
+        processing={entity.isDeleting || entity.isUpdating}
         text={entity.name}
         editable={true}
+        onComplete={this.handleTagUpdate}
         onRequestDelete={this.handleTagDelete}
       />
     );

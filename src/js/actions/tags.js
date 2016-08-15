@@ -31,6 +31,19 @@ export const addTagSuccess = createAction(ADD_TAG_SUCCESS);
 export const addTagFailure = createAction(ADD_TAG_FAILURE);
 
 
+// Update
+export const UPDATE_TAG_REQUEST = "UPDATE_TAG_REQUEST";
+export const UPDATE_TAG_SUCCESS = "UPDATE_TAG_SUCCESS";
+export const UPDATE_TAG_FAILURE = "UPDATE_TAG_FAILURE";
+
+export const updateTagRequest = createAction(UPDATE_TAG_REQUEST);
+export const updateTagSuccess = createAction(UPDATE_TAG_SUCCESS);
+export const updateTagFailure = createAction(UPDATE_TAG_FAILURE,
+  null,
+  (payload, entity) => ({ entity })
+);
+
+
 // Delete
 export const DELETE_TAG_REQUEST = "DELETE_TAG_REQUEST";
 export const DELETE_TAG_SUCCESS = "DELETE_TAG_SUCCESS";

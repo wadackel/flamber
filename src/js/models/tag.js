@@ -30,6 +30,23 @@ TagSchema.statics.appendByUserAndName = function(user, name) {
   return entity.save();
 };
 
+TagSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
+  const fields = _.keys(this.schema.paths);
+
+  return this.findOne({ _id: id, user })
+    .then(entity => {
+      fields.forEach(key => {
+        if (newProps.hasOwnProperty(key)) {
+          entity[key] = newProps[key];
+        }
+      });
+
+      entity.modified = new Date();
+
+      return entity.save();
+    });
+};
+
 TagSchema.statics.removeByUserAndId = function(user, id) {
   // TODO: Eliminate the dependence of the item
   return this.findOne({ _id: id, user })

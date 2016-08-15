@@ -62,6 +62,31 @@ export function *addTagSaga() {
 }
 
 
+export function *handleUpdateTagRequest({ payload }) {
+  try {
+    const response = yield call(Services.updateTag, payload);
+    const normalized = normalize(response, {
+      tag: TagSchema
+    });
+    yield put(Tags.updateTagSuccess(normalized));
+  } catch (error) {
+    yield put(Tags.updateTagFailure(error, payload));
+  }
+}
+
+function *handleUpdateTagFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("タグの更新に失敗しました"));
+}
+
+export function *updateTagSaga() {
+  yield [
+    takeEvery(Tags.UPDATE_TAG_REQUEST, handleUpdateTagRequest),
+    takeEvery(Tags.UPDATE_TAG_FAILURE, handleUpdateTagFailure)
+  ];
+}
+
+
 export function *handleDeleteTagRequest() {
   while (true) {
     const { payload } = yield take(Tags.DELETE_TAG_REQUEST);
@@ -91,6 +116,7 @@ export default function *tagsSaga() {
   yield [
     fork(fetchTagsSaga),
     fork(addTagSaga),
+    fork(updateTagSaga),
     fork(deleteTagSaga)
   ];
 }

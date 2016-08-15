@@ -67,6 +67,13 @@ export default handleActions({
   }),
 
 
+  // Update
+  [Tags.UPDATE_TAG_FAILURE]: (state, { payload }) => ({
+    ...state,
+    error: payload
+  }),
+
+
   // Delete
   [Tags.DELETE_TAG_SUCCESS]: (state, { payload }) => ({
     ...state,

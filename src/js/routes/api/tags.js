@@ -27,13 +27,22 @@ router.post("/", (req, res) => {
 });
 
 
+router.put("/", (req, res) => {
+  const { user, body } = req;
+
+  Tag.updateByUserAndIdFromObject(user.id, body.id, body)
+    .then(tag => {
+      res.json({ tag });
+    })
+    .catch(res.errorJSON);
+});
+
+
 router.delete("/", (req, res) => {
   const {
     user,
     body: { id }
   } = req;
-
-  console.log(user.id, id);
 
   Tag.removeByUserAndId(user.id, id)
     .then(tag => {

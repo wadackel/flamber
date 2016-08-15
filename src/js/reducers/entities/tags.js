@@ -20,6 +20,32 @@ export default handleActions({
   ),
 
 
+  // Update
+  [Tags.UPDATE_TAG_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        ...payload,
+        isUpdaing: false
+      }
+    )
+  ),
+
+  [Tags.UPDATE_TAG_SUCCESS]: (state, { payload }) => (
+    mergeEntities(state, payload.entities.tags)
+  ),
+
+  [Tags.UPDATE_TAG_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.entity.id ? entity : {
+        ...entity,
+        ...meta.entity,
+        isUpdating: false
+      }
+    )
+  ),
+
+
   // Delete
   [Tags.DELETE_TAG_REQUEST]: (state, { payload }) => (
     _.mapValues(state, entity =>

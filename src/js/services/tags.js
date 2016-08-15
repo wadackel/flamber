@@ -12,6 +12,10 @@ export function addTag(name) {
   return fetchJSON(TAGS_ENDPOINT, { name });
 }
 
+export function updateTag(newProps) {
+  return fetchJSON(TAGS_ENDPOINT, newProps, "PUT");
+}
+
 export function deleteTag(id) {
   return fetchJSON(TAGS_ENDPOINT, { id }, "DELETE");
 }
