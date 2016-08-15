@@ -61,9 +61,36 @@ export function *addTagSaga() {
   ];
 }
 
+
+export function *handleDeleteTagRequest() {
+  while (true) {
+    const { payload } = yield take(Tags.DELETE_TAG_REQUEST);
+
+    try {
+      yield call(Services.deleteTag, payload);
+      yield put(Tags.deleteTagSuccess(payload));
+    } catch (error) {
+      yield put(Tags.deleteTagFailure(error, payload));
+    }
+  }
+}
+
+function *handleDeleteTagFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("タグの削除に失敗しました"));
+}
+
+export function *deleteTagSaga() {
+  yield [
+    fork(handleDeleteTagRequest),
+    takeEvery(Tags.DELETE_TAG_FAILURE, handleDeleteTagFailure)
+  ];
+}
+
 export default function *tagsSaga() {
   yield [
     fork(fetchTagsSaga),
-    fork(addTagSaga)
+    fork(addTagSaga),
+    fork(deleteTagSaga)
   ];
 }

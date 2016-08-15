@@ -11,3 +11,7 @@ export function fetchTags() {
 export function addTag(name) {
   return fetchJSON(TAGS_ENDPOINT, { name });
 }
+
+export function deleteTag(id) {
+  return fetchJSON(TAGS_ENDPOINT, { id }, "DELETE");
+}

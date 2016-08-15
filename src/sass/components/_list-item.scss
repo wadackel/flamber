@@ -6,7 +6,7 @@
     border-top: 1px solid darken(#fff, 8%);
   }
 
-  &:hover,
+  &:not(&--processing):hover,
   &--is-editing {
     .list-item__icon {
       opacity: 1;
@@ -78,7 +78,7 @@
     color: $gray-dark;
     box-shadow: none;
 
-    &:hover {
+    &:not(&--processing):hover {
       background: darken(#fff, 8%);
       box-shadow: none;
     }
@@ -99,5 +99,13 @@
         padding-left: 40px;
       }
     }
+  }
+
+  &__processing-spinner {
+    position: absolute !important;
+    top: 0;
+    right: 10px;
+    bottom: 0;
+    margin: auto;
   }
 }

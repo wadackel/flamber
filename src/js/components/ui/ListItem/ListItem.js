@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import MDSpinner from "react-md-spinner";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
@@ -12,6 +13,7 @@ export default class ListItem extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
+    processing: PropTypes.bool,
     text: PropTypes.string,
     index: PropTypes.number,
     value: PropTypes.any,
@@ -25,6 +27,7 @@ export default class ListItem extends React.Component {
   };
 
   static defaultProps = {
+    processing: false,
     editable: false,
     onClick: () => {},
     onChange: () => {},
@@ -119,18 +122,23 @@ export default class ListItem extends React.Component {
     const {
       className,
       style,
+      processing,
       text,
       editable,
       placeholder
     } = this.props;
 
-    const {
-      isEditing
-    } = this.state;
+    const { isEditing } = this.state;
+
+    const modifier = {
+      "is-editing": isEditing,
+      editable,
+      processing
+    };
 
     return (
-      <div className={mergeClassNames(b({ "is-editing": isEditing, editable }), className)} style={style}>
-        {editable &&
+      <div className={mergeClassNames(b(modifier), className)} style={style}>
+        {(!processing && editable) &&
           <IconButton
             className={b("icon", { edit: true })}
             icon={<PencilIcon />}
@@ -149,16 +157,24 @@ export default class ListItem extends React.Component {
             />
           : <Button
               ref="button"
-              baseClassName="list-item__button"
+              disable={processing}
+              baseClassName={b("button").trim()}
+              className={processing ? `${b("button").trim()}--processing` : ""}
               label={text}
               onClick={this.handleClick}
             />
         }
-        {editable &&
+        {(!processing && editable) &&
           <IconButton
             className={b("icon", { trash: true })}
             icon={<TrashIcon />}
             onClick={this.handleTrashClick}
+          />
+        }
+        {processing &&
+          <MDSpinner
+            className={b("processing-spinner")}
+            size={16}
           />
         }
       </div>

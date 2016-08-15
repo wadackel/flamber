@@ -1,5 +1,3 @@
-/* eslint-disable */
-import _ from "lodash";
 import { Router } from "express";
 import Tag from "../../models/tag";
 
@@ -18,12 +16,26 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const {
     user,
-    body: {
-      name
-    }
+    body: { name }
   } = req;
 
   Tag.appendByUserAndName(user.id, name)
+    .then(tag => {
+      res.json({ tag });
+    })
+    .catch(res.errorJSON);
+});
+
+
+router.delete("/", (req, res) => {
+  const {
+    user,
+    body: { id }
+  } = req;
+
+  console.log(user.id, id);
+
+  Tag.removeByUserAndId(user.id, id)
     .then(tag => {
       res.json({ tag });
     })

@@ -30,5 +30,13 @@ TagSchema.statics.appendByUserAndName = function(user, name) {
   return entity.save();
 };
 
+TagSchema.statics.removeByUserAndId = function(user, id) {
+  // TODO: Eliminate the dependence of the item
+  return this.findOne({ _id: id, user })
+    .then(entity =>
+      entity.remove().then(() => entity)
+    );
+};
+
 
 export default mongoose.model("Tag", TagSchema);

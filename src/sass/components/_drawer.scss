@@ -72,7 +72,7 @@ $drawer-duration: 260ms;
       background-color: $gray-dark;
       color: $gray-lightest;
 
-      &:hover {
+      &:not(.list-item__button--processing):hover {
         background-color: darken($gray-dark, 20%);
       }
 

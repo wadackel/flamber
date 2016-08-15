@@ -17,5 +17,31 @@ export default handleActions({
   // Add
   [Tags.ADD_TAG_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.tags)
+  ),
+
+
+  // Delete
+  [Tags.DELETE_TAG_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload ? entity : {
+        ...entity,
+        isDeleting: true
+      }
+    )
+  ),
+
+  [Tags.DELETE_TAG_SUCCESS]: (state, { payload }) => (
+    _.pickBy(state, (entity, id) =>
+      id !== payload
+    )
+  ),
+
+  [Tags.DELETE_TAG_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.id ? entity : {
+        ...entity,
+        isDeleting: false
+      }
+    )
   )
 }, {});

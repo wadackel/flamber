@@ -64,5 +64,17 @@ export default handleActions({
     ...state,
     isAdding: false,
     error: payload
+  }),
+
+
+  // Delete
+  [Tags.DELETE_TAG_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    results: state.results.filter(id => id !== payload)
+  }),
+
+  [Tags.DELETE_TAG_FAILURE]: (state, { payload }) => ({
+    ...state,
+    error: payload
   })
 }, initialState);
