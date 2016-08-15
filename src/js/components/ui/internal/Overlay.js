@@ -58,15 +58,19 @@ export default class Overlay extends React.Component {
   }
 
   scrollLock() {
-    const { body } = document;
+    const { body, documentElement } = document;
+
+    if (documentElement.clientWidth !== window.innerWidth) {
+      body.style.paddingRight = `${this.scrollbarWidth}px`;
+    }
+
     body.style.overflow = "hidden";
-    body.style.paddingRight = `${this.scrollbarWidth}px`;
   }
 
   unScrollLock() {
     const { body } = document;
-    body.style.overflow = "";
     body.style.paddingRight = "";
+    body.style.overflow = "";
   }
 
   render() {
