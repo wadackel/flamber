@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { normalize, arrayOf } from "normalizr";
+import { push } from "react-router-redux";
 import { takeEvery, takeLatest, delay } from "redux-saga";
 import { fork, take, put, call, select, race, cancel, cancelled } from "redux-saga/effects";
 import BoardSchema from "../schemas/board";
@@ -106,6 +107,7 @@ export function *handleAddItemSuccess({ payload }) {
 }
 
 function *handleGotoAddedItem() {
+  // TODO
   console.log("ADD TODO");
 }
 
@@ -271,7 +273,8 @@ function *handleMoveItemSuccess({ payload, meta }) {
 
   yield put(Notifications.showNotify(`${nextBoard.name}に移動しました`, {
     type: Items.GOTO_AFTER_MOVE_ITEM_BOARD,
-    text: "Show"
+    text: "Show",
+    payload: nextBoard.id
   }));
 }
 
@@ -312,7 +315,8 @@ function *handleSelectedItemsMoveSuccess({ payload, meta }) {
 
   yield put(Notifications.showNotify(`${items.length}個のアイテムを${nextBoard.name}へ移動しました`, {
     type: Items.GOTO_AFTER_MOVE_ITEM_BOARD,
-    text: "Show"
+    text: "Show",
+    payload: nextBoard.id
   }));
 }
 
@@ -321,8 +325,12 @@ function *handleSelectedItemsMoveFailure() {
   yield put(Notifications.showNotify("選択したアイテムの移動に失敗しました"));
 }
 
-function *handleGotoAfterMoveItemBoard() {
-  // TODO
+function *handleGotoAfterMoveItemBoard({ payload }) {
+  yield put(push(`/app/board/${payload}`));
+}
+
+function *unselectAllItems() {
+  yield put(Items.unselectAllItem());
 }
 
 export function *moveItemSaga() {
@@ -333,7 +341,8 @@ export function *moveItemSaga() {
     fork(handleSelectedItemsMoveRequest),
     takeEvery(Items.SELECTED_ITEMS_MOVE_SUCCESS, handleSelectedItemsMoveSuccess),
     takeEvery(Items.SELECTED_ITEMS_MOVE_FAILURE, handleSelectedItemsMoveFailure),
-    takeEvery(Items.GOTO_AFTER_MOVE_ITEM_BOARD, handleGotoAfterMoveItemBoard)
+    takeEvery(Items.GOTO_AFTER_MOVE_ITEM_BOARD, handleGotoAfterMoveItemBoard),
+    takeEvery("@@router/LOCATION_CHANGE", unselectAllItems)
   ];
 }
 

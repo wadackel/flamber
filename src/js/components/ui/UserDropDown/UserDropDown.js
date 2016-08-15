@@ -1,6 +1,5 @@
 import React, { PropTypes } from "react";
 import * as OriginPropTypes from "../../../constants/prop-types";
-import { HTMLElement } from "../../../helpers/browser-only";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import bindHandlers from "../../../helpers/bind-handlers";
@@ -18,7 +17,7 @@ export default class UserDropDown extends React.Component {
     open: PropTypes.bool,
     limit: PropTypes.number,
     usage: PropTypes.number,
-    triggerElement: PropTypes.instanceOf(HTMLElement),
+    triggerElement: PropTypes.object,
     triggerOrigin: OriginPropTypes.origin,
     onRequestSignOut: PropTypes.func,
     onRequestClose: PropTypes.func

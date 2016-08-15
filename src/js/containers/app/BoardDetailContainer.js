@@ -70,6 +70,14 @@ export class BoardDetailContainer extends Component {
     this.props.dispatch(BoardActions.setCurrentBoard(this.props.params.id));
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { params } = this.props;
+
+    if (params.id !== nextProps.params.id) {
+      this.props.dispatch(BoardActions.setCurrentBoard(nextProps.params.id));
+    }
+  }
+
   handleOrderByChange(orderBy) {
     this.props.dispatch(SettingActions.updateItemsOrderByRequest(orderBy));
   }
