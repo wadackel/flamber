@@ -18,6 +18,7 @@
     padding: .4rem 1.5rem .4rem 0;
     font-size: 1rem;
     cursor: pointer;
+    user-select: none;
 
     &:hover {
       color: darken($color-root, 15%);

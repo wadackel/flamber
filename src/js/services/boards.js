@@ -6,12 +6,12 @@ export const BOARDS_ENDPOINT = `${API_ROOT}/boards`;
 
 export function fetchBoard(id) {
   return fetch(`${BOARDS_ENDPOINT}/${id}`)
-    .then(res => res.board);
+    .then(res => res);
 }
 
 export function addBoard(name) {
   return fetchJSON(BOARDS_ENDPOINT, { name })
-    .then(res => res.board);
+    .then(res => res);
 }
 
 export function fetchBoards() {

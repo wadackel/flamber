@@ -3,7 +3,7 @@ import * as Notifications from "../actions/notifications";
 
 const initialState = {
   message: null,
-  action: null // type, text
+  action: null // { type: String, text: String, payload: Any }
 };
 
 export default handleActions({

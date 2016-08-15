@@ -59,7 +59,7 @@ export default handleActions({
   [Boards.ADD_BOARD_SUCCESS]: (state, { payload }) => ({
     ...state,
     isAdding: false,
-    results: [...state.results, payload.result],
+    results: [...state.results, payload.result.board],
     addDialogOpen: false,
     addSnackbarOpen: true
   }),

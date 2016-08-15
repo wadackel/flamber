@@ -1,6 +1,7 @@
 /* eslint-disable */
 import _ from "lodash";
 import deepEqual from "deep-equal";
+import { push } from "react-router-redux";
 import { normalize, arrayOf } from "normalizr";
 import { takeEvery } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
@@ -40,22 +41,25 @@ export function *handleFetchBoardsRequest() {
 export function *handleAddBoardRequest({ payload }) {
   try {
     const response = yield call(Services.addBoard, payload);
-    const normalized = normalize(response, BoardSchema);
+    const normalized = normalize(response, {
+      board: BoardSchema
+    });
     yield put(Boards.addBoardSuccess(normalized));
   } catch (error) {
     yield put(Boards.addBoardFailure(error));
   }
 }
 
-function *handleAddBoardSuccess() {
+function *handleAddBoardSuccess({ payload }) {
   yield put(Notifications.showNotify("ボードを追加しました", {
     type: Boards.GOTO_ADDED_BOARD,
-    text: "Show"
+    text: "Show",
+    payload: payload.result.board
   }));
 }
 
-function *handleGotoAddedBoard() {
-  // TODO
+function *handleGotoAddedBoard({ payload }) {
+  yield put(push(`/app/board/${payload}`));
 }
 
 function *handleAddBoardFailure() {

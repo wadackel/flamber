@@ -9,7 +9,7 @@ export function *handleNotifyAction() {
 
   if (_.isPlainObject(action)) {
     const actionCreator = createAction(action.type);
-    yield put(actionCreator());
+    yield put(actionCreator(action.payload));
   }
 }
 

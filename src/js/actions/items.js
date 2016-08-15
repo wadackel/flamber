@@ -62,7 +62,6 @@ export const MOVE_ITEM_SELECT_BOARD_CLOSE = "MOVE_ITEM_SELECT_BOARD_CLOSE";
 export const MOVE_ITEM_REQUEST = "MOVE_ITEM_REQUEST";
 export const MOVE_ITEM_SUCCESS = "MOVE_ITEM_SUCCESS";
 export const MOVE_ITEM_FAILURE = "MOVE_ITEM_FAILURE";
-export const GOTO_AFTER_MOVE_ITEM_BOARD = "GOTO_AFTER_MOVE_ITEM_BOARD";
 
 export const moveItemSelectBoardOpen = createAction(MOVE_ITEM_SELECT_BOARD_OPEN);
 export const moveItemSelectBoardClose = createAction(MOVE_ITEM_SELECT_BOARD_CLOSE);
@@ -75,6 +74,10 @@ export const moveItemFailure = createAction(MOVE_ITEM_FAILURE,
   null,
   (payload, item, prevBoard, nextBoard) => ({ item, prevBoard, nextBoard })
 );
+
+
+// Goto after board
+export const GOTO_AFTER_MOVE_ITEM_BOARD = "GOTO_AFTER_MOVE_ITEM_BOARD";
 export const gotoAfterMoveItemBoard = createAction(GOTO_AFTER_MOVE_ITEM_BOARD);
 
 
