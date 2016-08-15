@@ -5,6 +5,7 @@ import { fork, take, put, call, select, race, cancel, cancelled } from "redux-sa
 import BoardSchema from "../schemas/board";
 import ItemSchema from "../schemas/item";
 import * as Services from "../services/items";
+import * as Notifications from "../actions/notifications";
 import * as Auth from "../actions/auth";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
@@ -27,6 +28,7 @@ ItemSchema.define({
 });
 
 
+// Background sync
 export function *bgSync() {
   try {
     while (true) {
@@ -71,6 +73,7 @@ export function *bgSyncSaga() {
 }
 
 
+// Add
 export function *handleAddItemRequest() {
   while (true) {
     const { payload } = yield take(Items.ADD_ITEM_REQUEST);
@@ -87,13 +90,41 @@ export function *handleAddItemRequest() {
   }
 }
 
+export function *handleAddItemSuccess({ payload }) {
+  const item = payload.entities.items[payload.result.item];
+  const board = yield select(getBoardEntityById, item.board);
+  const currentBoardId = yield select(state => state.boards.currentBoardId);
+
+  if (currentBoardId && currentBoardId === board.id) {
+    yield setItemResultsByBoardId(board.id);
+  }
+
+  yield put(Notifications.showNotify(`${board.name}にアイテムを追加しました`, {
+    type: Items.GOTO_ADDED_ITEM,
+    text: "Show"
+  }));
+}
+
+function *handleGotoAddedItem() {
+  console.log("ADD TODO");
+}
+
+function *handleAddItemFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("アイテムの追加に失敗しました"));
+}
+
 export function *addItemSaga() {
   yield [
-    fork(handleAddItemRequest)
+    fork(handleAddItemRequest),
+    takeEvery(Items.ADD_ITEM_SUCCESS, handleAddItemSuccess),
+    takeEvery(Items.GOTO_ADDED_ITEM, handleGotoAddedItem),
+    takeEvery(Items.ADD_ITEM_FAILURE, handleAddItemFailure)
   ]
 }
 
 
+// Delete
 export function *handleDeleteItemRequest() {
   while (true) {
     const { payload } = yield take(Items.DELETE_ITEM_REQUEST);
@@ -103,9 +134,18 @@ export function *handleDeleteItemRequest() {
       yield call(Services.deleteItems, [entity]);
       yield put(Items.deleteItemSuccess(entity));
     } catch (error) {
-      yield put(Items.deleteItemFailure(error));
+      yield put(Items.deleteItemFailure(error, entity));
     }
   }
+}
+
+function *handleDeleteItemSuccess({ payload }) {
+  yield put(Notifications.showNotify(`${payload.name}を削除しました`));
+}
+
+function *handleDeleteItemFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("アイテムの削除に失敗しました"));
 }
 
 export function *handleSelectedItemsDeleteRequest() {
@@ -117,19 +157,33 @@ export function *handleSelectedItemsDeleteRequest() {
       yield call(Services.deleteItems, entities);
       yield put(Items.selectedItemsDeleteSuccess(entities));
     } catch (error) {
-      yield put(Items.selectedItemsDeleteFailure(error));
+      yield put(Items.selectedItemsDeleteFailure(error, entities));
     }
   }
+}
+
+function *handleSelectedItemsDeleteSuccess({ payload }) {
+  yield put(Notifications.showNotify(`${payload.length}個のアイテムを削除しました`));
+}
+
+function *handleSelectedItemsDeleteFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("選択アイテムの削除に失敗しました"));
 }
 
 export function *deleteItemSaga() {
   yield [
     fork(handleDeleteItemRequest),
-    fork(handleSelectedItemsDeleteRequest)
+    takeEvery(Items.DELETE_ITEM_SUCCESS, handleDeleteItemSuccess),
+    takeEvery(Items.DELETE_ITEM_FAILURE, handleDeleteItemFailure),
+    fork(handleSelectedItemsDeleteRequest),
+    takeEvery(Items.SELECTED_ITEMS_DELETE_SUCCESS, handleSelectedItemsDeleteSuccess),
+    takeEvery(Items.SELECTED_ITEMS_DELETE_FAILURE, handleSelectedItemsDeleteFailure)
   ];
 }
 
 
+// Favorite
 export function *handleFavoriteItemToggleRequest({ payload }) {
   const entity = yield select(getItemEntityById, payload);
 
@@ -147,7 +201,8 @@ export function *handleFavoriteItemToggleRequest({ payload }) {
 }
 
 function *handleFavoriteItemToggleFailure() {
-  // TODO: Error message
+  // TODO: More error message
+  yield put(Notifications.showNotify("アイテムの更新に失敗しました"));
 }
 
 export function *handleSelectedItemsFavoriteRequest() {
@@ -169,7 +224,8 @@ export function *handleSelectedItemsFavoriteRequest() {
 }
 
 function *handleSelectedItemsFavoriteFailure() {
-  // TODO: Error message
+  // TODO: More error message
+  yield put(Notifications.showNotify("選択したアイテムの更新に失敗しました"));
 }
 
 export function *favoriteItemSaga() {
@@ -182,7 +238,8 @@ export function *favoriteItemSaga() {
 }
 
 
-export function *handleMoveItemBoardRequest() {
+// Move
+export function *handleMoveItemRequest() {
   while (true) {
     const { payload } = yield take(Items.MOVE_ITEM_REQUEST);
     const [entity] = yield select(getMoveItemEntities);
@@ -202,8 +259,25 @@ export function *handleMoveItemBoardRequest() {
   }
 }
 
-function *handleMoveItemBoardFailure() {
-  // TODO
+function *handleMoveItemSuccess({ payload, meta }) {
+  const item = payload.entities.items[payload.result.items[0]];
+  const nextBoard = yield select(getBoardEntityById, item.board);
+  const currentBoard = yield select(getCurrentBoard);
+
+  if (currentBoard && currentBoard.id === meta.prevBoard) {
+    const results = currentBoard.items.filter(id => id !== item.id);
+    yield put(Items.setItemResults(results));
+  }
+
+  yield put(Notifications.showNotify(`${nextBoard.name}に移動しました`, {
+    type: Items.GOTO_AFTER_MOVE_ITEM_BOARD,
+    text: "Show"
+  }));
+}
+
+function *handleMoveItemFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("アイテムの移動に失敗しました"));
 }
 
 export function *handleSelectedItemsMoveRequest() {
@@ -226,16 +300,40 @@ export function *handleSelectedItemsMoveRequest() {
   }
 }
 
+function *handleSelectedItemsMoveSuccess({ payload, meta }) {
+  const items = payload.result.items.map(id => payload.entities.items[id]);
+  const nextBoard = yield select(getBoardEntityById, items[0].board);
+  const currentBoard = yield select(getCurrentBoard);
+
+  if (currentBoard && meta.prevBoards.indexOf(currentBoard.id) > -1) {
+    const results = currentBoard.items.filter(id => payload.result.items.indexOf(id) < 0);
+    yield put(Items.setItemResults(results));
+  }
+
+  yield put(Notifications.showNotify(`${items.length}個のアイテムを${nextBoard.name}へ移動しました`, {
+    type: Items.GOTO_AFTER_MOVE_ITEM_BOARD,
+    text: "Show"
+  }));
+}
+
 function *handleSelectedItemsMoveFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("選択したアイテムの移動に失敗しました"));
+}
+
+function *handleGotoAfterMoveItemBoard() {
   // TODO
 }
 
 export function *moveItemSaga() {
   yield [
-    fork(handleMoveItemBoardRequest),
-    takeEvery(Items.MOVE_ITEM_FAILURE, handleMoveItemBoardFailure),
+    fork(handleMoveItemRequest),
+    takeEvery(Items.MOVE_ITEM_SUCCESS, handleMoveItemSuccess),
+    takeEvery(Items.MOVE_ITEM_FAILURE, handleMoveItemFailure),
     fork(handleSelectedItemsMoveRequest),
-    takeEvery(Items.SELECTED_ITEMS_MOVE_FAILURE, handleSelectedItemsMoveFailure)
+    takeEvery(Items.SELECTED_ITEMS_MOVE_SUCCESS, handleSelectedItemsMoveSuccess),
+    takeEvery(Items.SELECTED_ITEMS_MOVE_FAILURE, handleSelectedItemsMoveFailure),
+    takeEvery(Items.GOTO_AFTER_MOVE_ITEM_BOARD, handleGotoAfterMoveItemBoard)
   ];
 }
 
@@ -254,18 +352,10 @@ export function *watchSelectItems() {
 }
 
 
+// Set results
 function *setItemResultsByBoardId(boardId) {
   const board = yield select(getBoardEntityById, boardId);
   yield put(Items.setItemResults(board.items));
-}
-
-export function *handleAddItemSuccess({ payload }) {
-  const item = payload.entities.items[payload.result.item];
-  const currentBoardId = yield select(state => state.boards.currentBoardId);
-
-  if (currentBoardId && currentBoardId === item.board) {
-    yield setItemResultsByBoardId(currentBoardId);
-  }
 }
 
 export function *handleSetCurrentBoard() {
@@ -282,7 +372,6 @@ export function *handleSetCurrentBoard() {
 
 export function *watchItemResults() {
   yield [
-    takeEvery(Items.ADD_ITEM_SUCCESS, handleAddItemSuccess),
     takeEvery(Boards.SET_CURRENT_BOARD, handleSetCurrentBoard)
   ];
 }

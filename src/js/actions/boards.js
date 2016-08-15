@@ -45,7 +45,10 @@ export const UPDATE_BOARD_FAILURE = "UPDATE_BOARD_FAILURE";
 export const updateBoardIfNeeded = createAction(UPDATE_BOARD_IF_NEEDED);
 export const updateBoardRequest = createAction(UPDATE_BOARD_REQUEST);
 export const updateBoardSuccess = createAction(UPDATE_BOARD_SUCCESS);
-export const updateBoardFailure = createAction(UPDATE_BOARD_FAILURE);
+export const updateBoardFailure = createAction(UPDATE_BOARD_FAILURE,
+  null,
+  (payload, entity) => entity
+);
 
 
 // Delete

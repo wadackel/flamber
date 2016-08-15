@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { takeLatest } from "redux-saga";
+import { takeLatest, takeEvery } from "redux-saga";
 import { put, select } from "redux-saga/effects";
 import { createAction } from "redux-actions";
 import * as Notifications from "../actions/notifications";
@@ -13,8 +13,13 @@ export function *handleNotifyAction() {
   }
 }
 
+function *handleLocationChange() {
+  yield put(Notifications.hideNotify());
+}
+
 export default function *rootSaga() {
   yield [
-    takeLatest(Notifications.NOTIFY_ACTION, handleNotifyAction)
+    takeLatest(Notifications.NOTIFY_ACTION, handleNotifyAction),
+    takeEvery("@@router/LOCATION_CHANGE", handleLocationChange)
   ];
 }

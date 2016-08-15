@@ -46,6 +46,15 @@ export default handleActions({
     )
   ),
 
+  [Items.DELETE_ITEM_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.entity.id ? entity : {
+        ...entity,
+        isDeleting: false
+      }
+    )
+  ),
+
 
   // Favorite
   [Items.FAVORITE_ITEM_TOGGLE_REQUEST]: (state, { payload }) => (
@@ -136,6 +145,15 @@ export default handleActions({
     )
   ),
 
+  [Items.SELECTED_ITEMS_DELETE_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      !meta.entities.indexOf(entity.id) < 0 ? entiy : {
+        ...entity,
+        isDeleting: false
+      }
+    )
+  ),
+
 
   // Selected favorite
   [Items.SELECTED_ITEMS_FAVORITE_REQUEST]: (state, { payload }) => (
@@ -160,9 +178,9 @@ export default handleActions({
 
   [Items.SELECTED_ITEMS_FAVORITE_FAILURE]: (state, { meta }) => (
     _.mapValues(state, entity => {
-      const index = _.findIndex(meta, o => o.id === entity.id);
+      const index = _.findIndex(meta.entities, o => o.id === entity.id);
       return index < 0 ? entity : {
-        ...meta[index],
+        ...meta.entities[index],
         isUpdating: false
       }
     })
@@ -172,7 +190,7 @@ export default handleActions({
   // Selected move
   [Items.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => (
     _.mapValues(state, entity =>
-      entity.board !== payload ? entity : {
+      entity.board !== payload || !entity.select ? entity : {
         ...entity,
         isMoving: true
       }

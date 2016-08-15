@@ -12,9 +12,9 @@ import {
   getBoardById
 } from "../selectors/boards";
 import * as Services from "../services/boards";
+import * as Notifications from "../actions/notifications";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
-import * as Notifications from "../actions/notifications";
 
 const boardSchema = BoardSchema.define({
   items: arrayOf(ItemSchema)
@@ -60,6 +60,7 @@ function *handleGotoAddedBoard() {
 
 function *handleAddBoardFailure() {
   // TODO: More error message
+  yield put(Notifications.showNotify("ボードの追加に失敗しました"));
 }
 
 export function *addBoardSaga() {
@@ -89,14 +90,20 @@ export function *handleUpdateBoardRequest({ payload }) {
 
     yield put(Boards.updateBoardSuccess(normalized));
   } catch (error) {
-    yield put(Boards.updateBoardFailure(error));
+    yield put(Boards.updateBoardFailure(error, payload));
   }
+}
+
+function *handleUpdateBoardFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("ボードの更新に失敗しました"));
 }
 
 export function *updateBoardSaga() {
   yield [
     takeEvery(Boards.UPDATE_BOARD_IF_NEEDED, handleUpdateBoardIfNeeded),
-    takeEvery(Boards.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest)
+    takeEvery(Boards.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest),
+    takeEvery(Boards.UPDATE_BOARD_FAILURE, handleUpdateBoardFailure)
   ]
 }
 
@@ -115,8 +122,13 @@ export function *handleDeleteBoardRequest() {
   }
 }
 
-export function *handleDeleteBoardFailure() {
+function *handleDeleteBoardSuccess({ payload }) {
+  yield put(Notifications.showNotify(`${payload.name}を削除しました`));
+}
+
+function *handleDeleteBoardFailure() {
   // TODO: More error message
+  yield put(Notifications.showNotify("ボードの削除に失敗しました"));
 }
 
 export function *handleSelectedBoardsDeleteRequest() {
@@ -133,15 +145,22 @@ export function *handleSelectedBoardsDeleteRequest() {
   }
 }
 
-export function *handleSelectedBoardsDeleteFailure() {
+function *handleSelectedBoardsDeleteSuccess({ payload }) {
+  yield put(Notifications.showNotify(`${payload.length}個のボードを削除しました`));
+}
+
+function *handleSelectedBoardsDeleteFailure() {
   // TODO: More error message
+  yield put(Notifications.showNotify("選択したボードの削除に失敗しました"));
 }
 
 export function *deleteBoardSaga() {
   yield [
     fork(handleDeleteBoardRequest),
+    takeEvery(Boards.DELETE_BOARD_SUCCESS, handleDeleteBoardSuccess),
     takeEvery(Boards.DELETE_BOARD_FAILURE, handleDeleteBoardFailure),
     fork(handleSelectedBoardsDeleteRequest),
+    takeEvery(Boards.SELECTED_BOARDS_DELETE_SUCCESS, handleSelectedBoardsDeleteSuccess),
     takeEvery(Boards.SELECTED_BOARDS_DELETE_FAILURE, handleSelectedBoardsDeleteFailure)
   ];
 }

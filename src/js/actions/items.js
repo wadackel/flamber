@@ -23,11 +23,9 @@ export const bgSyncItemsFailure = createAction(BG_SYNC_ITEMS_FAILURE);
 // Add (UI)
 export const ADD_ITEM_DIALOG_OPEN = "ADD_ITEM_DIALOG_OPEN";
 export const ADD_ITEM_DIALOG_CLOSE = "ADD_ITEM_DIALOG_CLOSE";
-export const ADD_ITEM_SNACKBAR_CLOSE = "ADD_ITEM_SNACKBAR_CLOSE";
 
 export const addItemDialogOpen = createAction(ADD_ITEM_DIALOG_OPEN);
 export const addItemDialogClose = createAction(ADD_ITEM_DIALOG_CLOSE);
-export const addItemSnackbarClose = createAction(ADD_ITEM_SNACKBAR_CLOSE);
 
 
 // Add
@@ -38,6 +36,11 @@ export const ADD_ITEM_FAILURE = "ADD_ITEM_FAILURE";
 export const addItemRequest = createAction(ADD_ITEM_REQUEST);
 export const addItemSuccess = createAction(ADD_ITEM_SUCCESS);
 export const addItemFailure = createAction(ADD_ITEM_FAILURE);
+
+
+// Goto added item
+export const GOTO_ADDED_ITEM = "GOTO_ADDED_ITEM";
+export const gotoAddedItem = createAction(GOTO_ADDED_ITEM);
 
 
 // Favorite
@@ -59,6 +62,7 @@ export const MOVE_ITEM_SELECT_BOARD_CLOSE = "MOVE_ITEM_SELECT_BOARD_CLOSE";
 export const MOVE_ITEM_REQUEST = "MOVE_ITEM_REQUEST";
 export const MOVE_ITEM_SUCCESS = "MOVE_ITEM_SUCCESS";
 export const MOVE_ITEM_FAILURE = "MOVE_ITEM_FAILURE";
+export const GOTO_AFTER_MOVE_ITEM_BOARD = "GOTO_AFTER_MOVE_ITEM_BOARD";
 
 export const moveItemSelectBoardOpen = createAction(MOVE_ITEM_SELECT_BOARD_OPEN);
 export const moveItemSelectBoardClose = createAction(MOVE_ITEM_SELECT_BOARD_CLOSE);
@@ -71,6 +75,7 @@ export const moveItemFailure = createAction(MOVE_ITEM_FAILURE,
   null,
   (payload, item, prevBoard, nextBoard) => ({ item, prevBoard, nextBoard })
 );
+export const gotoAfterMoveItemBoard = createAction(GOTO_AFTER_MOVE_ITEM_BOARD);
 
 
 // Delete
@@ -80,7 +85,10 @@ export const DELETE_ITEM_FAILURE = "DELETE_ITEM_FAILURE";
 
 export const deleteItemRequest = createAction(DELETE_ITEM_REQUEST);
 export const deleteItemSuccess = createAction(DELETE_ITEM_SUCCESS);
-export const deleteItemFailure = createAction(DELETE_ITEM_FAILURE);
+export const deleteItemFailure = createAction(DELETE_ITEM_FAILURE,
+  null,
+  (payload, entity) => ({ entity })
+);
 
 
 // Select
@@ -147,7 +155,7 @@ export const selectedItemsFavoriteRequest = createAction(SELECTED_ITEMS_FAVORITE
 export const selectedItemsFavoriteSuccess = createAction(SELECTED_ITEMS_FAVORITE_SUCCESS);
 export const selectedItemsFavoriteFailure = createAction(SELECTED_ITEMS_FAVORITE_FAILURE,
   null,
-  (payload, entities) => entities
+  (payload, entities) => ({ entities })
 );
 
 
@@ -158,7 +166,10 @@ export const SELECTED_ITEMS_DELETE_FAILURE = "SELECTED_ITEMS_DELETE_FAILURE";
 
 export const selectedItemsDeleteRequest = createAction(SELECTED_ITEMS_DELETE_REQUEST);
 export const selectedItemsDeleteSuccess = createAction(SELECTED_ITEMS_DELETE_SUCCESS);
-export const selectedItemsDeleteFailure = createAction(SELECTED_ITEMS_DELETE_FAILURE);
+export const selectedItemsDeleteFailure = createAction(SELECTED_ITEMS_DELETE_FAILURE,
+  null,
+  (payload, entities) => ({ entities })
+);
 
 
 // Fetch board items

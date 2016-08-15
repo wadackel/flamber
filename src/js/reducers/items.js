@@ -59,7 +59,9 @@ export default handleActions({
   [Items.ADD_ITEM_FAILURE]: (state, { payload }) => ({
     ...state,
     isAdding: false,
-    error: payload
+    error: payload,
+    addDialogOpen: false,
+    addSnackbarOpen: true
   }),
 
 
@@ -125,7 +127,7 @@ export default handleActions({
     selectBoardDialogOpen: false
   }),
 
-  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload, meta }) => ({
+  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload }) => ({
     ...state,
     isMoving: false,
     error: payload,

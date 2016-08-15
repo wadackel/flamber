@@ -44,6 +44,15 @@ export default handleActions({
     );
   },
 
+  [Boards.UPDATE_BOARD_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.id ? entity : {
+        ...entity,
+        isUpdating: false
+      }
+    )
+  ),
+
 
   // Delete
   [Boards.DELETE_BOARD_REQUEST]: (state, { payload }) => (
