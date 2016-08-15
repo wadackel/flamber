@@ -6,6 +6,7 @@ import { push } from "react-router-redux";
 import Combokeys from "combokeys";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
+import * as TagActions from "../../../actions/tags";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 
@@ -27,6 +28,7 @@ export class ShortcutKeyContainer extends Component {
       "shift+l": this.handleAddItem,
       "shift+u": this.handleAddItemFile,
       ",": this.handleSettings,
+      "t": this.handleTagDrawerToggle
     };
   }
 
@@ -63,6 +65,10 @@ export class ShortcutKeyContainer extends Component {
 
   handleSettings() {
     this.props.dispatch(push("/app/settings"));
+  }
+
+  handleTagDrawerToggle() {
+    this.props.dispatch(TagActions.tagDrawerToggle());
   }
 
   render() {

@@ -6,6 +6,7 @@ const initialState = {
   isAdding: false,
   results: [],
   currentTag: null,
+  error: null,
   drawerOpen: false
 };
 
@@ -24,5 +25,24 @@ export default handleActions({
   [Tags.TAG_DRAWER_TOGGLE]: state => ({
     ...state,
     drawerOpen: !state.drawerOpen
+  }),
+
+
+  // Add
+  [Tags.ADD_TAG_REQUEST]: state => ({
+    ...state,
+    isAdding: true
+  }),
+
+  [Tags.ADD_TAG_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    results: [...state.results, payload.result.tag]
+  }),
+
+  [Tags.ADD_TAG_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    error: payload
   })
 }, initialState);

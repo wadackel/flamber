@@ -136,7 +136,10 @@ export class HeaderContainer extends Component {
   getHeaderMyItemsSubLeft() {
     return (
       <div>
-        <IconButton icon={<TagsIcon onClick={this.handleTagDrawerToggle} />} />
+        <IconButton
+          icon={<TagsIcon />}
+          onClick={this.handleTagDrawerToggle}
+        />
         <IconButton icon={<StarIcon />} />
         <SearchField
           placeholder="Type search keyword"

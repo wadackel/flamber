@@ -3,7 +3,22 @@
   z-index: 900;
 
   &__footer {
-    padding: 5px 25px 15px;
+    position: relative;
+    padding: 0 25px 10px;
     background: darken($gray-light, 10%);
+  }
+
+  &__footer-overlay {
+    @include absolute(0, 0, 0, 0, 10);
+    background: rgba(#fff, .4);
+
+    &__spinner {
+      position: absolute !important;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+    }
   }
 }

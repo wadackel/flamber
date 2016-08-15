@@ -1,7 +1,9 @@
 /* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import MDSpinner from "react-md-spinner";
 import * as TagActions from "../../../actions/tags";
+import { getTagEntities } from "../../../selectors/tags";
 import bem from "../../../helpers/bem";
 import bindHandlers from "../../../helpers/bind-handlers";
 import {
@@ -19,25 +21,69 @@ export class TagDrawerContainer extends Component {
 
   constructor(props, context) {
     super(props, context);
+
+    this.state = {
+      addTagName: ""
+    };
+
+    bindHandlers([
+      "handleAddTagChange",
+      "handleAddTagEnter"
+    ], this);
+  }
+
+  handleAddTagChange(e, value) {
+    this.setState({ addTagName: value });
+  }
+
+  handleAddTagEnter() {
+    const { addTag } = this.refs;
+    const { addTagName } = this.state;
+    const finalAddTagName = addTagName.trim();
+
+    if (finalAddTagName !== "") {
+      this.props.dispatch(TagActions.addTagRequest(finalAddTagName));
+      this.setState({ addTagName: "" });
+      addTag.blur();
+    }
   }
 
   renderFooter() {
+    const { tags } = this.props;
+    const { addTagName } = this.state;
+
     return (
       <div className={b("footer")}>
+        {tags.isAdding && <div className={b("footer-overlay")}>
+          <MDSpinner className={b("footer-overlay__spinner")} size={24} />
+        </div>}
         <TextField
+          ref="addTag"
           className={b("add-tag")}
           label="Add tag"
           placeholder="Type tag name"
-          onEnter={console.log}
+          value={addTagName}
+          onChange={this.handleAddTagChange}
+          onEnter={this.handleAddTagEnter}
         />
       </div>
     );
   }
 
+  renderTagItem() {
+    const { tagEntities } = this.props;
+
+    return tagEntities.map(entity =>
+      <ListItem
+        key={entity.id}
+        text={entity.name}
+        editable={true}
+      />
+    );
+  }
+
   render() {
-    const {
-      tags
-    } = this.props;
+    const { tags } = this.props;
 
     return (
       <Drawer
@@ -46,16 +92,7 @@ export class TagDrawerContainer extends Component {
         footer={this.renderFooter()}
       >
         <List>
-          <ListItem text="TODO 1" />
-          <ListItem text="TODO 2" />
-          <ListItem text="TODO 3" />
-          <ListItem text="TODO 4" />
-          <ListItem text="TODO 5" />
-          <ListItem text="TODO 6" />
-          <ListItem text="TODO 7" />
-          <ListItem text="TODO 8" />
-          <ListItem text="TODO 9" />
-          <ListItem text="TODO 10" />
+          {this.renderTagItem()}
         </List>
       </Drawer>
     );
@@ -64,7 +101,8 @@ export class TagDrawerContainer extends Component {
 
 export default connect(
   state => ({
-    tags: state.tags
+    tags: state.tags,
+    tagEntities: getTagEntities(state)
   }),
   null,
   null,
