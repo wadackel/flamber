@@ -29,7 +29,8 @@ export default class CardOverlay extends React.Component {
 
     bindHandlers([
       "handleMouseEnter",
-      "handleMouseLeave"
+      "handleMouseLeave",
+      "handleMouseMove"
     ], this);
   }
 
@@ -39,6 +40,12 @@ export default class CardOverlay extends React.Component {
 
   handleMouseLeave() {
     this.setState({ show: false });
+  }
+
+  handleMouseMove() {
+    if (this.state.show === false) {
+      this.setState({ show: true });
+    }
   }
 
   render() {
@@ -90,6 +97,7 @@ export default class CardOverlay extends React.Component {
         style={style}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
+        onMouseMove={this.handleMouseMove}
       >
         {selectElement}
         {moreElement}
