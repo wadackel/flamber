@@ -1,0 +1,24 @@
+.processing-overlay {
+  $enter-duration: 120ms;
+  $leave-duration: 60ms;
+
+  @include absolute(0, 0, 0, 0, 10);
+  @include size(100%);
+  transition-duration: $enter-duration;
+  transition-property: opacity, visibility;
+  transition-timing-function: $transition-easing;
+  background: rgba(#fff, .7);
+  opacity: 0;
+  visibility: hidden;
+
+  &--show {
+    transition-duration: $leave-duration;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__spinner {
+    @include absolute(0, 0, 0, 0, 10);
+    margin: auto;
+  }
+}
