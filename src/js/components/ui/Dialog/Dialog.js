@@ -1,7 +1,6 @@
 import keycode from "keycode";
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-import MDSpinner from "react-md-spinner";
 import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -9,7 +8,7 @@ import bindHandlers from "../../../helpers/bind-handlers";
 import FirstChild from "../internal/FirstChild";
 import RenderToLayer from "../internal/RenderToLayer";
 import Overlay from "../internal/Overlay";
-import { IconButton } from "../";
+import { IconButton, ProcessingOverlay } from "../";
 import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("dialog");
@@ -87,11 +86,11 @@ class DialogInline extends Component {
   renderProcessOverlay() {
     const { processing } = this.props;
 
-    return (
-      <div className={b("process-overlay", { processing })}>
-        <MDSpinner className={b("process-overlay__spinner")} size={34} />
-      </div>
-    );
+    return <ProcessingOverlay
+      className={b("processing-overlay", { processing })}
+      show={processing}
+      spinerSize={34}
+    />;
   }
 
   renderHeader() {

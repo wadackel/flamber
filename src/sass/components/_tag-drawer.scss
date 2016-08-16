@@ -9,16 +9,6 @@
   }
 
   &__footer-overlay {
-    @include absolute(0, 0, 0, 0, 10);
-    background: rgba(#fff, .4);
-
-    &__spinner {
-      position: absolute !important;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      margin: auto;
-    }
+    background: rgba(#fff, .4) !important;
   }
 }

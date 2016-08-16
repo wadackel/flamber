@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import MDSpinner from "react-md-spinner";
 import * as TagActions from "../../../actions/tags";
 import { getTagEntities } from "../../../selectors/tags";
 import bem from "../../../helpers/bem";
@@ -9,7 +8,8 @@ import {
   Drawer,
   List,
   ListItem,
-  TextField
+  TextField,
+  ProcessingOverlay
 } from "../../../components/ui/";
 
 const b = bem("tag-drawer");
@@ -69,9 +69,11 @@ export class TagDrawerContainer extends Component {
 
     return (
       <div className={b("footer")}>
-        {tags.isAdding && <div className={b("footer-overlay")}>
-          <MDSpinner className={b("footer-overlay__spinner")} size={24} />
-        </div>}
+        <ProcessingOverlay
+          className={b("footer-overlay")}
+          show={tags.isAdding}
+          spinnerSize={24}
+        />
         <TextField
           ref="addTag"
           className={b("add-tag")}

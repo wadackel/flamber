@@ -33,6 +33,7 @@ export MenuItem from "./MenuItem/MenuItem";
 export Nav from "./Nav/Nav";
 export NavItem from "./NavItem/NavItem";
 export Popover from "./Popover/Popover";
+export ProcessingOverlay from "./ProcessingOverlay/ProcessingOverlay";
 export ProgressBar from "./ProgressBar/ProgressBar";
 export Radio from "./Radio/Radio";
 export RadioGroup from "./RadioGroup/RadioGroup";

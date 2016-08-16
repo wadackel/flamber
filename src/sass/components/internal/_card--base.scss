@@ -13,28 +13,10 @@
 }
 
 
-// Process overlay
-%card-process-overlay {
-  @include absolute(0, 0, 0, 0, 100);
-  @include transition(all, $transition-duration-fast);
+// Processing overlay
+%card-processing-overlay {
   border-radius: 3px;
-  background: rgba(#fff, .7);
-  opacity: 0;
-  visibility: hidden;
-}
-
-%card-process-overlay-processing {
-  opacity: 1;
-  visibility: visible;
-}
-
-%card-process-overlay-spinner {
-  position: absolute !important;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: auto;
+  z-index: 20 !important;
 }
 
 
