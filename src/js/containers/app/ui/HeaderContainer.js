@@ -10,7 +10,7 @@ import * as Layout from "../../../constants/layouts";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
 import * as TagActions from "../../../actions/tags";
-import { getCurrentBoard } from "../../../selectors/boards";
+import { getCurrentBoard, getSelectedBoardEntities } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
 import {
   Header,
@@ -133,13 +133,18 @@ export class HeaderContainer extends Component {
   }
 
   getHeaderBoardsProps() {
-    const { boardsLayout } = this.props.settings;
+    const {
+      selectedBoardEntities,
+      settings: { boardsLayout }
+    } = this.props;
+
+    const hasSelectedBoard = selectedBoardEntities.length > 0;
 
     return {
       activeNavItem: NavItemActive.MY_ITEMS,
       subLeft: this.getHeaderMyItemsSubLeft(),
       subRight: (
-        <div>
+        <div style={{ display: hasSelectedBoard ? "none" : "block" }}>
           <LayoutButtonGroup
             value={boardsLayout}
             onChange={this.handleBoardsLayoutChange}
@@ -285,6 +290,7 @@ export default connect(
     auth: state.auth,
     settings: state.settings,
     boards: state.boards,
+    selectedBoardEntities: getSelectedBoardEntities(state),
     currentBoard: getCurrentBoard(state),
     items: state.items,
     selectedItemEntities: getSelectedItemEntities(state)
