@@ -1,3 +1,4 @@
+export AllItemsContainer from "./AllItemsContainer";
 export AppContainer from "./AppContainer";
 export BoardDetailContainer from "./BoardDetailContainer";
 export BoardsContainer from "./BoardsContainer";

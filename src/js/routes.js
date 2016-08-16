@@ -6,6 +6,7 @@ import {
   LandingContainer
 } from "./containers";
 import {
+  AllItemsContainer,
   AppContainer,
   BoardsContainer,
   BoardDetailContainer,
@@ -42,6 +43,7 @@ export default function getRoutes(store) {
         <Route path="/signout" component={SignOutContainer} />
         <Route path="/app/" component={AppContainer}>
           <Route path="settings" component={SettingsContainer} />
+          <Route path="items" component={AllItemsContainer} />
           <Route path="boards" component={BoardsContainer} />
           <Route path="board/:id" component={BoardDetailContainer} />
           <Route path="stars" component={StarsContainer} />

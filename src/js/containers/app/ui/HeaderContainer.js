@@ -12,6 +12,7 @@ import * as BoardActions from "../../../actions/boards";
 import * as TagActions from "../../../actions/tags";
 import { getCurrentBoard, getSelectedBoardEntities } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
+import { AllItemsContainer } from "../pages/AllItemsContainer";
 import { BoardsContainer } from "../pages/BoardsContainer";
 import { BoardDetailContainer } from "../pages/BoardDetailContainer";
 import { SettingsContainer } from "../pages/SettingsContainer";
@@ -36,7 +37,8 @@ import {
 } from "../../../components/svg-icons/";
 
 const NavItemActive = {
-  MY_ITEMS: "MY_ITEMS",
+  BOARDS: "BOARDS",
+  ALL_ITEMS: "ALL_ITEMS",
   FEEDS: "FEEDS"
 };
 
@@ -68,8 +70,12 @@ export class HeaderContainer extends Component {
   }
 
   // Navigation
-  handleMyItemsClick() {
+  handleBoardsClick() {
     this.push("/app/");
+  }
+
+  handleAllItemsClick() {
+    this.push("/app/items");
   }
 
   handleFeedsClick() {
@@ -154,7 +160,7 @@ export class HeaderContainer extends Component {
     const hasSelectedBoard = selectedBoardEntities.length > 0;
 
     return {
-      activeNavItem: NavItemActive.MY_ITEMS,
+      activeNavItem: NavItemActive.BOARDS,
       subLeft: this.getHeaderMyItemsSubLeft(),
       subRight: (
         <div style={{ display: hasSelectedBoard ? "none" : "block" }}>
@@ -178,7 +184,7 @@ export class HeaderContainer extends Component {
     };
   }
 
-  getHeaderBoardDetailProps() {
+  getHeaderBoardDetailProps(activeNavItem) {
     const {
       boards,
       currentBoard,
@@ -191,7 +197,7 @@ export class HeaderContainer extends Component {
     const hasSelectedItem = selectedItemEntities.length > 0;
 
     return {
-      activeNavItem: NavItemActive.MY_ITEMS,
+      activeNavItem,
       mainTitle: currentBoard && (
         <div>
           <EditableText
@@ -264,16 +270,19 @@ export class HeaderContainer extends Component {
   }
 
   getHeaderProps() {
-    const { route: { childRoutes } } = this.props;
-    const currentComponent = childRoutes[childRoutes.length - 1].component.WrappedComponent;
+    const { routes } = this.props;
+    const currentComponent = routes[routes.length - 1].component.WrappedComponent;
 
     switch (currentComponent) {
       case BoardsContainer:
         return this.getHeaderBoardsProps();
 
       case BoardDetailContainer:
+        return this.getHeaderBoardDetailProps(NavItemActive.BOARDS);
+
+      case AllItemsContainer:
       case StarsContainer:
-        return this.getHeaderBoardDetailProps();
+        return this.getHeaderBoardDetailProps(NavItemActive.ALL_ITEMS);
 
       case SettingsContainer:
         return tis.getHeaderSettingsProps();
@@ -300,19 +309,20 @@ export class HeaderContainer extends Component {
         user={user}
         navItems={[
           <NavItem
-            onClick={this.handleMyItemsClick}
-            active={activeNavItem === NavItemActive.MY_ITEMS}
+            active={activeNavItem === NavItemActive.BOARDS}
+            onClick={this.handleBoardsClick}
           >
             Boards
           </NavItem>,
           <NavItem
-            active={false}
+            active={activeNavItem === NavItemActive.ALL_ITEMS}
+            onClick={this.handleAllItemsClick}
           >
             All Items
           </NavItem>,
           <NavItem
-            onClick={this.handleFeedsClick}
             acive={activeNavItem === NavItemActive.FEEDS}
+            onClick={this.handleFeedsClick}
           >
             Feeds
           </NavItem>
