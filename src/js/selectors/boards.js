@@ -1,9 +1,32 @@
+import _ from "lodash";
+import * as OrderBy from "../constants/order-by";
+import * as Order from "../constants/order";
+
+function getOrderByProp(orderBy) {
+  switch (orderBy) {
+    case OrderBy.CREATED:
+      return "created";
+    case OrderBy.MODIFIED:
+      return "modified";
+    case OrderBy.NAME:
+      return "name";
+    default:
+      return "created";
+  }
+}
+
 export function getBoardEntityById(state, id) {
   return state.entities.boards[id];
 }
 
-export function getBoardEntities(state) {
-  return state.boards.results.map(id => state.entities.boards[id]);
+export function getBoardEntities(state, orderBy = OrderBy.CREATED, order = Order.ASC) {
+  const entities = state.boards.results.map(id => getBoardEntityById(state, id));
+
+  return _.orderBy(
+    entities,
+    [getOrderByProp(orderBy)],
+    [Order.StringMap[order]]
+  );
 }
 
 export function getSelectedBoardEntities(state) {

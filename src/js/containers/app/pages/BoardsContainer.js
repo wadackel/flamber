@@ -4,6 +4,8 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../../helpers/bem";
+import * as OrderBy from "../../../constants/order-by";
+import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
 import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/boards";
 import { TrashIcon } from "../../../components/svg-icons/";
@@ -11,7 +13,8 @@ import {
   CardGroup,
   BoardCard,
   IconButton,
-  ToolBox
+  ToolBox,
+  SortSwitcher
 } from "../../../components/ui/";
 
 const b = bem("boards");
@@ -44,10 +47,20 @@ export class BoardsContainer extends Component {
     this.props.dispatch(BoardActions.selectedBoardsDeleteRequest());
   }
 
+  handleOrderByChange(orderBy) {
+    this.props.dispatch(SettingActions.updateBoardsOrderByRequest(orderBy));
+  }
+
+  handleOrderChange(order) {
+    this.props.dispatch(SettingActions.updateBoardsOrderRequest(order));
+  }
+
   render() {
     const {
       settings: {
-        boardsLayout
+        boardsLayout,
+        boardsOrderBy,
+        boardsOrder
       },
       boards,
       boardEntities,
@@ -59,6 +72,21 @@ export class BoardsContainer extends Component {
 
     return (
       <div className={`container ${b()}`}>
+        <div className={b("control")()}>
+          <SortSwitcher
+            className={b("sort-switcher")()}
+            orderBy={boardsOrderBy}
+            order={boardsOrder}
+            types={[
+              { name: "名前", value: OrderBy.NAME },
+              { name: "作成", value: OrderBy.CREATED },
+              { name: "最終編集", value: OrderBy.MODIFIED }
+            ]}
+            onOrderByChange={this.handleOrderByChange}
+            onOrderChange={this.handleOrderChange}
+          />
+        </div>
+
         <CardGroup
           columnWidth={300}
           gutter={30}
@@ -102,13 +130,17 @@ export class BoardsContainer extends Component {
 }
 
 export default connect(
-  state => ({
-    settings: state.settings,
-    boards: state.boards,
-    boardEntities: getBoardEntities(state),
-    selectedBoardEntities: getSelectedBoardEntities(state),
-    itemEntities: state.entities.items
-  }),
+  state => {
+    const { boardsOrder, boardsOrderBy } = state.settings;
+
+    return {
+      settings: state.settings,
+      boards: state.boards,
+      boardEntities: getBoardEntities(state, boardsOrderBy, boardsOrder),
+      selectedBoardEntities: getSelectedBoardEntities(state),
+      itemEntities: state.entities.items
+    };
+  },
   null,
   null,
   { pure: false }

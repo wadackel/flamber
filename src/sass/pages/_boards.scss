@@ -1,5 +1,16 @@
 .boards {
   display: block;
   width: auto;
-  padding: 30px 0;
+  padding: 20px 0 40px;
+
+  &__control {
+    margin: 0 0 20px;
+    padding: 0 20px;
+    text-align: right;
+  }
+
+  &__sort-switcher {
+    color: darken($gray-lightest, 20%);
+    font-size: .87rem;
+  }
 }

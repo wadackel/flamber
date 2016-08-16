@@ -24,7 +24,13 @@ const initialState = {
   isItemsOrderByUpdating: false,
 
   itemsOrder: Order.ASC,
-  isItemsOrderUpdating: false
+  isItemsOrderUpdating: false,
+
+  boardsOrderBy: OrderBy.CREATED,
+  isBoardsOrderByUpdating: false,
+
+  boardsOrder: Order.ASC,
+  isBoardsOrderUpdating: false
 };
 
 export default handleActions({
@@ -164,6 +170,46 @@ export default handleActions({
   [Settings.UPDATE_ITEMS_ORDER_FAILURE]: (state, { payload }) => ({
     ...state,
     isItemsOrderUpdating: false,
+    error: payload
+  }),
+
+
+  // Update boardsOrderBy
+  [Settings.UPDATE_BOARDS_ORDER_BY_REQUEST]: (state, { payload }) => ({
+    ...state,
+    isBoardsOrderByUpdating: true,
+    boardsOrderBy: payload
+  }),
+
+  [Settings.UPDATE_BOARDS_ORDER_BY_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isBoardsOrderByUpdating: false,
+    boardsOrderBy: payload
+  }),
+
+  [Settings.UPDATE_BOARDS_ORDER_BY_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isBoardsOrderByUpdating: false,
+    error: payload
+  }),
+
+
+  // Update boardsOrder
+  [Settings.UPDATE_BOARDS_ORDER_REQUEST]: (state, { payload }) => ({
+    ...state,
+    isBoardsOrderUpdating: true,
+    boardsOrder: payload
+  }),
+
+  [Settings.UPDATE_BOARDS_ORDER_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isBoardsOrderUpdating: false,
+    boardsOrder: payload
+  }),
+
+  [Settings.UPDATE_BOARDS_ORDER_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isBoardsOrderUpdating: false,
     error: payload
   })
 }, initialState);

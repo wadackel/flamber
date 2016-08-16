@@ -95,6 +95,24 @@ export function *handleUpdateItemsOrderRequest({ payload }) {
   }
 }
 
+export function *handleUpdateBoardsOrderByRequest({ payload }) {
+  try {
+    const settings = yield callUpdateSettings("boardsOrderBy", payload);
+    yield put(Settings.updateBoardsOrderBySuccess(settings.boardsOrderBy));
+  } catch (error) {
+    yield put(Settings.updateBoardsOrderByFailure(error));
+  }
+}
+
+export function *handleUpdateBoardsOrderRequest({ payload }) {
+  try {
+    const settings = yield callUpdateSettings("boardsOrder", payload);
+    yield put(Settings.updateBoardsOrderSuccess(settings.boardsOrder));
+  } catch (error) {
+    yield put(Settings.updateBoardsOrderFailure(error));
+  }
+}
+
 export function *watchUpdateSettingsRequest() {
   yield [
     takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest),
@@ -102,7 +120,9 @@ export function *watchUpdateSettingsRequest() {
     takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest),
     fork(handleUpdateItemsSizeRequestDebounce),
     takeLatest(Settings.UPDATE_ITEMS_ORDER_BY_REQUEST, handleUpdateItemsOrderByRequest),
-    takeLatest(Settings.UPDATE_ITEMS_ORDER_REQUEST, handleUpdateItemsOrderRequest)
+    takeLatest(Settings.UPDATE_ITEMS_ORDER_REQUEST, handleUpdateItemsOrderRequest),
+    takeLatest(Settings.UPDATE_BOARDS_ORDER_BY_REQUEST, handleUpdateBoardsOrderByRequest),
+    takeLatest(Settings.UPDATE_BOARDS_ORDER_REQUEST, handleUpdateBoardsOrderRequest)
   ];
 }
 

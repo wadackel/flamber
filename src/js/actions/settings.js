@@ -71,3 +71,23 @@ export const UPDATE_ITEMS_ORDER_FAILURE = "UPDATE_ITEMS_ORDER_FAILURE";
 export const updateItemsOrderRequest = createAction(UPDATE_ITEMS_ORDER_REQUEST);
 export const updateItemsOrderSuccess = createAction(UPDATE_ITEMS_ORDER_SUCCESS);
 export const updateItemsOrderFailure = createAction(UPDATE_ITEMS_ORDER_FAILURE);
+
+
+// Update boardsOrderBy
+export const UPDATE_BOARDS_ORDER_BY_REQUEST = "UPDATE_BOARDS_ORDER_BY_REQUEST";
+export const UPDATE_BOARDS_ORDER_BY_SUCCESS = "UPDATE_BOARDS_ORDER_BY_SUCCESS";
+export const UPDATE_BOARDS_ORDER_BY_FAILURE = "UPDATE_BOARDS_ORDER_BY_FAILURE";
+
+export const updateBoardsOrderByRequest = createAction(UPDATE_BOARDS_ORDER_BY_REQUEST);
+export const updateBoardsOrderBySuccess = createAction(UPDATE_BOARDS_ORDER_BY_SUCCESS);
+export const updateBoardsOrderByFailure = createAction(UPDATE_BOARDS_ORDER_BY_FAILURE);
+
+
+// Update boardsOrder
+export const UPDATE_BOARDS_ORDER_REQUEST = "UPDATE_BOARDS_ORDER_REQUEST";
+export const UPDATE_BOARDS_ORDER_SUCCESS = "UPDATE_BOARDS_ORDER_SUCCESS";
+export const UPDATE_BOARDS_ORDER_FAILURE = "UPDATE_BOARDS_ORDER_FAILURE";
+
+export const updateBoardsOrderRequest = createAction(UPDATE_BOARDS_ORDER_REQUEST);
+export const updateBoardsOrderSuccess = createAction(UPDATE_BOARDS_ORDER_SUCCESS);
+export const updateBoardsOrderFailure = createAction(UPDATE_BOARDS_ORDER_FAILURE);

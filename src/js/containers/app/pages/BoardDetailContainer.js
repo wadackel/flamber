@@ -167,8 +167,8 @@ export class BoardDetailContainer extends Component {
             order={itemsOrder}
             types={[
               { name: "名前", value: OrderBy.NAME },
-              { name: "作成日時", value: OrderBy.CREATED },
-              { name: "最終閲覧日時", value: OrderBy.LAST_VIEW }
+              { name: "作成", value: OrderBy.CREATED },
+              { name: "最終閲覧", value: OrderBy.LAST_VIEW }
             ]}
             onOrderByChange={this.handleOrderByChange}
             onOrderChange={this.handleOrderChange}

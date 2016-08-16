@@ -17,17 +17,6 @@ function getOrderByProp(orderBy) {
   }
 }
 
-function getOrderString(order) {
-  switch (order) {
-    case Order.ASC:
-      return "asc";
-    case Order.DESC:
-      return "desc";
-    default:
-      return "asc";
-  }
-}
-
 export function getItemEntityById(state, id) {
   return state.entities.items[id];
 }
@@ -38,7 +27,7 @@ export function getItemEntities(state, orderBy = OrderBy.CREATED, order = Order.
   return _.orderBy(
     entities,
     [getOrderByProp(orderBy)],
-    [getOrderString(order)]
+    [Order.StringMap[order]]
   );
 }
 

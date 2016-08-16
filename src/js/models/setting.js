@@ -11,7 +11,9 @@ const SettingSchema = new Schema({
   itemsLayout: { type: String, default: Layout.GRID },
   itemsSize: { type: Number, default: 280 },
   itemsOrderBy: { type: String, default: OrderBy.CREATED },
-  itemsOrder: { type: String, default: Order.ASC }
+  itemsOrder: { type: String, default: Order.ASC },
+  boardsOrderBy: { type: String, default: OrderBy.CREATED },
+  boardsOrder: { type: String, default: Order.ASC }
 }, {
   versionKey: false
 });
