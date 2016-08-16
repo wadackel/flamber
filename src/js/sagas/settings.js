@@ -1,5 +1,5 @@
-import { takeLatest } from "redux-saga";
-import { fork, take, put, call, select } from "redux-saga/effects";
+import { takeLatest, delay } from "redux-saga";
+import { fork, take, put, call, select, cancel } from "redux-saga/effects";
 import { fetchSettings, updateSettings } from "../services/settings";
 import * as Settings from "../actions/settings";
 import { getSettings } from "../selectors/settings";
@@ -54,12 +54,26 @@ export function *handleUpdateItemsLayoutRequest({ payload }) {
   }
 }
 
-export function *handleUpdateItemsSizeRequest({ payload }) {
+export function *handleUpdateItemsSizeRequest(size) {
+  yield call(delay, 500);
+  yield put(Settings.updateItemsSizeRequest(size));
+
   try {
-    const settings = yield callUpdateSettings("itemsSize", payload);
+    const settings = yield callUpdateSettings("itemsSize", size);
     yield put(Settings.updateItemsSizeSuccess(settings.itemsSize));
   } catch (error) {
     yield put(Settings.updateItemsSizeFailure(error));
+  }
+}
+
+export function *handleUpdateItemsSizeRequestDebounce() {
+  let task = null;
+  while (true) {
+    const { payload } = yield take(Settings.UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCE);
+    if (task) {
+      yield cancel(task);
+    }
+    task = yield fork(handleUpdateItemsSizeRequest, payload);
   }
 }
 
@@ -86,7 +100,7 @@ export function *watchUpdateSettingsRequest() {
     takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest),
     takeLatest(Settings.UPDATE_BOARDS_LAYOUT_REQUEST, handleUpdateBoardsLayoutRequest),
     takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest),
-    takeLatest(Settings.UPDATE_ITEMS_SIZE_REQUEST, handleUpdateItemsSizeRequest),
+    fork(handleUpdateItemsSizeRequestDebounce),
     takeLatest(Settings.UPDATE_ITEMS_ORDER_BY_REQUEST, handleUpdateItemsOrderByRequest),
     takeLatest(Settings.UPDATE_ITEMS_ORDER_REQUEST, handleUpdateItemsOrderRequest)
   ];

@@ -48,8 +48,6 @@ export class HeaderContainer extends Component {
       itemsSize: props.settings.itemsSize
     };
 
-    this.debounceItemsSizeChange = _.debounce(this.debounceItemsSizeChange, 500);
-
     autoBind(this);
   }
 
@@ -115,7 +113,7 @@ export class HeaderContainer extends Component {
       itemsSize: size
     });
 
-    this.debounceItemsSizeChange(size);
+    this.props.dispatch(SettingActions.updateItemsSizeRequestDebounce(size));
   }
 
   // Header props
@@ -243,10 +241,6 @@ export class HeaderContainer extends Component {
     ).shift();
 
     return res.method.call(this);
-  }
-
-  debounceItemsSizeChange(size) {
-    this.props.dispatch(SettingActions.updateItemsSizeRequest(size));
   }
 
   push(path) {

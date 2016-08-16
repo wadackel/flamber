@@ -42,10 +42,12 @@ export const updateItemsLayoutFailure = createAction(UPDATE_ITEMS_LAYOUT_FAILURE
 
 
 // Update itemsSize
+export const UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCE = "UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCE";
 export const UPDATE_ITEMS_SIZE_REQUEST = "UPDATE_ITEMS_SIZE_REQUEST";
 export const UPDATE_ITEMS_SIZE_SUCCESS = "UPDATE_ITEMS_SIZE_SUCCESS";
 export const UPDATE_ITEMS_SIZE_FAILURE = "UPDATE_ITEMS_SIZE_FAILURE";
 
+export const updateItemsSizeRequestDebounce = createAction(UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCE);
 export const updateItemsSizeRequest = createAction(UPDATE_ITEMS_SIZE_REQUEST);
 export const updateItemsSizeSuccess = createAction(UPDATE_ITEMS_SIZE_SUCCESS);
 export const updateItemsSizeFailure = createAction(UPDATE_ITEMS_SIZE_FAILURE);
