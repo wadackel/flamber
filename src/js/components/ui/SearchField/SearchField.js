@@ -63,14 +63,14 @@ export default class SearchField extends Component {
 
     return (
       <div className={mergeClassNames(b(), className)}>
-        <div className={b("body")}>
+        <div className={b("body")()}>
           <IconButton
-            className={b("button")}
+            className={b("button")()}
             icon={<SearchIcon />}
             onClick={this.handleClick}
           />
           <TextField
-            className={b("text-field")}
+            className={b("text-field")()}
             placeholder={placeholder}
             value={value}
             onChange={this.handleChange}

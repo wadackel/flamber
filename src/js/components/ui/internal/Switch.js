@@ -52,7 +52,7 @@ export default class Checkbox extends React.Component {
         ripples: ripples.concat([
           <Ripple
             key={randomId()}
-            className={b("ripple")}
+            className={b("ripple")()}
             onRequestHide={this.handleRippleHide}
           />
         ])
@@ -97,22 +97,22 @@ export default class Checkbox extends React.Component {
     const b = bem(baseClassName);
 
     return (
-      <div className={mergeClassNames(b(modifier), className)} style={style}>
+      <div className={mergeClassNames(b(modifier)(), className)} style={style}>
         <input
           ref={type}
           type={type}
-          className={b("input", modifier)}
+          className={b("input", modifier)()}
           name={name}
           value={value}
           checked={checked}
           onChange={this.handleChange}
           onClick={onClick}
         />
-        <div className={b("body")}>
-          <span className={b(type, modifier)}>
+        <div className={b("body")()}>
+          <span className={b(type, modifier)()}>
             {ripples}
           </span>
-          <span className={b("label", modifier)}>{label}</span>
+          <span className={b("label", modifier)()}>{label}</span>
         </div>
       </div>
     );

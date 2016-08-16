@@ -1,5 +1,4 @@
 import React, { PropTypes } from "react";
-import ReactDOM from "react-dom";
 import bindHandlers from "../../../helpers/bind-handlers";
 
 const Status = {

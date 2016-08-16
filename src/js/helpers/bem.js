@@ -1,13 +1,11 @@
-import { B } from "b_";
+import block from "bem-cn";
 
-const b = B({
-  tailSpace: " ",
-  elementSeparator: "__",
-  modSeparator: "--",
-  modValueSeparator: "-",
-  classSeparator: ""
+block.setup({
+  el: "__",
+  mod: "--",
+  modValue: "-"
 });
 
 export default function bem(className) {
-  return b.with(className);
+  return block(className);
 }

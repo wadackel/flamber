@@ -85,14 +85,14 @@ export default class IconMenu extends React.Component {
 
     const iconElement = React.cloneElement(icon, {
       ref: "triggerElement",
-      className: b("icon"),
+      className: b("icon")(),
       onClick: this.handleIconClick,
       tooltip,
       tooltipOrigin
     });
 
     return (
-      <div className={mergeClassNames(b({ open }), className)}>
+      <div className={mergeClassNames(b({ open })(), className)}>
         {iconElement}
         <Popover
           open={open}

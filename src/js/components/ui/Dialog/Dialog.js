@@ -87,7 +87,7 @@ class DialogInline extends Component {
     const { processing } = this.props;
 
     return <ProcessingOverlay
-      className={b("processing-overlay", { processing })}
+      className={b("processing-overlay", { processing })()}
       show={processing}
       spinerSize={34}
     />;
@@ -102,13 +102,13 @@ class DialogInline extends Component {
 
     if (!title) return null;
 
-    const titleIconElement = titleIcon ? <span className={b("icon")}>{titleIcon}</span> : null;
+    const titleIconElement = titleIcon ? <span className={b("icon")()}>{titleIcon}</span> : null;
 
     return (
-      <div className={b("header", { open })}>
-        <h3 className={b("title")}>{titleIconElement}{title}</h3>
+      <div className={b("header", { open })()}>
+        <h3 className={b("title")()}>{titleIconElement}{title}</h3>
         <IconButton
-          className={b("close")}
+          className={b("close")()}
           icon={<CloseIcon />}
           onClick={this.handleCloseClick}
         />
@@ -129,7 +129,7 @@ class DialogInline extends Component {
     );
 
     return (
-      <div className={b("actions", { open })}>
+      <div className={b("actions", { open })()}>
         {actionElements}
       </div>
     );
@@ -156,22 +156,22 @@ class DialogInline extends Component {
           transitionEnterTimeout={shareConfig["dialog-enter-duration"]}
           transitionLeaveTimeout={shareConfig["dialog-leave-duration"]}
         >
-          {open ? <div className={b("wrapper", modifier)}>
-            <div className={b("horizontal", modifier)}>
-              <div className={b("vertical", modifier)}>
+          {open ? <div className={b("wrapper", modifier)()}>
+            <div className={b("horizontal", modifier)()}>
+              <div className={b("vertical", modifier)()}>
                 <div
                   ref="dialog"
                   tabIndex="-1"
-                  className={mergeClassNames(b(modifier), className)}
+                  className={mergeClassNames(b(modifier)(), className)}
                   onKeyDown={this.handleKeyDown}
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}
                   onDragLeave={onDragLeave}
                 >
                   {this.renderProcessOverlay()}
-                  <div className={b("container", modifier)}>
+                  <div className={b("container", modifier)()}>
                     {this.renderHeader()}
-                    <div className={b("body", modifier)}>
+                    <div className={b("body", modifier)()}>
                       {children}
                     </div>
                     {this.renderActions()}
@@ -180,7 +180,7 @@ class DialogInline extends Component {
               </div>
             </div>
             <Overlay
-              className={b("overlay", modifier)}
+              className={b("overlay", modifier)()}
               show={open}
               onClick={this.handleOverlayClick}
             />

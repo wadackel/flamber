@@ -114,11 +114,11 @@ export default class Tooltip extends React.Component {
     return (
       <div
         ref="tooltip"
-        className={mergeClassNames(b(modifier), className)}
+        className={mergeClassNames(b(modifier)(), className)}
         style={this.getStyles()}
       >
-        <div ref="ripple" className={b("ripple", modifier)} />
-        <span className={b("label", modifier)}>{label}</span>
+        <div ref="ripple" className={b("ripple", modifier)()} />
+        <span className={b("label", modifier)()}>{label}</span>
       </div>
     );
   }

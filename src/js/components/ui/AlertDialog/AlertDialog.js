@@ -36,8 +36,8 @@ export default class AlertDialog extends Component {
       processing={processing}
       actions={actions}
     >
-      {title && <div className={b("title")}>{title}</div>}
-      <div className={b("body")}>{children}</div>
+      {title && <div className={b("title")()}>{title}</div>}
+      <div className={b("body")()}>{children}</div>
     </Dialog>;
   }
 }

@@ -87,14 +87,14 @@ export default class Header extends Component {
     if (!subTitle && !subLeft && !subRight) return null;
 
     return (
-      <div className={b("row", { sub: true })}>
-        {subLeft && <div className={b("col", { "sub-left": true })}>
+      <div className={b("row", { sub: true })()}>
+        {subLeft && <div className={b("col", { "sub-left": true })()}>
           {subLeft}
         </div>}
-        {subTitle && <div className={b("col", { "sub-center": true })}>
-          <h3 className={b("sub-title")}>{subTitle}</h3>
+        {subTitle && <div className={b("col", { "sub-center": true })()}>
+          <h3 className={b("sub-title")()}>{subTitle}</h3>
         </div>}
-        {subRight && <div className={b("col", { "sub-right": true })}>
+        {subRight && <div className={b("col", { "sub-right": true })()}>
           {subRight}
         </div>}
       </div>
@@ -121,29 +121,29 @@ export default class Header extends Component {
 
     return (
       <header className={b()}>
-        <div className={b("row", { main: true })}>
-          <div className={b("col", { "main-left": true })}>
-            <h1 className={b("logo")}><LogoButton onClick={onLogoClick} /></h1>
-            <Nav className={b("nav")}>
+        <div className={b("row", { main: true })()}>
+          <div className={b("col", { "main-left": true })()}>
+            <h1 className={b("logo")()}><LogoButton onClick={onLogoClick} /></h1>
+            <Nav className={b("nav")()}>
               {navItemElements}
             </Nav>
           </div>
-          {mainTitle && <div className={b("col", { "main-center": true })}>
-            <div className={b("main-title")}>
+          {mainTitle && <div className={b("col", { "main-center": true })()}>
+            <div className={b("main-title")()}>
               {mainTitle}
             </div>
           </div>}
-          <div className={b("col", { "main-right": true })}>
-            <div className={b("user")}>
+          <div className={b("col", { "main-right": true })()}>
+            <div className={b("user")()}>
               <Avatar
-                className={b("user__avatar")}
+                className={b("user__avatar")()}
                 name={user.name}
                 email={user.email}
                 icon={user.icon}
                 onIconClick={this.handleUserDropDownClick}
               />
               <UserDropDown
-                className={b("user__drop-down")}
+                className={b("user__drop-down")()}
                 open={userDropDownOpen}
                 triggerElement={userDropDownTrigger}
                 limit={parseInt(user.limit, 10)}
@@ -152,7 +152,7 @@ export default class Header extends Component {
                 onRequestSignOut={this.handleSignOut}
               />
             </div>
-            <div className={b("setting")}>
+            <div className={b("setting")()}>
               <IconButton icon={<CogIcon />} onClick={onSettingsClick} />
             </div>
           </div>

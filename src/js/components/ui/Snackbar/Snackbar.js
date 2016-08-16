@@ -78,7 +78,7 @@ export default class Snackbar extends React.Component {
 
     const actionElement = action
       ? <FlatButton
-          className={b("action", modifier)}
+          className={b("action", modifier)()}
           type="primary"
           onClick={this.handleActionClick}
         >
@@ -87,14 +87,14 @@ export default class Snackbar extends React.Component {
       : null;
 
     return (
-      <div className={mergeClassNames(b(modifier), className)}>
-        <div className={b("horizontal", modifier)}>
-          <div className={b("vertical", modifier)}>
-            <div className={b("body", modifier)}>
-              <span className={b("message")}>{message}</span>
+      <div className={mergeClassNames(b(modifier)(), className)}>
+        <div className={b("horizontal", modifier)()}>
+          <div className={b("vertical", modifier)()}>
+            <div className={b("body", modifier)()}>
+              <span className={b("message")()}>{message}</span>
               {actionElement}
               <IconButton
-                className={b("close", modifier)}
+                className={b("close", modifier)()}
                 icon={<CloseIcon />}
                 onClick={this.handleCloseClick}
               />

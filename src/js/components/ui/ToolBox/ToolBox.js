@@ -43,13 +43,13 @@ export default class ToolBox extends Component {
     if (!open) return null;
 
     return (
-      <div className={mergeClassNames(b(modifier), className)}>
-        <div className={b("inner", modifier)}>
-          <div className={b("body", modifier)}>
-            <div className={b("text", modifier)}>{text}</div>
-            <ul className={b("actions", modifier)}>
+      <div className={mergeClassNames(b(modifier)(), className)}>
+        <div className={b("inner", modifier)()}>
+          <div className={b("body", modifier)()}>
+            <div className={b("text", modifier)()}>{text}</div>
+            <ul className={b("actions", modifier)()}>
               {actions.map((action, index) =>
-                <li key={index} className={b("action")}>{action}</li>
+                <li key={index} className={b("action")()}>{action}</li>
               )}
             </ul>
           </div>

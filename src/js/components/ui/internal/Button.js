@@ -125,14 +125,14 @@ export default class Button extends React.Component {
   addRippleElement(top, left, size) {
     const { baseClassName, type } = this.props;
     const { ripples } = this.state;
-    const b = bem(baseClassName.trim());
+    const b = bem(baseClassName);
     const style = this.getRippleStyle(top, left, size);
 
     this.setState({
       ripples: ripples.concat([
         <Ripple
           key={randomId()}
-          className={b("ripple", { [type]: true })}
+          className={b("ripple", { [type]: true })()}
           style={style}
           onRequestHide={this.handleRippleHide}
         />
@@ -181,12 +181,12 @@ export default class Button extends React.Component {
       showTooltip
     } = this.state;
 
-    const b = bem(baseClassName.trim());
+    const b = bem(baseClassName);
     const modifier = { [type]: true, disable };
-    const labelElement = label ? <span className={b("label", modifier)}>{label}</span> : null;
-    const iconElement = this.createIcon(icon, b("icon", modifier));
-    const iconRightElement = this.createIcon(iconRight, b("icon", _.assign(modifier, { right: true })));
-    const bodyClass = b("body", modifier);
+    const labelElement = label ? <span className={b("label", modifier)()}>{label}</span> : null;
+    const iconElement = this.createIcon(icon, b("icon", modifier)());
+    const iconRightElement = this.createIcon(iconRight, b("icon", _.assign(modifier, { right: true }))());
+    const bodyClass = b("body", modifier)();
     const bodyElement = !href
       ? <button className={bodyClass}>{iconElement}{labelElement}{iconRightElement}</button>
       : <a className={bodyClass} href={href} target={target}>{iconElement}{labelElement}{iconRightElement}</a>;
@@ -204,16 +204,16 @@ export default class Button extends React.Component {
     return (
       <div
         ref="element"
-        className={mergeClassNames(b(modifier), className)}
+        className={mergeClassNames(b(modifier)(), className)}
         style={style}
         {...events}
       >
-        <div className={b("ripple-container")}>{ripples}</div>
+        <div className={b("ripple-container")()}>{ripples}</div>
         {bodyElement}
         {children}
         {tooltip &&
           <Tooltip
-            baseClassName={b("tooltip").trim()}
+            baseClassName={b("tooltip")()}
             show={showTooltip}
             label={tooltip}
             origin={tooltipOrigin}

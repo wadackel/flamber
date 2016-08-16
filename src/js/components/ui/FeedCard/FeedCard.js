@@ -77,24 +77,24 @@ export default class FeedCard extends React.Component {
         style={style}
         onMouseLeave={this.handleMouseLeave}
       >
-        <CardCol baseClassName={baseClassName} className={b("col--media")}>
+        <CardCol baseClassName={baseClassName} className={b("col--media")()}>
           <CardMedia
             baseClassName={baseClassName}
             image={image}
           />
         </CardCol>
-        <CardCol baseClassName={baseClassName} className={b("col--body")}>
+        <CardCol baseClassName={baseClassName} className={b("col--body")()}>
           <CardBody baseClassName={baseClassName}>
             <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
             <CardText baseClassName={baseClassName}>
               <a href={url} target="_blank">
-                <img className={b("favicon")} src={favicon} alt={parsedURL.host} />
+                <img className={b("favicon")()} src={favicon} alt={parsedURL.host} />
                 {parsedURL.host}
               </a>
             </CardText>
           </CardBody>
         </CardCol>
-        <CardCol baseClassName={baseClassName} className={b("col--more")}>
+        <CardCol baseClassName={baseClassName} className={b("col--more")()}>
           <CardMore
             baseClassName={baseClassName}
             actions={[
@@ -148,7 +148,7 @@ export default class FeedCard extends React.Component {
           <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
           <CardText baseClassName={baseClassName}>
             <a href={url} target="_blank">
-              <img className={b("favicon")} src={favicon} alt={parsedURL.host} />
+              <img className={b("favicon")()} src={favicon} alt={parsedURL.host} />
               {parsedURL.host}
             </a>
           </CardText>

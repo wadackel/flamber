@@ -102,12 +102,12 @@ export default class PopoverAnimation extends React.Component {
     return (
       <div
         ref="popover"
-        className={mergeClassNames(b(modifier), className)}
+        className={mergeClassNames(b(modifier)(), className)}
         style={style}
       >
-        <div className={b("horizontal", modifier)} style={style}>
-          <div className={b("vertical", modifier)} style={style}>
-            <div ref="scrollContainer" className={b("scroll-container", modifier)}>
+        <div className={b("horizontal", modifier)()} style={style}>
+          <div className={b("vertical", modifier)()} style={style}>
+            <div ref="scrollContainer" className={b("scroll-container", modifier)()}>
               {children}
             </div>
           </div>

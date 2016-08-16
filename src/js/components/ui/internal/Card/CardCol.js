@@ -7,7 +7,7 @@ export default function CardText({
   baseClassName,
   className
 }) {
-  const b = bem(`${baseClassName.trim()}__col`);
+  const b = bem(`${baseClassName}__col`);
 
   return <div className={mergeClassNames(b(), className)}>
     {children}

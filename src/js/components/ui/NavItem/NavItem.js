@@ -26,10 +26,10 @@ export default class NavItem extends Component {
     } = this.props;
 
     return (
-      <li className={mergeClassNames(b({ active }), className)}>
+      <li className={mergeClassNames(b({ active })(), className)}>
         <Button
-          baseClassName={b("button")}
-          className={active ? b("button--active") : ""}
+          baseClassName={b("button")()}
+          className={active ? b("button--active")() : ""}
           label={children}
           {...props}
         />

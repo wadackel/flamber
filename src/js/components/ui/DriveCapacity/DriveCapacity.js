@@ -25,8 +25,8 @@ export default class DriveCapacity extends React.Component {
 
     return (
       <div className={mergeClassNames(b(), className)}>
-        <div className={b("text")}>
-          <div className={b("google-drive")}>
+        <div className={b("text")()}>
+          <div className={b("google-drive")()}>
             <img
               src="/images/google-drive-icon@2x.png"
               width={14}
@@ -35,10 +35,10 @@ export default class DriveCapacity extends React.Component {
             />
             Google Drive
           </div>
-          <div className={b("usage")}>{toGB(usage, 2)}GB / {toGB(limit)}GBを使用中</div>
+          <div className={b("usage")()}>{toGB(usage, 2)}GB / {toGB(limit)}GBを使用中</div>
         </div>
         <ProgressBar
-          className={b("progress-bar")}
+          className={b("progress-bar")()}
           max={limit}
           min={0}
           value={usage}

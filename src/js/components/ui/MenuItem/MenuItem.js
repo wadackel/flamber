@@ -51,7 +51,7 @@ export default class MenuItem extends React.Component {
 
     return <ListItem
       ref="listItem"
-      className={mergeClassNames(b({ selected, focused }), className)}
+      className={mergeClassNames(b({ selected, focused })(), className)}
       style={style}
       text={text}
       index={index}

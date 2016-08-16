@@ -68,15 +68,15 @@ export class TagDrawerContainer extends Component {
     const { addTagName } = this.state;
 
     return (
-      <div className={b("footer")}>
+      <div className={b("footer")()}>
         <ProcessingOverlay
-          className={b("footer-overlay")}
+          className={b("footer-overlay")()}
           show={tags.isAdding}
           spinnerSize={24}
         />
         <TextField
           ref="addTag"
-          className={b("add-tag")}
+          className={b("add-tag")()}
           label="Add tag"
           placeholder="Type tag name"
           value={addTagName}

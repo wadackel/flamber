@@ -148,12 +148,12 @@ export class AppContainer extends Component {
         <NotificationsContainer />
 
         {/* Content */}
-        <div className={b("content")}>
+        <div className={b("content")()}>
           {this.props.children}
         </div>
 
         {/* Menu */}
-        <FloatingMenu className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })}>
+        <FloatingMenu className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })()}>
           <FloatingButton
             type="primary"
             icon={<BoardIcon />}

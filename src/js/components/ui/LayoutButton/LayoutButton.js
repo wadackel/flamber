@@ -42,7 +42,7 @@ export default class LayoutButton extends React.Component {
     const modifier = { selected };
 
     return <IconButton
-      className={mergeClassNames(b(modifier), className)}
+      className={mergeClassNames(b(modifier)(), className)}
       icon={icon}
       onClick={this.handleClick}
     />;

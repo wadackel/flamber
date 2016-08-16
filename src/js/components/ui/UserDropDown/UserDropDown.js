@@ -73,13 +73,13 @@ export default class UserDropDown extends React.Component {
       >
         <div className={mergeClassNames(b(), className)}>
           <DriveCapacity
-            className={b("capacity")}
+            className={b("capacity")()}
             limit={limit}
             usage={usage}
           />
-          <div className={b("footer")}>
+          <div className={b("footer")()}>
             <FlatButton
-              className={b("sign-out")}
+              className={b("sign-out")()}
               onClick={this.handleSignOutClick}
             >
               SignOut

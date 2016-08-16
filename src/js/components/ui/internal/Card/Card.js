@@ -13,7 +13,7 @@ export default function Card({
   onMouseEnter,
   onMouseLeave
 }) {
-  const b = bem(baseClassName.trim());
+  const b = bem(baseClassName);
 
   return <div
     className={mergeClassNames(b(), className)}
@@ -23,11 +23,11 @@ export default function Card({
     onMouseLeave={onMouseLeave}
   >
     <ProcessingOverlay
-      className={b("processing-overlay", { processing })}
+      className={b("processing-overlay", { processing })()}
       show={processing}
       spinnerSize={26}
     />
-    <div className={b("inner")}>
+    <div className={b("inner")()}>
       {children}
     </div>
   </div>;

@@ -90,7 +90,7 @@ export default class CardGroup extends Component {
     return (
       <Grid
         component="div"
-        className={mergeClassNames(b(modifier), className)}
+        className={mergeClassNames(b(modifier)(), className)}
         columns={columns}
         columnWidth={isList ? "100%" : columnWidth}
         gutterWidth={gutter}
@@ -106,7 +106,7 @@ export default class CardGroup extends Component {
         {React.Children.map(children, card =>
           <div
             key={card.id}
-            className={b("card")}
+            className={b("card")()}
             style={itemStyles}
           >
             {card}

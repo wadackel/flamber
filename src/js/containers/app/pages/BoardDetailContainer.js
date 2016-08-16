@@ -173,9 +173,9 @@ export class BoardDetailContainer extends Component {
 
     return (
       <div className={`container ${b()}`}>
-        <div className={b("control")}>
+        <div className={b("control")()}>
           <SortSwitcher
-            className={b("sort-switcher")}
+            className={b("sort-switcher")()}
             orderBy={itemsOrderBy}
             order={itemsOrder}
             types={[

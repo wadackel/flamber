@@ -61,7 +61,7 @@ export default class CardOverlay extends React.Component {
 
     const { show } = this.state;
 
-    const b = bem(`${baseClassName.trim()}__overlay`);
+    const b = bem(`${baseClassName}__overlay`);
 
     const modifier = {
       show,
@@ -71,29 +71,29 @@ export default class CardOverlay extends React.Component {
 
     const moreElement = moreActions && <CardMore
       baseClassName={baseClassName}
-      className={b("more", modifier)}
+      className={b("more", modifier)()}
       actions={moreActions}
       selected={selected}
     />;
 
     const selectElement = selectable && <Checkbox
-      className={b("select", modifier)}
+      className={b("select", modifier)()}
       checked={selected}
       onCheck={onSelect}
     />;
 
-    const actionElements = actions && <div className={b("actions", modifier)}>
+    const actionElements = actions && <div className={b("actions", modifier)()}>
       {React.Children.map(actions, (action, index) =>
         React.cloneElement(action, {
           key: index,
-          className: b("action")
+          className: b("action")()
         })
       )}
     </div>;
 
     return (
       <div
-        className={b(modifier)}
+        className={b(modifier)()}
         style={style}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
@@ -101,7 +101,7 @@ export default class CardOverlay extends React.Component {
       >
         {selectElement}
         {moreElement}
-        <div className={b("inner", modifier)}>
+        <div className={b("inner", modifier)()}>
           {actionElements}
         </div>
       </div>

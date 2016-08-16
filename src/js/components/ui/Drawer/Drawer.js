@@ -84,12 +84,12 @@ export default class Drawer extends React.Component {
       open
     };
 
-    const footerElement = footer && <div ref="footer" className={b("footer")}>{footer}</div>;
+    const footerElement = footer && <div ref="footer" className={b("footer")()}>{footer}</div>;
 
     return (
-      <div ref="drawer" className={mergeClassNames(b(modifier), className)}>
-        <div ref="scrollContainer" className={b("scroll-container")}>
-          <div className={b("container")}>
+      <div ref="drawer" className={mergeClassNames(b(modifier)(), className)}>
+        <div ref="scrollContainer" className={b("scroll-container")()}>
+          <div className={b("container")()}>
             {children}
           </div>
         </div>

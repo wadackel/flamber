@@ -116,20 +116,20 @@ export default class DropDownMenu extends React.Component {
       }
     });
 
-    const beforeElement = before && <div className={b("before", modifier)}>
+    const beforeElement = before && <div className={b("before", modifier)()}>
       {before}
     </div>;
 
     return (
-      <div className={mergeClassNames(b(modifier), className)}>
+      <div className={mergeClassNames(b(modifier)(), className)}>
         <div
           ref="triggerElement"
-          className={b("trigger", modifier)}
+          className={b("trigger", modifier)()}
           onClick={this.handleTriggerClick}
         >
           {beforeElement}
           {displayValue}
-          <div className={b("icon", modifier)}>
+          <div className={b("icon", modifier)()}>
             <CaretIcon />
           </div>
         </div>

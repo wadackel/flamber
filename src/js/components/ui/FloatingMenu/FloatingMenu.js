@@ -48,7 +48,7 @@ export default class FloatingMenu extends Component {
     const cloneChildren = React.Children.map(children, (child, index) =>
       React.cloneElement(child, {
         key: index,
-        className: b("item", modifier),
+        className: b("item", modifier)(),
         style: prefixer.prefix({
           transform: `translateY(${translateY * (childrenCount - index - 1)}px)`
         })
@@ -57,12 +57,12 @@ export default class FloatingMenu extends Component {
 
     return (
       <div className={mergeClassNames(b(), className)}>
-        <div className={b("list", modifier)}>
+        <div className={b("list", modifier)()}>
           {cloneChildren}
         </div>
         <FloatingButton
           type="primary"
-          className={b("toggle", modifier)}
+          className={b("toggle", modifier)()}
           icon={<PlusIcon />}
           onClick={this.handleToggleClick}
         />

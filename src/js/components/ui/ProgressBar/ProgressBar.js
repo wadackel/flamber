@@ -31,7 +31,7 @@ export default class ProgressBar extends React.Component {
 
     return (
       <div className={mergeClassNames(b(), className)}>
-        <div className={b("value")} style={valueStyle} />
+        <div className={b("value")()} style={valueStyle} />
       </div>
     );
   }

@@ -91,22 +91,22 @@ export default class EditableText extends Component {
 
     return (
       <div
-        className={mergeClassNames(b(modifier), className)}
+        className={mergeClassNames(b(modifier)(), className)}
         onClick={this.handleClick}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
-        <div className={b("body")}>
-          <span className={b("icon", { show: !isEditing && isHover })}>{icon}</span>
+        <div className={b("body")()}>
+          <span className={b("icon", { show: !isEditing && isHover })()}>{icon}</span>
           <TextField
             ref="textField"
-            className={b("text-field", modifier)}
+            className={b("text-field", modifier)()}
             value={value}
             onEnter={this.handleEnter}
             onBlur={this.handleBlur}
             {...props}
           />
-          <span className={b("text", modifier)}>
+          <span className={b("text", modifier)()}>
             {value}
           </span>
         </div>

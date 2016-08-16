@@ -54,13 +54,13 @@ export default class Avatar extends React.Component {
         className={mergeClassNames(b(), className)}
         onClick={this.handleClick}
       >
-        <div className={b("inner")}>
-          <div className={b("text")}>
-            <div className={b("name")}>{name}</div>
-            <div className={b("email")}>{email}</div>
+        <div className={b("inner")()}>
+          <div className={b("text")()}>
+            <div className={b("name")()}>{name}</div>
+            <div className={b("email")()}>{email}</div>
           </div>
           <div
-            className={b("icon")}
+            className={b("icon")()}
             style={iconStyle}
             onClick={this.handleIconClick}
           />

@@ -27,21 +27,21 @@ export default class CardMedia extends React.Component {
       selected
     } = this.props;
 
-    const b = bem(`${baseClassName.trim()}__media`);
+    const b = bem(`${baseClassName}__media`);
     const modifier = { selected };
 
     return (
       <div
-        className={b(modifier)}
+        className={b(modifier)()}
         style={style}
       >
-        {overlay && <div className={b("overlay", modifier)}>{overlay}</div>}
-        <div className={b("item-wrapper", modifier)}>
+        {overlay && <div className={b("overlay", modifier)()}>{overlay}</div>}
+        <div className={b("item-wrapper", modifier)()}>
           <ImageLoader
-            className={b("item", modifier)}
+            className={b("item", modifier)()}
             src={image}
             background={true}
-            preloader={<MDSpinner className={b("spinner")} />}
+            preloader={<MDSpinner className={b("spinner")()} />}
           />
         </div>
         {children}

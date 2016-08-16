@@ -11,7 +11,7 @@ export default function Label({
 }) {
   return (
     <div className={mergeClassNames(b(), className)}>
-      {icon && <span className={b("icon")}>{icon}</span>}
+      {icon && <span className={b("icon")()}>{icon}</span>}
       {children}
     </div>
   );

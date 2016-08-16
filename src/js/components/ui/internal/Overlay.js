@@ -80,7 +80,7 @@ export default class Overlay extends React.Component {
     } = this.props;
 
     return <div
-      className={mergeClassNames(b({ show }), className)}
+      className={mergeClassNames(b({ show })(), className)}
       onClick={this.handleClick}
     />;
   }

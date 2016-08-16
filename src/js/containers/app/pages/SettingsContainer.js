@@ -80,20 +80,20 @@ export class SettingsContainer extends Component {
     return (
       <div className={b()}>
         <DriveCapacity
-          className={b("drive-capacity")}
+          className={b("drive-capacity")()}
           limit={parseInt(user.limit, 10)}
           usage={parseInt(user.usage, 10)}
         />
 
-        <section className={b("group")}>
-          <h3 className={b("group__title")}>
+        <section className={b("group")()}>
+          <h3 className={b("group__title")()}>
             {settings.isThemeUpdating && <MDSpinner
               size={14}
               style={{ marginRight: 5 }}
             />}
             テーマ
           </h3>
-          <div className={b("group__body")}>
+          <div className={b("group__body")()}>
             <RadioGroup
               value={theme}
               onChange={this.handleThemeChange}
@@ -109,17 +109,17 @@ export class SettingsContainer extends Component {
           </div>
         </section>
 
-        <section className={b("group")}>
-          <h3 className={b("group__title")}>全ファイルを削除</h3>
-          <div className={b("group__body")}>
+        <section className={b("group")()}>
+          <h3 className={b("group__title")()}>全ファイルを削除</h3>
+          <div className={b("group__body")()}>
             <p>FLAMBERに関する全ての情報を削除します。<br />この操作は取り消すことは出来ません。</p>
             <div><RaisedButton type="danger" onClick={this.handleDeleteClick}>Delete</RaisedButton></div>
           </div>
         </section>
 
-        <section className={b("group")}>
-          <h3 className={b("group__title")}>FLAMBERについて</h3>
-          <div className={b("group__body")}>
+        <section className={b("group")()}>
+          <h3 className={b("group__title")()}>FLAMBERについて</h3>
+          <div className={b("group__body")()}>
             <p>FLAMBERをお使いただきありがとうございます。</p>
             <p>FLAMBERは直感的な操作感とシンプルなボード/アイテム管理で、バラけがちだったデザイン資料の管理を一元化することを第一目標に、<a href="https://github.com/tsuyoshiwada" target="_blank">@tsuyoshiwada</a>が個人的に開発を行っています。</p>
             <p>ご意見やバグレポート等を含むコントリビュートはGitHubのIssueとPRにて受け付けていますので、以下より宜しくお願いいたします。</p>

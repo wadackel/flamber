@@ -128,17 +128,17 @@ export default class FileDnD extends Component {
     const { dragging } = this.state;
     const modifier = { dragging };
 
-    const dropOverlay = dragging && <div className={b("overlay")}>
+    const dropOverlay = dragging && <div className={b("overlay")()}>
       {overlay}
     </div>;
 
     return (
       <div
         ref="dnd"
-        className={mergeClassNames(b(modifier), className)}
+        className={mergeClassNames(b(modifier)(), className)}
         style={style}
       >
-        <div className={b("content", modifier)}>
+        <div className={b("content", modifier)()}>
           {this.props.children}
         </div>
         <ReactCSSTransitionGroup

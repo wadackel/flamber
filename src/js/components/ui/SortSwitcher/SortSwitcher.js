@@ -74,7 +74,7 @@ export default class SortSwitcher extends Component {
     return (
       <div className={mergeClassNames(b(), className)}>
         <DropDownMenu
-          className={b("types")}
+          className={b("types")()}
           value={orderBy}
           onChange={this.handleOrderByChange}
           origin={{ vertical: "top", horizontal: "right" }}
@@ -83,7 +83,7 @@ export default class SortSwitcher extends Component {
           {children}
         </DropDownMenu>
         <IconButton
-          className={b("order")}
+          className={b("order")()}
           icon={orderIcon}
           size="sm"
           tooltip={isOrderAsc ? "昇順" : "降順"}

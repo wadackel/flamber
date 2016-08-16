@@ -38,10 +38,10 @@ export default class IconButton extends React.Component {
     } = this.props;
 
     const modifier = size ? { [size]: true } : null;
-    const btnClassName = mergeClassNames(modifier ? b(modifier) : null, className);
+    const btnClassName = mergeClassNames(modifier ? b(modifier)() : null, className);
 
     return <Button
-      baseClassName={b().trim()}
+      baseClassName={b()}
       className={btnClassName}
       {...props}
     />;

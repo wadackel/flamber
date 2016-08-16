@@ -164,6 +164,7 @@ module.exports = {
     "react/jsx-uses-vars": "error",
     "react/no-is-mounted": "error",
     "react/prop-types": "warn",
-    "react/jsx-curly-spacing": "error"
+    "react/jsx-curly-spacing": "error",
+    "react/no-find-dom-node": "off"
   }
 };

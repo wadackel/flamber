@@ -202,7 +202,7 @@ export default class AddItemFileDialog extends Component {
 
     return (
       <Dialog
-        className={mergeClassNames(b({ dragging }), className)}
+        className={mergeClassNames(b({ dragging })(), className)}
         processing={processing}
         title="Add item from file"
         titleIcon={<UploadIcon />}
@@ -220,37 +220,37 @@ export default class AddItemFileDialog extends Component {
         {...props}
       >
         <FileDnD
-          className={b("dnd")}
+          className={b("dnd")()}
           overlay={
-            <p className={b("dnd__title")}>Drop to your image file</p>
+            <p className={b("dnd__title")()}>Drop to your image file</p>
           }
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}
           onDrop={this.handleDrop}
         />
 
-        <div className={b("browse")}>
+        <div className={b("browse")()}>
           <input
             type="file"
             ref="file"
-            className={b("browse__input")}
+            className={b("browse__input")()}
             accept="image/*"
             onChange={this.handleFileChange}
           />
-          <p className={b("browse__title")}>Drag &amp; Drop or Browse</p>
-          {selectImage.src && <div className={b("preview")}>
+          <p className={b("browse__title")()}>Drag &amp; Drop or Browse</p>
+          {selectImage.src && <div className={b("preview")()}>
             <IconButton
-              className={b("preview__close")}
+              className={b("preview__close")()}
               size="sm"
               icon={<CloseIcon />}
               onClick={this.handlePreviewCloseClick}
             />
-            <img className={b("preview__image")} src={selectImage.src} />
-            <ul className={b("preview__palette")}>
+            <img className={b("preview__image")()} src={selectImage.src} />
+            <ul className={b("preview__palette")()}>
               {selectImage.palette.map((hex, index) =>
                 <li
                   key={index}
-                  className={b("preview__color")}
+                  className={b("preview__color")()}
                   style={{
                     backgroundColor: hex
                   }}>
@@ -262,7 +262,7 @@ export default class AddItemFileDialog extends Component {
 
         <DropDownMenu
           type="block"
-          className={b("select-board")}
+          className={b("select-board")()}
           value={selectBoard}
           onChange={this.handleBoardChange}
         >

@@ -98,17 +98,17 @@ export default class BoardCard extends React.Component {
     return (
       <Card
         baseClassName={baseClassName}
-        className={mergeClassNames(b({ selected }), className)}
+        className={mergeClassNames(b({ selected })(), className)}
         style={style}
         processing={processing}
       >
-        <CardCol baseClassName={baseClassName} className={b("col--media")}>
+        <CardCol baseClassName={baseClassName} className={b("col--media")()}>
           <CardMedia
             baseClassName={baseClassName}
             image={image}
           />
         </CardCol>
-        <CardCol baseClassName={baseClassName} className={b("col--body")}>
+        <CardCol baseClassName={baseClassName} className={b("col--body")()}>
           <CardBody baseClassName={baseClassName}>
             <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
             <CardText baseClassName={baseClassName}>
@@ -116,10 +116,10 @@ export default class BoardCard extends React.Component {
             </CardText>
           </CardBody>
         </CardCol>
-        <CardCol baseClassName={baseClassName} className={b("col--meta")}>
-          <span className={b("label")}><FilesIcon /> {itemCount}</span>
+        <CardCol baseClassName={baseClassName} className={b("col--meta")()}>
+          <span className={b("label")()}><FilesIcon /> {itemCount}</span>
         </CardCol>
-        <CardCol baseClassName={baseClassName} className={b("col--more")}>
+        <CardCol baseClassName={baseClassName} className={b("col--more")()}>
           <CardMore
             baseClassName={baseClassName}
             actions={this.renderMoreActions()}
@@ -147,7 +147,7 @@ export default class BoardCard extends React.Component {
     return (
       <Card
         baseClassName={baseClassName}
-        className={mergeClassNames(b({ selected }), className)}
+        className={mergeClassNames(b({ selected })(), className)}
         style={style}
         processing={processing}
       >
@@ -163,7 +163,7 @@ export default class BoardCard extends React.Component {
             onSelect={this.handleSelect}
           />}
         >
-          <Label className={b("label")} icon={<FilesIcon />}>{itemCount}</Label>
+          <Label className={b("label")()} icon={<FilesIcon />}>{itemCount}</Label>
         </CardMedia>
         <CardBody baseClassName={baseClassName}>
           <CardTitle baseClassName={baseClassName}>{title}</CardTitle>

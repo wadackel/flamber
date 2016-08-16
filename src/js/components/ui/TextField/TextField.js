@@ -136,7 +136,7 @@ export default class TextField extends React.Component {
     });
 
     const commonProps = {
-      className: b("control", textModifier),
+      className: b("control", textModifier)(),
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
@@ -159,13 +159,13 @@ export default class TextField extends React.Component {
     });
 
     return (
-      <div className={mergeClassNames(b(assign({}, modifier, { "has-label": !!label })), className)}>
+      <div className={mergeClassNames(b(assign({}, modifier, { "has-label": !!label }))(), className)}>
         {label
-          ? <div className={b("label", modifier)}>{label}</div>
+          ? <div className={b("label", modifier)()}>{label}</div>
           : null
         }
         {placeholder
-          ? <div className={b("placeholder", modifier)}>{placeholder}</div>
+          ? <div className={b("placeholder", modifier)()}>{placeholder}</div>
           : null
         }
         {multiLine

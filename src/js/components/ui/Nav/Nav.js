@@ -22,7 +22,7 @@ export default class Nav extends Component {
 
     return (
       <nav className={mergeClassNames(b(), className)}>
-        <ul className={b("list")}>
+        <ul className={b("list")()}>
           {cloneChildren}
         </ul>
       </nav>

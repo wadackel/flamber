@@ -5,7 +5,7 @@ export default function CardBody({
   children,
   baseClassName
 }) {
-  const b = bem(`${baseClassName.trim()}__body`);
+  const b = bem(`${baseClassName}__body`);
 
   return <div className={b()}>
     {children}

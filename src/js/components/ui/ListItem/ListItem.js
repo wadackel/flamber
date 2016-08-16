@@ -137,10 +137,10 @@ export default class ListItem extends React.Component {
     };
 
     return (
-      <div className={mergeClassNames(b(modifier), className)} style={style}>
+      <div className={mergeClassNames(b(modifier)(), className)} style={style}>
         {(!processing && editable) &&
           <IconButton
-            className={b("icon", { edit: true })}
+            className={b("icon", { edit: true })()}
             icon={<PencilIcon />}
             onClick={this.handleEditClick}
           />
@@ -148,7 +148,7 @@ export default class ListItem extends React.Component {
         {isEditing
           ? <TextField
               ref="control"
-              className={b("control")}
+              className={b("control")()}
               defaultValue={text}
               placeholder={placeholder}
               onChange={this.handleChange}
@@ -158,22 +158,22 @@ export default class ListItem extends React.Component {
           : <Button
               ref="button"
               disable={processing}
-              baseClassName={b("button").trim()}
-              className={processing ? `${b("button").trim()}--processing` : ""}
+              baseClassName={b("button")()}
+              className={processing ? `${b("button")()}--processing` : ""}
               label={text}
               onClick={this.handleClick}
             />
         }
         {(!processing && editable) &&
           <IconButton
-            className={b("icon", { trash: true })}
+            className={b("icon", { trash: true })()}
             icon={<TrashIcon />}
             onClick={this.handleTrashClick}
           />
         }
         {processing &&
           <MDSpinner
-            className={b("processing-spinner")}
+            className={b("processing-spinner")()}
             size={16}
           />
         }

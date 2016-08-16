@@ -19,7 +19,7 @@ function ColorBarItem({
 
   return (
     <div
-      className={b("item", { selected })}
+      className={b("item", { selected })()}
       style={{ backgroundColor: color }}
       onClick={handleChange}
     />
@@ -92,7 +92,7 @@ export default class ColorBar extends React.Component {
 
     return (
       <div className={mergeClassNames(b(), className)}>
-        <div className={b("list")}>
+        <div className={b("list")()}>
           {items}
         </div>
       </div>

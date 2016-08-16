@@ -30,10 +30,10 @@ export default class ProcessingOverlay extends Component {
     const modifier = { show };
 
     return (
-      <div className={mergeClassNames(b(modifier), className)} style={style}>
+      <div className={mergeClassNames(b(modifier)(), className)} style={style}>
         {show &&
           <MDSpinner
-            className={b("spinner", modifier)}
+            className={b("spinner", modifier)()}
             size={spinnerSize}
             style={{ position: "absolute" }}
           />

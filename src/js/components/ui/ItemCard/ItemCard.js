@@ -132,7 +132,7 @@ export default class ItemCard extends React.Component {
     return (
       <Card
         baseClassName={baseClassName}
-        className={mergeClassNames(b(modifier), className)}
+        className={mergeClassNames(b(modifier)(), className)}
         style={style}
         processing={processing}
       >
@@ -159,14 +159,14 @@ export default class ItemCard extends React.Component {
           </CardText>
           <CardAction baseClassName={baseClassName}>
             <IconButton
-              className={b("favorite", { active: favorite })}
+              className={b("favorite", { active: favorite })()}
               icon={favorite ? <StarFillIcon /> : <StarIcon />}
               onClick={this.handleFavoriteClick}
             />
           </CardAction>
         </CardBody>
         <ColorBar
-          className={b("colors")}
+          className={b("colors")()}
           palette={colors}
         />
       </Card>
@@ -193,17 +193,17 @@ export default class ItemCard extends React.Component {
     return (
       <Card
         baseClassName={baseClassName}
-        className={mergeClassNames(b(modifier), className)}
+        className={mergeClassNames(b(modifier)(), className)}
         style={{}}
         processing={processing}
       >
-        <CardCol baseClassName={baseClassName} className={b("col--media")}>
+        <CardCol baseClassName={baseClassName} className={b("col--media")()}>
           <CardMedia
             baseClassName={baseClassName}
             image={image}
           />
         </CardCol>
-        <CardCol baseClassName={baseClassName} className={b("col--body")}>
+        <CardCol baseClassName={baseClassName} className={b("col--body")()}>
           <CardBody baseClassName={baseClassName}>
             <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
             <CardText baseClassName={baseClassName}>
@@ -211,15 +211,15 @@ export default class ItemCard extends React.Component {
             </CardText>
           </CardBody>
         </CardCol>
-        <CardCol baseClassName={baseClassName} className={b("col--meta")}>
+        <CardCol baseClassName={baseClassName} className={b("col--meta")()}>
           <IconButton
-            className={b("favorite", { active: favorite })}
+            className={b("favorite", { active: favorite })()}
             icon={favorite ? <StarFillIcon /> : <StarIcon />}
             tooltip="スターを付ける"
             onClick={this.handleFavoriteClick}
           />
         </CardCol>
-        <CardCol baseClassName={baseClassName} className={b("col--more")}>
+        <CardCol baseClassName={baseClassName} className={b("col--more")()}>
           <CardMore
             baseClassName={baseClassName}
             actions={this.renderMoreActions()}
