@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import MDSpinner from "react-md-spinner";
@@ -17,6 +16,9 @@ const b = bem("tag-drawer");
 
 export class TagDrawerContainer extends Component {
   static propTypes = {
+    dispatch: PropTypes.func,
+    tags: PropTypes.object,
+    tagEntities: PropTypes.array
   };
 
   constructor(props, context) {
