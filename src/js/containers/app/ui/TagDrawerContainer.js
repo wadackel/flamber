@@ -1,9 +1,9 @@
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import * as TagActions from "../../../actions/tags";
 import { getTagEntities } from "../../../selectors/tags";
 import bem from "../../../helpers/bem";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Drawer,
   List,
@@ -28,12 +28,7 @@ export class TagDrawerContainer extends Component {
       addTagName: ""
     };
 
-    bindHandlers([
-      "handleAddTagChange",
-      "handleAddTagEnter",
-      "handleTagUpdate",
-      "handleTagDelete"
-    ], this);
+    autoBind(this);
   }
 
   handleAddTagChange(e, value) {

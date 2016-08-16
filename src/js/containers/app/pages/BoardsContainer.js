@@ -1,9 +1,9 @@
 /* eslint-disable */
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../../helpers/bem";
-import bindHandlers from "../../../helpers/bind-handlers";
 import * as BoardActions from "../../../actions/boards";
 import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/boards";
 import { TrashIcon } from "../../../components/svg-icons/";
@@ -25,13 +25,7 @@ export class BoardsContainer extends Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleEdit",
-      "handleSelect",
-      "handleDelete",
-      "handleSelectDelete",
-    ], this);
+    autoBind(this);
   }
 
   handleEdit(id) {

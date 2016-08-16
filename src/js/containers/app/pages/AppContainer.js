@@ -1,4 +1,5 @@
 /* eslint-disable */
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -6,7 +7,6 @@ import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
 import bem from "../../../helpers/bem";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   getBoardEntities,
   getBoardByIdFromBoards,
@@ -43,21 +43,7 @@ export class AppContainer extends Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleAddBoardOpen",
-      "handleAddBoardClose",
-      "handleAddBoard",
-      "handleAddBoardActionClick",
-
-      "handleAddLinkItemOpen",
-
-      "handleAddItemFileOpen",
-      "handleAddItemFileClose",
-      "handleAddItemFile",
-
-      "handleAddItemActionClick"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

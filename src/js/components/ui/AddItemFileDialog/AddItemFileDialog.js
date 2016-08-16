@@ -1,9 +1,9 @@
+import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import React, { Component, PropTypes } from "react";
 import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import getImagePalette from "../../../utils/get-image-palette";
 import {
   Dialog,
@@ -64,16 +64,7 @@ export default class AddItemFileDialog extends Component {
       selectBoard: this.getInitialBoard(props)
     };
 
-    bindHandlers([
-      "handleClose",
-      "handleAdd",
-      "handleDragStart",
-      "handleDragEnd",
-      "handleDrop",
-      "handleFileChange",
-      "handlePreviewCloseClick",
-      "handleBoardChange"
-    ], this);
+    autoBind(this);
   }
 
   getInitialBoard(props) {

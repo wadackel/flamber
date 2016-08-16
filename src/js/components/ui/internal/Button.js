@@ -1,10 +1,10 @@
 import _ from "lodash";
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import Ripple from "./Ripple";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import randomId from "../../../helpers/random-id";
 import Tooltip, { TooltipPositions } from "./Tooltip";
 
@@ -64,12 +64,7 @@ export default class Button extends React.Component {
       showTooltip: false
     };
 
-    bindHandlers([
-      "handleMouseDown",
-      "handleMouseEnter",
-      "handleMouseLeave",
-      "handleRippleHide"
-    ], this);
+    autoBind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {

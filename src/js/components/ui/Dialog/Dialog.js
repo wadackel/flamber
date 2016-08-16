@@ -1,10 +1,10 @@
+import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import FirstChild from "../internal/FirstChild";
 import RenderToLayer from "../internal/RenderToLayer";
 import Overlay from "../internal/Overlay";
@@ -35,11 +35,7 @@ class DialogInline extends Component {
 
     this.afterRendeFocus = false;
 
-    bindHandlers([
-      "handleKeyDown",
-      "handleCloseClick",
-      "handleOverlayClick"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -221,7 +217,7 @@ export default class Dialog extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-    bindHandlers(["renderLayer"], this);
+    autoBind(this);
   }
 
   renderLayer() {

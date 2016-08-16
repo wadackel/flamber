@@ -1,6 +1,6 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import { unstable_renderSubtreeIntoContainer, unmountComponentAtNode } from "react-dom"; // eslint-disable-line
-import bindHandlers from "../../../helpers/bind-handlers";
 
 // inspired by: https://github.com/callemall/material-ui/blob/master/src/internal/RenderToLayer.js
 
@@ -29,10 +29,7 @@ export default class RenderToLayer extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "onClickAway"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

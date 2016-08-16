@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _ from "lodash";
+import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
@@ -11,7 +12,6 @@ import * as BoardActions from "../../../actions/boards";
 import * as TagActions from "../../../actions/tags";
 import { getCurrentBoard } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Header,
   EditableText,
@@ -50,21 +50,7 @@ export class HeaderContainer extends Component {
 
     this.debounceItemsSizeChange = _.debounce(this.debounceItemsSizeChange, 500);
 
-    bindHandlers([
-      "handleMyItemsClick",
-      "handleFeedsClick",
-      "handleLogoClick",
-      "handleSettingsClick",
-      "handleTagDrawerToggle",
-
-      "handleBoardNameChange",
-      "handleBoardNameComplete",
-
-      "handleBoardsLayoutChange",
-      "handleItemsLayoutChange",
-
-      "handleItemsSizeChange"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {

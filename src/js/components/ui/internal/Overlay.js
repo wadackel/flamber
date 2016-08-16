@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import measureScrollbarWidth from "../../../utils/measure-scrollbar-width";
 
 const b = bem("overlay");
@@ -20,10 +20,7 @@ export default class Overlay extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleClick"
-    ], this);
+    autoBind(this);
   }
 
   componentWillMount() {

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import autoBind from "auto-bind";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Dialog,
   FlatButton,
@@ -33,11 +33,7 @@ export default class AddBoardDialog extends Component {
       value: ""
     };
 
-    bindHandlers([
-      "handleClose",
-      "handleAdd",
-      "handleBoardNameChange"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {

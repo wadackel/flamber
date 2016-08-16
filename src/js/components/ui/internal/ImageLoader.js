@@ -1,5 +1,5 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
-import bindHandlers from "../../../helpers/bind-handlers";
 
 const Status = {
   LOADING: "loading",
@@ -31,10 +31,7 @@ export default class ImageLoader extends React.Component {
 
     this.state = { status: props.src ? Status.LOADING : Status.PENDING };
 
-    bindHandlers([
-      "handleLoaded",
-      "handleError"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

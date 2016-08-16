@@ -1,6 +1,6 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
-import bindHandlers from "../../../helpers/bind-handlers";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import randomId from "../../../helpers/random-id";
 import Ripple from "../internal/Ripple";
@@ -37,10 +37,7 @@ export default class Checkbox extends React.Component {
       ripples: []
     };
 
-    bindHandlers([
-      "handleChange",
-      "handleRippleHide"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {

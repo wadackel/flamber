@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import bem from "../../../../helpers/bem";
 import mergeClassNames from "../../../../helpers/merge-class-names";
-import bindHandlers from "../../../../helpers/bind-handlers";
 import prefixer from "../../../../helpers/prefixer";
 import { IconButton } from "../../";
 import { MoreVertIcon } from "../../../svg-icons";
@@ -23,10 +23,7 @@ export default class CardMore extends Component {
 
     this.state = { show: false };
 
-    bindHandlers([
-      "handleMouseLeave",
-      "handleMouseEnter"
-    ], this);
+    autoBind(this);
   }
 
   handleMouseLeave() {

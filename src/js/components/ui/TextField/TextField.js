@@ -1,8 +1,8 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import assign from "object-assign";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { isValid } from "../../../helpers/validate";
 import Input from "../internal/Input";
 
@@ -52,12 +52,7 @@ export default class TextField extends React.Component {
       hasValue: isValid(props.defaultValue) || isValid(props.value)
     };
 
-    bindHandlers([
-      "handleChange",
-      "handleEnter",
-      "handleFocus",
-      "handleBlur"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {

@@ -1,8 +1,8 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { Popover, Menu } from "../";
 
 const b = bem("icon-menu");
@@ -41,11 +41,7 @@ export default class IconMenu extends React.Component {
       triggerElement: null
     };
 
-    bindHandlers([
-      "handleIconClick",
-      "handleItemClick",
-      "handleRequestClose"
-    ], this);
+    autoBind(this);
   }
 
   handleIconClick(e) {

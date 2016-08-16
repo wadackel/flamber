@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import prefixer from "../../../helpers/prefixer";
 import {
   FloatingButton
@@ -19,13 +19,9 @@ export default class FloatingMenu extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      open: false
-    };
+    this.state = { open: false };
 
-    bindHandlers([
-      "handleToggleClick"
-    ], this);
+    autoBind(this);
   }
 
   handleToggleClick() {

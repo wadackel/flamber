@@ -1,10 +1,10 @@
 import keycode from "keycode";
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   TextField,
   Menu,
@@ -79,16 +79,7 @@ export default class AutoComplete extends React.Component {
 
     this.timerMenuItemClickClose = null;
 
-    bindHandlers([
-      "handleChange",
-      "handleFocus",
-      "handleBlur",
-      "handleKeyDown",
-      "handleMenuItemClick",
-      "handleMenuMouseDown",
-      "handleEscKeyDown",
-      "handleRequestClose"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

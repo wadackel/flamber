@@ -1,10 +1,10 @@
 import _ from "lodash";
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import FirstChild from "../internal/FirstChild";
 import RenderToLayer from "../internal/RenderToLayer";
 
@@ -26,10 +26,7 @@ export default class ToolBox extends Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "renderLayer"
-    ], this);
+    autoBind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {

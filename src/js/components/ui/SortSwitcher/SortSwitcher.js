@@ -1,9 +1,9 @@
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import * as Order from "../../../constants/order";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { DropDownMenu, MenuItem, IconButton } from "../";
 import { ArrowTopIcon, ArrowBottomIcon } from "../../svg-icons/";
 
@@ -32,11 +32,7 @@ export default class SortSwitcher extends Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleOrderByChange",
-      "handleOrderChange"
-    ], this);
+    autoBind(this);
   }
 
   handleOrderByChange(orderBy) {

@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { FlatButton, IconButton } from "../";
 import { CloseIcon } from "../../svg-icons/";
 
@@ -27,12 +27,7 @@ export default class Snackbar extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleActionClick",
-      "handleTimeout",
-      "handleCloseClick"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {

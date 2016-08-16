@@ -1,8 +1,8 @@
 /* eslint-disable */
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Avatar,
   LogoButton,
@@ -53,11 +53,7 @@ export default class Header extends Component {
       userDropDownTrigger: null
     };
 
-    bindHandlers([
-      "handleUserDropDownClick",
-      "handleUserDropDownRequestClose",
-      "handleSignOut"
-    ], this);
+    autoBind(this);
   }
 
   handleUserDropDownClick(e) {

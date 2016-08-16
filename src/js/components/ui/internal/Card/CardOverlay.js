@@ -1,6 +1,6 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import bem from "../../../../helpers/bem";
-import bindHandlers from "../../../../helpers/bind-handlers";
 import { Checkbox } from "../../";
 import { CardMore } from "./";
 
@@ -27,11 +27,7 @@ export default class CardOverlay extends React.Component {
 
     this.state = { show: false };
 
-    bindHandlers([
-      "handleMouseEnter",
-      "handleMouseLeave",
-      "handleMouseMove"
-    ], this);
+    autoBind(this);
   }
 
   handleMouseEnter() {

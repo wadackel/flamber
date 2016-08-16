@@ -1,10 +1,10 @@
+import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { PropTypes, isValidElement } from "react";
 import shareConfig from "../../../../share-config.json";
 import prefixer from "../../../helpers/prefixer";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { isValid } from "../../../helpers/validate";
 import { List, MenuItem } from "../";
 
@@ -45,10 +45,7 @@ export default class Menu extends React.Component {
       focusIndex
     };
 
-    bindHandlers([
-      "handleItemClick",
-      "handleKeyDown"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

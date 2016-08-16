@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _ from "lodash";
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -8,7 +9,6 @@ import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
 import bem from "../../../helpers/bem";
-import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("shortcut-key");
 

@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { TextField } from "../";
 
 const b = bem("editable-text");
@@ -34,13 +34,7 @@ export default class EditableText extends Component {
       isHover: false
     };
 
-    bindHandlers([
-      "handleClick",
-      "handleMouseEnter",
-      "handleMouseLeave",
-      "handleEnter",
-      "handleBlur"
-    ], this);
+    autoBind(this);
   }
 
   handleClick() {

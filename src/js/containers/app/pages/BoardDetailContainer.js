@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _ from "lodash";
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -14,7 +15,6 @@ import {
   getSelectedItemEntities
 } from "../../../selectors/items";
 import bem from "../../../helpers/bem";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   CardGroup,
   ItemCard,
@@ -50,20 +50,7 @@ export class BoardDetailContainer extends Component {
       moveItemSnackbarMessage: ""
     };
 
-    bindHandlers([
-      "handleOrderByChange",
-      "handleOrderChange",
-      "handleSelect",
-      "handleFavorite",
-      "handleMove",
-      "handleSelectMove",
-      "handleSelectBoard",
-      "handleSelectBoardDialogClose",
-      "handleDelete",
-      "handleSelectDelete",
-      "handleSelectFavorite",
-      "handleSelectMenuItemClick"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

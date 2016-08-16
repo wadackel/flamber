@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("color-bar");
 
@@ -64,10 +64,7 @@ export default class ColorBar extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleItemClick"
-    ], this);
+    autoBind(this);
   }
 
   handleItemClick(value) {

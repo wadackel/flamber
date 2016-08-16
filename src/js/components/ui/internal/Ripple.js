@@ -1,6 +1,6 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import shareConfig from "../../../../share-config.json";
-import bindHandlers from "../../../helpers/bind-handlers";
 
 const RIPPLE_DURATION = shareConfig["ripple-duration"];
 
@@ -26,9 +26,7 @@ export default class Ripple extends React.Component {
 
     this.timer = null;
 
-    bindHandlers([
-      "handleTimeout"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { TextField, IconButton } from "../";
 import { SearchIcon } from "../../svg-icons/";
 
@@ -24,11 +24,7 @@ export default class SearchField extends Component {
 
     this.state = { value: props.value };
 
-    bindHandlers([
-      "handleClick",
-      "handleChange",
-      "handleEnter"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {

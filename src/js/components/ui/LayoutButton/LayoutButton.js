@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { IconButton } from "../";
 
 const b = bem("layout-button");
@@ -22,10 +22,7 @@ export default class LayoutButton extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleClick"
-    ], this);
+    autoBind(this);
   }
 
   handleClick() {

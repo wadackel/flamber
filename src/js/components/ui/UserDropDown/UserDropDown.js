@@ -1,8 +1,8 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import * as OriginPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Popover,
   DriveCapacity,
@@ -35,11 +35,7 @@ export default class UserDropDown extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleRequestClose",
-      "handleSignOutClick"
-    ], this);
+    autoBind(this);
   }
 
   handleRequestClose() {

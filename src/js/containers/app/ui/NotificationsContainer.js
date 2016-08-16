@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import * as NotificationActions from "../../../actions/notifications";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { Snackbar } from "../../../components/ui/";
 
 export class NotificationsContainer extends Component {
@@ -12,11 +12,7 @@ export class NotificationsContainer extends Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleClose",
-      "handleActionClick"
-    ], this);
+    autoBind(this);
   }
 
   handleClose() {

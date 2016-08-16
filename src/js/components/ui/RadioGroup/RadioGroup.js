@@ -1,7 +1,7 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("radio-group");
 
@@ -20,10 +20,7 @@ export default class RadioGroup extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleCheck"
-    ], this);
+    autoBind(this);
   }
 
   handleCheck(value, checked) {

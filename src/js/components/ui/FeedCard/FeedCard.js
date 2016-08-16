@@ -1,9 +1,9 @@
+import autoBind from "auto-bind";
 import urlParse from "url-parse";
 import React, { PropTypes } from "react";
 import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   Card,
   CardBody,
@@ -46,10 +46,7 @@ export default class FeedCard extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleAddItem"
-    ], this);
+    autoBind(this);
   }
 
   handleAddItem() {

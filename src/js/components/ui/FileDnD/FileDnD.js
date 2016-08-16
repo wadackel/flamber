@@ -1,11 +1,11 @@
 import _ from "lodash";
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../../share-config.json";
 import FirstChild from "../internal/FirstChild";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("file-dnd");
 
@@ -37,16 +37,9 @@ export default class FileDnD extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      dragging: false
-    };
+    this.state = { dragging: false };
 
-    bindHandlers([
-      "handleDragEnter",
-      "handleDragLeave",
-      "handleDragOver",
-      "handleDrop"
-    ], this);
+    autoBind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {

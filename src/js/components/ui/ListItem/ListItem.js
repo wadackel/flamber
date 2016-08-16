@@ -1,8 +1,8 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import MDSpinner from "react-md-spinner";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import Button from "../internal/Button";
 import { TextField, IconButton } from "../";
 import { PencilIcon, TrashIcon } from "../../svg-icons/";
@@ -44,15 +44,7 @@ export default class ListItem extends React.Component {
       isEditing: false
     };
 
-    bindHandlers([
-      "handleClick",
-      "handleChange",
-      "handleEnter",
-      "handleBlur",
-      "handleComplete",
-      "handleEditClick",
-      "handleTrashClick"
-    ], this);
+    autoBind(this);
   }
 
   componentWillUpdate(nextProps, nextState) {

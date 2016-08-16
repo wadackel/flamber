@@ -1,5 +1,5 @@
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
-import bindHandlers from "../../../helpers/bind-handlers";
 
 const ENTER_KEY = 13;
 
@@ -21,10 +21,7 @@ export default class Input extends Component {
 
     this.keyPressed = false;
 
-    bindHandlers([
-      "handleKeyPress",
-      "handleKeyUp"
-    ], this);
+    autoBind(this);
   }
 
   handleKeyPress(e) {

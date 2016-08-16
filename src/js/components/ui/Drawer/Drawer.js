@@ -1,9 +1,9 @@
 const IScroll = typeof window !== "undefined" ? require("iscroll") : null;
 
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 
 const b = bem("drawer");
 
@@ -23,10 +23,7 @@ export default class Drawer extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
-    bindHandlers([
-      "handleResize"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

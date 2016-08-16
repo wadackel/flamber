@@ -1,9 +1,9 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import { Popover, Menu } from "../";
 import { CaretIcon } from "../../svg-icons/";
 
@@ -40,11 +40,7 @@ export default class DropDownMenu extends React.Component {
       triggerElement: null
     };
 
-    bindHandlers([
-      "handleTriggerClick",
-      "handleItemClick",
-      "handleRequestClose"
-    ], this);
+    autoBind(this);
   }
 
   componentDidMount() {

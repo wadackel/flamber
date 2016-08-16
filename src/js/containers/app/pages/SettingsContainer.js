@@ -1,10 +1,10 @@
 /* eslint-disable */
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import MDSpinner from "react-md-spinner";
 import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
-import bindHandlers from "../../../helpers/bind-handlers";
 import {
   DriveCapacity,
   RaisedButton,
@@ -36,11 +36,7 @@ export class SettingsContainer extends Component {
       snackbarOpen: false
     };
 
-    bindHandlers([
-      "handleThemeChange",
-      "handleSnackbarClose",
-      "handleDeleteClick"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {

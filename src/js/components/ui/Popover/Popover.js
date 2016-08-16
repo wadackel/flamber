@@ -1,9 +1,9 @@
+import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import shareConfig from "../../../../share-config.json";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import bindHandlers from "../../../helpers/bind-handlers";
 import RenderToLayer from "../internal/RenderToLayer";
 import PopoverAnimation from "../internal/PopoverAnimation";
 
@@ -41,11 +41,7 @@ export default class Popover extends React.Component {
       closing: false
     };
 
-    bindHandlers([
-      "renderLayer",
-      "handleClickAway",
-      "handleClose"
-    ], this);
+    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps) {
