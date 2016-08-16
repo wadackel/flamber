@@ -122,9 +122,13 @@ export class HeaderContainer extends Component {
       <div>
         <IconButton
           icon={<TagsIcon />}
+          tooltip="タグ"
           onClick={this.handleTagDrawerToggle}
         />
-        <IconButton icon={<StarIcon />} />
+        <IconButton
+          icon={<StarIcon />}
+          tooltip="スター付きアイテム"
+        />
         <SearchField
           placeholder="Type search keyword"
         />
@@ -149,8 +153,16 @@ export class HeaderContainer extends Component {
             value={boardsLayout}
             onChange={this.handleBoardsLayoutChange}
           >
-            <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>
-            <LayoutButton icon={<ListIcon />} value={Layout.LIST}></LayoutButton>
+            <LayoutButton
+              icon={<GridIcon />}
+              value={Layout.GRID}
+              tooltip="グリッド"
+            />
+            <LayoutButton
+              icon={<ListIcon />}
+              value={Layout.LIST}
+              tooltip="リスト"
+            />
           </LayoutButtonGroup>
         </div>
       )
@@ -204,9 +216,21 @@ export class HeaderContainer extends Component {
             value={itemsLayout}
             onChange={this.handleItemsLayoutChange}
           >
-            <LayoutButton icon={<RandomGridIcon />} value={Layout.RANDOM_GRID}></LayoutButton>
-            <LayoutButton icon={<GridIcon />} value={Layout.GRID}></LayoutButton>
-            <LayoutButton icon={<ListIcon />} value={Layout.LIST}></LayoutButton>
+            <LayoutButton
+              icon={<RandomGridIcon />}
+              value={Layout.RANDOM_GRID}
+              tooltip="Pinterest"
+            />
+            <LayoutButton
+              icon={<GridIcon />}
+              value={Layout.GRID}
+              tooltip="グリッド"
+            />
+            <LayoutButton
+              icon={<ListIcon />}
+              value={Layout.LIST}
+              tooltip="リスト"
+            />
           </LayoutButtonGroup>
         </div>
       )

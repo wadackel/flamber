@@ -82,7 +82,7 @@ export default class SortSwitcher extends Component {
           className={b("order")()}
           icon={orderIcon}
           size="sm"
-          tooltip={isOrderAsc ? "昇順" : "降順"}
+          tooltip={isOrderAsc ? "降順" : "昇順"}
           onClick={this.handleOrderChange}
         />
       </div>

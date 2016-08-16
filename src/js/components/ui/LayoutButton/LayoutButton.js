@@ -1,5 +1,6 @@
 import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
+import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { IconButton } from "../";
@@ -10,6 +11,8 @@ export default class LayoutButton extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     icon: PropTypes.element,
+    tooltip: PropTypes.string,
+    tooltipOrigin: OriginalPropTypes.origin,
     value: PropTypes.any,
     selected: PropTypes.bool,
     onClick: PropTypes.func
@@ -32,16 +35,18 @@ export default class LayoutButton extends React.Component {
   render() {
     const {
       className,
-      icon,
-      selected
+      selected,
+      value, // eslint-disable-line no-unused-vars
+      onClick, // eslint-disable-line no-unused-vars
+      ...props
     } = this.props;
 
     const modifier = { selected };
 
     return <IconButton
       className={mergeClassNames(b(modifier)(), className)}
-      icon={icon}
       onClick={this.handleClick}
+      {...props}
     />;
   }
 }
