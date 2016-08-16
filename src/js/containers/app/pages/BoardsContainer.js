@@ -72,9 +72,9 @@ export class BoardsContainer extends Component {
 
     return (
       <div className={`container ${b()}`}>
-        <div className={b("control")()}>
+        <div className="card-group-control">
           <SortSwitcher
-            className={b("sort-switcher")()}
+            className="card-group-control__sort-switcher"
             orderBy={boardsOrderBy}
             order={boardsOrder}
             types={[

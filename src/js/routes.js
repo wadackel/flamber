@@ -9,14 +9,13 @@ import {
   AppContainer,
   BoardsContainer,
   BoardDetailContainer,
-  SettingsContainer
+  SettingsContainer,
+  StarsContainer
 } from "./containers/app/pages";
 import ThemeProvider from "./components/ThemeProvider";
 
 function getAuthenticated(store) {
-  const { auth: { authenticated } } = store.getState();
-
-  return authenticated;
+  return store.getState().auth.authenticated;
 }
 
 export default function getRoutes(store) {
@@ -45,6 +44,7 @@ export default function getRoutes(store) {
           <Route path="settings" component={SettingsContainer} />
           <Route path="boards" component={BoardsContainer} />
           <Route path="board/:id" component={BoardDetailContainer} />
+          <Route path="stars" component={StarsContainer} />
           <IndexRoute component={BoardsContainer} />
         </Route>
       </Route>

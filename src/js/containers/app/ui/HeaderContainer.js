@@ -12,6 +12,10 @@ import * as BoardActions from "../../../actions/boards";
 import * as TagActions from "../../../actions/tags";
 import { getCurrentBoard, getSelectedBoardEntities } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
+import { BoardsContainer } from "../pages/BoardsContainer";
+import { BoardDetailContainer } from "../pages/BoardDetailContainer";
+import { SettingsContainer } from "../pages/SettingsContainer";
+import { StarsContainer } from "../pages/StarsContainer";
 import {
   Header,
   EditableText,
@@ -84,6 +88,10 @@ export class HeaderContainer extends Component {
     this.props.dispatch(TagActions.tagDrawerToggle());
   }
 
+  handleStarClick() {
+    this.push("/app/stars");
+  }
+
   // Update board
   handleBoardNameChange(e, value) {
     this.setState({ boardName: value });
@@ -128,6 +136,7 @@ export class HeaderContainer extends Component {
         <IconButton
           icon={<StarIcon />}
           tooltip="スター付きアイテム"
+          onClick={this.handleStarClick}
         />
         <SearchField
           placeholder="Type search keyword"
@@ -254,22 +263,24 @@ export class HeaderContainer extends Component {
     return {/* TODO */};
   }
 
-  // TODO: Branch in name of child container component
   getHeaderProps() {
-    const { location: { pathname } } = this.props;
-    const methodMaps = [
-      { method: this.getHeaderBoardsProps, regex: /^\/app\/?(boards\/?.*)?$/ },
-      { method: this.getHeaderBoardDetailProps, regex: /^\/app\/board\/(.+)$/ },
-      { method: this.getHeaderFeedsProps, regex: /^\/app\/feeds\/?.*$/ },
-      { method: this.getHeaderSettingsProps, regex: /^\/app\/settings\/?.*$/ },
-      { method: this.getHeader404Props, regex: /^.*$/ }
-    ];
+    const { route: { childRoutes } } = this.props;
+    const currentComponent = childRoutes[childRoutes.length - 1].component.WrappedComponent;
 
-    const res = methodMaps.filter(obj =>
-      obj.regex.test(pathname)
-    ).shift();
+    switch (currentComponent) {
+      case BoardsContainer:
+        return this.getHeaderBoardsProps();
 
-    return res.method.call(this);
+      case BoardDetailContainer:
+      case StarsContainer:
+        return this.getHeaderBoardDetailProps();
+
+      case SettingsContainer:
+        return tis.getHeaderSettingsProps();
+
+      default:
+        return this.getHeader404Props();
+    }
   }
 
   push(path) {
@@ -292,7 +303,12 @@ export class HeaderContainer extends Component {
             onClick={this.handleMyItemsClick}
             active={activeNavItem === NavItemActive.MY_ITEMS}
           >
-            My Items
+            Boards
+          </NavItem>,
+          <NavItem
+            active={false}
+          >
+            All Items
           </NavItem>,
           <NavItem
             onClick={this.handleFeedsClick}

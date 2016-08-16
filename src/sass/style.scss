@@ -42,6 +42,7 @@
 @import "components/auto-complete";
 @import "components/avatar";
 @import "components/board-card";
+@import "components/card-group-control";
 @import "components/card-group";
 @import "components/checkbox-group";
 @import "components/checkbox";
@@ -90,5 +91,5 @@
 
 //=== Pages
 @import "pages/boards";
-@import "pages/board-detail";
 @import "pages/settings";
+@import "pages/items";

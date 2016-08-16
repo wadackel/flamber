@@ -1,0 +1,10 @@
+.card-group-control {
+  margin: 20px auto;
+  padding: 0 20px;
+  text-align: right;
+
+  &__sort-switcher {
+    color: darken($gray-lightest, 20%);
+    font-size: .87rem;
+  }
+}
