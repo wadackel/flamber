@@ -12,7 +12,7 @@ import {
   ProcessingOverlay
 } from "../../../components/ui/";
 
-const b = bem("tag-drawer");
+const b = bem("tag-drawer-container");
 
 export class TagDrawerContainer extends Component {
   static propTypes = {

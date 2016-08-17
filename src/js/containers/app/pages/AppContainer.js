@@ -31,7 +31,7 @@ import {
   UploadIcon
 } from "../../../components/svg-icons/";
 
-const b = bem("app");
+const b = bem("app-page");
 
 export class AppContainer extends Component {
   static propTypes = {

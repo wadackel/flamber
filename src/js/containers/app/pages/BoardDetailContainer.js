@@ -8,7 +8,7 @@ import * as BoardActions from "../../../actions/boards";
 import { getCurrentBoard } from "../../../selectors/boards";
 import { ItemsContainer } from "../ui/";
 
-const b = bem("board-detail");
+const b = bem("board-detail-page");
 
 export class BoardDetailContainer extends Component {
   static propTypes = {

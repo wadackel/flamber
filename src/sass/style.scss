@@ -31,65 +31,12 @@
 
 
 //=== Components
-@import "components/internal/button";
-@import "components/internal/card";
-@import "components/internal/switch";
-@import "components/internal/tooltip";
+@import "components/components";
 
-@import "components/add-board-dialog";
-@import "components/add-item-file-dialog";
-@import "components/alert-dialog";
-@import "components/auto-complete";
-@import "components/avatar";
-@import "components/board-card";
-@import "components/card-group-control";
-@import "components/card-group";
-@import "components/checkbox-group";
-@import "components/checkbox";
-@import "components/color-bar";
-@import "components/dialog";
-@import "components/drawer";
-@import "components/drive-capacity";
-@import "components/drop-down-menu";
-@import "components/editable-text";
-@import "components/feed-card";
-@import "components/file-dnd";
-@import "components/flat-button";
-@import "components/floating-button";
-@import "components/floating-menu";
-@import "components/header";
-@import "components/icon-button";
-@import "components/icon-menu";
-@import "components/item-card";
-@import "components/label";
-@import "components/layout-button-group";
-@import "components/layout-button";
-@import "components/list-item";
-@import "components/list";
-@import "components/logo-button";
-@import "components/menu-item";
-@import "components/menu";
-@import "components/nav-item";
-@import "components/nav";
-@import "components/overlay";
-@import "components/popover";
-@import "components/processing-overlay";
-@import "components/progress-bar";
-@import "components/radio-group";
-@import "components/radio";
-@import "components/raised-button";
-@import "components/search-field";
-@import "components/select-board-dialog";
-@import "components/slider";
-@import "components/snackbar";
-@import "components/sort-switcher";
-@import "components/tag-drawer";
-@import "components/text-field";
-@import "components/tool-box";
-@import "components/user-drop-down";
+
+//=== Containers
+@import "containers/containers";
 
 
 //=== Pages
-@import "pages/boards";
-@import "pages/settings";
-@import "pages/items";
+@import "pages/pages";

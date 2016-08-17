@@ -16,7 +16,7 @@ import { GithubIcon } from "../../../components/svg-icons";
 import { deleteAppRequest } from "../../../actions/application";
 import { fetchSettingsRequest, updateThemeRequest } from "../../../actions/settings";
 
-const b = bem("settings");
+const b = bem("settings-page");
 
 export class SettingsContainer extends Component {
   static propTypes = {

@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import bem from "../../../helpers/bem";
 
-const b = bem("stars");
+const b = bem("stars-page");
 
 export class StarsContainer extends Component {
   static propTypes = {

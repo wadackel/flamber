@@ -17,7 +17,7 @@ import {
   SortSwitcher
 } from "../../../components/ui/";
 
-const b = bem("boards");
+const b = bem("boards-page");
 
 export class BoardsContainer extends Component {
   static propTypes = {

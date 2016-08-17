@@ -33,7 +33,7 @@ import {
   MoreVertIcon
 } from "../../../components/svg-icons/";
 
-const b = bem("items");
+const b = bem("items-container");
 
 export class ItemsContainer extends Component {
   static propTypes = {

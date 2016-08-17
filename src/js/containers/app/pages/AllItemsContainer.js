@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import bem from "../../../helpers/bem";
 
-const b = bem("all-items");
+const b = bem("all-items-page");
 
 export class AllItemsContainer extends Component {
   static propTypes = {

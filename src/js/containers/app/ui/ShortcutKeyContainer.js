@@ -10,7 +10,7 @@ import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
 import bem from "../../../helpers/bem";
 
-const b = bem("shortcut-key");
+const b = bem("shortcut-key-container");
 
 export class ShortcutKeyContainer extends Component {
   static propTypes = {
