@@ -18,7 +18,7 @@ import { fetchSettingsRequest, updateThemeRequest } from "../../../actions/setti
 
 const b = bem("settings-page");
 
-export class SettingsContainer extends Component {
+export class SettingsPage extends Component {
   static propTypes = {
   };
 
@@ -141,4 +141,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(SettingsContainer);
+)(SettingsPage);

@@ -6,12 +6,12 @@ import {
   LandingContainer
 } from "./containers";
 import {
-  AllItemsContainer,
-  AppContainer,
-  BoardsContainer,
-  BoardDetailContainer,
-  SettingsContainer,
-  StarsContainer
+  AllItemsPage,
+  AppPage,
+  BoardsPage,
+  BoardDetailPage,
+  SettingsPage,
+  StarsPage
 } from "./containers/app/pages";
 import ThemeProvider from "./components/ThemeProvider";
 
@@ -41,13 +41,13 @@ export default function getRoutes(store) {
 
       <Route onEnter={userOnly}>
         <Route path="/signout" component={SignOutContainer} />
-        <Route path="/app/" component={AppContainer}>
-          <Route path="settings" component={SettingsContainer} />
-          <Route path="items" component={AllItemsContainer} />
-          <Route path="boards" component={BoardsContainer} />
-          <Route path="board/:id" component={BoardDetailContainer} />
-          <Route path="stars" component={StarsContainer} />
-          <IndexRoute component={BoardsContainer} />
+        <Route path="/app/" component={AppPage}>
+          <Route path="settings" component={SettingsPage} />
+          <Route path="items" component={AllItemsPage} />
+          <Route path="boards" component={BoardsPage} />
+          <Route path="board/:id" component={BoardDetailPage} />
+          <Route path="stars" component={StarsPage} />
+          <IndexRoute component={BoardsPage} />
         </Route>
       </Route>
 

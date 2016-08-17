@@ -33,7 +33,7 @@ import {
 
 const b = bem("app-page");
 
-export class AppContainer extends Component {
+export class AppPage extends Component {
   static propTypes = {
     children: PropTypes.node
   };
@@ -204,4 +204,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(AppContainer);
+)(AppPage);

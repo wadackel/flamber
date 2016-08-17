@@ -19,7 +19,7 @@ import {
 
 const b = bem("boards-page");
 
-export class BoardsContainer extends Component {
+export class BoardsPage extends Component {
   static propTypes = {
   };
 
@@ -144,4 +144,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(BoardsContainer);
+)(BoardsPage);

@@ -8,7 +8,7 @@ import { ItemsContainer } from "../ui/";
 
 const b = bem("all-items-page");
 
-export class AllItemsContainer extends Component {
+export class AllItemsPage extends Component {
   static propTypes = {
   };
 
@@ -35,4 +35,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(AllItemsContainer);
+)(AllItemsPage);

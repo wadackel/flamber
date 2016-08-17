@@ -12,11 +12,11 @@ import * as BoardActions from "../../../actions/boards";
 import * as TagActions from "../../../actions/tags";
 import { getCurrentBoard, getSelectedBoardEntities } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
-import { AllItemsContainer } from "../pages/AllItemsContainer";
-import { BoardsContainer } from "../pages/BoardsContainer";
-import { BoardDetailContainer } from "../pages/BoardDetailContainer";
-import { SettingsContainer } from "../pages/SettingsContainer";
-import { StarsContainer } from "../pages/StarsContainer";
+import { AllItemsPage } from "../pages/AllItemsPage";
+import { BoardsPage } from "../pages/BoardsPage";
+import { BoardDetailPage } from "../pages/BoardDetailPage";
+import { SettingsPage } from "../pages/SettingsPage";
+import { StarsPage } from "../pages/StarsPage";
 import {
   Header,
   EditableText,
@@ -274,17 +274,17 @@ export class HeaderContainer extends Component {
     const currentComponent = routes[routes.length - 1].component.WrappedComponent;
 
     switch (currentComponent) {
-      case BoardsContainer:
+      case BoardsPage:
         return this.getHeaderBoardsProps();
 
-      case BoardDetailContainer:
+      case BoardDetailPage:
         return this.getHeaderBoardDetailProps(NavItemActive.BOARDS);
 
-      case AllItemsContainer:
-      case StarsContainer:
+      case AllItemsPage:
+      case StarsPage:
         return this.getHeaderBoardDetailProps(NavItemActive.ALL_ITEMS);
 
-      case SettingsContainer:
+      case SettingsPage:
         return tis.getHeaderSettingsProps();
 
       default:

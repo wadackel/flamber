@@ -10,7 +10,7 @@ import { ItemsContainer } from "../ui/";
 
 const b = bem("board-detail-page");
 
-export class BoardDetailContainer extends Component {
+export class BoardDetailPage extends Component {
   static propTypes = {
   };
 
@@ -41,4 +41,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(BoardDetailContainer);
+)(BoardDetailPage);

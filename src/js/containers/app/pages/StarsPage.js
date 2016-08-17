@@ -6,7 +6,7 @@ import bem from "../../../helpers/bem";
 
 const b = bem("stars-page");
 
-export class StarsContainer extends Component {
+export class StarsPage extends Component {
   static propTypes = {
   };
 
@@ -29,4 +29,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(StarsContainer);
+)(StarsPage);
