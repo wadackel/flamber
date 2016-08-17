@@ -20,6 +20,16 @@ export const bgSyncItemsSuccess = createAction(BG_SYNC_ITEMS_SUCCESS);
 export const bgSyncItemsFailure = createAction(BG_SYNC_ITEMS_FAILURE);
 
 
+// Fetch
+export const FETCH_ITEMS_REQUEST = "FETCH_ITEMS_REQUEST";
+export const FETCH_ITEMS_SUCCESS = "FETCH_ITEMS_SUCCESS";
+export const FETCH_ITEMS_FAILURE = "FETCH_ITEMS_FAILURE";
+
+export const fetchItemsRequest = createAction(FETCH_ITEMS_REQUEST);
+export const fetchItemsSuccess = createAction(FETCH_ITEMS_SUCCESS);
+export const fetchItemsFailure = createAction(FETCH_ITEMS_FAILURE);
+
+
 // Add (UI)
 export const ADD_ITEM_DIALOG_OPEN = "ADD_ITEM_DIALOG_OPEN";
 export const ADD_ITEM_DIALOG_CLOSE = "ADD_ITEM_DIALOG_CLOSE";

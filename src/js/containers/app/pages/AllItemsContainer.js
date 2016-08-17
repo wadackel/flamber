@@ -3,6 +3,8 @@ import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import bem from "../../../helpers/bem";
+import * as ItemActions from "../../../actions/items";
+import { ItemsContainer } from "../ui/";
 
 const b = bem("all-items-page");
 
@@ -15,10 +17,14 @@ export class AllItemsContainer extends Component {
     autoBind(this);
   }
 
+  componentDidMount() {
+    this.props.dispatch(ItemActions.fetchItemsRequest());
+  }
+
   render() {
     return (
-      <div>
-        TODO: All items
+      <div className={b()}>
+        <ItemsContainer />
       </div>
     );
   }

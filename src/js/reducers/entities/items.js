@@ -5,6 +5,10 @@ import * as Boards from "../../actions/boards";
 import * as Items from "../../actions/items";
 import ItemSchema from "../../schemas/item";
 
+function mergeEntities(state, entities) {
+  return _.assign(state, entities || {});
+}
+
 export default handleActions({
   // Background sync
   [Items.BG_SYNC_ITEMS_SUCCESS]: (state, { payload }) => {
@@ -24,9 +28,15 @@ export default handleActions({
   },
 
 
+  // Fetch
+  [Items.FETCH_ITEMS_SUCCESS]: (state, { payload }) => (
+    mergeEntities(state, payload.entities.items)
+  ),
+
+
   // Add
   [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
-    _.assign(state, payload.entities.items || {})
+    mergeEntities(state, payload.entities.items)
   ),
 
 

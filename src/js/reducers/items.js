@@ -24,6 +24,27 @@ export default handleActions({
     results: payload
   }),
 
+
+  // Fetch
+  [Items.FETCH_ITEMS_REQUEST]: state => ({
+    ...state,
+    isFetching: true,
+    results: []
+  }),
+
+  [Items.FETCH_ITEMS_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    results: payload.result.items
+  }),
+
+  [Items.FETCH_ITEMS_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    error: payload
+  }),
+
+
   // Add (UI)
   [Items.ADD_ITEM_DIALOG_OPEN]: state => ({
     ...state,
