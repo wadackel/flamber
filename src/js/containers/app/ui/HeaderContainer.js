@@ -285,7 +285,7 @@ export class HeaderContainer extends Component {
         return this.getHeaderBoardDetailProps(NavItemActive.ALL_ITEMS);
 
       case SettingsPage:
-        return tis.getHeaderSettingsProps();
+        return this.getHeaderSettingsProps();
 
       default:
         return this.getHeader404Props();

@@ -82,7 +82,7 @@ export default class CardGroup extends Component {
     const itemHeight = isList ? 80 : null;
     const itemStyles = isList
       ? { width: "100%" }
-      : { width: columnWidth };
+      : { width: parseInt(columnWidth, 10) };
     const layoutType = isList
       ? GridLayout.simple
       : GridLayout.pinterest;
@@ -92,7 +92,7 @@ export default class CardGroup extends Component {
         component="div"
         className={mergeClassNames(b(modifier)(), className)}
         columns={columns}
-        columnWidth={isList ? "100%" : columnWidth}
+        columnWidth={columnWidth}
         gutterWidth={gutter}
         gutterHeight={gutter}
         layout={layoutType}
