@@ -4,9 +4,17 @@
 
   display: inline-block;
 
+  &:focus {
+    outline: none;
+  }
+
   &__body {
     position: relative;
     padding: $base-padding 0;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__icon {
@@ -18,11 +26,15 @@
     opacity: 0;
     @include size(.8em);
 
+    &:focus {
+      outline: none;
+    }
+
     svg {
       @include relative(-.1em);
       @include size(100%);
-      fill: currentColor;
       vertical-align: baseline;
+      fill: currentColor;
     }
 
     &--show {
@@ -32,11 +44,15 @@
   }
 
   &__text {
-    position: relative;
     display: inline-block;
+    position: relative;
     min-width: 1em;
     min-height: .8em;
     z-index: 1;
+
+    &:focus {
+      outline: none;
+    }
 
     &--is-editing {
       visibility: hidden;
@@ -61,8 +77,8 @@
       padding: $base-padding 0;
       border-bottom: none;
       font-size: 1em;
-      line-height: inherit;
       letter-spacing: inherit;
+      line-height: inherit;
       vertical-align: middle;
 
       &--is-focused {

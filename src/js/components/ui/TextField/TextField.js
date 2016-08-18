@@ -1,4 +1,5 @@
 import autoBind from "auto-bind";
+import keycode from "keycode";
 import React, { PropTypes } from "react";
 import assign from "object-assign";
 import bem from "../../../helpers/bem";
@@ -74,6 +75,14 @@ export default class TextField extends React.Component {
     this.props.onEnter(e, e.target.value);
   }
 
+  handleKeyUp(e) {
+    this.props.onKeyUp(e);
+
+    if (keycode(e) === "esc") {
+      this.blur();
+    }
+  }
+
   handleFocus(e) {
     this.setState({ isFocused: true });
     this.props.onFocus(e);
@@ -98,6 +107,11 @@ export default class TextField extends React.Component {
     if (control) control.blur();
   }
 
+  select() {
+    const { control } = this.refs;
+    if (control) control.select();
+  }
+
   render() {
     const {
       className,
@@ -112,7 +126,7 @@ export default class TextField extends React.Component {
       rows,
       onEnter, // eslint-disable-line no-unused-vars
       onKeyDown,
-      onKeyUp,
+      onKeyUp, // eslint-disable-line no-unused-vars
       onKeyPress
     } = this.props;
 
@@ -132,6 +146,7 @@ export default class TextField extends React.Component {
 
     const commonProps = {
       className: b("control", textModifier)(),
+      onKeyUp: this.handleKeyUp,
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
@@ -140,7 +155,6 @@ export default class TextField extends React.Component {
       value,
       name,
       onKeyDown,
-      onKeyUp,
       onKeyPress
     };
 

@@ -50,6 +50,10 @@ export default class Input extends Component {
     this.refs.input.blur();
   }
 
+  select() {
+    this.refs.input.select();
+  }
+
   render() {
     const {
       onEnter, // eslint-disable-line no-unused-vars
