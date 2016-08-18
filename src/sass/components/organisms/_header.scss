@@ -187,4 +187,8 @@ $header-main-height: 60px;
       }
     }
   }
+
+  &__colorbar {
+    @include absolute(100%, 0, auto, 0, 10);
+  }
 }

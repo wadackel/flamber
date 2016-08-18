@@ -9,6 +9,7 @@ import MDSpinner from "react-md-spinner";
 import * as Layout from "../../../constants/layouts";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
+import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
 import { getCurrentBoard, getSelectedBoardEntities } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
@@ -128,6 +129,11 @@ export class HeaderContainer extends Component {
     });
 
     this.props.dispatch(SettingActions.updateItemsSizeRequestDebounce(size));
+  }
+
+  // Update currentColor
+  handleColorChange(color) {
+    this.props.dispatch(ItemActions.setItemCurrentColor(color));
   }
 
   // Header props
@@ -299,7 +305,10 @@ export class HeaderContainer extends Component {
   }
 
   render() {
-    const { auth: { user } } = this.props;
+    const {
+      auth: { user },
+      items
+    } = this.props;
 
     const {
       activeNavItem,
@@ -309,6 +318,7 @@ export class HeaderContainer extends Component {
     return (
       <Header
         user={user}
+        color={items.currentColor}
         navItems={[
           <NavItem
             active={activeNavItem === NavItemActive.BOARDS}
@@ -331,6 +341,7 @@ export class HeaderContainer extends Component {
         ]}
         onLogoClick={this.handleLogoClick}
         onSettingsClick={this.handleSettingsClick}
+        onColorChange={this.handleColorChange}
         {...headerProps}
       />
     );

@@ -59,6 +59,7 @@ export default class ColorBar extends React.Component {
       "#808080",
       "#ffffff"
     ],
+    color: null,
     onChange: () => {}
   };
 
@@ -68,7 +69,7 @@ export default class ColorBar extends React.Component {
   }
 
   handleItemClick(value) {
-    this.props.onChange(this.props.color !== value ? value : "");
+    this.props.onChange(this.props.color !== value ? value : null);
   }
 
   render() {

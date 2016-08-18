@@ -11,6 +11,7 @@ const initialState = {
   error: null,
   results: [],
   currentItemId: null,
+  currentColor: null,
   addDialogOpen: false,
   addSnackbarOpen: false,
   moveItems: [],
@@ -22,6 +23,13 @@ export default handleActions({
   [Items.SET_ITEM_RESULTS]: (state, { payload }) => ({
     ...state,
     results: payload
+  }),
+
+
+  // Set currentColor
+  [Items.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({
+    ...state,
+    currentColor: payload
   }),
 
 

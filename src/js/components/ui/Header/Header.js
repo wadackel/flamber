@@ -1,10 +1,12 @@
 /* eslint-disable */
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
+import palette from "../../../constants/palette";
 import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
 import {
   Avatar,
+  ColorBar,
   LogoButton,
   EditableText,
   UserDropDown,
@@ -31,18 +33,21 @@ const b = bem("header");
 export default class Header extends Component {
   static propTypes = {
     user: PropTypes.object,
+    color: PropTypes.string,
     navItems: PropTypes.node,
     mainTitle: PropTypes.node,
     subTitle: PropTypes.node,
     subLeft: PropTypes.node,
     subRight: PropTypes.node,
     onLogoClick: PropTypes.func,
-    onSettingsClick: PropTypes.func
+    onSettingsClick: PropTypes.func,
+    onColorChange: PropTypes.func
   };
 
   static defaultProps = {
     onLogoClick: () => {},
-    onSettingsClick: () => {}
+    onSettingsClick: () => {},
+    onColorChange: () => {}
   };
 
   constructor(props, context) {
@@ -73,6 +78,10 @@ export default class Header extends Component {
     // TODO
   }
 
+  handleColorChange(color) {
+    this.props.onColorChange(color);
+  }
+
   renderSubHeader() {
     const {
       subTitle,
@@ -100,6 +109,7 @@ export default class Header extends Component {
   render() {
     const {
       user,
+      color,
       navItems,
       mainTitle,
       onLogoClick,
@@ -155,6 +165,13 @@ export default class Header extends Component {
         </div>
 
         {this.renderSubHeader()}
+
+        <ColorBar
+          className={b("colorbar")()}
+          palette={palette}
+          color={color}
+          onChange={this.handleColorChange}
+        />
       </header>
     );
   }
