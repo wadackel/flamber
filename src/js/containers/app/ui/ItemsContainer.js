@@ -12,6 +12,7 @@ import * as ItemActions from "../../../actions/items";
 import { getBoardEntities, getCurrentBoard } from "../../../selectors/boards";
 import {
   getItemEntities,
+  getItemEntitiesByColor,
   getSelectedItemEntities
 } from "../../../selectors/items";
 import bem from "../../../helpers/bem";
@@ -237,6 +238,7 @@ export class ItemsContainer extends Component {
 
 export default connect(
   state => {
+    const { currentColor } = state.items;
     const { itemsOrderBy, itemsOrder } = state.settings;
 
     return {
@@ -244,7 +246,10 @@ export default connect(
       boards: state.boards,
       boardEntities: getBoardEntities(state),
       items: state.items,
-      itemEntities: getItemEntities(state, itemsOrderBy, itemsOrder),
+      itemEntities: currentColor
+        ? getItemEntitiesByColor(state, currentColor, itemsOrderBy, itemsOrder)
+        : getItemEntities(state, itemsOrderBy, itemsOrder)
+      ,
       selectedItemEntities: getSelectedItemEntities(state),
       currentBoard: getCurrentBoard(state)
     };
