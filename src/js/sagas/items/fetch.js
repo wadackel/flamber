@@ -1,6 +1,6 @@
 import { normalize, arrayOf } from "normalizr";
 import { takeEvery, takeLatest } from "redux-saga";
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import ItemSchema from "../../schemas/item";
 import * as Services from "../../services/items";
 import * as Notifications from "../../actions/notifications";
@@ -9,6 +9,12 @@ import * as Items from "../../actions/items";
 
 export function *handleFetchItemsRequest({ payload = {} }) {
   try {
+    const rawEntities = yield select(state => state.entities.items);
+    const rawEntityIds = Object.keys(rawEntities);
+    if (rawEntityIds.length > 0) {
+      yield put(Items.setItemResults(rawEntityIds));
+    }
+
     const response = yield call(Services.fetchItems, payload);
     const normalized = normalize(response, {
       items: arrayOf(ItemSchema)
