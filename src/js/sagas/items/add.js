@@ -32,6 +32,10 @@ export function *handleAddItemSuccess({ payload }) {
 
   if (currentBoardId && currentBoardId === board.id) {
     yield setItemResultsByBoardId(board.id);
+
+  } else if (!currentBoardId) {
+    const results = yield select(state => state.items.results);
+    yield put(Items.setItemResults([...results, payload.result.item]));
   }
 
   yield put(Notifications.showNotify(`${board.name}にアイテムを追加しました`, {

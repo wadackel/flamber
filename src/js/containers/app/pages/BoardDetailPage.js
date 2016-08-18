@@ -29,6 +29,10 @@ export class BoardDetailPage extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.dispatch(BoardActions.setCurrentBoard(null));
+  }
+
   render() {
     return <ItemsContainer />;
   }
