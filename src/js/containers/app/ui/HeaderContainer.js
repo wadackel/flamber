@@ -281,8 +281,10 @@ export class HeaderContainer extends Component {
         return this.getHeaderBoardDetailProps(NavItemActive.BOARDS);
 
       case AllItemsPage:
-      case StarsPage:
         return this.getHeaderBoardDetailProps(NavItemActive.ALL_ITEMS);
+
+      case StarsPage:
+        return this.getHeaderBoardDetailProps();
 
       case SettingsPage:
         return this.getHeaderSettingsProps();

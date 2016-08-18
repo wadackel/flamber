@@ -1,11 +1,13 @@
+import queryString from "query-string";
 import fetch, { fetchJSON } from "../utils/fetch";
 import { API_ROOT } from "../constants/application";
 
 export const ITEMS_ENDPOINT = `${API_ROOT}/items`;
 
 
-export function fetchItems() {
-  return fetch(ITEMS_ENDPOINT);
+export function fetchItems(query = {}) {
+  const queryStr = queryString.stringify(query);
+  return fetch(`${ITEMS_ENDPOINT}?${queryStr}`);
 }
 
 

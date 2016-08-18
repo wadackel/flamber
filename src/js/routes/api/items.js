@@ -17,7 +17,7 @@ const upload = multer({ storage });
 
 
 router.get("/", (req, res) => {
-  Item.findAllByUser(req.drive, req.user.id)
+  Item.findAllByUser(req.drive, req.user.id, req.query)
     .then(items => {
       res.json({ items });
     })

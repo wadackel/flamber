@@ -7,9 +7,9 @@ import * as Notifications from "../../actions/notifications";
 import * as Items from "../../actions/items";
 
 
-export function *handleFetchItemsRequest() {
+export function *handleFetchItemsRequest({ payload = {} }) {
   try {
-    const response = yield call(Services.fetchItems);
+    const response = yield call(Services.fetchItems, payload);
     const normalized = normalize(response, {
       items: arrayOf(ItemSchema)
     });
