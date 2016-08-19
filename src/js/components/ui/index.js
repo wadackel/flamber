@@ -13,6 +13,7 @@ export Drawer from "./Drawer/Drawer";
 export DriveCapacity from "./DriveCapacity/DriveCapacity";
 export DropDownMenu from "./DropDownMenu/DropDownMenu";
 export EditableText from "./EditableText/EditableText";
+export EmptyData from "./EmptyData/EmptyData";
 export FeedCard from "./FeedCard/FeedCard";
 export FileDnD from "./FileDnD/FileDnD";
 export FlatButton from "./FlatButton/FlatButton";
