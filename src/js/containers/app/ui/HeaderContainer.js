@@ -240,17 +240,17 @@ export class HeaderContainer extends Component {
             <LayoutButton
               icon={<RandomGridIcon />}
               value={Layout.RANDOM_GRID}
-              tooltip="Pinterest"
+              tooltip="ギャラリー表示"
             />
             <LayoutButton
               icon={<GridIcon />}
               value={Layout.GRID}
-              tooltip="グリッド"
+              tooltip="グリッド表示"
             />
             <LayoutButton
               icon={<ListIcon />}
               value={Layout.LIST}
-              tooltip="リスト"
+              tooltip="リスト表示"
             />
           </LayoutButtonGroup>
         </div>
