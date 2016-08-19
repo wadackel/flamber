@@ -1,20 +1,24 @@
 /* eslint-disable */
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
+import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../../helpers/bem";
+import ExecutionEnvironment from "../../../constants/execution-environment";
 import * as OrderBy from "../../../constants/order-by";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
 import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/boards";
-import { TrashIcon } from "../../../components/svg-icons/";
+import { TrashIcon, BoardIcon } from "../../../components/svg-icons/";
 import {
   CardGroup,
   BoardCard,
   IconButton,
+  EmptyData,
   ToolBox,
-  SortSwitcher
+  SortSwitcher,
+  RaisedButton
 } from "../../../components/ui/";
 
 const b = bem("boards-page");
@@ -55,6 +59,41 @@ export class BoardsPage extends Component {
     this.props.dispatch(SettingActions.updateBoardsOrderRequest(order));
   }
 
+  handleAddBoardClick() {
+    this.props.dispatch(BoardActions.addBoardDialogOpen());
+  }
+
+  renderEmptyData() {
+    const { boards } = this.props;
+
+    if (
+      !ExecutionEnvironment.canUseDOM ||
+      boards.isFetching ||
+      boards.results.length > 0
+    ) {
+      return null;
+    }
+
+    return <EmptyData
+      title="No boards"
+      icon={<BoardIcon />}
+      action={<RaisedButton onClick={this.handleAddBoardClick}>Add board</RaisedButton>}
+    >
+      ボードがありません。<br />
+      新しいボードを追加しましょう。
+    </EmptyData>;
+  }
+
+  renderFetchingSpinner() {
+    const { boards } = this.props;
+
+    if (!ExecutionEnvironment.canUseDOM || !boards.isFetching) return null;
+
+    return <MDSpinner
+      className={b("fetching-spinner")}
+    />;
+  }
+
   render() {
     const {
       settings: {
@@ -86,6 +125,9 @@ export class BoardsPage extends Component {
             onOrderChange={this.handleOrderChange}
           />
         </div>
+
+        {this.renderEmptyData()}
+        {this.renderFetchingSpinner()}
 
         <CardGroup
           columnWidth={300}

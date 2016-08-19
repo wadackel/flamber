@@ -1,5 +1,11 @@
 .boards-page {
   display: block;
+  position: relative;
   width: auto;
   padding: 0 0 60px;
+
+  &__fetching-spinner {
+    display: block !important;
+    margin: 60px auto;
+  }
 }
