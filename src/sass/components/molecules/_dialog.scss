@@ -87,31 +87,36 @@
     }
   }
 
+  &__horizontal,
+  &__vertical {
+    transition-property: all;
+    transition-timing-function: $transition-easing;
+  }
+
   &__horizontal {
     @include relative(auto, auto, auto, auto, 1000);
-    @include transition(all);
     margin: auto;
     opacity: 0;
 
     .open-enter & {
       transform: scaleX(.4);
-      transition-duration: #{$dialog-enter-duration / 2}ms;
       opacity: 0;
     }
 
     .open-enter-active & {
       transform: scaleX(1);
+      transition-duration: #{$dialog-enter-duration / 2}ms;
       opacity: 1;
     }
 
     .open-leave & {
       transform: scaleX(1);
-      transition-duration: #{$dialog-leave-duration / 2}ms;
       opacity: 1;
     }
 
     .open-leave-active & {
       transform: scaleX(.4);
+      transition-duration: #{$dialog-leave-duration / 2}ms;
       opacity: .01;
     }
 
@@ -122,29 +127,28 @@
   }
 
   &__vertical {
-    @include transition(all, #{$dialog-enter-duration}ms);
     transform: scaleY(.4) translateY(40px);
     opacity: 0;
 
     .open-enter & {
       transform: scaleY(.4) translateY(40px);
-      transition-duration: #{$dialog-enter-duration}ms;
       opacity: 0;
     }
 
     .open-enter-active & {
       transform: scaleY(1) translateY(0);
+      transition-duration: #{$dialog-enter-duration}ms;
       opacity: 1;
     }
 
     .open-leave & {
       transform: scaleY(1) translateY(0);
-      transition-duration: #{$dialog-leave-duration}ms;
       opacity: 1;
     }
 
     .open-leave-active & {
       transform: scaleY(.4) translateY(10px);
+      transition-duration: #{$dialog-leave-duration}ms;
       opacity: .01;
     }
 

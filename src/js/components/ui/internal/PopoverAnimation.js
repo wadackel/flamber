@@ -1,5 +1,6 @@
 const IScroll = typeof window !== "undefined" ? require("iscroll") : null;
 
+import _ from "lodash";
 import React, { PropTypes } from "react";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import prefixer from "../../../helpers/prefixer";
@@ -22,6 +23,10 @@ export default class PopoverAnimation extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = { open: false };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
   componentDidMount() {

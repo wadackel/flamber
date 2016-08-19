@@ -17,8 +17,8 @@ const history = syncHistoryWithStore(browserHistory, store);
 if (process.env.NODE_ENV !== "production") {
   // const { whyDidYouUpdate } = require("why-did-you-update");
   // whyDidYouUpdate(React);
-  //
-  // window.Perf = require("react-addons-perf");
+
+  window.Perf = require("react-addons-perf");
 }
 
 render(

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component, PropTypes } from "react";
@@ -36,6 +37,10 @@ class DialogInline extends Component {
     this.afterRendeFocus = false;
 
     autoBind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !_.isEqual(this.props, nextProps);
   }
 
   componentWillReceiveProps(nextProps) {
