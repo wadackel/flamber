@@ -95,6 +95,12 @@ export default handleActions({
   ),
 
 
+  // Move
+  [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => (
+    mergeEntities(state, payload.entities.items)
+  ),
+
+
   // Select
   [Items.SELECT_ITEM_TOGGLE]: (state, { payload }) => (
     _.mapValues(state, entity =>
@@ -207,15 +213,8 @@ export default handleActions({
     )
   ),
 
-  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload, meta }) => (
-    _.mapValues(state, entity =>
-      payload.result.items.indexOf(entity.id) < 0 ? entity : {
-        ...entity,
-        board: payload.entities.items[entity.id].board,
-        select: false,
-        isMoving: false
-      }
-    )
+  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => (
+    mergeEntities(state, payload.entities.items)
   ),
 
   [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload, meta }) => (
