@@ -2,8 +2,13 @@ $header-main-height: 60px;
 
 .header {
   @include fixed(0, 0, auto, 0, 999);
-  background: $gray-light;
-  box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+
+  &__body {
+    position: relative;
+    background: $gray-light;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+    z-index: 10;
+  }
 
   &__row {
     display: flex;
@@ -177,7 +182,6 @@ $header-main-height: 60px;
   }
 
   &__setting {
-
     .icon-button__icon {
       vertical-align: middle;
 
@@ -189,6 +193,16 @@ $header-main-height: 60px;
   }
 
   &__colorbar {
-    @include absolute(100%, 0, auto, 0, 10);
+    @include absolute(100%, 0, auto, 0, 5);
+    @include transition(all, $transition-duration-fast);
+    transform: translateY(-5px);
+    opacity: 0;
+    visibility: hidden;
+
+    &--show {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
   }
 }

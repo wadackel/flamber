@@ -33,6 +33,7 @@ const b = bem("header");
 export default class Header extends Component {
   static propTypes = {
     user: PropTypes.object,
+    showColorBar: PropTypes.bool,
     color: PropTypes.string,
     navItems: PropTypes.node,
     mainTitle: PropTypes.node,
@@ -45,6 +46,7 @@ export default class Header extends Component {
   };
 
   static defaultProps = {
+    showColorBar: false,
     onLogoClick: () => {},
     onSettingsClick: () => {},
     onColorChange: () => {}
@@ -109,6 +111,7 @@ export default class Header extends Component {
   render() {
     const {
       user,
+      showColorBar,
       color,
       navItems,
       mainTitle,
@@ -127,47 +130,49 @@ export default class Header extends Component {
 
     return (
       <header className={b()}>
-        <div className={b("row", { main: true })()}>
-          <div className={b("col", { "main-left": true })()}>
-            <h1 className={b("logo")()}><LogoButton onClick={onLogoClick} /></h1>
-            <Nav className={b("nav")()}>
-              {navItemElements}
-            </Nav>
+        <div className={b("body")()}>
+          <div className={b("row", { main: true })()}>
+            <div className={b("col", { "main-left": true })()}>
+              <h1 className={b("logo")()}><LogoButton onClick={onLogoClick} /></h1>
+              <Nav className={b("nav")()}>
+                {navItemElements}
+              </Nav>
+            </div>
+            {mainTitle && <div className={b("col", { "main-center": true })()}>
+              <div className={b("main-title")()}>
+                {mainTitle}
+              </div>
+            </div>}
+            <div className={b("col", { "main-right": true })()}>
+              <div className={b("user")()}>
+                <Avatar
+                  className={b("user__avatar")()}
+                  name={user.name}
+                  email={user.email}
+                  icon={user.icon}
+                  onIconClick={this.handleUserDropDownClick}
+                />
+                <UserDropDown
+                  className={b("user__drop-down")()}
+                  open={userDropDownOpen}
+                  triggerElement={userDropDownTrigger}
+                  limit={parseInt(user.limit, 10)}
+                  usage={parseInt(user.usage, 10)}
+                  onRequestClose={this.handleUserDropDownRequestClose}
+                  onRequestSignOut={this.handleSignOut}
+                />
+              </div>
+              <div className={b("setting")()}>
+                <IconButton icon={<CogIcon />} onClick={onSettingsClick} />
+              </div>
+            </div>
           </div>
-          {mainTitle && <div className={b("col", { "main-center": true })()}>
-            <div className={b("main-title")()}>
-              {mainTitle}
-            </div>
-          </div>}
-          <div className={b("col", { "main-right": true })()}>
-            <div className={b("user")()}>
-              <Avatar
-                className={b("user__avatar")()}
-                name={user.name}
-                email={user.email}
-                icon={user.icon}
-                onIconClick={this.handleUserDropDownClick}
-              />
-              <UserDropDown
-                className={b("user__drop-down")()}
-                open={userDropDownOpen}
-                triggerElement={userDropDownTrigger}
-                limit={parseInt(user.limit, 10)}
-                usage={parseInt(user.usage, 10)}
-                onRequestClose={this.handleUserDropDownRequestClose}
-                onRequestSignOut={this.handleSignOut}
-              />
-            </div>
-            <div className={b("setting")()}>
-              <IconButton icon={<CogIcon />} onClick={onSettingsClick} />
-            </div>
-          </div>
+
+          {this.renderSubHeader()}
         </div>
 
-        {this.renderSubHeader()}
-
         <ColorBar
-          className={b("colorbar")()}
+          className={b("colorbar", { show: showColorBar })()}
           palette={palette}
           color={color}
           onChange={this.handleColorChange}

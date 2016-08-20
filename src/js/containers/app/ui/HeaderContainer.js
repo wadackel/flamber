@@ -167,6 +167,7 @@ export class HeaderContainer extends Component {
 
     return {
       activeNavItem: NavItemActive.BOARDS,
+      showColorBar: false,
       subLeft: this.getHeaderMyItemsSubLeft(),
       subRight: (
         <div style={{ display: hasSelectedBoard ? "none" : "block" }}>
@@ -204,6 +205,7 @@ export class HeaderContainer extends Component {
 
     return {
       activeNavItem,
+      showColorBar: true,
       mainTitle: currentBoard && (
         <div>
           <EditableText
@@ -260,14 +262,16 @@ export class HeaderContainer extends Component {
 
   getHeaderFeedsProps() {
     return {
-      activeNavItem: NavItemActive.FEEDS
+      activeNavItem: NavItemActive.FEEDS,
+      showColorBar: false
       /* TODO */
     };
   }
 
   getHeaderSettingsProps() {
     return {
-      mainTitle: <span>Settings</span>
+      mainTitle: <span>Settings</span>,
+      showColorBar: false
     };
   }
 
@@ -312,12 +316,14 @@ export class HeaderContainer extends Component {
 
     const {
       activeNavItem,
+      showColorBar,
       ...headerProps
     } = this.getHeaderProps();
 
     return (
       <Header
         user={user}
+        showColorBar={showColorBar}
         color={items.currentColor}
         navItems={[
           <NavItem
