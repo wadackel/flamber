@@ -23,7 +23,7 @@ import {
   CogIcon,
   LogoIcon,
   PencilIcon,
-  RandomGridIcon,
+  GalleryIcon,
   GridIcon,
   ListIcon
 } from "../../svg-icons/";

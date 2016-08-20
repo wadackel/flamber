@@ -23,7 +23,7 @@ export PencilIcon from "./PencilIcon";
 export PictureLinkIcon from "./PictureLinkIcon";
 export PicturesIcon from "./PicturesIcon";
 export PlusIcon from "./PlusIcon";
-export RandomGridIcon from "./RandomGridIcon";
+export GalleryIcon from "./GalleryIcon";
 export ResizeIcon from "./ResizeIcon";
 export SearchIcon from "./SearchIcon";
 export ShapeIcon from "./ShapeIcon";

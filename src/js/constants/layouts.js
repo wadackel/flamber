@@ -1,3 +1,3 @@
-export const RANDOM_GRID = "random-grid";
+export const GALLERY = "gallery";
 export const GRID = "grid";
 export const LIST = "list";

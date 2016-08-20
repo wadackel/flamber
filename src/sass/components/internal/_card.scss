@@ -127,8 +127,8 @@ $card-border-radius: 3px;
   }
 
 
-  // Random grid
-  &--random-grid {
+  // Gallery
+  &--gallery {
     @extend %card-root;
 
     &--selected {

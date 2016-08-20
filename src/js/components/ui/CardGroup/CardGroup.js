@@ -17,7 +17,7 @@ export default class CardGroup extends Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    layout: PropTypes.oneOf([Layout.RANDOM_GRID, Layout.GRID, Layout.LIST]),
+    layout: PropTypes.oneOf([Layout.GALLERY, Layout.GRID, Layout.LIST]),
     columnWidth: PropTypes.number,
     gutter: PropTypes.number
   };

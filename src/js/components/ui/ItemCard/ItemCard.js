@@ -31,7 +31,7 @@ import {
 export default class ItemCard extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    layout: PropTypes.oneOf([Layout.RANDOM_GRID, Layout.GRID, Layout.LIST]),
+    layout: PropTypes.oneOf([Layout.GALLERY, Layout.GRID, Layout.LIST]),
     style: PropTypes.object,
     processing: PropTypes.bool,
     selected: PropTypes.bool,
@@ -101,7 +101,7 @@ export default class ItemCard extends React.Component {
     ];
   }
 
-  renderGrid(isRandomGrid) {
+  renderGrid(isGallery) {
     const {
       className,
       style,
@@ -116,7 +116,7 @@ export default class ItemCard extends React.Component {
       colors
     } = this.props;
 
-    const baseClassName = `item-card${isRandomGrid ? "--random-grid" : ""}`;
+    const baseClassName = `item-card${isGallery ? "--gallery" : ""}`;
     const b = bem(baseClassName);
     const modifier = { selected };
 
@@ -133,7 +133,7 @@ export default class ItemCard extends React.Component {
           baseClassName={baseClassName}
           image={image}
           selected={selected}
-          style={isRandomGrid ? {
+          style={isGallery ? {
             paddingBottom: `${(imageHeight / imageWidth) * 100}%`
           } : {}}
           overlay={<CardOverlay
@@ -226,7 +226,7 @@ export default class ItemCard extends React.Component {
     const { layout } = this.props;
 
     switch (layout) {
-      case Layout.RANDOM_GRID:
+      case Layout.GALLERY:
         return this.renderGrid(true);
       case Layout.GRID:
         return this.renderGrid(false);

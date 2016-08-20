@@ -32,7 +32,7 @@ import {
   TagsIcon,
   StarIcon,
   PencilIcon,
-  RandomGridIcon,
+  GalleryIcon,
   GridIcon,
   ListIcon
 } from "../../../components/svg-icons/";
@@ -238,8 +238,8 @@ export class HeaderContainer extends Component {
             onChange={this.handleItemsLayoutChange}
           >
             <LayoutButton
-              icon={<RandomGridIcon />}
-              value={Layout.RANDOM_GRID}
+              icon={<GalleryIcon />}
+              value={Layout.GALLERY}
               tooltip="ギャラリー表示"
             />
             <LayoutButton
