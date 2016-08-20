@@ -109,7 +109,7 @@ export default handleActions({
   // Select all
   [Items.SELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
     _.mapValues(state, entity =>
-      payload.indexOf(entity.id) < 0 ? entity : {
+      !payload.some(o => o.id === entity.id) ? entity : {
         ...entity,
         select: true
       }
@@ -120,7 +120,7 @@ export default handleActions({
   // Unselect all
   [Items.UNSELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
     _.mapValues(state, entity =>
-      payload.indexOf(entity.id) < 0 ? entity : {
+      !payload.some(o => o.id === entity.id) ? entity : {
         ...entity,
         select: false
       }
@@ -131,7 +131,7 @@ export default handleActions({
   // Select star item
   [Items.SELECT_STAR_ITEM_EXEC]: (state, { payload }) => (
     _.mapValues(state, entity =>
-      payload.indexOf(entity.id) < 0 ? entity : {
+      !payload.some(o => o.id === entity.id) ? entity : {
         ...entity,
         select: entity.star
       }

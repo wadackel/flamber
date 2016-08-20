@@ -6,7 +6,6 @@ import * as Services from "../../services/items";
 import * as Notifications from "../../actions/notifications";
 import * as Items from "../../actions/items";
 import { getBoardEntityById } from "../../selectors/boards";
-import { setItemResultsByBoardId } from "./helpers";
 
 
 export function *handleAddItemRequest() {
@@ -28,15 +27,6 @@ export function *handleAddItemRequest() {
 export function *handleAddItemSuccess({ payload }) {
   const item = payload.entities.items[payload.result.item];
   const board = yield select(getBoardEntityById, item.board);
-  const currentBoardId = yield select(state => state.boards.currentBoardId);
-
-  if (currentBoardId && currentBoardId === board.id) {
-    yield setItemResultsByBoardId(board.id);
-
-  } else if (!currentBoardId) {
-    const results = yield select(state => state.items.results);
-    yield put(Items.setItemResults([...results, payload.result.item]));
-  }
 
   yield put(Notifications.showNotify(`${board.name}にアイテムを追加しました`, {
     type: Items.GOTO_ADDED_ITEM,

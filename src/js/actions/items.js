@@ -1,14 +1,14 @@
 import { createAction } from "redux-actions";
 
 
-// Set results
-export const SET_ITEM_RESULTS = "SET_ITEM_RESULTS";
-export const setItemResults = createAction(SET_ITEM_RESULTS);
-
-
 // Set color
 export const SET_ITEM_CURRENT_COLOR = "SET_ITEM_CURRENT_COLOR";
 export const setItemCurrentColor = createAction(SET_ITEM_CURRENT_COLOR);
+
+
+// Ser visibility filters
+export const SET_ITEM_VISIBILITY_FILTER = "SET_ITEM_VISIBILITY_FILTER";
+export const setItemVisibilityFilter = createAction(SET_ITEM_VISIBILITY_FILTER);
 
 
 // Background sync

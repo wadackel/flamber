@@ -1,13 +1,9 @@
 /* eslint-disable */
 import _ from "lodash";
+import * as ItemVisibilityFilters from "../constants/item-visibility-filters";
 import * as OrderBy from "../constants/order-by";
 import * as Order from "../constants/order";
 import { getBoardEntityById } from "./boards";
-
-const Default = {
-  OrderBy: OrderBy.CREATED,
-  Order: Order.ASC
-};
 
 function getOrderByProp(orderBy) {
   switch (orderBy) {
@@ -22,13 +18,7 @@ function getOrderByProp(orderBy) {
   }
 }
 
-export function getItemEntityById(state, id) {
-  return state.entities.items[id];
-}
-
-export function getItemEntities(state, orderBy = Default.OrderBy, order = Default.Order) {
-  const entities = state.items.results.map(id => getItemEntityById(state, id));
-
+function sortEntities(entities, orderBy, order) {
   return _.orderBy(
     entities,
     [getOrderByProp(orderBy)],
@@ -36,13 +26,38 @@ export function getItemEntities(state, orderBy = Default.OrderBy, order = Defaul
   );
 }
 
-export function getItemEntitiesByBoardId(state, boardId) {
-  const board = getBoardEntityById(state, boardId);
-  return !board ? [] : board.items.map(id => state.entities.items[id]);
+export function getItemEntityById(state, id) {
+  return state.entities.items[id];
 }
 
-export function getItemEntitiesByColor(state, color, orderBy = Default.OrderBy, order = Default.Order) {
-  return getItemEntities(state, orderBy, order).filter(entity => entity.palette.indexOf(color) > -1);
+export function getItemEntities(state) {
+  return _.values(state.entities.items);
+}
+
+export function getVisibleItemEntities(state) {
+  const { items, boards } = state;
+  const { visibilityFilter, currentColor } = items;
+  const { currentBoardId } = boards;
+  let entities = getItemEntities(state);
+  entities = currentColor ? entities.filter(entity => entity.palette.indexOf(currentColor) > -1) : entities;
+
+  switch (visibilityFilter) {
+    case ItemVisibilityFilters.SHOW_ITEM_ALL:
+      return entities;
+
+    case ItemVisibilityFilters.SHOW_ITEM_CURRENT_BOARD:
+      return entities.filter(entity => entity.board === currentBoardId);
+
+    case ItemVisibilityFilters.SHOW_ITEM_STAR:
+      return entities.filter(entity => entity.star);
+  }
+}
+
+export function getItemEntitiesByBoardId(state, boardId) {
+  const { itemsOrderBy, itemsOrder } = state.settings;
+  const board = getBoardEntityById(state, boardId);
+  const entities = !board ? [] : board.items.map(id => state.entities.items[id]);
+  return sortEntities(entities, itemsOrderBy, itemsOrder);
 }
 
 export function getSelectedItemEntities(state) {

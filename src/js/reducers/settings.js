@@ -7,6 +7,7 @@ import * as Settings from "../actions/settings";
 
 const initialState = {
   isFetching: false,
+  error: null,
 
   theme: Themes.DEFAULT,
   isThemeUpdating: false,

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import _ from "lodash";
 import { handleActions } from "redux-actions";
+import * as ItemVisibilityFilters from "../constants/item-visibility-filters";
 import * as Boards from "../actions/boards";
 import * as Items from "../actions/items";
 
@@ -9,9 +10,9 @@ const initialState = {
   isAdding: false,
   isMoving: false,
   error: null,
-  results: [],
   currentItemId: null,
   currentColor: null,
+  visibilityFilter: ItemVisibilityFilters.SHOW_ITEM_ALL,
   addDialogOpen: false,
   addSnackbarOpen: false,
   moveItems: [],
@@ -19,13 +20,6 @@ const initialState = {
 };
 
 export default handleActions({
-  // Set results
-  [Items.SET_ITEM_RESULTS]: (state, { payload }) => ({
-    ...state,
-    results: payload
-  }),
-
-
   // Set currentColor
   [Items.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({
     ...state,
@@ -33,17 +27,22 @@ export default handleActions({
   }),
 
 
+  // Set visibility filter
+  [Items.SET_ITEM_VISIBILITY_FILTER]: (state, { payload }) => ({
+    ...state,
+    visibilityFilter: payload
+  }),
+
+
   // Fetch
   [Items.FETCH_ITEMS_REQUEST]: state => ({
     ...state,
-    isFetching: true,
-    results: []
+    isFetching: true
   }),
 
   [Items.FETCH_ITEMS_SUCCESS]: (state, { payload }) => ({
     ...state,
-    isFetching: false,
-    results: payload.result.items
+    isFetching: false
   }),
 
   [Items.FETCH_ITEMS_FAILURE]: (state, { payload }) => ({
@@ -91,13 +90,6 @@ export default handleActions({
     error: payload,
     addDialogOpen: false,
     addSnackbarOpen: true
-  }),
-
-
-  // Delete
-  [Items.DELETE_ITEM_SUCCESS]: (state, { payload }) => ({
-    ...state,
-    results: state.results.filter(id => id !== payload.id)
   }),
 
 
@@ -161,12 +153,5 @@ export default handleActions({
     isMoving: false,
     error: payload,
     selectBoardDialogOpen: false
-  }),
-
-
-  // Selected delete
-  [Items.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => ({
-    ...state,
-    results: state.results.filter(id => !payload.some(o => o.id === id))
   })
 }, initialState);

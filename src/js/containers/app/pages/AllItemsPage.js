@@ -2,6 +2,7 @@ import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import bem from "../../../helpers/bem";
+import * as ItemVisibilityFilters from "../../../constants/item-visibility-filters";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import { ItemsContainer } from "../ui/";
@@ -22,7 +23,9 @@ export class AllItemsPage extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(ItemActions.fetchItemsRequest());
+    this.props.dispatch(ItemActions.setItemVisibilityFilter(
+      ItemVisibilityFilters.SHOW_ITEM_ALL
+    ));
   }
 
   handleAddBoardClick() {
@@ -58,7 +61,9 @@ export class AllItemsPage extends Component {
   renderEmptyData() {
     const { boards } = this.props;
 
-    return boards.results.length === 0 ? this.renderBoardEmptyData() : this.renderItemEmptyData();
+    return boards.results.length === 0
+      ? this.renderBoardEmptyData()
+      : this.renderItemEmptyData();
   }
 
   render() {

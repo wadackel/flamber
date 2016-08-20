@@ -12,8 +12,7 @@ import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import { getBoardEntities, getCurrentBoard } from "../../../selectors/boards";
 import {
-  getItemEntities,
-  getItemEntitiesByColor,
+  getVisibleItemEntities,
   getSelectedItemEntities
 } from "../../../selectors/items";
 import ExecutionEnvironment from "../../../constants/execution-environment";
@@ -119,12 +118,17 @@ export class ItemsContainer extends Component {
   }
 
   renderEmptyData() {
-    const { items, boards, emptyComponent } = this.props;
+    const {
+      boards,
+      items,
+      itemEntities,
+      emptyComponent
+    } = this.props;
 
     if (
       !ExecutionEnvironment.canUseDOM ||
       items.isFetching ||
-      items.results.length > 0 ||
+      itemEntities.length > 0 ||
       boards.isFetching
     ) {
       return null;
@@ -270,23 +274,15 @@ export class ItemsContainer extends Component {
 }
 
 export default connect(
-  state => {
-    const { currentColor } = state.items;
-    const { itemsOrderBy, itemsOrder } = state.settings;
-
-    return {
-      settings: state.settings,
-      boards: state.boards,
-      boardEntities: getBoardEntities(state),
-      items: state.items,
-      itemEntities: currentColor
-        ? getItemEntitiesByColor(state, currentColor, itemsOrderBy, itemsOrder)
-        : getItemEntities(state, itemsOrderBy, itemsOrder)
-      ,
-      selectedItemEntities: getSelectedItemEntities(state),
-      currentBoard: getCurrentBoard(state)
-    };
-  },
+  state => ({
+    settings: state.settings,
+    boards: state.boards,
+    boardEntities: getBoardEntities(state),
+    items: state.items,
+    itemEntities: getVisibleItemEntities(state),
+    selectedItemEntities: getSelectedItemEntities(state),
+    currentBoard: getCurrentBoard(state)
+  }),
   null,
   null,
   { pure: false }

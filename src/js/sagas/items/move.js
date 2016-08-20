@@ -6,7 +6,7 @@ import ItemSchema from "../../schemas/item";
 import * as Services from "../../services/items";
 import * as Notifications from "../../actions/notifications";
 import * as Items from "../../actions/items";
-import { getBoardEntityById, getCurrentBoard } from "../../selectors/boards";
+import { getBoardEntityById } from "../../selectors/boards";
 import { getMoveItemEntities, getSelectedItemEntities } from "../../selectors/items";
 
 
@@ -30,15 +30,9 @@ export function *handleMoveItemRequest() {
   }
 }
 
-function *handleMoveItemSuccess({ payload, meta }) {
+function *handleMoveItemSuccess({ payload }) {
   const item = payload.entities.items[payload.result.items[0]];
   const nextBoard = yield select(getBoardEntityById, item.board);
-  const currentBoard = yield select(getCurrentBoard);
-
-  if (currentBoard && currentBoard.id === meta.prevBoard) {
-    const results = currentBoard.items.filter(id => id !== item.id);
-    yield put(Items.setItemResults(results));
-  }
 
   yield put(Notifications.showNotify(`${nextBoard.name}に移動しました`, {
     type: Items.GOTO_AFTER_MOVE_ITEM_BOARD,
@@ -72,15 +66,9 @@ export function *handleSelectedItemsMoveRequest() {
   }
 }
 
-function *handleSelectedItemsMoveSuccess({ payload, meta }) {
+function *handleSelectedItemsMoveSuccess({ payload }) {
   const items = payload.result.items.map(id => payload.entities.items[id]);
   const nextBoard = yield select(getBoardEntityById, items[0].board);
-  const currentBoard = yield select(getCurrentBoard);
-
-  if (currentBoard && meta.prevBoards.indexOf(currentBoard.id) > -1) {
-    const results = currentBoard.items.filter(id => payload.result.items.indexOf(id) < 0);
-    yield put(Items.setItemResults(results));
-  }
 
   yield put(Notifications.showNotify(`${items.length}個のアイテムを${nextBoard.name}へ移動しました`, {
     type: Items.GOTO_AFTER_MOVE_ITEM_BOARD,

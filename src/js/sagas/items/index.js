@@ -8,7 +8,7 @@ import fetchItemSaga from "./fetch";
 import moveItemSaga from "./move";
 import deleteItemSaga from "./delete";
 import selectItemSaga from "./select";
-import resultsItemSaga from "./results";
+import visibilityFilterSaga from "./visibility-filter";
 
 ItemSchema.define({
   board: BoardSchema
@@ -23,6 +23,6 @@ export default function *itemsSaga() {
     fork(moveItemSaga),
     fork(deleteItemSaga),
     fork(selectItemSaga),
-    fork(resultsItemSaga)
+    fork(visibilityFilterSaga)
   ];
 }
