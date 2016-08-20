@@ -2,6 +2,7 @@
 import _ from "lodash";
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
+import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as OrderBy from "../../../constants/order-by";
@@ -15,6 +16,7 @@ import {
   getItemEntitiesByColor,
   getSelectedItemEntities
 } from "../../../selectors/items";
+import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
 import {
   CardGroup,
@@ -116,6 +118,34 @@ export class ItemsContainer extends Component {
     return entities.every(entity => entity.favorite);
   }
 
+  renderEmptyData() {
+    const { items, boards, emptyComponent } = this.props;
+
+    if (
+      !ExecutionEnvironment.canUseDOM ||
+      items.isFetching ||
+      items.results.length > 0 ||
+      boards.isFetching
+    ) {
+      return null;
+    }
+
+    return emptyComponent;
+  }
+
+  renderFetchingSpinner() {
+    const { items, boards } = this.props;
+
+    if (
+      (!ExecutionEnvironment.canUseDOM || !items.isFetching) &&
+      !boards.isFetching
+    ) {
+      return null;
+    }
+
+    return <MDSpinner className={b("fetching-spinner")()} />;
+  }
+
   render() {
     const {
       boards,
@@ -162,6 +192,9 @@ export class ItemsContainer extends Component {
             onOrderChange={this.handleOrderChange}
           />
         </div>
+
+        {this.renderEmptyData()}
+        {this.renderFetchingSpinner()}
 
         <CardGroup
           columnWidth={itemsSize}

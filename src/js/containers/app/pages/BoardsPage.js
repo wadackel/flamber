@@ -89,9 +89,7 @@ export class BoardsPage extends Component {
 
     if (!ExecutionEnvironment.canUseDOM || !boards.isFetching) return null;
 
-    return <MDSpinner
-      className={b("fetching-spinner")}
-    />;
+    return <MDSpinner className={b("fetching-spinner")()} />;
   }
 
   render() {

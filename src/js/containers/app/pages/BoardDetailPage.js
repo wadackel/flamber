@@ -5,8 +5,11 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import bem from "../../../helpers/bem";
 import * as BoardActions from "../../../actions/boards";
+import * as ItemActions from "../../../actions/items";
 import { getCurrentBoard } from "../../../selectors/boards";
 import { ItemsContainer } from "../ui/";
+import { EmptyData, RaisedButton } from "../../../components/ui/";
+import { PictureLinkIcon } from "../../../components/svg-icons/";
 
 const b = bem("board-detail-page");
 
@@ -16,6 +19,11 @@ export class BoardDetailPage extends Component {
 
   static defaultProps = {
   };
+
+  constructor(props, context) {
+    super(props, context);
+    autoBind(this);
+  }
 
   componentDidMount() {
     this.props.dispatch(BoardActions.setCurrentBoard(this.props.params.id));
@@ -33,8 +41,25 @@ export class BoardDetailPage extends Component {
     this.props.dispatch(BoardActions.setCurrentBoard(null));
   }
 
+  handleAddItemClick() {
+    this.props.dispatch(ItemActions.addItemDialogOpen());
+  }
+
   render() {
-    return <ItemsContainer />;
+    return (
+      <div className={b()}>
+        <ItemsContainer
+          emptyComponent={<EmptyData
+            title="No items"
+            icon={<PictureLinkIcon />}
+            action={<RaisedButton onClick={this.handleAddItemClick}>Add item</RaisedButton>}
+          >
+            アイテムがありません。<br />
+            新しいアイテムを追加しましょう。
+          </EmptyData>}
+        />
+      </div>
+    );
   }
 }
 
