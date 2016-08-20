@@ -58,14 +58,14 @@ export const GOTO_ADDED_ITEM = "GOTO_ADDED_ITEM";
 export const gotoAddedItem = createAction(GOTO_ADDED_ITEM);
 
 
-// Favorite
-export const FAVORITE_ITEM_TOGGLE_REQUEST = "FAVORITE_ITEM_TOGGLE_REQUEST";
-export const FAVORITE_ITEM_TOGGLE_SUCCESS = "FAVORITE_ITEM_TOGGLE_SUCCESS";
-export const FAVORITE_ITEM_TOGGLE_FAILURE = "FAVORITE_ITEM_TOGGLE_FAILURE";
+// Star
+export const STAR_ITEM_TOGGLE_REQUEST = "STAR_ITEM_TOGGLE_REQUEST";
+export const STAR_ITEM_TOGGLE_SUCCESS = "STAR_ITEM_TOGGLE_SUCCESS";
+export const STAR_ITEM_TOGGLE_FAILURE = "STAR_ITEM_TOGGLE_FAILURE";
 
-export const favoriteItemToggleRequest = createAction(FAVORITE_ITEM_TOGGLE_REQUEST);
-export const favoriteItemToggleSuccess = createAction(FAVORITE_ITEM_TOGGLE_SUCCESS);
-export const favoriteItemToggleFailure = createAction(FAVORITE_ITEM_TOGGLE_FAILURE,
+export const starItemToggleRequest = createAction(STAR_ITEM_TOGGLE_REQUEST);
+export const starItemToggleSuccess = createAction(STAR_ITEM_TOGGLE_SUCCESS);
+export const starItemToggleFailure = createAction(STAR_ITEM_TOGGLE_FAILURE,
   null,
   (payload, id) => id
 );
@@ -134,13 +134,13 @@ export const unselectAllItem = createAction(UNSELECT_ALL_ITEM,
 );
 
 
-// Select favorite items
-export const SELECT_FAVORITE_ITEM_EXEC = "SELECT_FAVORITE_ITEM_EXEC";
-export const SELECT_FAVORITE_ITEM = "SELECT_FAVORITE_ITEM";
-export const selectFavoriteItemExec = createAction(SELECT_FAVORITE_ITEM_EXEC);
-export const selectFavoriteItem = createAction(SELECT_FAVORITE_ITEM,
+// Select star items
+export const SELECT_STAR_ITEM_EXEC = "SELECT_STAR_ITEM_EXEC";
+export const SELECT_STAR_ITEM = "SELECT_STAR_ITEM";
+export const selectStarItemExec = createAction(SELECT_STAR_ITEM_EXEC);
+export const selectStarItem = createAction(SELECT_STAR_ITEM,
   null,
-  () => selectFavoriteItemExec
+  () => selectStarItemExec
 );
 
 
@@ -164,14 +164,14 @@ export const selectedItemsMoveFailure = createAction(SELECTED_ITEMS_MOVE_FAILURE
 );
 
 
-// Selected items favorite
-export const SELECTED_ITEMS_FAVORITE_REQUEST = "SELECTED_ITEMS_FAVORITE_REQUEST";
-export const SELECTED_ITEMS_FAVORITE_SUCCESS = "SELECTED_ITEMS_FAVORITE_SUCCESS";
-export const SELECTED_ITEMS_FAVORITE_FAILURE = "SELECTED_ITEMS_FAVORITE_FAILURE";
+// Selected items star
+export const SELECTED_ITEMS_STAR_REQUEST = "SELECTED_ITEMS_STAR_REQUEST";
+export const SELECTED_ITEMS_STAR_SUCCESS = "SELECTED_ITEMS_STAR_SUCCESS";
+export const SELECTED_ITEMS_STAR_FAILURE = "SELECTED_ITEMS_STAR_FAILURE";
 
-export const selectedItemsFavoriteRequest = createAction(SELECTED_ITEMS_FAVORITE_REQUEST);
-export const selectedItemsFavoriteSuccess = createAction(SELECTED_ITEMS_FAVORITE_SUCCESS);
-export const selectedItemsFavoriteFailure = createAction(SELECTED_ITEMS_FAVORITE_FAILURE,
+export const selectedItemsStarRequest = createAction(SELECTED_ITEMS_STAR_REQUEST);
+export const selectedItemsStarSuccess = createAction(SELECTED_ITEMS_STAR_SUCCESS);
+export const selectedItemsStarFailure = createAction(SELECTED_ITEMS_STAR_FAILURE,
   null,
   (payload, entities) => ({ entities })
 );

@@ -68,8 +68,8 @@ export class ItemsContainer extends Component {
     this.props.dispatch(ItemActions.selectItemToggle(id));
   }
 
-  handleFavorite(id) {
-    this.props.dispatch(ItemActions.favoriteItemToggleRequest(id));
+  handleStar(id) {
+    this.props.dispatch(ItemActions.starItemToggleRequest(id));
   }
 
   handleMove(id) {
@@ -104,18 +104,18 @@ export class ItemsContainer extends Component {
     this.props.dispatch(ItemActions.selectedItemsDeleteRequest());
   }
 
-  handleSelectFavorite() {
+  handleSelectStar() {
     const { dispatch, selectedItemEntities } = this.props;
-    const isAllFavorite = this.isAllFavoriteByItemEntities(selectedItemEntities);
-    dispatch(ItemActions.selectedItemsFavoriteRequest(!isAllFavorite));
+    const isAllStar = this.isAllStarByItemEntities(selectedItemEntities);
+    dispatch(ItemActions.selectedItemsStarRequest(!isAllStar));
   }
 
   handleSelectMenuItemClick(menuItem, value) {
     this.props.dispatch(value());
   }
 
-  isAllFavoriteByItemEntities(entities) {
-    return entities.every(entity => entity.favorite);
+  isAllStarByItemEntities(entities) {
+    return entities.every(entity => entity.star);
   }
 
   renderEmptyData() {
@@ -168,7 +168,7 @@ export class ItemsContainer extends Component {
     } = this.state;
 
     const hasSelectedItems = selectedItemEntities.length > 0;
-    const isAllFavorite = this.isAllFavoriteByItemEntities(selectedItemEntities);
+    const isAllStar = this.isAllStarByItemEntities(selectedItemEntities);
     const selectBoards = boardEntities
       .filter(entity => currentBoard && currentBoard.id !== entity.id)
       .map(entity => ({
@@ -211,10 +211,10 @@ export class ItemsContainer extends Component {
               image={item.thumbnail}
               imageWidth={item.width}
               imageHeight={item.height}
-              favorite={item.favorite}
+              star={item.star}
               colors={item.palette}
               onSelect={this.handleSelect}
-              onFavorite={this.handleFavorite}
+              onStar={this.handleStar}
               onMove={this.handleMove}
               onDelete={this.handleDelete}
             />
@@ -234,9 +234,9 @@ export class ItemsContainer extends Component {
           text={`${selectedItemEntities.length}個のアイテム`}
           actions={[
             <IconButton
-              tooltip={isAllFavorite ? "スターを外す" : "スターを付ける"}
+              tooltip={isAllStar ? "スターを外す" : "スターを付ける"}
               icon={<StarIcon />}
-              onClick={this.handleSelectFavorite}
+              onClick={this.handleSelectStar}
             />,
             <IconButton
               tooltip="移動"
@@ -258,7 +258,7 @@ export class ItemsContainer extends Component {
               {itemEntities.length !== selectedItemEntities.length &&
                 <MenuItem text="すべて選択" value={ItemActions.selectAllItem} />
               }
-              <MenuItem text="スター付きを選択" value={ItemActions.selectFavoriteItem} />
+              <MenuItem text="スター付きを選択" value={ItemActions.selectStarItem} />
               <MenuItem text="選択を解除" value={ItemActions.unselectAllItem} />
             </IconMenu>
           ]}

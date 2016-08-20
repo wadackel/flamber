@@ -11,6 +11,6 @@ export default function *selectItemSaga() {
   yield [
     takeEvery(Items.SELECT_ALL_ITEM, handleSelectItems),
     takeEvery(Items.UNSELECT_ALL_ITEM, handleSelectItems),
-    takeEvery(Items.SELECT_FAVORITE_ITEM, handleSelectItems)
+    takeEvery(Items.SELECT_STAR_ITEM, handleSelectItems)
   ];
 }

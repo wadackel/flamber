@@ -12,7 +12,7 @@ export class StarsPage extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatch(ItemActions.fetchItemsRequest({ favorite: true }));
+    this.props.dispatch(ItemActions.fetchItemsRequest({ star: true }));
   }
 
   render() {

@@ -3,7 +3,7 @@ import BoardSchema from "../../schemas/board";
 import ItemSchema from "../../schemas/item";
 import bgSyncItemSaga from "./bg-sync";
 import addItemSaga from "./add";
-import favoriteItemSaga from "./favorite";
+import starItemSaga from "./star";
 import fetchItemSaga from "./fetch";
 import moveItemSaga from "./move";
 import deleteItemSaga from "./delete";
@@ -18,7 +18,7 @@ export default function *itemsSaga() {
   yield [
     fork(bgSyncItemSaga),
     fork(addItemSaga),
-    fork(favoriteItemSaga),
+    fork(starItemSaga),
     fork(fetchItemSaga),
     fork(moveItemSaga),
     fork(deleteItemSaga),

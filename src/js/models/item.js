@@ -20,7 +20,7 @@ const ItemSchema = new Schema({
   thumbnail: { type: String, default: "" },
   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   palette: { type: Array, default: [] },
-  favorite: { type: Boolean, default: false },
+  star: { type: Boolean, default: false },
   created: { type: Date, default: Date.now },
   modified: { type: Date, default: Date.now },
   lastView: { type: Date, default: Date.now }

@@ -35,7 +35,7 @@ export default class ItemCard extends React.Component {
     style: PropTypes.object,
     processing: PropTypes.bool,
     selected: PropTypes.bool,
-    favorite: PropTypes.bool,
+    star: PropTypes.bool,
     id: PropTypes.any,
     url: PropTypes.string,
     title: PropTypes.string,
@@ -44,7 +44,7 @@ export default class ItemCard extends React.Component {
     imageHeight: PropTypes.number,
     colors: PropTypes.array,
     onSelect: PropTypes.func,
-    onFavorite: PropTypes.func,
+    onStar: PropTypes.func,
     onMove: PropTypes.func,
     onDelete: PropTypes.func,
     onDetailClick: PropTypes.func,
@@ -56,9 +56,9 @@ export default class ItemCard extends React.Component {
     style: {},
     procssing: false,
     selected: false,
-    favorite: false,
+    star: false,
     onSelect: () => {},
-    onFavorite: () => {},
+    onStar: () => {},
     onMove: () => {},
     onDelete: () => {},
     onDetailClick: () => {},
@@ -74,8 +74,8 @@ export default class ItemCard extends React.Component {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
-  handleFavoriteClick() {
-    this.props.onFavorite(this.props.id);
+  handleStarClick() {
+    this.props.onStar(this.props.id);
   }
 
   handleDetailClick() {
@@ -107,7 +107,7 @@ export default class ItemCard extends React.Component {
       style,
       processing,
       selected,
-      favorite,
+      star,
       url,
       title,
       image,
@@ -152,9 +152,9 @@ export default class ItemCard extends React.Component {
           </CardText>
           <CardAction baseClassName={baseClassName}>
             <IconButton
-              className={b("favorite", { active: favorite })()}
-              icon={favorite ? <StarFillIcon /> : <StarIcon />}
-              onClick={this.handleFavoriteClick}
+              className={b("star", { active: star })()}
+              icon={star ? <StarFillIcon /> : <StarIcon />}
+              onClick={this.handleStarClick}
             />
           </CardAction>
         </CardBody>
@@ -171,7 +171,7 @@ export default class ItemCard extends React.Component {
       className,
       processing,
       selected,
-      favorite,
+      star,
       url,
       title,
       image
@@ -206,10 +206,10 @@ export default class ItemCard extends React.Component {
         </CardCol>
         <CardCol baseClassName={baseClassName} className={b("col--meta")()}>
           <IconButton
-            className={b("favorite", { active: favorite })()}
-            icon={favorite ? <StarFillIcon /> : <StarIcon />}
+            className={b("star", { active: star })()}
+            icon={star ? <StarFillIcon /> : <StarIcon />}
             tooltip="スターを付ける"
-            onClick={this.handleFavoriteClick}
+            onClick={this.handleStarClick}
           />
         </CardCol>
         <CardCol baseClassName={baseClassName} className={b("col--more")()}>

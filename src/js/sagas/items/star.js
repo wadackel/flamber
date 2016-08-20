@@ -8,7 +8,7 @@ import * as Items from "../../actions/items";
 import { getItemEntityById, getSelectedItemEntities } from "../../selectors/items";
 
 
-export function *handleFavoriteItemToggleRequest({ payload }) {
+export function *handleStarItemToggleRequest({ payload }) {
   const entity = yield select(getItemEntityById, payload);
 
   try {
@@ -16,48 +16,48 @@ export function *handleFavoriteItemToggleRequest({ payload }) {
     const normalized = normalize(response, {
       items: arrayOf(ItemSchema)
     });
-    yield put(Items.favoriteItemToggleSuccess(
+    yield put(Items.starItemToggleSuccess(
       normalized.entities.items[normalized.result.items[0]]
     ));
   } catch (error) {
-    yield put(Items.favoriteItemToggleFailure(error, payload));
+    yield put(Items.starItemToggleFailure(error, payload));
   }
 }
 
-function *handleFavoriteItemToggleFailure() {
+function *handleStarItemToggleFailure() {
   // TODO: More error message
   yield put(Notifications.showNotify("アイテムの更新に失敗しました"));
 }
 
-export function *handleSelectedItemsFavoriteRequest() {
+export function *handleSelectedItemsStarRequest() {
   while (true) {
-    const { payload } = yield take(Items.SELECTED_ITEMS_FAVORITE_REQUEST);
+    const { payload } = yield take(Items.SELECTED_ITEMS_STAR_REQUEST);
     const entities = yield select(getSelectedItemEntities);
-    const newEntities = entities.map(entity => ({ ...entity, favorite: payload }));
+    const newEntities = entities.map(entity => ({ ...entity, star: payload }));
 
     try {
       const response = yield call(Services.updateItems, newEntities);
       const normalized = normalize(response, {
         items: arrayOf(ItemSchema)
       });
-      yield put(Items.selectedItemsFavoriteSuccess(normalized));
+      yield put(Items.selectedItemsStarSuccess(normalized));
     } catch (error) {
-      yield put(Items.selectedItemsFavoriteFailure(error, entities));
+      yield put(Items.selectedItemsStarFailure(error, entities));
     }
   }
 }
 
-function *handleSelectedItemsFavoriteFailure() {
+function *handleSelectedItemsStarFailure() {
   // TODO: More error message
   yield put(Notifications.showNotify("選択したアイテムの更新に失敗しました"));
 }
 
 
-export default function *favoriteItemSaga() {
+export default function *starItemSaga() {
   yield [
-    takeEvery(Items.FAVORITE_ITEM_TOGGLE_REQUEST, handleFavoriteItemToggleRequest),
-    takeEvery(Items.FAVORITE_ITEM_TOGGLE_FAILURE, handleFavoriteItemToggleFailure),
-    fork(handleSelectedItemsFavoriteRequest),
-    takeEvery(Items.SELECTED_ITEMS_FAVORITE_FAILURE, handleSelectedItemsFavoriteFailure)
+    takeEvery(Items.STAR_ITEM_TOGGLE_REQUEST, handleStarItemToggleRequest),
+    takeEvery(Items.STAR_ITEM_TOGGLE_FAILURE, handleStarItemToggleFailure),
+    fork(handleSelectedItemsStarRequest),
+    takeEvery(Items.SELECTED_ITEMS_STAR_FAILURE, handleSelectedItemsStarFailure)
   ];
 }

@@ -66,30 +66,30 @@ export default handleActions({
   ),
 
 
-  // Favorite
-  [Items.FAVORITE_ITEM_TOGGLE_REQUEST]: (state, { payload }) => (
+  // Star
+  [Items.STAR_ITEM_TOGGLE_REQUEST]: (state, { payload }) => (
     _.mapValues(state, entity =>
       entity.id !== payload ? entity : {
         ...entity,
-        favorite: !entity.favorite
+        star: !entity.star
       }
     )
   ),
 
-  [Items.FAVORITE_ITEM_TOGGLE_SUCCESS]: (state, { payload }) => (
+  [Items.STAR_ITEM_TOGGLE_SUCCESS]: (state, { payload }) => (
     _.mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
-        favorite: payload.favorite
+        star: payload.star
       }
     )
   ),
 
-  [Items.FAVORITE_ITEM_TOGGLE_FAILURE]: (state, { meta }) => (
+  [Items.STAR_ITEM_TOGGLE_FAILURE]: (state, { meta }) => (
     _.mapValues(state, entity =>
       entity.id !== meta ? entity : {
         ...entity,
-        favorite: !entity.favorite
+        star: !entity.star
       }
     )
   ),
@@ -128,12 +128,12 @@ export default handleActions({
   ),
 
 
-  // Select favorite item
-  [Items.SELECT_FAVORITE_ITEM_EXEC]: (state, { payload }) => (
+  // Select star item
+  [Items.SELECT_STAR_ITEM_EXEC]: (state, { payload }) => (
     _.mapValues(state, entity =>
       payload.indexOf(entity.id) < 0 ? entity : {
         ...entity,
-        select: entity.favorite
+        select: entity.star
       }
     )
   ),
@@ -165,8 +165,8 @@ export default handleActions({
   ),
 
 
-  // Selected favorite
-  [Items.SELECTED_ITEMS_FAVORITE_REQUEST]: (state, { payload }) => (
+  // Selected star
+  [Items.SELECTED_ITEMS_STAR_REQUEST]: (state, { payload }) => (
     _.mapValues(state, entity =>
       !entity.select ? entity : {
         ...entity,
@@ -175,18 +175,18 @@ export default handleActions({
     )
   ),
 
-  [Items.SELECTED_ITEMS_FAVORITE_SUCCESS]: (state, { payload }) => (
+  [Items.SELECTED_ITEMS_STAR_SUCCESS]: (state, { payload }) => (
     _.mapValues(state, entity =>
       !payload.entities.items.hasOwnProperty(entity.id) ? entity : {
         ...entity,
         select: false,
         isUpdating: false,
-        favorite: payload.entities.items[entity.id].favorite
+        star: payload.entities.items[entity.id].star
       }
     )
   ),
 
-  [Items.SELECTED_ITEMS_FAVORITE_FAILURE]: (state, { meta }) => (
+  [Items.SELECTED_ITEMS_STAR_FAILURE]: (state, { meta }) => (
     _.mapValues(state, entity => {
       const index = _.findIndex(meta.entities, o => o.id === entity.id);
       return index < 0 ? entity : {
