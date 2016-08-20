@@ -8,9 +8,11 @@ import {
   Drawer,
   List,
   ListItem,
+  EmptyData,
   TextField,
   ProcessingOverlay
 } from "../../../components/ui/";
+import { TagsIcon } from "../../../components/svg-icons";
 
 const b = bem("tag-drawer-container");
 
@@ -24,9 +26,7 @@ export class TagDrawerContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      addTagName: ""
-    };
+    this.state = { addTagName: "" };
 
     autoBind(this);
   }
@@ -82,19 +82,37 @@ export class TagDrawerContainer extends Component {
     );
   }
 
+  renderEmptyData() {
+    return <EmptyData
+      className={b("empty-data")()}
+      size="sm"
+      title="No tags"
+      icon={<TagsIcon />}
+    >
+      タグがありません。<br />
+      この下にあるフォームからタグを追加しましょう。
+    </EmptyData>;
+  }
+
   renderTagItem() {
     const { tagEntities } = this.props;
 
-    return tagEntities.map(entity =>
-      <ListItem
-        key={entity.id}
-        value={entity.id}
-        processing={entity.isDeleting || entity.isUpdating}
-        text={entity.name}
-        editable={true}
-        onComplete={this.handleTagUpdate}
-        onRequestDelete={this.handleTagDelete}
-      />
+    if (tagEntities.length === 0) return this.renderEmptyData();
+
+    return (
+      <List>
+        {tagEntities.map(entity =>
+          <ListItem
+            key={entity.id}
+            value={entity.id}
+            processing={entity.isDeleting || entity.isUpdating}
+            text={entity.name}
+            editable={true}
+            onComplete={this.handleTagUpdate}
+            onRequestDelete={this.handleTagDelete}
+          />
+        )}
+      </List>
     );
   }
 
@@ -107,9 +125,7 @@ export class TagDrawerContainer extends Component {
         open={tags.drawerOpen}
         footer={this.renderFooter()}
       >
-        <List>
-          {this.renderTagItem()}
-        </List>
+        {this.renderTagItem()}
       </Drawer>
     );
   }
