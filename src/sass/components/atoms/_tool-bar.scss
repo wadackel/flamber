@@ -1,0 +1,15 @@
+.tool-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  background: rgba(#000, .8);
+  box-shadow: 0 2px 6px rgba(#000, .4);
+
+  &__col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
