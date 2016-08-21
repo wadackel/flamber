@@ -1,11 +1,30 @@
 const path = require("path");
 const glob = require("glob");
+const docgen = require("react-docgen");
 const jsonImporter = require("node-sass-json-importer");
 
 module.exports = {
   title: "dripup - Styleguide",
 
   template: path.join(__dirname, "styleguide/index.html"),
+
+  // https://github.com/sapegin/react-styleguidist/issues/143#issuecomment-235668531
+  handlers: docgen.defaultHandlers.concat((documentation, docPath) => {
+    // Calculate a display name for components based upon the declared class name.
+    if (docPath.value.type === "ClassDeclaration" && docPath.value.id.type === "Identifier") {
+      documentation.set("displayName", docPath.value.id.name);
+
+      // Calculate the key required to find the component in the module exports
+      if (docPath.parentPath.value.type === "ExportNamedDeclaration") {
+        documentation.set("path", docPath.value.id.name);
+      }
+    }
+
+    // The component is the default export
+    if (docPath.parentPath.value.type === "ExportDefaultDeclaration") {
+      documentation.set("docPath", "default");
+    }
+  }),
 
   sections: [
     {
