@@ -1,0 +1,54 @@
+.image-viewer {
+  $scrollbar-size: 6px;
+
+  position: relative;
+  overflow: hidden;
+
+  &__spinner {
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    z-index: 100;
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__holder {
+    position: absolute;
+    box-shadow: 0 2px 8px rgba(#000, .8);
+    user-select: none;
+  }
+
+  &__image {
+    @include size(100%);
+    position: absolute;
+  }
+
+  [class*="iScrollHorizontalScrollbar"] {
+    @include absolute(auto, $scrollbar-size, 0, $scrollbar-size, 100);
+    height: $scrollbar-size;
+
+    [class*="iScrollIndicator"] {
+      height: 100%;
+    }
+  }
+
+  [class*="iScrollVerticalScrollbar"] {
+    @include absolute($scrollbar-size, 0, $scrollbar-size, auto, 100);
+    width: $scrollbar-size;
+
+    [class*="iScrollIndicator"] {
+      width: 100%;
+    }
+  }
+
+  [class*="iScrollIndicator"] {
+    position: absolute;
+    background: rgba(#000, .4);
+  }
+}

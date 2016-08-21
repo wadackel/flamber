@@ -14,12 +14,13 @@ function renderNodeAddKeyIfNeeded(node) {
 
 export default function ToolBar({
   className,
+  style,
   left,
   title,
   right
 }) {
   return (
-    <div className={mergeClassNames(b(), className)}>
+    <div className={mergeClassNames(b(), className)} style={style}>
       <div className={b("col", { left: true })()}>
         {renderNodeAddKeyIfNeeded(left)}
       </div>
@@ -35,7 +36,12 @@ export default function ToolBar({
 
 ToolBar.propTypes = {
   className: PropTypes.string,
+  style: PropTypes.object,
   left: PropTypes.node,
   title: PropTypes.node,
   right: PropTypes.node
+};
+
+ToolBar.defaultProps = {
+  style: {}
 };
