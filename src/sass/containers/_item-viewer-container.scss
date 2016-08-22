@@ -1,7 +1,32 @@
 .item-viewer-container {
-  @include fixed(0, 0, 0, 0, 1200);
+  @include fixed(0, 0, 0, 0, 1210);
+  transition-property: all;
+  transition-timing-function: $transition-easing;
+
+  &.item-viewer-enter {
+    opacity: .01;
+    visibility: hidden;
+  }
+
+  &.item-viewer-enter-active {
+    transition-duration: #{$item-viewer-enter-duration}ms;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.item-viewer-leave {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.item-viewer-leave-active {
+    transition-duration: #{$item-viewer-leave-duration}ms;
+    opacity: .01;
+    visibility: hidden;
+  }
 
   &__overlay {
+    background-color: rgba(#000, .92);
     z-index: 1;
   }
 
@@ -9,8 +34,17 @@
     @include absolute(0, 0, 0, 0, 10);
   }
 
+  &__tool-bar {
+    @include absolute(0, 0, auto, 0, 20);
+    background-color: rgba(#222, .85);
+  }
+
+  &__viewer {
+    @include absolute(0, 0, 0, 0, 10);
+  }
+
   &__zoom {
-    @include absolute(auto, auto, 30px, 30px, 10);
+    @include absolute(auto, auto, 30px, 30px, 20);
     width: 150px;
   }
 }

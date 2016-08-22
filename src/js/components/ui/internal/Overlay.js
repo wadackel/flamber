@@ -9,11 +9,13 @@ const b = bem("overlay");
 export default class Overlay extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    style: PropTypes.object,
     show: PropTypes.bool,
     onClick: PropTypes.func
   };
 
   static defaultProps = {
+    style: {},
     show: false,
     onClick: () => {}
   };
@@ -73,11 +75,13 @@ export default class Overlay extends React.Component {
   render() {
     const {
       className,
+      style,
       show
     } = this.props;
 
     return <div
       className={mergeClassNames(b({ show })(), className)}
+      style={style}
       onClick={this.handleClick}
     />;
   }

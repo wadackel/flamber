@@ -5,10 +5,12 @@ import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
+import shareConfig from "../../../../share-config";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import { getCurrentItem } from "../../../selectors/items";
+import { hexToRgb } from "../../../helpers/color";
 import bem from "../../../helpers/bem";
 import FirstChild from "../../../components/ui/internal/FirstChild";
 import Overlay from "../../../components/ui/internal/Overlay";
@@ -41,11 +43,24 @@ export class ItemViewerContainer extends Component {
 
   constructor(props, context) {
     super(props, context);
+
+    this.state = {
+      zoom: 1
+    };
+
     autoBind(this);
   }
 
   handleClose() {
     this.props.dispatch(ItemActions.setCurrentItem(null));
+  }
+
+  handleZoomChange(zoom) {
+    this.setState({ zoom });
+  }
+
+  handleImageDoubleClick() {
+    this.setState({ zoom: 1 });
   }
 
   render() {
@@ -54,20 +69,23 @@ export class ItemViewerContainer extends Component {
       currentItem
     } = this.props;
 
+    const { zoom } = this.state;
+
     const show = !!currentItem;
     const modifier = { show };
+    const firstColor = show ? hexToRgb(currentItem.palette[0]) : null;
 
     return (
       <ReactCSSTransitionGroup
         component={FirstChild}
         transitionName="item-viewer"
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
+        transitionEnterTimeout={shareConfig["item-viewer-enter-duration"]}
+        transitionLeaveTimeout={shareConfig["item-viewer-leave-duration"]}
       >
         {show && <div className={b(modifier)()}>
           <div className={b("body")()}>
             <ToolBar
-              className={b("toolbar")()}
+              className={b("tool-bar")()}
               title={<EditableText text={currentItem.name} />}
               left={[
                 <ToolBarItem>
@@ -106,19 +124,25 @@ export class ItemViewerContainer extends Component {
               min={0.2}
               max={1.8}
               step={0.1}
-              value={1}
+              value={zoom}
+              onChange={this.handleZoomChange}
             />
 
             <ImageViewer
               className={b("viewer")()}
               image={currentItem.thumbnail}
+              zoom={zoom}
+              onZoomChange={this.handleZoomChange}
+              onDoubleClick={this.handleImageDoubleClick}
             />
           </div>
 
           <Overlay
             className={b("overlay")()}
             show={true}
-            onClick={this.handleClose}
+            style={{
+              backgroundColor: `rgba(${firstColor.r}, ${firstColor.g}, ${firstColor.b}, .8)`
+            }}
           />
         </div>}
       </ReactCSSTransitionGroup>

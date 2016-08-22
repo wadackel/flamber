@@ -250,6 +250,7 @@ export default class ImageViewer extends Component {
     const holderStyle = {
       width,
       height,
+      marginTop: Math.max(0, (viewportHeight - height) / 2),
       marginLeft: Math.max(0, (viewportWidth - width) / 2)
     };
 
