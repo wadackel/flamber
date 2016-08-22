@@ -79,7 +79,7 @@ export default class ItemCard extends React.Component {
   }
 
   handleDetailClick() {
-    // TODO
+    this.props.onDetailClick(this.props.id);
   }
 
   handleSelect(value, checked) {

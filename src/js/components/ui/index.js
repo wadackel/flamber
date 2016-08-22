@@ -22,6 +22,7 @@ export FloatingMenu from "./FloatingMenu/FloatingMenu";
 export Header from "./Header/Header";
 export IconButton from "./IconButton/IconButton";
 export IconMenu from "./IconMenu/IconMenu";
+export ImageViewer from "./ImageViewer/ImageViewer";
 export ItemCard from "./ItemCard/ItemCard";
 export Label from "./Label/Label";
 export LayoutButton from "./LayoutButton/LayoutButton";

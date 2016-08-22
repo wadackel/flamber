@@ -72,3 +72,7 @@ export function getSelectedItemEntitiesByBoardId(state, boardId) {
 export function getMoveItemEntities(state) {
   return state.items.moveItems.map(id => getItemEntityById(state, id));
 }
+
+export function getCurrentItem(state) {
+  return getItemEntityById(state, state.items.currentItem);
+}

@@ -1,0 +1,16 @@
+.item-viewer-container {
+  @include fixed(0, 0, 0, 0, 1200);
+
+  &__overlay {
+    z-index: 1;
+  }
+
+  &__body {
+    @include absolute(0, 0, 0, 0, 10);
+  }
+
+  &__zoom {
+    @include absolute(auto, auto, 30px, 30px, 10);
+    width: 150px;
+  }
+}

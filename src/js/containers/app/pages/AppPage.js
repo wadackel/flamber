@@ -15,6 +15,7 @@ import {
 import { getSelectedItemEntities } from "../../../selectors/items";
 import {
   HeaderContainer,
+  ItemViewerContainer,
   ShortcutKeyContainer,
   NotificationsContainer,
   TagDrawerContainer
@@ -123,6 +124,9 @@ export class AppPage extends Component {
       <div className={b()}>
         {/* Header */}
         <HeaderContainer {...routerParams} />
+
+        {/* Item viewer */}
+        <ItemViewerContainer />
 
         {/* Tag sidebar */}
         <TagDrawerContainer />

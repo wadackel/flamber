@@ -63,6 +63,10 @@ export class ItemsContainer extends Component {
     this.props.dispatch(SettingActions.updateItemsOrderRequest(order));
   }
 
+  handleDetail(id) {
+    this.props.dispatch(ItemActions.setCurrentItem(id));
+  }
+
   handleSelect(id) {
     this.props.dispatch(ItemActions.selectItemToggle(id));
   }
@@ -217,6 +221,7 @@ export class ItemsContainer extends Component {
               imageHeight={item.height}
               star={item.star}
               colors={item.palette}
+              onDetailClick={this.handleDetail}
               onSelect={this.handleSelect}
               onStar={this.handleStar}
               onMove={this.handleMove}

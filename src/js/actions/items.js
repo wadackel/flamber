@@ -198,3 +198,8 @@ export const FETCH_BOARD_ITEMS_FAILURE = "FETCH_BOARD_ITEMS_FAILURE";
 export const fetchBoardItemsRequest = createAction(FETCH_BOARD_ITEMS_REQUEST);
 export const fetchBoardItemsSuccess = createAction(FETCH_BOARD_ITEMS_SUCCESS);
 export const fetchBoardItemsFailure = createAction(FETCH_BOARD_ITEMS_FAILURE);
+
+
+// Current
+export const SET_CURRENT_ITEM = "SET_CURRENT_ITEM";
+export const setCurrentItem = createAction(SET_CURRENT_ITEM);

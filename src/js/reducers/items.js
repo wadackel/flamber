@@ -10,7 +10,7 @@ const initialState = {
   isAdding: false,
   isMoving: false,
   error: null,
-  currentItemId: null,
+  currentItem: null,
   currentColor: null,
   visibilityFilter: ItemVisibilityFilters.SHOW_ITEM_ALL,
   addDialogOpen: false,
@@ -20,6 +20,12 @@ const initialState = {
 };
 
 export default handleActions({
+  // Set current item
+  [Items.SET_CURRENT_ITEM]: (state, { payload }) => ({
+    ...state,
+    currentItem: payload
+  }),
+
   // Set currentColor
   [Items.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({
     ...state,
