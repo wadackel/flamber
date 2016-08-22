@@ -53,6 +53,7 @@ export class ItemViewerContainer extends Component {
 
   handleClose() {
     this.props.dispatch(ItemActions.setCurrentItem(null));
+    this.setState({ zoom: 1 });
   }
 
   handleZoomChange(zoom) {
@@ -133,6 +134,7 @@ export class ItemViewerContainer extends Component {
               image={currentItem.thumbnail}
               zoom={zoom}
               onZoomChange={this.handleZoomChange}
+              onBodyClick={this.handleClose}
               onDoubleClick={this.handleImageDoubleClick}
             />
           </div>

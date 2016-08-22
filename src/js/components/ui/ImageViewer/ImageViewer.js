@@ -1,5 +1,6 @@
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
+import SizeMe from "react-sizeme";
 import MDSpinner from "react-md-spinner";
 import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
@@ -14,15 +15,21 @@ const Status = {
   FAILED: "failed"
 };
 
-export default class ImageViewer extends Component {
+class ImageViewerInline extends Component {
   static propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
+    size: PropTypes.shape({
+      width: PropTypes.number,
+      height: PropTypes.number
+    }),
     zoom: PropTypes.number,
     image: PropTypes.string,
     forceFitViewport: PropTypes.bool,
     iScrollOptions: PropTypes.object,
     onZoomChange: () => {},
+    onBodyClick: () => {},
+    onClick: () => {},
     onDoubleClick: () => {}
   };
 
@@ -41,6 +48,8 @@ export default class ImageViewer extends Component {
       fadeScrollbars: true
     },
     onZoomChange: () => {},
+    onBodyClick: () => {},
+    onClick: () => {},
     onDoubleClick: () => {}
   };
 
@@ -49,8 +58,6 @@ export default class ImageViewer extends Component {
 
     this.state = {
       status: Status.LOADING,
-      viewportWidth: 0,
-      viewportHeight: 0,
       width: 0,
       height: 0,
       naturalWidth: 0,
@@ -63,11 +70,9 @@ export default class ImageViewer extends Component {
   componentDidMount() {
     const { iScrollOptions, image } = this.props;
     const { viewport } = this.refs;
-    const { width: viewportWidth, height: viewportHeight } = this.getViewportSize();
 
     this.iScroll = new IScroll(viewport, iScrollOptions);
 
-    this.setState({ viewportWidth, viewportHeight });
     this.updateImage(image);
   }
 
@@ -102,15 +107,6 @@ export default class ImageViewer extends Component {
     }
   }
 
-  componentDidUpdate() {
-    const { viewportWidth, viewportHeight } = this.state;
-    const { width, height } = this.getViewportSize();
-
-    if (viewportWidth !== width || viewportHeight !== height) {
-      this.setState({ viewportWidth: width, viewportHeight: height });
-    }
-  }
-
   componentWillUnmount() {
     if (this.iScroll) {
       this.iScroll.destroy();
@@ -118,15 +114,16 @@ export default class ImageViewer extends Component {
     }
   }
 
+  handleClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.onClick(e);
+  }
+
   handleDoubleClick(e) {
     e.preventDefault();
     e.stopPropagation();
     this.props.onDoubleClick(e);
-  }
-
-  getViewportSize() {
-    const { width, height } = this.refs.viewport.getBoundingClientRect();
-    return { width, height };
   }
 
   loadImage(src) {
@@ -149,12 +146,13 @@ export default class ImageViewer extends Component {
 
     this.loadImage(src)
       .then(img => {
+        const { zoom } = this.props;
         const size = this.getImageSize(img);
 
         this.setState({ status: Status.LOADED });
         this.setImageSize(
-          size.width,
-          size.height,
+          size.width * zoom,
+          size.height * zoom,
           size.naturalWidth,
           size.naturalHeight,
           false
@@ -189,10 +187,10 @@ export default class ImageViewer extends Component {
   }
 
   normalizeImageSize(dw, dh) {
-    const { width: vw, height: vh } = this.getViewportSize();
-    const vRatio = vw / vh;
+    const { size } = this.props;
+    const vRatio = size.width / size.height;
     const dRatio = dw / dh;
-    const ratio = vRatio > dRatio ? vh / dh : vw / dw;
+    const ratio = vRatio > dRatio ? size.height / dh : size.width / dw;
 
     return {
       width: dw * ratio,
@@ -231,27 +229,27 @@ export default class ImageViewer extends Component {
     const {
       className,
       style,
-      image
+      size,
+      image,
+      onBodyClick
     } = this.props;
 
     const {
       status,
-      viewportWidth,
-      viewportHeight,
       width,
       height
     } = this.state;
 
     const bodyStyle = {
-      width: Math.max(viewportWidth, width),
-      height: Math.max(viewportHeight, height)
+      width: Math.max(size.width, width),
+      height: Math.max(size.height, height)
     };
 
     const holderStyle = {
       width,
       height,
-      marginTop: Math.max(0, (viewportHeight - height) / 2),
-      marginLeft: Math.max(0, (viewportWidth - width) / 2)
+      marginTop: Math.max(0, (size.height - height) / 2),
+      marginLeft: Math.max(0, (size.width - width) / 2)
     };
 
     // TODO: Failed render
@@ -265,6 +263,7 @@ export default class ImageViewer extends Component {
         <div
           className={b("body")()}
           style={bodyStyle}
+          onClick={onBodyClick}
         >
           {status === Status.LOADING &&
             <MDSpinner
@@ -279,6 +278,7 @@ export default class ImageViewer extends Component {
               <img
                 className={b("image")()}
                 src={image}
+                onClick={this.handleClick}
                 onDoubleClick={this.handleDoubleClick}
               />
             </div>
@@ -287,4 +287,10 @@ export default class ImageViewer extends Component {
       </div>
     );
   }
+}
+
+const SizeAwareImageViewer = SizeMe({ monitorHeight: true })(ImageViewerInline);
+
+export default function ImageViewer(props) {
+  return <SizeAwareImageViewer {...props} />;
 }
