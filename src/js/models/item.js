@@ -82,6 +82,12 @@ ItemSchema.statics.findAllByUser = function(drive, user, query = {}) {
 };
 
 
+ItemSchema.statics.findByUserAndId = function(user, id) {
+  return this.findOne({ user, _id: id })
+    .populate("board");
+}
+
+
 ItemSchema.statics.updateByUserAndIdFromObject = function(drive, user, id, newProps) {
   const fields = _.keys(this.schema.paths);
 
@@ -129,6 +135,25 @@ ItemSchema.statics.removeByUserAndId = function(drive, user, id) {
         .then(() => entity)
     )
     .then(entity => this.populate(entity, { path: "board" }));
+};
+
+
+ItemSchema.statics.getImageBufferByUserAndId = function(drive, user, id) {
+  return new Promise((resolve, reject) => {
+    this.findByUserAndId(user, id)
+      .then(item => {
+        const { fileId } = item;
+        const chunks = [];
+
+        drive.files.get({ fileId, alt: "media" })
+          .on("error", reject)
+          .on("data", data => chunks.push(new Buffer(data)))
+          .on("end", () => {
+            const buffer = Buffer.concat(chunks);
+            resolve(buffer);
+          });
+      });
+  });
 };
 
 

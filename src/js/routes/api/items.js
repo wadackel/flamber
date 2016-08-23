@@ -25,6 +25,24 @@ router.get("/", (req, res) => {
 });
 
 
+router.get("/:id", (req, res) => {
+  Item.findByUserAndId(req.user.id, req.params.id)
+    .then(item => {
+      res.json({ item });
+    })
+    .catch(res.errorJSON);
+});
+
+
+router.get("/image/:id", (req, res) => {
+  Item.getImageBufferByUserAndId(req.drive, req.user.id, req.params.id)
+    .then(buffer => {
+      res.status(200).end(buffer, "binary");
+    })
+    .catch(res.errorJSON);
+});
+
+
 router.post("/file", upload.single("file"), (req, res) => {
   const { drive, user, body, file } = req;
   const { boardId } = body;

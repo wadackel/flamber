@@ -131,7 +131,7 @@ export class ItemViewerContainer extends Component {
 
             <ImageViewer
               className={b("viewer")()}
-              image={currentItem.thumbnail}
+              image={`/api/items/image/${currentItem.id}`}
               zoom={zoom}
               onZoomChange={this.handleZoomChange}
               onBodyClick={this.handleClose}
