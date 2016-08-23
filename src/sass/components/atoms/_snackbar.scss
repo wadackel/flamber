@@ -1,7 +1,7 @@
 .snackbar {
   $duration: 300ms;
 
-  @include fixed(auto, auto, 10px, 10px, 1000);
+  @include fixed(auto, auto, 10px, 10px, 1300);
   @include transition(all, $duration / 2);
   display: block;
   text-align: center;

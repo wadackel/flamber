@@ -64,6 +64,25 @@ export class ItemViewerContainer extends Component {
     this.setState({ zoom: 1 });
   }
 
+  handleStarClick() {
+    const { dispatch, currentItem } = this.props;
+    dispatch(ItemActions.starItemToggleRequest(currentItem.id));
+  }
+
+  handleMoreMenuClick(menuItem, value) {
+    value();
+  }
+
+  handleMove() {
+    const { dispatch, currentItem } = this.props;
+    dispatch(ItemActions.moveItemSelectBoardOpen(currentItem.id));
+  }
+
+  handleDelete() {
+    const { dispatch, currentItem } = this.props;
+    dispatch(ItemActions.deleteItemRequest(currentItem.id));
+  }
+
   render() {
     const {
       items,
@@ -105,6 +124,7 @@ export class ItemViewerContainer extends Component {
                 <ToolBarItem>
                   <IconButton
                     icon={<StarIcon />}
+                    onClick={this.handleStarClick}
                   />
                 </ToolBarItem>,
                 <ToolBarItem>
@@ -112,9 +132,10 @@ export class ItemViewerContainer extends Component {
                     icon={<IconButton icon={<MoreVertIcon />} />}
                     origin={{ vertical: "top", horizontal: "right" }}
                     triggerOrigin={{ vertical: "top", horizontal: "right" }}
+                    onItemClick={this.handleMoreMenuClick}
                   >
-                    <MenuItem text="移動" />
-                    <MenuItem text="削除" />
+                    <MenuItem text="移動" value={this.handleMove} />
+                    <MenuItem text="削除" value={this.handleDelete} />
                   </IconMenu>
                 </ToolBarItem>,
               ]}

@@ -15,6 +15,10 @@ function getOrderByProp(orderBy) {
   }
 }
 
+export function getRawBoardEntities(state) {
+  return _.values(state.entities.boards);
+}
+
 export function getBoardEntityById(state, id) {
   return state.entities.boards[id];
 }

@@ -99,6 +99,13 @@ export default handleActions({
   }),
 
 
+  // Delete
+  [Items.DELETE_ITEM_REQUEST]: (state, { payload }) => ({
+    ...state,
+    currentItem: null
+  }),
+
+
   // Move
   [Items.MOVE_ITEM_SELECT_BOARD_OPEN]: (state, { payload }) => ({
     ...state,
@@ -117,7 +124,7 @@ export default handleActions({
     isMoving: true
   }),
 
-  [Items.MOVE_ITEM_SUCCESS]: state => ({
+  [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => ({
     ...state,
     isMoving: false,
     selectBoardDialogOpen: false

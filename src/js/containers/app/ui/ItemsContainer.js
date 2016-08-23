@@ -10,10 +10,11 @@ import * as Layout from "../../../constants/layouts";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
-import { getBoardEntities, getCurrentBoard } from "../../../selectors/boards";
+import { getRawBoardEntities, getCurrentBoard } from "../../../selectors/boards";
 import {
   getVisibleItemEntities,
-  getSelectedItemEntities
+  getSelectedItemEntities,
+  getCurrentItem
 } from "../../../selectors/items";
 import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
@@ -157,8 +158,9 @@ export class ItemsContainer extends Component {
   render() {
     const {
       boards,
-      boardEntities,
+      rawBoardEntities,
       currentBoard,
+      currentItem,
       items,
       itemEntities,
       selectedItemEntities,
@@ -177,8 +179,15 @@ export class ItemsContainer extends Component {
 
     const hasSelectedItems = selectedItemEntities.length > 0;
     const isAllStar = this.isAllStarByItemEntities(selectedItemEntities);
-    const selectBoards = boardEntities
-      .filter(entity => currentBoard && currentBoard.id !== entity.id)
+    const selectBoards = rawBoardEntities
+      .filter(entity => {
+        if (currentBoard) {
+          return currentBoard.id !== entity.id;
+        } else if (currentItem) {
+          return currentItem.board !== entity.id;
+        }
+        return true;
+      })
       .map(entity => ({
         value: entity.id,
         name: entity.name
@@ -282,11 +291,12 @@ export default connect(
   state => ({
     settings: state.settings,
     boards: state.boards,
-    boardEntities: getBoardEntities(state),
+    rawBoardEntities: getRawBoardEntities(state),
     items: state.items,
     itemEntities: getVisibleItemEntities(state),
     selectedItemEntities: getSelectedItemEntities(state),
-    currentBoard: getCurrentBoard(state)
+    currentBoard: getCurrentBoard(state),
+    currentItem: getCurrentItem(state)
   }),
   null,
   null,
