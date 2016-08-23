@@ -14,6 +14,7 @@ import { hexToRgb } from "../../../helpers/color";
 import bem from "../../../helpers/bem";
 import FirstChild from "../../../components/ui/internal/FirstChild";
 import Overlay from "../../../components/ui/internal/Overlay";
+import { ItemDetailDrawer } from "./";
 import {
   ImageViewer,
   ToolBar,
@@ -160,11 +161,13 @@ export class ItemViewerContainer extends Component {
             />
           </div>
 
+          <ItemDetailDrawer />
+
           <Overlay
             className={b("overlay")()}
             show={true}
             style={{
-              backgroundColor: `rgba(${firstColor.r}, ${firstColor.g}, ${firstColor.b}, .8)`
+              backgroundColor: `rgba(${firstColor.r}, ${firstColor.g}, ${firstColor.b}, .9)`
             }}
           />
         </div>}
