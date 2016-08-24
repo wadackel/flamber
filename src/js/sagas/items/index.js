@@ -4,6 +4,7 @@ import ItemSchema from "../../schemas/item";
 import bgSyncItemSaga from "./bg-sync";
 import addItemSaga from "./add";
 import starItemSaga from "./star";
+import updateItemSaga from "./update";
 import fetchItemSaga from "./fetch";
 import moveItemSaga from "./move";
 import deleteItemSaga from "./delete";
@@ -19,6 +20,7 @@ export default function *itemsSaga() {
     fork(bgSyncItemSaga),
     fork(addItemSaga),
     fork(starItemSaga),
+    fork(updateItemSaga),
     fork(fetchItemSaga),
     fork(moveItemSaga),
     fork(deleteItemSaga),

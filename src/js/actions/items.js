@@ -71,6 +71,22 @@ export const starItemToggleFailure = createAction(STAR_ITEM_TOGGLE_FAILURE,
 );
 
 
+// Update Name
+export const UPDATE_ITEM_NAME_IF_NEEDED = "UPDATE_ITEM_NAME_IF_NEEDED";
+export const UPDATE_ITEM_NAME_REQUEST = "UPDATE_ITEM_NAME_REQUEST";
+export const UPDATE_ITEM_NAME_SUCCESS = "UPDATE_ITEM_NAME_SUCCESS";
+export const UPDATE_ITEM_NAME_FAILURE = "UPDATE_ITEM_NAME_FAILURE";
+
+function updateNamePaymentCreator(id, name) {
+  return { id, name };
+}
+
+export const updateItemNameIfNeeded = createAction(UPDATE_ITEM_NAME_IF_NEEDED, updateNamePaymentCreator);
+export const updateItemNameRequest = createAction(UPDATE_ITEM_NAME_REQUEST, updateNamePaymentCreator);
+export const updateItemNameSuccess = createAction(UPDATE_ITEM_NAME_SUCCESS);
+export const updateItemNameFailure = createAction(UPDATE_ITEM_NAME_FAILURE);
+
+
 // Move board
 export const MOVE_ITEM_SELECT_BOARD_OPEN = "MOVE_ITEM_SELECT_BOARD_OPEN";
 export const MOVE_ITEM_SELECT_BOARD_CLOSE = "MOVE_ITEM_SELECT_BOARD_CLOSE";

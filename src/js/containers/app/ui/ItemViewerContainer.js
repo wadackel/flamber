@@ -27,6 +27,7 @@ import {
   EditableText
 } from "../../../components/ui/";
 import {
+  PencilIcon,
   CloseIcon,
   CropIcon,
   StarIcon,
@@ -47,10 +48,17 @@ export class ItemViewerContainer extends Component {
     super(props, context);
 
     this.state = {
-      zoom: 1
+      zoom: 1,
+      itemName: ""
     };
 
     autoBind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentItem && this.state.itemName !== nextProps.currentItem.name) {
+      this.setState({ itemName: nextProps.currentItem.name });
+    }
   }
 
   handleClose() {
@@ -89,13 +97,25 @@ export class ItemViewerContainer extends Component {
     this.props.dispatch(ItemActions.itemDetailDrawerToggle());
   }
 
+  handleItemNameChange(e, value) {
+    this.setState({ itemName: value });
+  }
+
+  handleItemNameComplete(value) {
+    const { dispatch, currentItem } = this.props;
+    dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
+  }
+
   render() {
     const {
       items,
       currentItem
     } = this.props;
 
-    const { zoom } = this.state;
+    const {
+      zoom,
+      itemName
+    } = this.state;
 
     const show = !!currentItem;
     const modifier = {
@@ -135,7 +155,14 @@ export class ItemViewerContainer extends Component {
 
           <ToolBar
             className={b("tool-bar")()}
-            title={<EditableText value={currentItem.name} />}
+            title={
+              <EditableText
+                icon={<PencilIcon />}
+                value={itemName}
+                onChange={this.handleItemNameChange}
+                onComplete={this.handleItemNameComplete}
+              />
+            }
             left={[
               <ToolBarItem>
                 <IconButton

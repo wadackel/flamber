@@ -95,6 +95,18 @@ export default handleActions({
   ),
 
 
+  // Update name
+  [Items.UPDATE_ITEM_NAME_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        name: payload.name,
+        isUpdating: true
+      }
+    )
+  ),
+
+
   // Move
   [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
