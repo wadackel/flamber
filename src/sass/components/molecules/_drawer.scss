@@ -25,10 +25,10 @@ $drawer-duration: 260ms;
 
   &--right {
     right: -$drawer-shadow-size;
-    transform: translateY(-$drawer-width);
+    transform: translateX($drawer-width);
 
     &.drawer--open {
-      transform: translateY(0);
+      transform: translateX(0);
     }
   }
 

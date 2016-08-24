@@ -16,15 +16,35 @@ const initialState = {
   addDialogOpen: false,
   addSnackbarOpen: false,
   moveItems: [],
-  selectBoardDialogOpen: false
+  selectBoardDialogOpen: false,
+  detailDrawerOpen: false
 };
 
 export default handleActions({
   // Set current item
   [Items.SET_CURRENT_ITEM]: (state, { payload }) => ({
     ...state,
-    currentItem: payload
+    currentItem: payload,
+    detailDrawerOpen: true
   }),
+
+
+  // Detail drawer
+  [Items.ITEM_DETAIL_DRAWER_TOGGLE]: state => ({
+    ...state,
+    detailDrawerOpen: !state.detailDrawerOpen
+  }),
+
+  [Items.ITEM_DETAIL_DRAWER_OPEN]: state => ({
+    ...state,
+    detailDrawerOpen: true
+  }),
+
+  [Items.ITEM_DETAIL_DRAWER_CLOSE]: state => ({
+    ...state,
+    detailDrawerOpen: false
+  }),
+
 
   // Set currentColor
   [Items.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({

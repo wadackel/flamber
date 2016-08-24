@@ -203,3 +203,13 @@ export const fetchBoardItemsFailure = createAction(FETCH_BOARD_ITEMS_FAILURE);
 // Current
 export const SET_CURRENT_ITEM = "SET_CURRENT_ITEM";
 export const setCurrentItem = createAction(SET_CURRENT_ITEM);
+
+
+// Detail drawer
+export const ITEM_DETAIL_DRAWER_TOGGLE = "ITEM_DETAIL_DRAWER_TOGGLE";
+export const ITEM_DETAIL_DRAWER_OPEN = "ITEM_DETAIL_DRAWER_OPEN";
+export const ITEM_DETAIL_DRAWER_CLOSE = "ITEM_DETAIL_DRAWER_CLOSE";
+
+export const itemDetailDrawerToggle = createAction(ITEM_DETAIL_DRAWER_TOGGLE);
+export const itemDetailDrawerOpen = createAction(ITEM_DETAIL_DRAWER_OPEN);
+export const itemDetailDrawerClose = createAction(ITEM_DETAIL_DRAWER_CLOSE);

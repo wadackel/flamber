@@ -20,6 +20,7 @@ import {
   ToolBar,
   ToolBarItem,
   Slider,
+  FloatingButton,
   IconButton,
   IconMenu,
   MenuItem,
@@ -84,6 +85,10 @@ export class ItemViewerContainer extends Component {
     dispatch(ItemActions.deleteItemRequest(currentItem.id));
   }
 
+  handleDrawerToggle() {
+    this.props.dispatch(ItemActions.itemDetailDrawerToggle());
+  }
+
   render() {
     const {
       items,
@@ -93,8 +98,14 @@ export class ItemViewerContainer extends Component {
     const { zoom } = this.state;
 
     const show = !!currentItem;
-    const modifier = { show };
+    const modifier = {
+      "drawer-open": items.detailDrawerOpen,
+      show
+    };
+
     const firstColor = show ? hexToRgb(currentItem.palette[0]) : null;
+
+    console.log( b("drawer-toggle", modifier)(), modifier, items );
 
     return (
       <ReactCSSTransitionGroup
@@ -104,44 +115,7 @@ export class ItemViewerContainer extends Component {
         transitionLeaveTimeout={shareConfig["item-viewer-leave-duration"]}
       >
         {show && <div className={b(modifier)()}>
-          <div className={b("body")()}>
-            <ToolBar
-              className={b("tool-bar")()}
-              title={<EditableText text={currentItem.name} />}
-              left={[
-                <ToolBarItem>
-                  <IconButton
-                    icon={<CloseIcon />}
-                    onClick={this.handleClose}
-                  />
-                </ToolBarItem>
-              ]}
-              right={[
-                <ToolBarItem>
-                  <IconButton
-                    icon={<CropIcon />}
-                  />
-                </ToolBarItem>,
-                <ToolBarItem>
-                  <IconButton
-                    icon={<StarIcon />}
-                    onClick={this.handleStarClick}
-                  />
-                </ToolBarItem>,
-                <ToolBarItem>
-                  <IconMenu
-                    icon={<IconButton icon={<MoreVertIcon />} />}
-                    origin={{ vertical: "top", horizontal: "right" }}
-                    triggerOrigin={{ vertical: "top", horizontal: "right" }}
-                    onItemClick={this.handleMoreMenuClick}
-                  >
-                    <MenuItem text="移動" value={this.handleMove} />
-                    <MenuItem text="削除" value={this.handleDelete} />
-                  </IconMenu>
-                </ToolBarItem>,
-              ]}
-            />
-
+          <div className={b("body", modifier)()}>
             <Slider
               className={b("zoom")()}
               min={0.2}
@@ -161,6 +135,49 @@ export class ItemViewerContainer extends Component {
             />
           </div>
 
+          <ToolBar
+            className={b("tool-bar")()}
+            title={<EditableText text={currentItem.name} />}
+            left={[
+              <ToolBarItem>
+                <IconButton
+                  icon={<CloseIcon />}
+                  onClick={this.handleClose}
+                />
+              </ToolBarItem>
+            ]}
+            right={[
+              <ToolBarItem>
+                <IconButton
+                  icon={<CropIcon />}
+                />
+              </ToolBarItem>,
+              <ToolBarItem>
+                <IconButton
+                  icon={<StarIcon />}
+                  onClick={this.handleStarClick}
+                />
+              </ToolBarItem>,
+              <ToolBarItem>
+                <IconMenu
+                  icon={<IconButton icon={<MoreVertIcon />} />}
+                  origin={{ vertical: "top", horizontal: "right" }}
+                  triggerOrigin={{ vertical: "top", horizontal: "right" }}
+                  onItemClick={this.handleMoreMenuClick}
+                >
+                  <MenuItem text="移動" value={this.handleMove} />
+                  <MenuItem text="削除" value={this.handleDelete} />
+                </IconMenu>
+              </ToolBarItem>,
+            ]}
+          />
+
+          <FloatingButton
+            className={b("drawer-toggle", modifier)()}
+            icon={<ResizeIcon />}
+            onClick={this.handleDrawerToggle}
+          />
+
           <ItemDetailDrawer />
 
           <Overlay
@@ -178,7 +195,7 @@ export class ItemViewerContainer extends Component {
 
 export default connect(
   state => ({
-    items: state,
+    items: state.items,
     currentItem: getCurrentItem(state)
   }),
   null,

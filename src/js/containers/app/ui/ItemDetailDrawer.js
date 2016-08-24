@@ -43,14 +43,29 @@ export class ItemDetailDrawer extends Component {
   }
 
   render() {
+    const {
+      items
+    } = this.props;
+
+    const modifier = {
+      show: items.detailDrawerOpen
+    };
+
     return (
-      <div>TODO</div>
+      <Drawer
+        className={b(modifier)()}
+        direction="right"
+        open={items.detailDrawerOpen}
+      >
+        TODO
+      </Drawer>
     );
   }
 }
 
 export default connect(
   state => ({
+    items: state.items,
     currentItem: getCurrentItem(state)
   }),
   null,
