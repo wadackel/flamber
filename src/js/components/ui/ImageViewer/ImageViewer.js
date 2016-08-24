@@ -1,3 +1,4 @@
+import _ from "lodash";
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import SizeMe from "react-sizeme";
@@ -104,6 +105,12 @@ class ImageViewerInline extends Component {
     // Zoom
     if (zoom !== _zoom) {
       this.updateImageSizeByZoom(_zoom);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!_.isEqual(this.props.size, prevProps.size)) {
+      this.refresh();
     }
   }
 

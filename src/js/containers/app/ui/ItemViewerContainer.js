@@ -105,8 +105,6 @@ export class ItemViewerContainer extends Component {
 
     const firstColor = show ? hexToRgb(currentItem.palette[0]) : null;
 
-    console.log( b("drawer-toggle", modifier)(), modifier, items );
-
     return (
       <ReactCSSTransitionGroup
         component={FirstChild}
@@ -137,7 +135,7 @@ export class ItemViewerContainer extends Component {
 
           <ToolBar
             className={b("tool-bar")()}
-            title={<EditableText text={currentItem.name} />}
+            title={<EditableText value={currentItem.name} />}
             left={[
               <ToolBarItem>
                 <IconButton

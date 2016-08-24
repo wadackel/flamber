@@ -1,5 +1,51 @@
 .item-detail-drawer {
+  $padding: 30px;
+
   width: 300px;
   transform: translateX(300px);
   z-index: 20;
+
+  .drawer__container {
+    padding: $tool-bar-height  $padding $padding;
+  }
+
+  &__group {
+    margin-right: -$padding;
+    margin-left: -$padding;
+    padding: $padding;
+    border-bottom: 1px solid lighten($gray-dark, 5);
+
+    &__title {
+      margin: 0 0 15px;
+      font-size: 1.125rem;
+      font-weight: normal;
+    }
+
+    &__body {
+      font-size:  .75rem;
+
+      > *:first-child {
+        margin-top: 0;
+      }
+
+      > *:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__item-header {
+    margin: 0 0 20px;
+  }
+
+  &__item-name {
+    margin: 0 0 5px;
+    font-size: 1.37rem;
+    font-weight: normal;
+  }
+
+  &__item-url {
+    margin: 0;
+    font-size: .75rem;
+  }
 }

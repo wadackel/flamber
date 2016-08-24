@@ -15,6 +15,7 @@ const ItemSchema = new Schema({
   board: { type: Schema.Types.ObjectId, ref: "Board" },
   name: { type: String, required: true },
   url: { type: String, default: "" },
+  description: { type: String, default: "" },
   width: { type: Number, default: 0 },
   height: { type: Number, default: 0 },
   thumbnail: { type: String, default: "" },

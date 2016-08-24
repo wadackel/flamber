@@ -1,15 +1,30 @@
+$tool-bar-height: 40px;
+
 .tool-bar {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  height: 40px;
-  background: rgba(#000, .8);
+  height: $tool-bar-height;
+  background: rgba(#000, .92);
   box-shadow: 0 2px 6px rgba(#000, .4);
 
   &__col {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &--right,
+    &--left {
+      flex-basis: 20%;
+    }
+
+    &--right {
+      justify-content: flex-end;
+    }
+
+    &--left {
+      justify-content: flex-start;
+    }
   }
 }

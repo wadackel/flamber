@@ -1,6 +1,7 @@
 /* eslint-disable */
 import _ from "lodash";
 import autoBind from "auto-bind";
+import moment from "moment";
 import React, { Component, PropTypes } from "react";
 import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
@@ -27,6 +28,17 @@ import {
 
 const b = bem("item-detail-drawer");
 
+function Group({ title, type, children }) {
+  return (
+    <div className={b("group", { [type]: true })()}>
+      {title && <h4 className={b("group__title")()}>{title}</h4>}
+      <div className={b("group__body")}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export class ItemDetailDrawer extends Component {
   static propTypes = {
   };
@@ -44,7 +56,8 @@ export class ItemDetailDrawer extends Component {
 
   render() {
     const {
-      items
+      items,
+      currentItem
     } = this.props;
 
     const modifier = {
@@ -57,7 +70,25 @@ export class ItemDetailDrawer extends Component {
         direction="right"
         open={items.detailDrawerOpen}
       >
-        TODO
+        <Group type="main">
+          <div className={b("item-header")}>
+            <h2 className={b("item-name")()}>{currentItem.name}</h2>
+            <p className={b("item-url")}>{currentItem.url}</p>
+          </div>
+          <p className={b("item-detail")}>{currentItem.description}</p>
+        </Group>
+
+        <Group title="Colors" type="colors">
+          TODO
+        </Group>
+
+        <Group title="Tags" type="tags">
+          TODO
+        </Group>
+
+        <Group title="Date" type="date">
+          <p>{moment(currentItem.created).format("YYYY/MM/DD HH:mm:ss")}</p>
+        </Group>
       </Drawer>
     );
   }
