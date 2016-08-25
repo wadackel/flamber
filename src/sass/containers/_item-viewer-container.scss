@@ -41,7 +41,7 @@
 
   &__tool-bar {
     @include fixed(0, 0, auto, 0, 40);
-    background-color: rgba(#222, .85);
+    background-color: rgba(#000, .9);
   }
 
   &__viewer {
