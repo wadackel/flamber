@@ -115,15 +115,24 @@ export class ItemViewerContainer extends Component {
     this.setState({ itemNameEditing: true });
   }
 
-  handleItemNameBlur() {
+  handleItemNameBlur(e, isEnter) {
+    const { currentItem } = this.props;
+    const { itemName } = this.state;
+
     this.setState({ itemNameEditing: false });
+
+    if (!isEnter) {
+      this.setState({
+        itemName: currentItem.name !== itemName ? currentItem.name : itemName
+      });
+    }
   }
 
   handleItemNameChange(e, value) {
     this.setState({ itemName: value });
   }
 
-  handleItemNameComplete(value) {
+  handleItemNameEnter(e, value) {
     const { dispatch, currentItem } = this.props;
     dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
   }
@@ -185,7 +194,7 @@ export class ItemViewerContainer extends Component {
                   onFocus={this.handleItemNameFocus}
                   onBlur={this.handleItemNameBlur}
                   onChange={this.handleItemNameChange}
-                  onComplete={this.handleItemNameComplete}
+                  onEnter={this.handleItemNameEnter}
                 />
                 <MDSpinner
                   size={14}

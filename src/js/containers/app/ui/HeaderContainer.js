@@ -52,6 +52,7 @@ export class HeaderContainer extends Component {
 
     this.state = {
       boardName: "",
+      boardNameEditing: false,
       itemsSize: props.settings.itemsSize
     };
 
@@ -100,11 +101,28 @@ export class HeaderContainer extends Component {
   }
 
   // Update board
+  handleBoardNameFocus() {
+    this.setState({ boardNameEditing: true });
+  }
+
+  handleBoardNameBlur(e, isEnter) {
+    const { currentBoard } = this.props;
+    const { boardName } = this.state;
+
+    this.setState({ boardNameEditing: true });
+
+    if (!isEnter) {
+      this.setState({
+        boardName: currentBoard.name !== boardName ? currentBoard.name : boardName,
+      });
+    }
+  }
+
   handleBoardNameChange(e, value) {
     this.setState({ boardName: value });
   }
 
-  handleBoardNameComplete(name) {
+  handleBoardNameEnter(e, name) {
     const { currentBoard } = this.props;
     const board = {
       ...currentBoard,
@@ -112,6 +130,7 @@ export class HeaderContainer extends Component {
     };
 
     this.props.dispatch(BoardActions.updateBoardIfNeeded(board));
+    this.setState({ boardName: name });
   }
 
   // Update layouts
@@ -211,8 +230,10 @@ export class HeaderContainer extends Component {
           <EditableText
             icon={<PencilIcon />}
             value={boardName}
+            onFocus={this.handleBoardNameFocus}
+            onBlur={this.handleBoardNameBlur}
             onChange={this.handleBoardNameChange}
-            onComplete={this.handleBoardNameComplete}
+            onEnter={this.handleBoardNameEnter}
           />
           <MDSpinner
             size={20}

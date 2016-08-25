@@ -61,7 +61,7 @@ export class ItemDetailDrawer extends Component {
     } = this.props;
 
     const modifier = {
-      show: items.detailDrawerOpen
+      show: currentItem && items.detailDrawerOpen
     };
 
     return (
@@ -70,25 +70,29 @@ export class ItemDetailDrawer extends Component {
         direction="right"
         open={items.detailDrawerOpen}
       >
-        <Group type="main">
-          <div className={b("item-header")}>
-            <h2 className={b("item-name")()}>{currentItem.name}</h2>
-            <p className={b("item-url")}>{currentItem.url}</p>
+        {currentItem &&
+          <div>
+            <Group type="main">
+              <div className={b("item-header")}>
+                <h2 className={b("item-name")()}>{currentItem.name}</h2>
+                <p className={b("item-url")}>{currentItem.url}</p>
+              </div>
+              <p className={b("item-detail")}>{currentItem.description}</p>
+            </Group>
+
+            <Group title="Colors" type="colors">
+              TODO
+            </Group>
+
+            <Group title="Tags" type="tags">
+              TODO
+            </Group>
+
+            <Group title="Date" type="date">
+              <p>{moment(currentItem.created).format("YYYY/MM/DD HH:mm:ss")}</p>
+            </Group>
           </div>
-          <p className={b("item-detail")}>{currentItem.description}</p>
-        </Group>
-
-        <Group title="Colors" type="colors">
-          TODO
-        </Group>
-
-        <Group title="Tags" type="tags">
-          TODO
-        </Group>
-
-        <Group title="Date" type="date">
-          <p>{moment(currentItem.created).format("YYYY/MM/DD HH:mm:ss")}</p>
-        </Group>
+        }
       </Drawer>
     );
   }

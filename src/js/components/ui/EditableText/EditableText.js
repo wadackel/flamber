@@ -12,7 +12,6 @@ export default class EditableText extends Component {
     icon: PropTypes.node,
     value: PropTypes.string,
     onEnter: PropTypes.func,
-    onComplete: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onFocus: PropTypes.func,
@@ -21,7 +20,6 @@ export default class EditableText extends Component {
 
   static defaultProps = {
     onEnter: () => {},
-    onComplete: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},
     onFocus: () => {},
@@ -35,6 +33,8 @@ export default class EditableText extends Component {
       isEditing: false,
       isHover: false
     };
+
+    this._isEnter = false;
 
     autoBind(this);
   }
@@ -57,6 +57,7 @@ export default class EditableText extends Component {
   }
 
   handleEnter(e, value) {
+    this._isEnter = true;
     this.props.onEnter(e, value);
     this.refs.textField.blur();
   }
@@ -70,8 +71,8 @@ export default class EditableText extends Component {
 
   handleBlur(e) {
     this.setState({ isEditing: false });
-    this.props.onBlur(e);
-    this.props.onComplete(e.target.value);
+    this.props.onBlur(e, this._isEnter);
+    this._isEnter = false;
   }
 
   render() {
