@@ -14,12 +14,15 @@ export default handleActions({
   [Items.BG_SYNC_ITEMS_SUCCESS]: (state, { payload }) => {
     const newItems = payload.entities.items || {};
 
-    return _.assign(state, _.mapValues(newItems, entity => {
-      if (!state.hasOwnProperty(entity.id)) return entity;
+    return _.assign(state, _.mapValues(newItems, nextEntity => {
+      if (!state.hasOwnProperty(nextEntity.id)) return nextEntity;
+
+      const prevEntity = state[nextEntity.id];
+      if (prevEntity.isUpdating) return prevEntity;
 
       const frontOnlyProps = _.keys(ItemSchema._defaults);
 
-      return _.assignWith(state[entity.id], entity, (prev, next, key) => {
+      return _.assignWith(prevEntity, nextEntity, (prev, next, key) => {
         if (frontOnlyProps.indexOf(key) > -1) {
           return prev;
         }

@@ -49,7 +49,8 @@ export class ItemViewerContainer extends Component {
 
     this.state = {
       zoom: 1,
-      itemName: ""
+      itemName: "",
+      itemNameEditing: false
     };
 
     autoBind(this);
@@ -64,7 +65,12 @@ export class ItemViewerContainer extends Component {
       currentItem: _currentItem
     } = nextProps;
 
-    if (_currentItem && !_currentItem.isUpdating && this.state.itemName !== _currentItem.name) {
+    if (
+      _currentItem
+      && !_currentItem.isUpdating
+      && !this.state.itemNameEditing
+      && this.state.itemName !== _currentItem.name
+    ) {
       this.setState({ itemName: nextProps.currentItem.name });
     }
   }
@@ -103,6 +109,14 @@ export class ItemViewerContainer extends Component {
 
   handleDrawerToggle() {
     this.props.dispatch(ItemActions.itemDetailDrawerToggle());
+  }
+
+  handleItemNameFocus() {
+    this.setState({ itemNameEditing: true });
+  }
+
+  handleItemNameBlur() {
+    this.setState({ itemNameEditing: false });
   }
 
   handleItemNameChange(e, value) {
@@ -168,6 +182,8 @@ export class ItemViewerContainer extends Component {
                 <EditableText
                   icon={<PencilIcon />}
                   value={itemName}
+                  onFocus={this.handleItemNameFocus}
+                  onBlur={this.handleItemNameBlur}
                   onChange={this.handleItemNameChange}
                   onComplete={this.handleItemNameComplete}
                 />
