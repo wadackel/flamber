@@ -3,6 +3,7 @@ import autoBind from "auto-bind";
 import urlParse from "url-parse";
 import React, { PropTypes } from "react";
 import * as Layout from "../../../constants/layouts";
+import { hexToRgb } from "../../../helpers/color";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import {
@@ -119,6 +120,8 @@ export default class ItemCard extends React.Component {
     const baseClassName = `item-card${isGallery ? "--gallery" : ""}`;
     const b = bem(baseClassName);
     const modifier = { selected };
+    const firstHEX = colors ? colors[0] : "#fff";
+    const firstRGB = hexToRgb(firstHEX);
 
     const parsedURL = urlParse(url, true);
 
@@ -134,7 +137,8 @@ export default class ItemCard extends React.Component {
           image={image}
           selected={selected}
           style={isGallery ? {
-            paddingBottom: `${(imageHeight / imageWidth) * 100}%`
+            paddingBottom: `${(imageHeight / imageWidth) * 100}%`,
+            backgroundColor: `rgb(${firstRGB.r}, ${firstRGB.g}, ${firstRGB.b})`
           } : {}}
           overlay={<CardOverlay
             baseClassName={baseClassName}
