@@ -76,11 +76,17 @@ export default class ItemCard extends React.Component {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
-  handleStarClick() {
+  handleUrlClick(e) {
+    e.stopPropagation();
+  }
+
+  handleStarClick(e) {
+    e.stopPropagation();
     this.props.onStar(this.props.id);
   }
 
-  handleDetailClick() {
+  handleDetailClick(e) {
+    e.stopPropagation();
     this.props.onDetailClick(this.props.id);
   }
 
@@ -88,11 +94,13 @@ export default class ItemCard extends React.Component {
     this.props.onSelect(this.props.id, checked);
   }
 
-  handleMoveClick() {
+  handleMoveClick(e) {
+    e.stopPropagation();
     this.props.onMove(this.props.id);
   }
 
-  handleDeleteClick() {
+  handleDeleteClick(e) {
+    e.stopPropagation();
     this.props.onDelete(this.props.id);
   }
 
@@ -100,7 +108,7 @@ export default class ItemCard extends React.Component {
     const { url } = this.props;
 
     return isURL(url, { require_protocol: true }) // eslint-disable-line camelcase
-      ? <a href={url} target="_blank">{urlParse(url, true).host}</a>
+      ? <a href={url} target="_blank" onClick={this.handleUrlClick}>{urlParse(url, true).host}</a>
       : <span>{url}</span>;
   }
 
@@ -137,6 +145,7 @@ export default class ItemCard extends React.Component {
         className={mergeClassNames(b(modifier)(), className)}
         style={style}
         processing={processing}
+        onClick={this.handleDetailClick}
       >
         <CardMedia
           baseClassName={baseClassName}

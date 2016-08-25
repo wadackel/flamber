@@ -145,6 +145,7 @@ export class BoardsPage extends Component {
               layout={boardsLayout}
               itemCount={board.items.length}
               lastModified={new Date(board.modified)}
+              onClick={this.handleEdit}
               onEdit={this.handleEdit}
               onSelect={this.handleSelect}
               onDelete={this.handleDelete}

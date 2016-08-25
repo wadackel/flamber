@@ -36,6 +36,7 @@ export default class BoardCard extends React.Component {
     layout: PropTypes.oneOf([Layout.GRID, Layout.LIST]),
     itemCount: PropTypes.number,
     lastModified: PropTypes.instanceOf(Date),
+    onClick: PropTypes.func,
     onSelect: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func
@@ -47,6 +48,7 @@ export default class BoardCard extends React.Component {
     processing: false,
     selected: false,
     itemCount: 0,
+    onClick: () => {},
     onSelect: () => {},
     onEdit: () => {},
     onDelete: () => {}
@@ -57,15 +59,25 @@ export default class BoardCard extends React.Component {
     autoBind(this);
   }
 
+  handleClick() {
+    this.props.onClick(this.props.id);
+  }
+
+  handleSelectClick(e) {
+    e.stopPropagation();
+  }
+
   handleSelect() {
     this.props.onSelect(this.props.id);
   }
 
-  handleEditClick() {
+  handleEditClick(e) {
+    e.stopPropagation();
     this.props.onEdit(this.props.id);
   }
 
-  handleDeleteClick() {
+  handleDeleteClick(e) {
+    e.stopPropagation();
     this.props.onDelete(this.props.id);
   }
 
@@ -145,6 +157,7 @@ export default class BoardCard extends React.Component {
         className={mergeClassNames(b({ selected })(), className)}
         style={style}
         processing={processing}
+        onClick={this.handleClick}
       >
         <CardMedia
           baseClassName={baseClassName}
@@ -155,6 +168,7 @@ export default class BoardCard extends React.Component {
             selected={selected}
             moreActions={this.renderMoreActions()}
             actions={<FlatButton onClick={this.handleEditClick}>Edit board</FlatButton>}
+            onClick={this.handleSelectClick}
             onSelect={this.handleSelect}
           />}
         >

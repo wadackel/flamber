@@ -30,6 +30,10 @@ export default class CardOverlay extends React.Component {
     autoBind(this);
   }
 
+  handleSelectClick(e) {
+    e.stopPropagation();
+  }
+
   handleMouseEnter() {
     this.setState({ show: true });
   }
@@ -76,6 +80,7 @@ export default class CardOverlay extends React.Component {
       className={b("select", modifier)()}
       checked={selected}
       onCheck={onSelect}
+      onClick={this.handleSelectClick}
     />;
 
     const actionElements = actions && <div className={b("actions", modifier)()}>
