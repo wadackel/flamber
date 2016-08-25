@@ -57,6 +57,7 @@ class ImageViewerInline extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._isMounted = false;
     this.state = {
       status: Status.LOADING,
       width: 0,
@@ -75,6 +76,7 @@ class ImageViewerInline extends Component {
     this.iScroll = new IScroll(viewport, iScrollOptions);
 
     this.updateImage(image);
+    this._isMounted = true;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -115,6 +117,8 @@ class ImageViewerInline extends Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false;
+
     if (this.iScroll) {
       this.iScroll.destroy();
       this.iScroll = null;
@@ -156,7 +160,10 @@ class ImageViewerInline extends Component {
         const { zoom } = this.props;
         const size = this.getImageSize(img);
 
+        if (!this._isMounted) return;
+
         this.setState({ status: Status.LOADED });
+
         this.setImageSize(
           size.width * zoom,
           size.height * zoom,
@@ -166,6 +173,7 @@ class ImageViewerInline extends Component {
         );
       })
       .catch(() => {
+        if (!this._isMounted) return;
         this.setState({ status: Status.FAILED });
       });
   }
@@ -206,6 +214,8 @@ class ImageViewerInline extends Component {
   }
 
   setImageSize(width, height, naturalWidth, naturalHeight, adjustScrollPosition = true) {
+    if (!this._isMounted) return;
+
     if (adjustScrollPosition) {
       const { width: w, height: h } = this.state;
 
