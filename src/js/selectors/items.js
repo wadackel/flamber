@@ -35,11 +35,13 @@ export function getItemEntities(state) {
 }
 
 export function getVisibleItemEntities(state) {
-  const { items, boards } = state;
+  const { items, boards, settings } = state;
   const { visibilityFilter, currentColor } = items;
   const { currentBoardId } = boards;
+  const { itemsOrderBy, itemsOrder } = settings;
   let entities = getItemEntities(state);
   entities = currentColor ? entities.filter(entity => entity.palette.indexOf(currentColor) > -1) : entities;
+  entities = sortEntities(entities, itemsOrderBy, itemsOrder);
 
   switch (visibilityFilter) {
     case ItemVisibilityFilters.SHOW_ITEM_ALL:
