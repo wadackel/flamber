@@ -1,5 +1,6 @@
 import _ from "lodash";
 import autoBind from "auto-bind";
+import isURL from "validator/lib/isURL";
 import urlParse from "url-parse";
 import React, { PropTypes } from "react";
 import * as Layout from "../../../constants/layouts";
@@ -95,6 +96,14 @@ export default class ItemCard extends React.Component {
     this.props.onDelete(this.props.id);
   }
 
+  renderURL() {
+    const { url } = this.props;
+
+    return isURL(url, { require_protocol: true }) // eslint-disable-line camelcase
+      ? <a href={url} target="_blank">{urlParse(url, true).host}</a>
+      : <span>{url}</span>;
+  }
+
   renderMoreActions() {
     return [
       <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />,
@@ -109,7 +118,6 @@ export default class ItemCard extends React.Component {
       processing,
       selected,
       star,
-      url,
       title,
       image,
       imageWidth,
@@ -122,8 +130,6 @@ export default class ItemCard extends React.Component {
     const modifier = { selected };
     const firstHEX = colors ? colors[0] : "#fff";
     const firstRGB = hexToRgb(firstHEX);
-
-    const parsedURL = urlParse(url, true);
 
     return (
       <Card
@@ -152,7 +158,7 @@ export default class ItemCard extends React.Component {
         <CardBody baseClassName={baseClassName}>
           <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
           <CardText baseClassName={baseClassName}>
-            <a href={url} target="_blank">{parsedURL.host}</a>
+            {this.renderURL()}
           </CardText>
           <CardAction baseClassName={baseClassName}>
             <IconButton
@@ -176,7 +182,6 @@ export default class ItemCard extends React.Component {
       processing,
       selected,
       star,
-      url,
       title,
       image
     } = this.props;
@@ -184,8 +189,6 @@ export default class ItemCard extends React.Component {
     const baseClassName = "item-card--list";
     const b = bem(baseClassName);
     const modifier = { selected };
-
-    const parsedURL = urlParse(url, true);
 
     return (
       <Card
@@ -204,7 +207,7 @@ export default class ItemCard extends React.Component {
           <CardBody baseClassName={baseClassName}>
             <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
             <CardText baseClassName={baseClassName}>
-              <a href={url} target="_blank">{parsedURL.host}</a>
+              {this.renderURL()}
             </CardText>
           </CardBody>
         </CardCol>

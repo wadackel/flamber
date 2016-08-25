@@ -225,6 +225,7 @@ export class ItemsContainer extends Component {
               selected={item.select}
               layout={itemsLayout}
               title={item.name}
+              url={item.url}
               image={item.thumbnail}
               imageWidth={item.width}
               imageHeight={item.height}

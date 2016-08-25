@@ -1,4 +1,5 @@
 /* eslint-disable */
+import path from "path";
 import _ from "lodash";
 import mongoose, { Schema } from "mongoose";
 import Board from "./board";
@@ -41,8 +42,9 @@ ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, 
       const item = new this({
         board: boardId,
         fileId: res.id,
-        name: file.originalname,
+        name: path.parse(file.originalname).name,
         thumbnail: res.thumbnailLink,
+        url: file.originalname,
         user,
         width,
         height,
