@@ -1,6 +1,8 @@
+import _ from "lodash";
 import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { PropTypes } from "react";
+import Textarea from "react-textarea-autosize";
 import assign from "object-assign";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -20,6 +22,8 @@ export default class TextField extends React.Component {
     label: PropTypes.string,
     placeholder: PropTypes.string,
     rows: PropTypes.number,
+    minRows: PropTypes.number,
+    maxRows: PropTypes.number,
     multiLine: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
@@ -34,7 +38,6 @@ export default class TextField extends React.Component {
   static defaultProps = {
     id: "",
     type: "text",
-    rows: 1,
     multiLine: false,
     onChange: () => {},
     onEnter: () => {},
@@ -124,6 +127,8 @@ export default class TextField extends React.Component {
       value,
       multiLine,
       rows,
+      minRows,
+      maxRows,
       onEnter, // eslint-disable-line no-unused-vars
       onKeyDown,
       onKeyUp, // eslint-disable-line no-unused-vars
@@ -158,11 +163,13 @@ export default class TextField extends React.Component {
       onKeyPress
     };
 
-    const textAreaProps = assign({}, commonProps, {
-      rows
-    });
+    const textAreaProps = { ...commonProps };
+    if (!_.isUndefined(rows)) textAreaProps.rows = rows;
+    if (!_.isUndefined(minRows)) textAreaProps.minRows = minRows;
+    if (!_.isUndefined(maxRows)) textAreaProps.maxRows = maxRows;
+    if (!_.isUndefined(value)) textAreaProps.useCacheForDOMMeasurements = true;
 
-    const inputProps = assign({}, textAreaProps, {
+    const inputProps = assign({}, commonProps, {
       onEnter: this.handleEnter,
       type
     });
@@ -178,7 +185,7 @@ export default class TextField extends React.Component {
           : null
         }
         {multiLine
-          ? <textarea ref="control" {...textAreaProps} />
+          ? <Textarea ref="control" {...textAreaProps} />
           : <Input ref="control" {...inputProps} />
         }
       </div>

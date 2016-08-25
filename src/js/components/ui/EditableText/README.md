@@ -17,7 +17,7 @@ class EditableTextExample extends React.Component {
           icon={<PencilIcon />}
           value={this.state.value}
           onChange={(e, value) => this.setState({ value: value })}
-          onComplete={value => this.setState({ displayValue: value })}
+          onEnter={(e, value) => this.setState({ displayValue: value })}
         />
 
         <div>displayValue: {this.state.displayValue}</div>

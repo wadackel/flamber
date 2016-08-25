@@ -80,7 +80,7 @@ $text-field-duration: 180ms;
     overflow: hidden;
     vertical-align: bottom;
     z-index: 3;
-    resize: vertical;
+    resize: none;
 
     &--is-focused {
       outline: none;
