@@ -106,6 +106,25 @@ export default handleActions({
     )
   ),
 
+  [Items.UPDATE_ITEM_NAME_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      payload.result.items.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        name: payload.entities.items[entity.id].name,
+        isUpdating: false
+      }
+    )
+  ),
+
+  [Items.UPDATE_ITEM_NAME_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.id ? entity : {
+        ...entity,
+        isUpdating: false
+      }
+    )
+  ),
+
 
   // Move
   [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => (

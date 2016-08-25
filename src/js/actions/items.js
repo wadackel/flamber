@@ -84,7 +84,10 @@ function updateNamePaymentCreator(id, name) {
 export const updateItemNameIfNeeded = createAction(UPDATE_ITEM_NAME_IF_NEEDED, updateNamePaymentCreator);
 export const updateItemNameRequest = createAction(UPDATE_ITEM_NAME_REQUEST, updateNamePaymentCreator);
 export const updateItemNameSuccess = createAction(UPDATE_ITEM_NAME_SUCCESS);
-export const updateItemNameFailure = createAction(UPDATE_ITEM_NAME_FAILURE);
+export const updateItemNameFailure = createAction(UPDATE_ITEM_NAME_FAILURE,
+  null,
+  (error, payload) => ({ ...payload })
+);
 
 
 // Move board

@@ -119,6 +119,13 @@ export default handleActions({
   }),
 
 
+  // Update name
+  [Items.UPDATE_ITEM_NAME_FAILURE]: (state, { payload }) => ({
+    ...state,
+    error: payload
+  }),
+
+
   // Delete
   [Items.DELETE_ITEM_REQUEST]: (state, { payload }) => ({
     ...state,

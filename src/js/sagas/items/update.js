@@ -1,6 +1,8 @@
 /* eslint-disable */
+import { normalize, arrayOf } from "normalizr";
 import { takeEvery } from "redux-saga";
-import { put, select } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
+import ItemSchema from "../../schemas/item";
 import { getItemEntityById } from "../../selectors/items";
 import * as Services from "../../services/items";
 import * as Notifications from "../../actions/notifications";
@@ -17,14 +19,29 @@ export function *handleUpdateItemNameIfNeeded({ payload }) {
 
 export function *handleUpdateItemNameRequest({ payload }) {
   const entity = yield select(getItemEntityById, payload.id);
+  const newEntity = { ...entity, name: payload.name };
 
-  // TODO: Update name
+  try {
+    const response = yield call(Services.updateItems, [newEntity]);
+    const normalized = normalize(response, {
+      items: arrayOf(ItemSchema)
+    });
+    yield put(Items.updateItemNameSuccess(normalized));
+  } catch (error) {
+    yield put(Items.updateItemNameFailure(error, payload));
+  }
+}
+
+function *handleUpdateItemNameFailure() {
+  // TODO: More erro message
+  yield put(Notifications.showNotify("アイテムの更新に失敗しました"));
 }
 
 
 export default function *updateItemSaga() {
   yield [
     takeEvery(Items.UPDATE_ITEM_NAME_IF_NEEDED, handleUpdateItemNameIfNeeded),
-    takeEvery(Items.UPDATE_ITEM_NAME_REQUEST, handleUpdateItemNameRequest)
+    takeEvery(Items.UPDATE_ITEM_NAME_REQUEST, handleUpdateItemNameRequest),
+    takeEvery(Items.UPDATE_ITEM_NAME_FAILURE, handleUpdateItemNameFailure)
   ];
 }

@@ -56,7 +56,15 @@ export class ItemViewerContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentItem && this.state.itemName !== nextProps.currentItem.name) {
+    const {
+      currentItem
+    } = this.props;
+
+    const {
+      currentItem: _currentItem
+    } = nextProps;
+
+    if (_currentItem && !_currentItem.isUpdating && this.state.itemName !== _currentItem.name) {
       this.setState({ itemName: nextProps.currentItem.name });
     }
   }
@@ -156,12 +164,21 @@ export class ItemViewerContainer extends Component {
           <ToolBar
             className={b("tool-bar")()}
             title={
-              <EditableText
-                icon={<PencilIcon />}
-                value={itemName}
-                onChange={this.handleItemNameChange}
-                onComplete={this.handleItemNameComplete}
-              />
+              <div>
+                <EditableText
+                  icon={<PencilIcon />}
+                  value={itemName}
+                  onChange={this.handleItemNameChange}
+                  onComplete={this.handleItemNameComplete}
+                />
+                <MDSpinner
+                  size={14}
+                  style={{
+                    visibility: currentItem.isUpdating ? "visible" : "hidden",
+                    marginLeft: 10
+                  }}
+                />
+              </div>
             }
             left={[
               <ToolBarItem>
