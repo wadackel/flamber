@@ -31,7 +31,9 @@ export default class Drawer extends React.Component {
       bounce: false,
       mouseWheel: true,
       scrollbars: "custom",
-      freeScroll: true,
+      freeScroll: false,
+      click: true,
+      disableMouse: true,
       preventDefault: false
     });
 
