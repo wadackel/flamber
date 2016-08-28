@@ -3,14 +3,16 @@
   @include size(40px);
   display: inline-block;
   position: relative;
+  transform: scale(1);
   border-width: 1px;
   border-style: solid;
   border-radius: 50%;
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0 2px 3px rgba(#000, .4), 0 2px 5px rgba(#000, .4);
-    opacity: .75;
+    $shadow: rgba(#000, .16);
+    transform: scale(1.05);
+    box-shadow: 0 2px 3px $shadow, 0 2px 5px $shadow;
   }
 
   &__check {
