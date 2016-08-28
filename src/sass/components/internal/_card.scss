@@ -141,6 +141,7 @@ $card-border-radius: 3px;
 
     &__media {
       @extend %card-media;
+      min-height: 150px;
 
       &__overlay {
         @extend %card-media-overlay;
@@ -152,6 +153,7 @@ $card-border-radius: 3px;
 
       &__item {
         @extend %card-media-item;
+        background-size: contain;
 
         &--selected {
           @extend %card-media-item-active;
