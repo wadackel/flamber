@@ -1,0 +1,37 @@
+.selectable-color {
+  @include transition(all, $transition-duration-fast);
+  @include size(40px);
+  display: inline-block;
+  position: relative;
+  border-radius: 50%;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 2px 3px rgba(#000, .4), 0 2px 5px rgba(#000, .4);
+  }
+
+  &:not(&--selected):hover {
+    opacity: .75;
+  }
+
+  &--selected {
+    cursor: default;
+  }
+
+  &__check {
+    @include absolute(0, 0, 0, 0);
+    @include size(15px);
+    @include transition(all, $transition-duration-fast);
+    margin: auto;
+    transform: scale(.2);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    &--selected {
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

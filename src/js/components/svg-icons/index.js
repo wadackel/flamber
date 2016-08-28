@@ -4,6 +4,7 @@ export ArrowRightIcon from "./ArrowRightIcon";
 export ArrowTopIcon from "./ArrowTopIcon";
 export BoardIcon from "./BoardIcon";
 export CaretIcon from "./CaretIcon";
+export CheckIcon from "./CheckIcon";
 export CircleBottomIcon from "./CircleBottomIcon";
 export CircleLeftIcon from "./CircleLeftIcon";
 export CircleRightIcon from "./CircleRightIcon";
