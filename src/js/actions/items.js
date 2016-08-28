@@ -90,6 +90,21 @@ export const updateItemNameFailure = createAction(UPDATE_ITEM_NAME_FAILURE,
 );
 
 
+// Update Palette
+export const UPDATE_ITEM_PALETTE_REQUEST = "UPDATE_ITEM_PALETTE_REQUEST";
+export const UPDATE_ITEM_PALETTE_SUCCESS = "UPDATE_ITEM_PALETTE_SUCCESS";
+export const UPDATE_ITEM_PALETTE_FAILURE = "UPDATE_ITEM_PALETTE_FAILURE";
+
+export const updateItemPaletteRequest = createAction(UPDATE_ITEM_PALETTE_REQUEST,
+  (id, palette) => ({ id, palette })
+);
+export const updateItemPaletteSuccess = createAction(UPDATE_ITEM_PALETTE_SUCCESS);
+export const updateItemPaletteFailure = createAction(UPDATE_ITEM_PALETTE_FAILURE,
+  null,
+  (error, payload) => ({ ...payload })
+);
+
+
 // Move board
 export const MOVE_ITEM_SELECT_BOARD_OPEN = "MOVE_ITEM_SELECT_BOARD_OPEN";
 export const MOVE_ITEM_SELECT_BOARD_CLOSE = "MOVE_ITEM_SELECT_BOARD_CLOSE";

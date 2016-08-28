@@ -33,7 +33,6 @@ export default class Drawer extends React.Component {
       scrollbars: "custom",
       freeScroll: false,
       click: true,
-      disableMouse: true,
       preventDefault: false
     });
 

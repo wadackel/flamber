@@ -104,7 +104,8 @@ export default handleActions({
       entity.id !== payload.id ? entity : {
         ...entity,
         name: payload.name,
-        isUpdating: true
+        isUpdating: true,
+        isNameUpdating: true
       }
     )
   ),
@@ -114,7 +115,8 @@ export default handleActions({
       payload.result.items.indexOf(entity.id) < 0 ? entity : {
         ...entity,
         name: payload.entities.items[entity.id].name,
-        isUpdating: false
+        isUpdating: false,
+        isNameUpdating: false
       }
     )
   ),
@@ -123,7 +125,42 @@ export default handleActions({
     _.mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
-        isUpdating: false
+        isUpdating: false,
+        isNameUpdating: false
+      }
+    )
+  ),
+
+
+  // Update palette
+  [Items.UPDATE_ITEM_PALETTE_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        palette: payload.palette,
+        isUpdating: true,
+        isPaletteUpdating: true
+      }
+    )
+  ),
+
+  [Items.UPDATE_ITEM_PALETTE_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      payload.result.items.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        palette: payload.entities.items[entity.id].palette,
+        isUpdating: false,
+        isPaletteUpdating: false
+      }
+    )
+  ),
+
+  [Items.UPDATE_ITEM_PALETTE_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id === meta.id ? entity : {
+        ...entity,
+        isUpdating: false,
+        isPaletteUpdating: false
       }
     )
   ),

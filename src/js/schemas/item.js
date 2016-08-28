@@ -13,7 +13,11 @@ const ItemSchema = new Schema("items", {
     select: false,
     isUpdating: false,
     isMoving: false,
-    isDeleting: false
+    isDeleting: false,
+
+    // State of each props
+    isNameUpdating: false,
+    isPaletteUpdating: false
   }
 });
 

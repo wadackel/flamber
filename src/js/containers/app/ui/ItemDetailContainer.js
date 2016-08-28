@@ -20,6 +20,9 @@ import {
 import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
 import {
+  ItemDetailPaletteContainer
+} from "./";
+import {
   Drawer
 } from "../../../components/ui/";
 import {
@@ -81,7 +84,7 @@ export class ItemDetailContainer extends Component {
             </Group>
 
             <Group title="Colors" type="colors">
-              TODO
+              <ItemDetailPaletteContainer />
             </Group>
 
             <Group title="Tags" type="tags">

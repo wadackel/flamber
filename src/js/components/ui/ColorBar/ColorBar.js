@@ -91,7 +91,8 @@ export default class ColorBar extends React.Component {
       className,
       selectable,
       palette,
-      color
+      color,
+      onClick
     } = this.props;
 
     const items = palette.map(value =>
@@ -107,7 +108,10 @@ export default class ColorBar extends React.Component {
     const modifier = { selectable };
 
     return (
-      <div className={mergeClassNames(b(modifier)(), className)}>
+      <div
+        className={mergeClassNames(b(modifier)(), className)}
+        onClick={onClick}
+      >
         <div className={b("list", modifier)()}>
           {items}
         </div>

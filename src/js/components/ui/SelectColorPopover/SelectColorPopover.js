@@ -92,6 +92,7 @@ export default class SelectColorPopover extends Component {
     } = this.props;
 
     const { selectColors } = this.state;
+    const hasColor = selectColors.length > 0;
 
     return (
       <Popover
@@ -109,12 +110,13 @@ export default class SelectColorPopover extends Component {
             onColorClick={this.handleColorClick}
           >
             {colors.map(colorObj =>
-              <SelectableColor {...colorObj} />
+              <SelectableColor key={colorObj.color} {...colorObj} />
             )}
           </SelectableColorGroup>
 
           <FlatButton
             className={b("done")()}
+            disable={!hasColor}
             type="primary"
             onClick={this.handleComplete}
           >

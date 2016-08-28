@@ -69,7 +69,7 @@ export class ItemViewerContainer extends Component {
 
     if (
       _currentItem
-      && !_currentItem.isUpdating
+      && !_currentItem.isNameUpdating
       && !this.state.itemNameEditing
       && this.state.itemName !== _currentItem.name
     ) {
@@ -156,7 +156,7 @@ export class ItemViewerContainer extends Component {
       show
     };
 
-    const firstColor = show ? hexToRgb(currentItem.palette[0]) : null;
+    const firstColor = show ? hexToRgb(currentItem.palette[0]) || {} : null;
 
     return (
       <ReactCSSTransitionGroup
@@ -201,7 +201,7 @@ export class ItemViewerContainer extends Component {
                 <MDSpinner
                   size={14}
                   style={{
-                    visibility: currentItem.isUpdating ? "visible" : "hidden",
+                    visibility: currentItem.isNameUpdating ? "visible" : "hidden",
                     marginLeft: 10
                   }}
                 />

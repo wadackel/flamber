@@ -137,7 +137,7 @@ export default class ItemCard extends React.Component {
     const b = bem(baseClassName);
     const modifier = { selected };
     const firstHEX = colors ? colors[0] : "#fff";
-    const firstRGB = hexToRgb(firstHEX);
+    const firstRGB = hexToRgb(firstHEX) || {};
 
     return (
       <Card
