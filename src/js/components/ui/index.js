@@ -42,6 +42,7 @@ export RadioGroup from "./RadioGroup/RadioGroup";
 export RaisedButton from "./RaisedButton/RaisedButton";
 export SearchField from "./SearchField/SearchField";
 export SelectableColor from "./SelectableColor/SelectableColor";
+export SelectableColorGroup from "./SelectableColorGroup/SelectableColorGroup";
 export SelectBoardDialog from "./SelectBoardDialog/SelectBoardDialog";
 export Slider from "./Slider/Slider";
 export Snackbar from "./Snackbar/Snackbar";

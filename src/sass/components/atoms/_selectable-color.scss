@@ -3,19 +3,14 @@
   @include size(40px);
   display: inline-block;
   position: relative;
+  border-width: 1px;
+  border-style: none;
   border-radius: 50%;
   cursor: pointer;
 
   &:hover {
     box-shadow: 0 2px 3px rgba(#000, .4), 0 2px 5px rgba(#000, .4);
-  }
-
-  &:not(&--selected):hover {
     opacity: .75;
-  }
-
-  &--selected {
-    cursor: default;
   }
 
   &__check {

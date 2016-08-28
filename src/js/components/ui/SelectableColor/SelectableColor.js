@@ -1,9 +1,7 @@
-/* eslint-disable */
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import { IconButton } from "../";
 import { CheckIcon } from "../../svg-icons/";
 
 const b = bem("selectable-color");
@@ -14,6 +12,7 @@ export default class SelectableColor extends Component {
     style: PropTypes.object,
     color: PropTypes.string,
     selected: PropTypes.bool,
+    borderColor: PropTypes.string,
     checkMarkColor: PropTypes.string,
     onClick: PropTypes.func
   };
@@ -21,6 +20,7 @@ export default class SelectableColor extends Component {
   static defaultProps = {
     style: {},
     selected: false,
+    borderColor: "transparent",
     checkMarkColor: "#fff"
   };
 
@@ -41,11 +41,16 @@ export default class SelectableColor extends Component {
       style,
       color,
       selected,
+      borderColor,
       checkMarkColor
     } = this.props;
 
     const modifier = { selected };
-    const finalStyle = { ...style, backgroundColor: color };
+    const finalStyle = {
+      ...style,
+      borderColor,
+      backgroundColor: color
+    };
 
     return (
       <span
