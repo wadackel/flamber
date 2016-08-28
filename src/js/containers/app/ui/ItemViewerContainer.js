@@ -32,7 +32,9 @@ import {
   CropIcon,
   StarIcon,
   ResizeIcon,
-  MoreVertIcon
+  MoreVertIcon,
+  FolderIcon,
+  TrashIcon
 } from "../../../components/svg-icons/";
 
 const b = bem("item-viewer-container");
@@ -232,8 +234,8 @@ export class ItemViewerContainer extends Component {
                   triggerOrigin={{ vertical: "top", horizontal: "right" }}
                   onItemClick={this.handleMoreMenuClick}
                 >
-                  <MenuItem text="移動" value={this.handleMove} />
-                  <MenuItem text="削除" value={this.handleDelete} />
+                  <MenuItem icon={<FolderIcon />} text="移動" value={this.handleMove} />
+                  <MenuItem icon={<TrashIcon />} text="削除" value={this.handleDelete} />
                 </IconMenu>
               </ToolBarItem>,
             ]}
