@@ -20,6 +20,7 @@ import {
 import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
 import {
+  ItemDetailMetaContainer,
   ItemDetailPaletteContainer
 } from "./";
 import {
@@ -75,12 +76,8 @@ export class ItemDetailContainer extends Component {
       >
         {currentItem &&
           <div>
-            <Group type="main">
-              <div className={b("item-header")}>
-                <h2 className={b("item-name")()}>{currentItem.name}</h2>
-                <p className={b("item-url")}>{currentItem.url}</p>
-              </div>
-              <p className={b("item-detail")}>{currentItem.description}</p>
+            <Group type="meta">
+              <ItemDetailMetaContainer />
             </Group>
 
             <Group title="Colors" type="colors">

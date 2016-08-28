@@ -1,0 +1,27 @@
+.item-detail-meta-container {
+
+  &__header {
+    margin: 0 0 25px;
+  }
+
+  &__name,
+  &__url {
+    display: block;
+  }
+
+  &__name {
+    margin: 0 0 15px;
+    font-size: 1.37rem;
+    font-weight: normal;
+  }
+
+  &__url {
+    margin: 0;
+    font-size: .75rem;
+  }
+
+  &__description {
+    margin: 0;
+    font-size: .75rem;
+  }
+}
