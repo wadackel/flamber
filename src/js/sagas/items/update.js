@@ -9,6 +9,26 @@ import * as Notifications from "../../actions/notifications";
 import * as Items from "../../actions/items";
 
 
+function *callUpdateItem(payload, success, failure) {
+  const entity = yield select(getItemEntityById, payload.id);
+  const {
+    id, // eslint-disable-line no-unused-vars
+    ...props
+  } = payload;
+  const newEntity = { ...entity, ...props };
+
+  try {
+    const response = yield call(Services.updateItems, [newEntity]);
+    const normalized = normalize(response, {
+      items: arrayOf(ItemSchema)
+    });
+    yield put(success(normalized));
+  } catch (error) {
+    yield put(failure(error, payload));
+  }
+}
+
+
 export function *handleUpdateItemNameIfNeeded({ payload }) {
   const entity = yield select(getItemEntityById, payload.id);
 
@@ -18,18 +38,11 @@ export function *handleUpdateItemNameIfNeeded({ payload }) {
 }
 
 export function *handleUpdateItemNameRequest({ payload }) {
-  const entity = yield select(getItemEntityById, payload.id);
-  const newEntity = { ...entity, name: payload.name };
-
-  try {
-    const response = yield call(Services.updateItems, [newEntity]);
-    const normalized = normalize(response, {
-      items: arrayOf(ItemSchema)
-    });
-    yield put(Items.updateItemNameSuccess(normalized));
-  } catch (error) {
-    yield put(Items.updateItemNameFailure(error, payload));
-  }
+  yield callUpdateItem(
+    payload,
+    Items.updateItemNameSuccess,
+    Items.updateItemNameFailure
+  );
 }
 
 function *handleUpdateItemNameFailure() {
@@ -39,18 +52,11 @@ function *handleUpdateItemNameFailure() {
 
 
 export function *handleUpdateItemPaletteRequest({ payload }) {
-  const entity = yield select(getItemEntityById, payload.id);
-  const newEntity = { ...entity, palette: payload.palette };
-
-  try {
-    const response = yield call(Services.updateItems, [newEntity]);
-    const normalized = normalize(response, {
-      items: arrayOf(ItemSchema)
-    });
-    yield put(Items.updateItemPaletteSuccess(normalized));
-  } catch (error) {
-    yield put(Items.updateItemPaletteFailure(error, payload));
-  }
+  yield callUpdateItem(
+    payload,
+    Items.updateItemPaletteSuccess,
+    Items.updateItemPaletteFailure
+  );
 }
 
 function *handleUpdateItemPaletteFailure() {
