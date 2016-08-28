@@ -172,6 +172,7 @@ export default class Header extends Component {
         </div>
 
         <ColorBar
+          selectable
           className={b("colorbar", { show: showColorBar })()}
           palette={palette}
           color={color}

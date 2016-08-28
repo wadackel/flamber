@@ -1,46 +1,54 @@
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("color-bar");
 
-function ColorBarItem({
-  color,
-  selected,
-  onClick
-}) {
+class ColorBarItem extends Component {
+  static propTypes = {
+    color: PropTypes.string,
+    selectable: PropTypes.bool,
+    selected: PropTypes.bool,
+    onClick: PropTypes.func
+  };
 
-  function handleChange(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    onClick(color);
+  constructor(props, context) {
+    super(props, context);
+    autoBind(this);
   }
 
-  return (
-    <div
-      className={b("item", { selected })()}
-      style={{ backgroundColor: color }}
-      onClick={handleChange}
-    />
-  );
-}
+  handleClick(e) {
+    e.preventDefault();
+    this.props.onClick(e, this.props.color);
+  }
 
-ColorBarItem.propTypes = {
-  color: PropTypes.string,
-  selected: PropTypes.bool,
-  onClick: PropTypes.func
-};
+  render() {
+    const { color, selectable, selected } = this.props;
+
+    return (
+      <span
+        className={b("item", { selectable, selected })()}
+        style={{ backgroundColor: color }}
+        onClick={this.handleClick}
+      />
+    );
+  }
+}
 
 export default class ColorBar extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    selectable: PropTypes.bool,
     palette: PropTypes.array,
     color: PropTypes.string,
+    onClick: PropTypes.func,
+    onItemClick: PropTypes.func,
     onChange: PropTypes.func
   };
 
   static defaultProps = {
+    selectable: false,
     palette: [
       "#992220",
       "#d2241e",
@@ -60,6 +68,8 @@ export default class ColorBar extends React.Component {
       "#ffffff"
     ],
     color: null,
+    onClick: () => {},
+    onItemClick: () => {},
     onChange: () => {}
   };
 
@@ -68,13 +78,18 @@ export default class ColorBar extends React.Component {
     autoBind(this);
   }
 
-  handleItemClick(value) {
-    this.props.onChange(this.props.color !== value ? value : null);
+  handleItemClick(e, color) {
+    this.props.onItemClick(e, color);
+
+    if (this.props.selectable) {
+      this.props.onChange(this.props.color !== color ? color : null);
+    }
   }
 
   render() {
     const {
       className,
+      selectable,
       palette,
       color
     } = this.props;
@@ -83,14 +98,17 @@ export default class ColorBar extends React.Component {
       <ColorBarItem
         key={value}
         color={value}
+        selectable={selectable}
         selected={color === value}
         onClick={this.handleItemClick}
       />
     );
 
+    const modifier = { selectable };
+
     return (
-      <div className={mergeClassNames(b(), className)}>
-        <div className={b("list")()}>
+      <div className={mergeClassNames(b(modifier)(), className)}>
+        <div className={b("list", modifier)()}>
           {items}
         </div>
       </div>

@@ -1,7 +1,18 @@
 Basic:
 
 ```
-class ColorBarExample extends React.Component {
+<div>
+  <ColorBar
+    palette={["#1da6d4", "#fffc00", "#ffffff"]}
+  />
+</div>
+```
+
+
+Selectable:
+
+```
+class ColorBarSelectableExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,6 +29,7 @@ class ColorBarExample extends React.Component {
     return (
       <div>
         <ColorBar
+          selectable
           color={this.state.color}
           onChange={this.handleChange}
         />
@@ -26,5 +38,5 @@ class ColorBarExample extends React.Component {
   }
 }
 
-<ColorBarExample />
+<ColorBarSelectableExample />
 ```

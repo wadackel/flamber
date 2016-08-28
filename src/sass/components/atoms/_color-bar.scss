@@ -1,5 +1,6 @@
 .color-bar {
   display: block;
+  cursor: pointer;
 
   &__list {
     display: table;
@@ -8,15 +9,19 @@
   }
 
   &__item {
-    @include transition(all, 120ms);
     display: table-cell;
-    height: 20px;
-    transform: scaleY(.1);
-    transform-origin: top left;
-    cursor: pointer;
+    height: 8px;
 
-    &:hover {
-      transform: scaleY(.4);
+    &--selectable {
+      @include transition(all, 120ms);
+      height: 20px;
+      transform: scaleY(.1);
+      transform-origin: top left;
+      cursor: pointer;
+
+      &:hover {
+        transform: scaleY(.4);
+      }
     }
 
     &--selected {
