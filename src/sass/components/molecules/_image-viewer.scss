@@ -19,14 +19,17 @@
   }
 
   &__holder {
+    $shadow: rgba(#000, .2);
     position: absolute;
-    box-shadow: 0 2px 8px rgba(#000, .8);
+    box-shadow: 0 2px 4px $shadow, 0 2px 6px $shadow;
     user-select: none;
   }
 
   &__image {
     @include size(100%);
     position: absolute;
+    background: url("/images/transparent.png") repeat center center;
+    background-size: 8px 8px;
   }
 
   [class*="iScrollHorizontalScrollbar"] {
