@@ -16,7 +16,7 @@ class LayoutButtonGroupExample extends React.Component {
           value={this.state.layout}
           onChange={layout => this.setState({ layout })}
         >
-          <LayoutButton icon={<RandomGridIcon />} value="random-grid" />
+          <LayoutButton icon={<GalleryIcon />} value="random-grid" />
           <LayoutButton icon={<GridIcon />} value="grid" />
           <LayoutButton icon={<ListIcon />} value="list" />
         </LayoutButtonGroup>
