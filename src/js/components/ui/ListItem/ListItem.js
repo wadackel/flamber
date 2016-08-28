@@ -1,5 +1,5 @@
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import MDSpinner from "react-md-spinner";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -9,12 +9,13 @@ import { PencilIcon, TrashIcon } from "../../svg-icons/";
 
 const b = bem("list-item");
 
-export default class ListItem extends React.Component {
+export default class ListItem extends Component {
   static propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
     processing: PropTypes.bool,
     text: PropTypes.string,
+    icon: PropTypes.element,
     index: PropTypes.number,
     value: PropTypes.any,
     editable: PropTypes.bool,
@@ -116,6 +117,7 @@ export default class ListItem extends React.Component {
       style,
       processing,
       text,
+      icon,
       editable,
       placeholder
     } = this.props;
@@ -136,6 +138,9 @@ export default class ListItem extends React.Component {
             icon={<PencilIcon />}
             onClick={this.handleEditClick}
           />
+        }
+        {(!editable && icon) &&
+          React.cloneElement(icon, { className: b("user-icon") })
         }
         {isEditing
           ? <TextField

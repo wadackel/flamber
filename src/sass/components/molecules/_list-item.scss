@@ -43,6 +43,17 @@
     }
   }
 
+  &__user-icon {
+    $user-icon-size: 14px;
+    $user-icon-color: lighten($gray-dark, 55%);
+    @include absolute(50%, auto, auto, $user-icon-size, 10);
+    @include size($user-icon-size);
+    margin-top: -$user-icon-size / 2;
+    color: $user-icon-color;
+    fill: $user-icon-color;
+    pointer-events: none;
+  }
+
   &__control,
   &__button {
     height: 50px;

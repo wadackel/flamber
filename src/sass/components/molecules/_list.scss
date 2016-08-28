@@ -6,4 +6,10 @@
   &:focus {
     outline: none;
   }
+
+  &--has-icon {
+    .list-item__button__body {
+      padding-left: 44px;
+    }
+  }
 }

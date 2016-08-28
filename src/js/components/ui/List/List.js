@@ -33,7 +33,10 @@ export default class List extends Component {
       onKeyDown
     } = this.props;
 
-    const cloneChildren = React.Children.map(children, (item, index) =>
+    const childArray = React.Children.toArray(children);
+
+    const hasIcon = childArray.filter(item => React.isValidElement(item.props.icon)).length > 0;
+    const cloneChildren = childArray.map((item, index) =>
       React.cloneElement(item, {
         key: item.props.text,
         index
@@ -43,7 +46,7 @@ export default class List extends Component {
     return (
       <div
         ref="list"
-        className={mergeClassNames(b(), className)}
+        className={mergeClassNames(b({ "has-icon": hasIcon })(), className)}
         onMouseDown={onMouseDown}
         onKeyDown={onKeyDown}
         tabIndex={-1}

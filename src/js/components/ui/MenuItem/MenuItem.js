@@ -10,6 +10,7 @@ export default class MenuItem extends React.Component {
     className: PropTypes.string,
     style: PropTypes.object,
     text: PropTypes.string,
+    icon: PropTypes.element,
     index: PropTypes.number,
     value: PropTypes.any,
     selected: PropTypes.bool,
@@ -40,24 +41,16 @@ export default class MenuItem extends React.Component {
   render() {
     const {
       className,
-      style,
-      text,
-      index,
-      value,
-      selected,
-      focused,
-      onClick
+      selected, // eslint-disable-line no-unused-vars
+      focused, // eslint-disable-line no-unused-vars
+      ...props
     } = this.props;
 
     return <ListItem
+      {...props}
       ref="listItem"
       className={mergeClassNames(b({ selected, focused })(), className)}
-      style={style}
-      text={text}
-      index={index}
-      value={value}
       editable={false}
-      onClick={onClick}
     />;
   }
 }

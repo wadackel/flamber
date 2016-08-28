@@ -31,6 +31,7 @@ class ListExample extends React.Component {
           <ListItem text="List Item 3" />
         </List>
         <div style={{ marginBottom: 20 }} />
+
         <List>
           {this.state.values.map((value, index) =>
             <ListItem
@@ -43,6 +44,13 @@ class ListExample extends React.Component {
               onRequestDelete={this.handleDelete}
             />
           )}
+        </List>
+        <div style={{ marginBottom: 20 }} />
+
+        <List>
+          <ListItem icon={<StarIcon />} text="List Item 1" />
+          <ListItem text="List Item 2" />
+          <ListItem icon={<FolderIcon />} text="List Item 3" />
         </List>
       </div>
     );
