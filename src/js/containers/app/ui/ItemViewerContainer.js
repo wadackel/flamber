@@ -14,7 +14,7 @@ import { hexToRgb } from "../../../helpers/color";
 import bem from "../../../helpers/bem";
 import FirstChild from "../../../components/ui/internal/FirstChild";
 import Overlay from "../../../components/ui/internal/Overlay";
-import { ItemDetailDrawer } from "./";
+import { ItemDetailContainer } from "./";
 import {
   ImageViewer,
   ToolBar,
@@ -247,7 +247,7 @@ export class ItemViewerContainer extends Component {
             onClick={this.handleDrawerToggle}
           />
 
-          <ItemDetailDrawer />
+          <ItemDetailContainer />
 
           <Overlay
             className={b("overlay")()}

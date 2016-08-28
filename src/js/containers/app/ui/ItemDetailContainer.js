@@ -26,7 +26,7 @@ import {
   MoreVertIcon
 } from "../../../components/svg-icons/";
 
-const b = bem("item-detail-drawer");
+const b = bem("item-detail-container");
 
 function Group({ title, type, children }) {
   return (
@@ -39,7 +39,7 @@ function Group({ title, type, children }) {
   );
 }
 
-export class ItemDetailDrawer extends Component {
+export class ItemDetailContainer extends Component {
   static propTypes = {
   };
 
@@ -106,4 +106,4 @@ export default connect(
   null,
   null,
   { pure: false }
-)(ItemDetailDrawer);
+)(ItemDetailContainer);
