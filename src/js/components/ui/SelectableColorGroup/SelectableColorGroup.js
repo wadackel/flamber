@@ -1,15 +1,13 @@
-/* eslint-disable */
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import { IconButton } from "../";
-import { CheckIcon } from "../../svg-icons/";
 
 const b = bem("selectable-color-group");
 
 export default class SelectableColorGroup extends Component {
   static propTypes = {
+    children: PropTypes.node,
     className: PropTypes.string,
     selectColors: PropTypes.arrayOf(PropTypes.string),
     onColorClick: PropTypes.func

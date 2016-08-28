@@ -12,7 +12,7 @@ $button-colors: (
   box-shadow: none !important;
 
   &:not(&--disable):hover {
-    background: lighten($background-root, 8%);
+    background: rgba(lighten($background-root, 8%), .4);
   }
 
   @each $modifier, $color in $button-colors {
