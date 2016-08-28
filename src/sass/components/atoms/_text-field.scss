@@ -32,7 +32,7 @@ $text-field-duration: 180ms;
 
   &__label {
     position: relative;
-    transform: translate(0, 1.8rem) scale(1);
+    transform: translate(0, 1.8em) scale(1);
     transform-origin: top left;
     color: darken($color-root, 30%);
     line-height: 1;
@@ -49,12 +49,12 @@ $text-field-duration: 180ms;
   }
 
   &__placeholder {
-    @include absolute(.6rem, auto, auto, auto, 2);
+    @include absolute(.6em, auto, auto, auto, 2);
     color: $gray-light;
     opacity: 1;
 
     .text-field--has-label & {
-      top: 1.6rem;
+      top: 1.6em;
 
       &:not(.text-field__placeholder--is-focused) {
         opacity: 0;
@@ -70,12 +70,12 @@ $text-field-duration: 180ms;
     position: relative;
     width: 100%;
     margin: 0;
-    padding: .5rem 0;
+    padding: .5em 0;
     border-width: 0 0 1px;
     border-color: $gray-light;
     background: transparent;
     color: $color-root;
-    font-size: 1rem;
+    font-size: 1em;
     line-height: 1.4;
     overflow: hidden;
     vertical-align: bottom;

@@ -9,7 +9,9 @@ const b = bem("editable-text");
 export default class EditableText extends Component {
   static propTypes = {
     className: PropTypes.string,
+    multiLine: PropTypes.bool,
     icon: PropTypes.node,
+    placeholder: PropTypes.string,
     value: PropTypes.string,
     onEnter: PropTypes.func,
     onMouseEnter: PropTypes.func,
@@ -19,6 +21,8 @@ export default class EditableText extends Component {
   };
 
   static defaultProps = {
+    multiLine: false,
+    placeholder: "",
     onEnter: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},
@@ -75,9 +79,22 @@ export default class EditableText extends Component {
     this._isEnter = false;
   }
 
+  renderValue() {
+    const { multiLine, value } = this.props;
+    const regex = /(\n)/g;
+
+    if (!multiLine) return value;
+
+    return value.trim().split(regex).map(line =>
+      !line.match(regex) ? line : React.createElement("br")
+    );
+  }
+
   render() {
     const {
       className,
+      multiLine,
+      placeholder,
       icon,
       value,
       onEnter, // eslint-disable-line no-unused-vars
@@ -91,7 +108,13 @@ export default class EditableText extends Component {
     } = this.state;
 
     const modifier = {
+      "multi-line": multiLine,
       "is-editing": isEditing
+    };
+
+    const iconModifier = {
+      ...modifier,
+      show: !isEditing && isHover
     };
 
     return (
@@ -103,10 +126,10 @@ export default class EditableText extends Component {
         onFocus={this.handleElementFocus}
         tabIndex="0"
       >
-        <span className={b("body")()}>
-          <span className={b("icon", { show: !isEditing && isHover })()}>{icon}</span>
+        <span className={b("body", modifier)()}>
           <TextField
             ref="textField"
+            multiLine={multiLine}
             className={b("text-field", modifier)()}
             value={value}
             onEnter={this.handleEnter}
@@ -115,7 +138,12 @@ export default class EditableText extends Component {
             {...props}
           />
           <span className={b("text", modifier)()}>
-            {value}
+            {this.renderValue()}
+            {value.trim() === ""
+              ? <span className={b("placeholder")()}>{placeholder}</span>
+              : null
+            }
+            <span className={b("icon", iconModifier)()}>{icon}</span>
           </span>
         </span>
       </span>

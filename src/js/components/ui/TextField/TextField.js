@@ -111,8 +111,15 @@ export default class TextField extends React.Component {
   }
 
   select() {
+    const { multiLine } = this.props;
     const { control } = this.refs;
-    if (control) control.select();
+
+    if (multiLine) {
+      control.selectionStart = 0;
+      control.selectionEnd = control.value.length;
+    } else {
+      control.select();
+    }
   }
 
   render() {

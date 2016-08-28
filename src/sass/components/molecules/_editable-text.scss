@@ -9,8 +9,9 @@
   }
 
   &__body {
+    display: inline-block;
     position: relative;
-    padding: $base-padding 0;
+    padding: 0 0 $base-padding;
 
     &:focus {
       outline: none;
@@ -37,6 +38,11 @@
       fill: currentColor;
     }
 
+    &--multi-line {
+      top: .2em;
+      margin: 0;
+    }
+
     &--show {
       transform: translateY(0);
       opacity: 1;
@@ -60,21 +66,21 @@
   }
 
   &__text-field {
-    &.text-field {
-      @include absolute(0, 0, 0, 0, 2);
-      width: auto;
-      min-width: 1em;
-      min-height: 1em;
-      visibility: hidden;
-    }
+    @include absolute(0, 0, 0, 0, 2);
+    display: inline-block;
+    width: auto;
+    min-width: 1em;
+    min-height: 1em;
+    visibility: hidden;
 
-    &--is-editing.text-field {
+    &--is-editing {
       visibility: visible;
     }
 
     .text-field__control {
       min-width: 1em;
-      padding: $base-padding 0;
+      max-width: 100%;
+      padding: 0 0 $base-padding;
       border-bottom: none;
       font-size: 1em;
       letter-spacing: inherit;
@@ -85,5 +91,9 @@
         opacity: .7;
       }
     }
+  }
+
+  &__placeholder {
+    color: darken($color-root, 40%);
   }
 }
