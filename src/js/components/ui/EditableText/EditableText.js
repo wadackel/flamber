@@ -11,7 +11,7 @@ export default class EditableText extends Component {
   static propTypes = {
     className: PropTypes.string,
     multiLine: PropTypes.bool,
-    icon: PropTypes.node,
+    icon: PropTypes.element,
     placeholder: PropTypes.string,
     value: PropTypes.string,
     onEnter: PropTypes.func,
@@ -74,6 +74,7 @@ export default class EditableText extends Component {
 
     if (this.props.multiLine && keycode(e) === "enter") {
       e.preventDefault();
+      this._isEnter = true;
       this.props.onEnter(e, e.currentTarget.value);
       this.refs.textField.blur();
     }
