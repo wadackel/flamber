@@ -1,4 +1,5 @@
 import autoBind from "auto-bind";
+import keycode from "keycode";
 import React, { Component, PropTypes } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -14,6 +15,7 @@ export default class EditableText extends Component {
     placeholder: PropTypes.string,
     value: PropTypes.string,
     onEnter: PropTypes.func,
+    onKeyDown: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     onFocus: PropTypes.func,
@@ -24,6 +26,7 @@ export default class EditableText extends Component {
     multiLine: false,
     placeholder: "",
     onEnter: () => {},
+    onKeyDown: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},
     onFocus: () => {},
@@ -66,6 +69,16 @@ export default class EditableText extends Component {
     this.refs.textField.blur();
   }
 
+  handleKeyDown(e) {
+    this.props.onKeyDown(e);
+
+    if (this.props.multiLine && keycode(e) === "enter") {
+      e.preventDefault();
+      this.props.onEnter(e, e.currentTarget.value);
+      this.refs.textField.blur();
+    }
+  }
+
   handleElementFocus() {
     this.setState({ isEditing: true }, () => {
       this.refs.textField.focus();
@@ -85,7 +98,7 @@ export default class EditableText extends Component {
 
     if (!multiLine) return value;
 
-    return value.trim().split(regex).map(line =>
+    return value.split(regex).map(line =>
       !line.match(regex) ? line : React.createElement("br")
     );
   }
@@ -98,6 +111,7 @@ export default class EditableText extends Component {
       icon,
       value,
       onEnter, // eslint-disable-line no-unused-vars
+      onKeyDown, // eslint-disable-line no-unused-vars
       onBlur, // eslint-disable-line no-unused-vars
       ...props
     } = this.props;
@@ -133,13 +147,14 @@ export default class EditableText extends Component {
             className={b("text-field", modifier)()}
             value={value}
             onEnter={this.handleEnter}
+            onKeyDown={this.handleKeyDown}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             {...props}
           />
           <span className={b("text", modifier)()}>
             {this.renderValue()}
-            {value.trim() === ""
+            {value === ""
               ? <span className={b("placeholder")()}>{placeholder}</span>
               : null
             }

@@ -3,7 +3,6 @@ import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { PropTypes } from "react";
 import Textarea from "react-textarea-autosize";
-import assign from "object-assign";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { isValid } from "../../../helpers/validate";
@@ -152,9 +151,10 @@ export default class TextField extends React.Component {
       "has-value": hasValue
     };
 
-    const textModifier = assign({}, modifier, {
+    const textModifier = {
+      ...modifier,
       type: multiLine ? "multi-line" : type
-    });
+    };
 
     const commonProps = {
       className: b("control", textModifier)(),
@@ -176,13 +176,14 @@ export default class TextField extends React.Component {
     if (!_.isUndefined(maxRows)) textAreaProps.maxRows = maxRows;
     if (!_.isUndefined(value)) textAreaProps.useCacheForDOMMeasurements = true;
 
-    const inputProps = assign({}, commonProps, {
+    const inputProps = {
+      ...commonProps,
       onEnter: this.handleEnter,
       type
-    });
+    };
 
     return (
-      <div className={mergeClassNames(b(assign({}, modifier, { "has-label": !!label }))(), className)}>
+      <div className={mergeClassNames(b({ ...modifier, "has-label": !!label })(), className)}>
         {label
           ? <div className={b("label", modifier)()}>{label}</div>
           : null
