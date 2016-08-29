@@ -21,7 +21,8 @@ import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
 import {
   ItemDetailMetaContainer,
-  ItemDetailPaletteContainer
+  ItemDetailPaletteContainer,
+  ItemDetailTagContainer
 } from "./";
 import {
   Drawer
@@ -85,7 +86,7 @@ export class ItemDetailContainer extends Component {
             </Group>
 
             <Group title="Tags" type="tags">
-              TODO
+              <ItemDetailTagContainer />
             </Group>
 
             <Group title="Date" type="date">
