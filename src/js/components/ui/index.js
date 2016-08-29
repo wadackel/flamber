@@ -49,6 +49,7 @@ export SelectColorPopover from "./SelectColorPopover/SelectColorPopover";
 export Slider from "./Slider/Slider";
 export Snackbar from "./Snackbar/Snackbar";
 export SortSwitcher from "./SortSwitcher/SortSwitcher";
+export StarButton from "./StarButton/StarButton";
 export TextField from "./TextField/TextField";
 export ToolBar from "./ToolBar/ToolBar";
 export ToolBarItem from "./ToolBarItem/ToolBarItem";

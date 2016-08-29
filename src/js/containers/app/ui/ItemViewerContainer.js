@@ -23,6 +23,7 @@ import {
   FloatingButton,
   IconButton,
   IconMenu,
+  StarButton,
   MenuItem,
   CancelableEditText
 } from "../../../components/ui/";
@@ -30,7 +31,6 @@ import {
   PencilIcon,
   CloseIcon,
   CropIcon,
-  StarIcon,
   ResizeIcon,
   MoreVertIcon,
   FolderIcon,
@@ -168,8 +168,8 @@ export class ItemViewerContainer extends Component {
                 />
               </ToolBarItem>,
               <ToolBarItem>
-                <IconButton
-                  icon={<StarIcon />}
+                <StarButton
+                  active={currentItem.star}
                   onClick={this.handleStarClick}
                 />
               </ToolBarItem>,

@@ -21,11 +21,10 @@ import {
 import {
   ColorBar,
   FlatButton,
-  IconButton
+  IconButton,
+  StarButton
 } from "../";
 import {
-  StarIcon,
-  StarFillIcon,
   FolderIcon,
   TrashIcon
 } from "../../svg-icons";
@@ -170,9 +169,10 @@ export default class ItemCard extends React.Component {
             {this.renderURL()}
           </CardText>
           <CardAction baseClassName={baseClassName}>
-            <IconButton
-              className={b("star", { active: star })()}
-              icon={star ? <StarFillIcon /> : <StarIcon />}
+            <StarButton
+              className={b("star")()}
+              active={star}
+              tooltip={star ? "スターを外す" : "スターを付ける"}
               onClick={this.handleStarClick}
             />
           </CardAction>
@@ -222,10 +222,10 @@ export default class ItemCard extends React.Component {
           </CardBody>
         </CardCol>
         <CardCol baseClassName={baseClassName} className={b("col--meta")()}>
-          <IconButton
-            className={b("star", { active: star })()}
-            icon={star ? <StarFillIcon /> : <StarIcon />}
-            tooltip="スターを付ける"
+          <StarButton
+            className={b("star")()}
+            active={star}
+            tooltip={star ? "スターを外す" : "スターを付ける"}
             onClick={this.handleStarClick}
           />
         </CardCol>
