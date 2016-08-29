@@ -165,11 +165,15 @@ export class ItemViewerContainer extends Component {
               <ToolBarItem>
                 <IconButton
                   icon={<CropIcon />}
+                  tooltip="画像をクロップ"
+                  tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
                 />
               </ToolBarItem>,
               <ToolBarItem>
                 <StarButton
                   active={currentItem.star}
+                  tooltip={currentItem.star ? "スターを外す" : "スターを付ける"}
+                  tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
                   onClick={this.handleStarClick}
                 />
               </ToolBarItem>,
