@@ -10,7 +10,8 @@
   }
 
   &__name {
-    margin: 0 0 15px;
+    margin: 0 0 5px;
+    padding-right: 20px;
     font-size: 1.37rem;
     font-weight: normal;
   }
@@ -18,6 +19,9 @@
   &__url {
     margin: 0;
     font-size: .75rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   &__description {

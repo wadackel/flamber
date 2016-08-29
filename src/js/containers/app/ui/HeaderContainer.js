@@ -20,7 +20,7 @@ import { SettingsPage } from "../pages/SettingsPage";
 import { StarsPage } from "../pages/StarsPage";
 import {
   Header,
-  EditableText,
+  CancelableEditText,
   NavItem,
   IconButton,
   LayoutButtonGroup,
@@ -52,7 +52,6 @@ export class HeaderContainer extends Component {
 
     this.state = {
       boardName: "",
-      boardNameEditing: false,
       itemsSize: props.settings.itemsSize
     };
 
@@ -101,28 +100,7 @@ export class HeaderContainer extends Component {
   }
 
   // Update board
-  handleBoardNameFocus() {
-    this.setState({ boardNameEditing: true });
-  }
-
-  handleBoardNameBlur(e, isEnter) {
-    const { currentBoard } = this.props;
-    const { boardName } = this.state;
-
-    this.setState({ boardNameEditing: true });
-
-    if (!isEnter) {
-      this.setState({
-        boardName: currentBoard.name !== boardName ? currentBoard.name : boardName,
-      });
-    }
-  }
-
-  handleBoardNameChange(e, value) {
-    this.setState({ boardName: value });
-  }
-
-  handleBoardNameEnter(e, name) {
+  handleBoardNameComplete(name) {
     const { currentBoard } = this.props;
     const board = {
       ...currentBoard,
@@ -227,13 +205,10 @@ export class HeaderContainer extends Component {
       showColorBar: true,
       mainTitle: currentBoard && (
         <div>
-          <EditableText
+          <CancelableEditText
             icon={<PencilIcon />}
             value={boardName}
-            onFocus={this.handleBoardNameFocus}
-            onBlur={this.handleBoardNameBlur}
-            onChange={this.handleBoardNameChange}
-            onEnter={this.handleBoardNameEnter}
+            onComplete={this.handleBoardNameComplete}
           />
           <MDSpinner
             size={20}

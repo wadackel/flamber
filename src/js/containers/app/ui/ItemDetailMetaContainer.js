@@ -9,7 +9,7 @@ import bem from "../../../helpers/bem";
 import { getCurrentItem } from "../../../selectors/items";
 import {
   TextField,
-  EditableText
+  CancelableEditText
 } from "../../../components/ui/";
 import {
   PencilIcon
@@ -48,7 +48,7 @@ export class ItemDetailPaletteContainer extends Component {
     return (
       <div className={b()}>
         <div className={b("header")()}>
-          <EditableText
+          <CancelableEditText
             multiLine
             className={b("name")()}
             icon={<PencilIcon />}

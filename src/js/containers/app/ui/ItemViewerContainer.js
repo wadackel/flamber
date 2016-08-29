@@ -24,7 +24,7 @@ import {
   IconButton,
   IconMenu,
   MenuItem,
-  EditableText
+  CancelableEditText
 } from "../../../components/ui/";
 import {
   PencilIcon,
@@ -130,11 +130,7 @@ export class ItemViewerContainer extends Component {
     }
   }
 
-  handleItemNameChange(e, value) {
-    this.setState({ itemName: value });
-  }
-
-  handleItemNameEnter(e, value) {
+  handleItemNameComplete(value) {
     const { dispatch, currentItem } = this.props;
     dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
   }
@@ -190,13 +186,12 @@ export class ItemViewerContainer extends Component {
             className={b("tool-bar")()}
             title={
               <div>
-                <EditableText
+                <CancelableEditText
                   icon={<PencilIcon />}
                   value={itemName}
                   onFocus={this.handleItemNameFocus}
                   onBlur={this.handleItemNameBlur}
-                  onChange={this.handleItemNameChange}
-                  onEnter={this.handleItemNameEnter}
+                  onComplete={this.handleItemNameComplete}
                 />
                 <MDSpinner
                   size={14}
