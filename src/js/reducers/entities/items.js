@@ -5,6 +5,9 @@ import * as Boards from "../../actions/boards";
 import * as Items from "../../actions/items";
 import ItemSchema from "../../schemas/item";
 
+// TODO: Refactor
+
+
 function mergeEntities(state, entities) {
   return _.assign(state, entities || {});
 }
@@ -127,6 +130,40 @@ export default handleActions({
         ...entity,
         isUpdating: false,
         isNameUpdating: false
+      }
+    )
+  ),
+
+
+  // Update description
+  [Items.UPDATE_ITEM_DESCRIPTION_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        description: payload.description,
+        isUpdating: true,
+        isDescriptionUpdating: true
+      }
+    )
+  ),
+
+  [Items.UPDATE_ITEM_DESCRIPTION_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      payload.result.items.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        description: payload.entities.items[entity.id].description,
+        isUpdating: false,
+        isDescriptionUpdating: false
+      }
+    )
+  ),
+
+  [Items.UPDATE_ITEM_DESCRIPTION_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id === meta.id ? entity : {
+        ...entity,
+        isUpdating: false,
+        isDescriptionUpdating: false
       }
     )
   ),

@@ -29,6 +29,7 @@ function *callUpdateItem(payload, success, failure) {
 }
 
 
+// Name
 export function *handleUpdateItemNameIfNeeded({ payload }) {
   const entity = yield select(getItemEntityById, payload.id);
 
@@ -51,6 +52,22 @@ function *handleUpdateItemNameFailure() {
 }
 
 
+// Description
+export function *handleUpdateItemDescriptionRequest({ payload }) {
+  yield callUpdateItem(
+    payload,
+    Items.updateItemDescriptionSuccess,
+    Items.updateItemDescriptionFailure
+  );
+}
+
+function *handleUpdateItemDescriptionFailure() {
+  // TODO: More erro message
+  yield put(Notifications.showNotify("アイテムの更新に失敗しました"));
+}
+
+
+// Palette
 export function *handleUpdateItemPaletteRequest({ payload }) {
   yield callUpdateItem(
     payload,
@@ -67,11 +84,17 @@ function *handleUpdateItemPaletteFailure() {
 
 export default function *updateItemSaga() {
   yield [
+    // Name
     takeEvery(Items.UPDATE_ITEM_NAME_IF_NEEDED, handleUpdateItemNameIfNeeded),
     takeEvery(Items.UPDATE_ITEM_NAME_REQUEST, handleUpdateItemNameRequest),
     takeEvery(Items.UPDATE_ITEM_NAME_FAILURE, handleUpdateItemNameFailure),
 
+    // Description
+    takeEvery(Items.UPDATE_ITEM_DESCRIPTION_REQUEST, handleUpdateItemDescriptionRequest),
+    takeEvery(Items.UPDATE_ITEM_DESCRIPTION_FAILURE, handleUpdateItemDescriptionFailure),
+
+    // Palette
     takeEvery(Items.UPDATE_ITEM_PALETTE_REQUEST, handleUpdateItemPaletteRequest),
-    takeEvery(Items.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure),
+    takeEvery(Items.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure)
   ];
 }

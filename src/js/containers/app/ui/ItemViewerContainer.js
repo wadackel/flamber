@@ -49,32 +49,9 @@ export class ItemViewerContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      zoom: 1,
-      itemName: "",
-      itemNameEditing: false
-    };
+    this.state = { zoom: 1 };
 
     autoBind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      currentItem
-    } = this.props;
-
-    const {
-      currentItem: _currentItem
-    } = nextProps;
-
-    if (
-      _currentItem
-      && !_currentItem.isNameUpdating
-      && !this.state.itemNameEditing
-      && this.state.itemName !== _currentItem.name
-    ) {
-      this.setState({ itemName: nextProps.currentItem.name });
-    }
   }
 
   handleClose() {
@@ -113,38 +90,14 @@ export class ItemViewerContainer extends Component {
     this.props.dispatch(ItemActions.itemDetailDrawerToggle());
   }
 
-  handleItemNameFocus() {
-    this.setState({ itemNameEditing: true });
-  }
-
-  handleItemNameBlur(e, isEnter) {
-    const { currentItem } = this.props;
-    const { itemName } = this.state;
-
-    this.setState({ itemNameEditing: false });
-
-    if (!isEnter) {
-      this.setState({
-        itemName: currentItem.name !== itemName ? currentItem.name : itemName
-      });
-    }
-  }
-
   handleItemNameComplete(value) {
     const { dispatch, currentItem } = this.props;
     dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
   }
 
   render() {
-    const {
-      items,
-      currentItem
-    } = this.props;
-
-    const {
-      zoom,
-      itemName
-    } = this.state;
+    const { items, currentItem } = this.props;
+    const { zoom } = this.state;
 
     const show = !!currentItem;
     const modifier = {
@@ -188,9 +141,7 @@ export class ItemViewerContainer extends Component {
               <div>
                 <CancelableEditText
                   icon={<PencilIcon />}
-                  value={itemName}
-                  onFocus={this.handleItemNameFocus}
-                  onBlur={this.handleItemNameBlur}
+                  value={currentItem.name}
                   onComplete={this.handleItemNameComplete}
                 />
                 <MDSpinner

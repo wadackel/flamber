@@ -71,26 +71,45 @@ export const starItemToggleFailure = createAction(STAR_ITEM_TOGGLE_FAILURE,
 );
 
 
-// Update Name
+// Update name
+function updateItemMetaCreator(error, payload) {
+  return { ...payload };
+}
+
 export const UPDATE_ITEM_NAME_IF_NEEDED = "UPDATE_ITEM_NAME_IF_NEEDED";
 export const UPDATE_ITEM_NAME_REQUEST = "UPDATE_ITEM_NAME_REQUEST";
 export const UPDATE_ITEM_NAME_SUCCESS = "UPDATE_ITEM_NAME_SUCCESS";
 export const UPDATE_ITEM_NAME_FAILURE = "UPDATE_ITEM_NAME_FAILURE";
 
-function updateNamePaymentCreator(id, name) {
+function updateNamePayloadCreator(id, name) {
   return { id, name };
 }
 
-export const updateItemNameIfNeeded = createAction(UPDATE_ITEM_NAME_IF_NEEDED, updateNamePaymentCreator);
-export const updateItemNameRequest = createAction(UPDATE_ITEM_NAME_REQUEST, updateNamePaymentCreator);
+export const updateItemNameIfNeeded = createAction(UPDATE_ITEM_NAME_IF_NEEDED, updateNamePayloadCreator);
+export const updateItemNameRequest = createAction(UPDATE_ITEM_NAME_REQUEST, updateNamePayloadCreator);
 export const updateItemNameSuccess = createAction(UPDATE_ITEM_NAME_SUCCESS);
 export const updateItemNameFailure = createAction(UPDATE_ITEM_NAME_FAILURE,
   null,
-  (error, payload) => ({ ...payload })
+  updateItemMetaCreator
 );
 
 
-// Update Palette
+// Update description
+export const UPDATE_ITEM_DESCRIPTION_REQUEST = "UPDATE_ITEM_DESCRIPTION_REQUEST";
+export const UPDATE_ITEM_DESCRIPTION_SUCCESS = "UPDATE_ITEM_DESCRIPTION_SUCCESS";
+export const UPDATE_ITEM_DESCRIPTION_FAILURE = "UPDATE_ITEM_DESCRIPTION_FAILURE";
+
+export const updateItemDescriptionRequest = createAction(UPDATE_ITEM_DESCRIPTION_REQUEST,
+  (id, description) => ({ id, description })
+);
+export const updateItemDescriptionSuccess = createAction(UPDATE_ITEM_DESCRIPTION_SUCCESS);
+export const updateItemDescriptionFailure = createAction(UPDATE_ITEM_DESCRIPTION_FAILURE,
+  null,
+  updateItemMetaCreator
+);
+
+
+// Update palette
 export const UPDATE_ITEM_PALETTE_REQUEST = "UPDATE_ITEM_PALETTE_REQUEST";
 export const UPDATE_ITEM_PALETTE_SUCCESS = "UPDATE_ITEM_PALETTE_SUCCESS";
 export const UPDATE_ITEM_PALETTE_FAILURE = "UPDATE_ITEM_PALETTE_FAILURE";

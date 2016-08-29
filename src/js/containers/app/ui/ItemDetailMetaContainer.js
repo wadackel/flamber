@@ -27,9 +27,17 @@ export class ItemDetailPaletteContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {};
-
     autoBind(this);
+  }
+
+  handleItemNameComplete(value) {
+    const { dispatch, currentItem } = this.props;
+    dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
+  }
+
+  handleItemDescriptionComplete(value) {
+    const { dispatch, currentItem } = this.props;
+    dispatch(ItemActions.updateItemDescriptionRequest(currentItem.id, value));
   }
 
   renderURL() {
@@ -53,16 +61,19 @@ export class ItemDetailPaletteContainer extends Component {
             className={b("name")()}
             icon={<PencilIcon />}
             value={currentItem.name}
+            onComplete={this.handleItemNameComplete}
           />
           <div className={b("url")()}>
             {this.renderURL()}
           </div>
         </div>
-        <TextField
+        <CancelableEditText
           multiLine
           className={b("description")()}
+          icon={<PencilIcon />}
           placeholder="概要を編集"
-          minRows={5}
+          value={currentItem.description}
+          onComplete={this.handleItemDescriptionComplete}
         />
       </div>
     );
