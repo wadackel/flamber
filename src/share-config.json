@@ -8,5 +8,7 @@
   "tool-box-enter-duration": 180,
   "tool-box-leave-duration": 120,
   "item-viewer-enter-duration": 300,
-  "item-viewer-leave-duration": 180
+  "item-viewer-leave-duration": 180,
+  "selectable-color-enter-duration": 300,
+  "selectable-color-leave-duration": 80
 }

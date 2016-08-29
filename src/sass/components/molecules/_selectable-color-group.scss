@@ -1,16 +1,56 @@
 .selectable-color-group {
   $item-gutter: 10px;
 
-  display: flex;
-  flex-wrap: wrap;
-  align-items: space-between;
-  justify-content: space-between;
-  margin-top: -$item-gutter;
-  margin-right: -$item-gutter / 2;
-  margin-left: -$item-gutter / 2;
+  display: block;
+
+  // ReactCSSTransitionGroup
+  > span {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: space-between;
+    justify-content: space-between;
+    margin-top: -$item-gutter;
+    margin-right: -$item-gutter / 2;
+    margin-left: -$item-gutter / 2;
+  }
 
   &__color {
     padding: $item-gutter ($item-gutter / 2) 0;
+    transition-property: all;
+    transition-timing-function: $transition-easing;
     font-size: 0;
+
+    &.color-appear {
+      transform: translateY(-10px) scale(.8);
+      opacity: .01;
+    }
+
+    &.color-appear-active {
+      transform: translateY(0) scale(1);
+      transition-duration: #{$selectable-color-enter-duration}ms;
+      opacity: 1;
+    }
+
+    &.color-enter {
+      transform: translateY(-10px) scale(.8);
+      opacity: .01;
+    }
+
+    &.color-enter-active {
+      transform: translateY(0) scale(1);
+      transition-duration: #{$selectable-color-enter-duration}ms;
+      opacity: 1;
+    }
+
+    &.color-leave {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    &.color-leave-active {
+      transform: translateY(-10px) scale(.8);
+      transition-duration: #{$selectable-color-leave-duration}ms;
+      opacity: .01;
+    }
   }
 }

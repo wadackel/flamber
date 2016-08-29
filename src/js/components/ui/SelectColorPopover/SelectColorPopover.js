@@ -109,8 +109,8 @@ export default class SelectColorPopover extends Component {
             selectColors={selectColors}
             onColorClick={this.handleColorClick}
           >
-            {colors.map(colorObj =>
-              <SelectableColor key={colorObj.color} {...colorObj} />
+            {open && colors.map(obj =>
+              <SelectableColor key={obj.color} {...obj} />
             )}
           </SelectableColorGroup>
 

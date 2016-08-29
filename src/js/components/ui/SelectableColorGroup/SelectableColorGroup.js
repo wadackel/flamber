@@ -1,5 +1,7 @@
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes, isValidElement } from "react";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import shareConfig from "../../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
@@ -27,24 +29,40 @@ export default class SelectableColorGroup extends Component {
     this.props.onColorClick(color);
   }
 
+  renderColors() {
+    const { children, selectColors } = this.props;
+    const childArray = React.Children.toArray(children);
+    const validChildren = childArray.filter(child =>
+      isValidElement(child) && child.type.name === "SelectableColor"
+    );
+
+    return validChildren.map((child, index) =>
+      <div
+        className={b("color")()}
+        style={{ transitionDelay: `${index * 15}ms` }}
+      >
+        {React.cloneElement(child, {
+          key: child.props.color,
+          selected: selectColors.indexOf(child.props.color) > -1,
+          onClick: this.handleColorClick
+        })}
+      </div>
+    );
+  }
+
   render() {
-    const {
-      children,
-      className,
-      selectColors
-    } = this.props;
+    const { className } = this.props;
 
     return (
       <div className={mergeClassNames(b(), className)}>
-        {React.Children.map(children, child =>
-          <div className={b("color")()}>
-            {React.cloneElement(child, {
-              className: b("color")(),
-              selected: selectColors.indexOf(child.props.color) > -1,
-              onClick: this.handleColorClick
-            })}
-          </div>
-        )}
+        <ReactCSSTransitionGroup
+          transitionName="color"
+          transitionAppear={true}
+          transitionEnterTimeout={shareConfig["selectable-color-enter-duration"]}
+          transitionLeaveTimeout={shareConfig["selectable-color-leave-duration"]}
+        >
+          {this.renderColors()}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }
