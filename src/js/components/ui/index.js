@@ -51,6 +51,7 @@ export Snackbar from "./Snackbar/Snackbar";
 export SortSwitcher from "./SortSwitcher/SortSwitcher";
 export StarButton from "./StarButton/StarButton";
 export Tag from "./Tag/Tag";
+export TagList from "./TagList/TagList";
 export TextField from "./TextField/TextField";
 export ToolBar from "./ToolBar/ToolBar";
 export ToolBarItem from "./ToolBarItem/ToolBarItem";
