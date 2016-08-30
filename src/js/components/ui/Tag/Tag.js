@@ -50,12 +50,20 @@ export default class Tag extends Component {
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
-        <IconButton
-          className={b("icon", modifier)()}
-          size="xs"
-          icon={hover ? <TrashIcon /> : <TagIcon />}
-          onClick={this.handleDeleteClick}
-        />
+        <span className={b("icon", modifier)()}>
+          <IconButton
+            disable
+            className={b("tag", modifier)()}
+            size="xs"
+            icon={<TagIcon />}
+          />
+          <IconButton
+            className={b("trash", modifier)()}
+            size="xs"
+            icon={<TrashIcon />}
+            onClick={this.handleDeleteClick}
+          />
+        </span>
         <span className={b("label", modifier)()}>{label}</span>
       </span>
     );

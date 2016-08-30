@@ -3,7 +3,41 @@
   font-size: .87rem;
 
   &__icon {
+    display: inline-block;
+    position: relative;
     opacity: .6;
+  }
+
+  &__tag,
+  &__trash {
+    @include transition(all, $transition-duration-fast);
+  }
+
+  &__tag {
+    @include absolute(0, 0, 0, 0, 1);
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+
+    &--hover {
+      transform: translateY(5px);
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  &__trash {
+    position: relative;
+    transform: translateY(-5px);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 2;
+
+    &--hover {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
   }
 
   &__label {
