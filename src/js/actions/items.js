@@ -120,7 +120,33 @@ export const updateItemPaletteRequest = createAction(UPDATE_ITEM_PALETTE_REQUEST
 export const updateItemPaletteSuccess = createAction(UPDATE_ITEM_PALETTE_SUCCESS);
 export const updateItemPaletteFailure = createAction(UPDATE_ITEM_PALETTE_FAILURE,
   null,
-  (error, payload) => ({ ...payload })
+  updateItemMetaCreator
+);
+
+
+// Add tag
+export const ADD_ITEM_TAG_REQUEST = "ADD_ITEM_TAG_REQUEST";
+export const ADD_ITEM_TAG_SUCCESS = "ADD_ITEM_TAG_SUCCESS";
+export const ADD_ITEM_TAG_FAILURE = "ADD_ITEM_TAG_FAILURE";
+
+export const addItemTagRequest = createAction(ADD_ITEM_TAG_REQUEST, (id, tagId) => ({ id, tagId }));
+export const addItemTagSuccess = createAction(ADD_ITEM_TAG_SUCCESS);
+export const addItemTagFailure = createAction(ADD_ITEM_TAG_FAILURE,
+  null,
+  updateItemMetaCreator
+);
+
+
+// Remove tag
+export const REMOVE_ITEM_TAG_REQUEST = "REMOVE_ITEM_TAG_REQUEST";
+export const REMOVE_ITEM_TAG_SUCCESS = "REMOVE_ITEM_TAG_SUCCESS";
+export const REMOVE_ITEM_TAG_FAILURE = "REMOVE_ITEM_TAG_FAILURE";
+
+export const removeItemTagRequest = createAction(REMOVE_ITEM_TAG_REQUEST, (id, tagId) => ({ id, tagId }));
+export const removeItemTagSuccess = createAction(REMOVE_ITEM_TAG_SUCCESS);
+export const removeItemTagFailure = createAction(REMOVE_ITEM_TAG_FAILURE,
+  null,
+  updateItemMetaCreator
 );
 
 

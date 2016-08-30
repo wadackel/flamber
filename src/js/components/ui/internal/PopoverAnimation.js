@@ -36,6 +36,8 @@ export default class PopoverAnimation extends React.Component {
   componentDidUpdate() {
     const { origin } = this.props;
     const { scrollContainer } = this.refs;
+    scrollContainer.style.maxHeight = "";
+
     const { top } = scrollContainer.getBoundingClientRect();
     const height = scrollContainer.offsetHeight;
     const viewportHeight = window.innerHeight;
@@ -46,11 +48,10 @@ export default class PopoverAnimation extends React.Component {
       scrollContainer.style.maxHeight = `${maxHeight}px`;
       this.scrollable = true;
     } else {
-      scrollContainer.style.maxHeight = "";
       this.scrollable = false;
     }
 
-    this.updateIScroll();
+    this.updateScroll();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,21 +65,23 @@ export default class PopoverAnimation extends React.Component {
     }
   }
 
-  updateIScroll() {
+  updateScroll() {
+    // FIXME: Directly specified DOM of the class name.
+    const { scrollContainer } = this.refs;
+
     if (!this.iscroll) {
       if (this.scrollable) {
-        this.iscroll = new IScroll(this.refs.scrollContainer, {
+        this.iscroll = new IScroll(scrollContainer, {
           bounce: false,
           mouseWheel: true,
           scrollbars: "custom",
           preventDefault: false
         });
+      }
 
-        // FIXME: Directly specified DOM of the class name.
-        const selectedItem = this.refs.scrollContainer.querySelector(".menu-item--selected");
-        if (selectedItem) {
-          this.iscroll.scrollToElement(selectedItem, 0);
-        }
+      const selectedItem = scrollContainer.querySelector(".menu-item--selected");
+      if (selectedItem) {
+        this.iscroll.scrollToElement(selectedItem, 0);
       }
 
     } else {

@@ -20,6 +20,7 @@ export default class AutoComplete extends React.Component {
     origin: OriginalPropTypes.origin,
     triggerOrigin: OriginalPropTypes.origin,
     id: PropTypes.string,
+    openOnFocus: PropTypes.bool,
     dataSource: PropTypes.array,
     dataSourceConfig: PropTypes.shape({
       text: PropTypes.string,
@@ -54,9 +55,10 @@ export default class AutoComplete extends React.Component {
       text: "text",
       value: "value"
     },
+    openOnFocus: false,
     searchText: "",
     maxSearchResults: -1,
-    filter: (searchText, key) => searchText !== "" && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1,
+    filter: (searchText, key) => searchText === "" || key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1,
     menuCloseDelay: 300,
     onNewRequest: () => {},
     onUpdateInput: () => {},
@@ -66,6 +68,10 @@ export default class AutoComplete extends React.Component {
     onKeyUp: () => {},
     onKeyPress: () => {}
   };
+
+  static noFilter() {
+    return true;
+  }
 
   constructor(props, context) {
     super(props, context);
@@ -118,7 +124,12 @@ export default class AutoComplete extends React.Component {
   }
 
   handleFocus(e) {
-    this.setState({ focusTextField: true });
+    this.setState({
+      focusTextField: true,
+      open: this.props.openOnFocus,
+      triggerElement: ReactDOM.findDOMNode(this.refs.searchTextField)
+    });
+
     this.props.onFocus(e);
   }
 
@@ -131,18 +142,10 @@ export default class AutoComplete extends React.Component {
   }
 
   handleKeyDown(e) {
-    const { searchText } = this.state;
     const key = keycode(e);
     this.props.onKeyDown(e);
 
     switch (key) {
-      case "enter":
-        this.close();
-        if (searchText.trim() !== "") {
-          this.props.onNewRequest(searchText, -1);
-        }
-        break;
-
       case "esc":
         this.close();
         break;
@@ -159,18 +162,12 @@ export default class AutoComplete extends React.Component {
   }
 
   handleMenuItemClick(menuItem, value, index) {
-    const {
-      dataSource,
-      dataSourceConfig,
-      menuCloseDelay
-    } = this.props;
-    const data = dataSource[index];
-    const searchText = typeof data === "object" ? data[dataSourceConfig.text] : data;
+    const { menuCloseDelay } = this.props;
 
-    this.props.onNewRequest(data, index);
+    this.props.onNewRequest(value, index);
 
     this.timerMenuItemClickClose = setTimeout(() => {
-      this.setState({ searchText });
+      this.setState({ searchText: menuItem.props.text });
       this.close();
       this.focus();
       this.timerMenuItemClickClose = null;
@@ -220,6 +217,7 @@ export default class AutoComplete extends React.Component {
     const {
       className,
       label,
+      openOnFocus,
       filter,
       placeholder,
       origin,
@@ -250,7 +248,7 @@ export default class AutoComplete extends React.Component {
           text: itemText,
           value: (
             <MenuItem
-              text={itemValue}
+              text={itemText}
               value={itemValue}
               key={index}
             />
@@ -277,7 +275,7 @@ export default class AutoComplete extends React.Component {
       <Menu
         ref="menu"
         disableAutoFocus={focusTextField}
-        initiallyKeyboardFocused={true}
+        initiallyKeyboardFocused={openOnFocus}
         onItemClick={this.handleMenuItemClick}
         onMouseDown={this.handleMenuMouseDown}
         onKeyDown={this.handleMenuKeyDown}
@@ -302,11 +300,11 @@ export default class AutoComplete extends React.Component {
           onKeyPress={onKeyPress}
         />
         <Popover
+          ref="popover"
           origin={origin}
           triggerOrigin={triggerOrigin}
           triggerElement={triggerElement}
           open={open}
-          onRequestClose={this.handleRequestClose}
         >
           {menuElement}
         </Popover>

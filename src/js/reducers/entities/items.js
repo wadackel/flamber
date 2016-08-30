@@ -203,6 +203,74 @@ export default handleActions({
   ),
 
 
+  // Add tag
+  [Items.ADD_ITEM_TAG_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        tags: [...entity.tags, payload.tagId],
+        isUpdating: true,
+        isTagAdding: true
+      }
+    )
+  ),
+
+  [Items.ADD_ITEM_TAG_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      payload.result.items.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        tags: payload.entities.items[entity.id].tags,
+        isUpdating: false,
+        isTagAdding: false
+      }
+    )
+  ),
+
+  [Items.ADD_ITEM_TAG_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.id ? entity : {
+        ...entity,
+        isUpdating: false,
+        isTagAdding: false
+      }
+    )
+  ),
+
+
+  // Remove tag
+  [Items.REMOVE_ITEM_TAG_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        tags: entity.tags.filter(tagId => payload.tagId !== tagId),
+        isUpdating: true,
+        isTagRemoveing: true
+      }
+    )
+  ),
+
+  [Items.REMOVE_ITEM_TAG_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      payload.result.items.indexOf(entity.id) < 0 ? entity : {
+        ...entity,
+        tags: payload.entities.items[entity.id].tags,
+        isUpdating: false,
+        isTagRemoveing: false
+      }
+    )
+  ),
+
+  [Items.REMOVE_ITEM_TAG_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.id ? entity : {
+        ...entity,
+        isUpdating: false,
+        isTagRemoveing: false
+      }
+    )
+  ),
+
+
   // Move
   [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)

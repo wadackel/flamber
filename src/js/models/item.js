@@ -60,7 +60,10 @@ ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, 
       board.items.push(entity.id);
       return board.save().then(() => entity);
     })
-    .then(entity => this.populate(entity, { path: "board" }));
+    .then(entity => this.populate(entity, [
+      { path: "board" },
+      { path: "tags" }
+    ]));
 };
 
 
@@ -80,14 +83,17 @@ ItemSchema.statics.findAllByUser = function(drive, user, query = {}) {
   return this.find(params)
     .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities))
     .then(entities => Promise.all(entities.map(entity =>
-      this.populate(entity, { path: "board" })
+      this.populate(entity, [
+        { path: "board" },
+        { path: "tags" }
+      ])
     )));
 };
 
 
 ItemSchema.statics.findByUserAndId = function(user, id) {
   return this.findOne({ user, _id: id })
-    .populate("board");
+    .populate("board tags");
 }
 
 
@@ -117,7 +123,10 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(drive, user, id, newPr
       }
     })
     .then(entity => updateItemThumbnail(drive, entity))
-    .then(entity => this.populate(entity, { path: "board" }));
+    .then(entity => this.populate(entity, [
+      { path: "board" },
+      { path: "tags" }
+    ]));
 };
 
 
@@ -137,7 +146,10 @@ ItemSchema.statics.removeByUserAndId = function(drive, user, id) {
         })
         .then(() => entity)
     )
-    .then(entity => this.populate(entity, { path: "board" }));
+    .then(entity => this.populate(entity, [
+      { path: "board" },
+      { path: "tags" }
+    ]));
 };
 
 

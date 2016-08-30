@@ -4,7 +4,7 @@ Basic:
 class AutoCompleteExample extends React.Component {
   render() {
     return (
-      <div>
+      <div style={{ padding: "60px 0" }}>
         <AutoComplete
           label="Type 't'"
           dataSource={[
@@ -12,14 +12,18 @@ class AutoCompleteExample extends React.Component {
             "trace",
             "testing"
           ]}
+          onNewRequest={console.log}
         />
+
         <AutoComplete
+          openOnFocus
           label="Type 't'"
           dataSource={[
-            { text: "Text 1", value: "value1" },
-            { text: "Text 2", value: "value2" },
-            { text: "Text 3", value: "value3" }
+            { text: "Test", value: "test" },
+            { text: "Trace", value: "trace" },
+            { text: "Testing", value: "testing" }
           ]}
+          onNewRequest={console.log}
         />
       </div>
     );

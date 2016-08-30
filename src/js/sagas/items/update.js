@@ -82,6 +82,36 @@ function *handleUpdateItemPaletteFailure() {
 }
 
 
+// Add tag
+export function *handleAddItemTagRequest({ payload }) {
+  yield callUpdateItem(
+    payload,
+    Items.addItemTagSuccess,
+    Items.addItemTagFailure
+  );
+}
+
+function *handleAddItemTagFailure() {
+  // TODO: More erro message
+  yield put(Notifications.showNotify("アイテムの更新に失敗しました"));
+}
+
+
+// Remove tag
+export function *handleRemoveItemTagRequest({ payload }) {
+  yield callUpdateItem(
+    payload,
+    Items.removeItemTagSuccess,
+    Items.removeItemTagFailure
+  );
+}
+
+function *handleRemoveItemTagFailure() {
+  // TODO: More erro message
+  yield put(Notifications.showNotify("アイテムの更新に失敗しました"));
+}
+
+
 export default function *updateItemSaga() {
   yield [
     // Name
@@ -95,6 +125,14 @@ export default function *updateItemSaga() {
 
     // Palette
     takeEvery(Items.UPDATE_ITEM_PALETTE_REQUEST, handleUpdateItemPaletteRequest),
-    takeEvery(Items.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure)
+    takeEvery(Items.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure),
+
+    // Add tag
+    takeEvery(Items.ADD_ITEM_TAG_REQUEST, handleAddItemTagRequest),
+    takeEvery(Items.ADD_ITEM_TAG_FAILURE, handleAddItemTagFailure),
+
+    // Remove tag
+    takeEvery(Items.REMOVE_ITEM_TAG_REQUEST, handleRemoveItemTagRequest),
+    takeEvery(Items.REMOVE_ITEM_TAG_FAILURE, handleRemoveItemTagFailure)
   ];
 }

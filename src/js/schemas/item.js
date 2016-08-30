@@ -18,7 +18,8 @@ const ItemSchema = new Schema("items", {
     // State of each props
     isNameUpdating: false,
     isDescriptionUpdating: false,
-    isPaletteUpdating: false
+    isPaletteUpdating: false,
+    isTagAdding: false
   }
 });
 

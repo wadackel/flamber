@@ -58,6 +58,7 @@ export default class TagList extends Component {
         <CSSGrid
           component="div"
           columns={1}
+          columnWidth={10000}
           layout={layout.simple}
           enter={enterExitStyle.fromTop.enter}
           entered={enterExitStyle.fromTop.entered}

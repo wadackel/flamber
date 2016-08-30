@@ -1,6 +1,8 @@
+import { arrayOf } from "normalizr";
 import { fork } from "redux-saga/effects";
 import BoardSchema from "../../schemas/board";
 import ItemSchema from "../../schemas/item";
+import TagSchema from "../../schemas/tag";
 import bgSyncItemSaga from "./bg-sync";
 import addItemSaga from "./add";
 import starItemSaga from "./star";
@@ -12,7 +14,8 @@ import selectItemSaga from "./select";
 import visibilityFilterSaga from "./visibility-filter";
 
 ItemSchema.define({
-  board: BoardSchema
+  board: BoardSchema,
+  tags: arrayOf(TagSchema)
 });
 
 export default function *itemsSaga() {
