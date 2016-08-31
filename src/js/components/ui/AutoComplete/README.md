@@ -35,8 +35,8 @@ class AutoCompleteExample extends React.Component {
           onNewRequest={(value, index) => {
             if (index > -1) {
               this.setState({
-                value2: dataSource2.filter(o => o.value === value).shift().label}
-              );
+                value2: dataSource2.filter(o => o.value === value).shift().text
+              });
             }
           }}
         />

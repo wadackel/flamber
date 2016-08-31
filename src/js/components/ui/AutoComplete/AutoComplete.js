@@ -101,7 +101,7 @@ export default class AutoComplete extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.searchText !== nextProps.searchText) {
+    if (this.state.searchText !== nextProps.searchText) {
       this.setState({
         searchText: nextProps.searchText
       });
@@ -164,10 +164,9 @@ export default class AutoComplete extends React.Component {
   handleMenuItemClick(menuItem, value, index) {
     const { menuCloseDelay } = this.props;
 
-    this.props.onNewRequest(value, index);
-
     this.timerMenuItemClickClose = setTimeout(() => {
       this.setState({ searchText: menuItem.props.text });
+      this.props.onNewRequest(value, index);
       this.close();
       this.focus();
       this.timerMenuItemClickClose = null;
