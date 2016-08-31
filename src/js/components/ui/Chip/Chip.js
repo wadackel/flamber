@@ -59,7 +59,7 @@ export default class Chip extends Component {
     switch (key) {
       case "backspace":
         if (this.isDeletable()) {
-          this.props.onRequestDelete();
+          this.props.onRequestDelete(this.props.value);
         }
         break;
     }

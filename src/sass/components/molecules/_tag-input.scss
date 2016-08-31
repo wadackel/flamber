@@ -1,0 +1,54 @@
+.tag-input {
+  position: relative;
+  width: 100%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid $gray-light;
+
+  &::after {
+    @include absolute(100%, 0, auto, 0, 3);
+    @include transition(all, $text-field-duration);
+    display: block;
+    margin-top: -1px;
+    border-bottom: 2px solid $gray-light;
+    content: "";
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &--focused {
+    &::after {
+      border-color: $brand-primary;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__tag {
+    margin: 8px 4px 0 0;
+    cursor: default;
+    vertical-align: middle;
+  }
+
+  &__control {
+    display: inline-block;
+    min-width: 200px;
+    vertical-align: middle;
+
+    .text-field {
+      &::after {
+        display: none;
+      }
+    }
+
+    .text-field__control {
+      margin: 8px 4px 0 0;
+      padding: 0;
+      border-bottom: none;
+      line-height: 32px;
+    }
+
+    .text-field__placeholder {
+      top: 14px;
+    }
+  }
+}
