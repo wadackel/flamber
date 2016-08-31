@@ -125,11 +125,17 @@ export const updateItemPaletteFailure = createAction(UPDATE_ITEM_PALETTE_FAILURE
 
 
 // Add tag
+export const ADD_ITEM_TAG_IF_NEEDED = "ADD_ITEM_TAG_IF_NEEDED";
 export const ADD_ITEM_TAG_REQUEST = "ADD_ITEM_TAG_REQUEST";
 export const ADD_ITEM_TAG_SUCCESS = "ADD_ITEM_TAG_SUCCESS";
 export const ADD_ITEM_TAG_FAILURE = "ADD_ITEM_TAG_FAILURE";
 
-export const addItemTagRequest = createAction(ADD_ITEM_TAG_REQUEST, (id, tagId) => ({ id, tagId }));
+function addItemTagPayloadCreator(id, tagId) {
+  return { id, tagId };
+}
+
+export const addItemTagIfNeeded = createAction(ADD_ITEM_TAG_IF_NEEDED, addItemTagPayloadCreator);
+export const addItemTagRequest = createAction(ADD_ITEM_TAG_REQUEST, addItemTagPayloadCreator);
 export const addItemTagSuccess = createAction(ADD_ITEM_TAG_SUCCESS);
 export const addItemTagFailure = createAction(ADD_ITEM_TAG_FAILURE,
   null,

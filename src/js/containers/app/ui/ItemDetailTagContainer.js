@@ -1,4 +1,5 @@
 /* eslint-disable */
+import _ from "lodash";
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
@@ -23,12 +24,19 @@ export class ItemDetailTagContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.state = { searchText: "" };
+
     autoBind(this);
   }
 
   handleAddTag(value) {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.addItemTagRequest(currentItem.id, value));
+    dispatch(ItemActions.addItemTagIfNeeded(currentItem.id, value));
+    this.setState({ searchText: "" });
+  }
+
+  handleUpdateInput(value) {
+    this.setState({ searchText: value });
   }
 
   handleTagDelete(value) {
@@ -43,27 +51,33 @@ export class ItemDetailTagContainer extends Component {
       tagEntities
     } = this.props;
 
-    if (!currentItem) return null;
+    const { searchText } = this.state;
 
-    const tagSource = tagEntities.map(entity => ({
-      text: entity.name,
-      value: entity.id
-    }));
+    if (!currentItem) return null;
 
     const tags = currentItemTagEntities.map(entity => ({
       label: entity.name,
       value: entity.id
     }));
 
+    const tagSource = tagEntities
+      .map(entity => ({
+        text: entity.name,
+        value: entity.id
+      }))
+      .filter(obj => !_.some(tags, { value: obj.value }));
+
     return (
       <div className={b()}>
         <AutoComplete
           openOnFocus
           className={b("control")()}
+          searchText={searchText}
           label="Type tag name"
           placeholder="タグの名前を入力"
           dataSource={tagSource}
           onNewRequest={this.handleAddTag}
+          onUpdateInput={this.handleUpdateInput}
         />
 
         <TagList

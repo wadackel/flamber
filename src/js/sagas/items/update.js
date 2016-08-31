@@ -83,6 +83,15 @@ function *handleUpdateItemPaletteFailure() {
 
 
 // Add tag
+export function *handleAddItemTagIfNeeded({ payload }) {
+  const { id, tagId } = payload;
+  const entity = yield select(getItemEntityById, id);
+
+  if (entity && entity.tags.indexOf(tagId) === -1) {
+    yield put(Items.addItemTagRequest(id, tagId));
+  }
+}
+
 export function *handleAddItemTagRequest({ payload }) {
   yield callUpdateItem(
     payload,
@@ -128,6 +137,7 @@ export default function *updateItemSaga() {
     takeEvery(Items.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure),
 
     // Add tag
+    takeEvery(Items.ADD_ITEM_TAG_IF_NEEDED, handleAddItemTagIfNeeded),
     takeEvery(Items.ADD_ITEM_TAG_REQUEST, handleAddItemTagRequest),
     takeEvery(Items.ADD_ITEM_TAG_FAILURE, handleAddItemTagFailure),
 
