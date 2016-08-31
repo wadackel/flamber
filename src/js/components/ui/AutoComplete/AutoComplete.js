@@ -183,8 +183,10 @@ export default class AutoComplete extends React.Component {
     this.focus();
   }
 
-  handleRequestClose() {
-    this.close();
+  handleRequestClose(type) {
+    if (!this.state.focusTextField || type === "scroll" || type === "resize") {
+      this.close();
+    }
   }
 
   setMenuWidth() {
@@ -305,6 +307,8 @@ export default class AutoComplete extends React.Component {
           triggerOrigin={triggerOrigin}
           triggerElement={triggerElement}
           open={open}
+          useLayerForClickAway={false}
+          onRequestClose={this.handleRequestClose}
         >
           {menuElement}
         </Popover>

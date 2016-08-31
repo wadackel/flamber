@@ -75,12 +75,12 @@ export default class Popover extends React.Component {
   }
 
   handleClickAway() {
-    this.props.onRequestClose();
+    this.props.onRequestClose("clickAway");
   }
 
-  handleClose() {
+  handleClose(e) {
     this.setPositions();
-    this.props.onRequestClose();
+    this.props.onRequestClose(e.type);
   }
 
   bindCloseEvents() {

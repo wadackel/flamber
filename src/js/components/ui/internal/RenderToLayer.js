@@ -86,17 +86,18 @@ export default class RenderToLayer extends React.Component {
     if (open) {
       if (!this.layer) {
         this.layer = document.createElement("div");
+        this.layer.style.position = "fixed";
+        this.layer.style.top = 0;
+        this.layer.style.left = 0;
+        this.layer.style.zIndex = 1520;
+
         document.body.appendChild(this.layer);
 
         if (this.props.useLayerForClickAway) {
           this.layer.addEventListener("touchstart", this.onClickAway);
           this.layer.addEventListener("click", this.onClickAway);
-          this.layer.style.position = "fixed";
-          this.layer.style.top = 0;
           this.layer.style.bottom = 0;
-          this.layer.style.left = 0;
           this.layer.style.right = 0;
-          this.layer.style.zIndex = 1520;
         } else {
           setTimeout(() => {
             window.addEventListener("touchstart", this.onClickAway);
