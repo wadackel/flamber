@@ -1,0 +1,76 @@
+.chip {
+  $bg-color: darken($gray-dark, 4%);
+
+  @include transition(all, $transition-duration-fast);
+  display: inline-block;
+  position: relative;
+  padding: 0 12px;
+  border-radius: 16px;
+  background: $bg-color;
+  color: #fff;
+  font-size: .87rem;
+  font-weight: normal;
+  line-height: 32px;
+  white-space: nowrap;
+  user-select: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      background: lighten($bg-color, 2%);
+      box-shadow: 0 2px 4px rgba(#000, .2);
+    }
+
+    &:active {
+      background: lighten($bg-color, 3%);
+      box-shadow: 0 0 2px rgba(#000, .2);
+    }
+  }
+
+  &--deletable {
+    padding-right: 35px;
+  }
+
+  &--focused {
+    &,
+    &:hover,
+    &:active {
+      background: $brand-primary;
+    }
+  }
+
+  &__delete {
+    @include absolute(50%, 5px, auto, auto, 1);
+    @include transition(all, $transition-duration-fast);
+    @include size(24px);
+    display: block;
+    margin: -12px 0 0;
+    border-radius: 50%;
+    background: lighten($gray-dark, 4%);
+    color: $bg-color;
+
+    &:hover {
+      background: lighten($gray-dark, 12%);
+    }
+
+    svg {
+      @include absolute(50%, auto, auto, 50%);
+      @include size(10px);
+      margin: -5px 0 0 -5px;
+      fill: currentColor;
+    }
+
+    &--focused {
+      &,
+      &:hover {
+        background: darken($brand-primary, 8%);
+        color: #fff;
+      }
+    }
+  }
+}
