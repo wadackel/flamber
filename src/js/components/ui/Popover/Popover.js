@@ -17,6 +17,7 @@ export default class Popover extends React.Component {
     origin: OriginalPropTypes.origin,
     triggerElement: PropTypes.object,
     triggerOrigin: OriginalPropTypes.origin,
+    useLayerForClickAway: PropTypes.bool,
     onRequestClose: PropTypes.func
   };
 
@@ -30,6 +31,7 @@ export default class Popover extends React.Component {
       vertical: "bottom",
       horizontal: "left"
     },
+    useLayerForClickAway: true,
     onRequestClose: () => {}
   };
 
@@ -171,12 +173,14 @@ export default class Popover extends React.Component {
   }
 
   render() {
+    const { useLayerForClickAway } = this.props;
+
     return (
       <RenderToLayer
         ref="layer"
         open={this.state.open}
         componentClickAway={this.handleClickAway}
-        useLayerForClickAway={true}
+        useLayerForClickAway={useLayerForClickAway}
         render={this.renderLayer}
       />
     );
