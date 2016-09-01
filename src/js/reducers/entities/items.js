@@ -219,7 +219,6 @@ export default handleActions({
     _.mapValues(state, entity =>
       payload.result.items.indexOf(entity.id) < 0 ? entity : {
         ...entity,
-        tags: payload.entities.items[entity.id].tags,
         isUpdating: false,
         isTagAdding: false
       }
@@ -253,7 +252,6 @@ export default handleActions({
     _.mapValues(state, entity =>
       payload.result.items.indexOf(entity.id) < 0 ? entity : {
         ...entity,
-        tags: payload.entities.items[entity.id].tags,
         isUpdating: false,
         isTagRemoveing: false
       }
