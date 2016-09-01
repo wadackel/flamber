@@ -8,8 +8,7 @@ import bem from "../../../helpers/bem";
 import { getCurrentItem } from "../../../selectors/items";
 import { getTagEntities, getTagEntitiesByItemId } from "../../../selectors/tags";
 import {
-  AutoComplete,
-  TagList
+  TagInput
 } from "../../../components/ui/";
 
 const b = bem("item-detail-tag-container");
@@ -24,24 +23,17 @@ export class ItemDetailTagContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = { searchText: "" };
-
     autoBind(this);
   }
 
-  handleAddTag(value) {
+  handleAddTag(tag) {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.addItemTagIfNeeded(currentItem.id, value));
-    this.setState({ searchText: "" });
+    dispatch(ItemActions.addItemTagIfNeeded(currentItem.id, tag.value));
   }
 
-  handleUpdateInput(value) {
-    this.setState({ searchText: value });
-  }
-
-  handleTagDelete(value) {
+  handleRemoveTag(tag) {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.removeItemTagRequest(currentItem.id, value));
+    dispatch(ItemActions.removeItemTagRequest(currentItem.id, tag.value));
   }
 
   render() {
@@ -50,8 +42,6 @@ export class ItemDetailTagContainer extends Component {
       currentItemTagEntities,
       tagEntities
     } = this.props;
-
-    const { searchText } = this.state;
 
     if (!currentItem) return null;
 
@@ -62,28 +52,18 @@ export class ItemDetailTagContainer extends Component {
 
     const tagSource = tagEntities
       .map(entity => ({
-        text: entity.name,
+        label: entity.name,
         value: entity.id
-      }))
-      .filter(obj => !_.some(tags, { value: obj.value }));
+      }));
 
     return (
       <div className={b()}>
-        <AutoComplete
-          openOnFocus
-          className={b("control")()}
-          searchText={searchText}
-          label="Type tag name"
-          placeholder="タグの名前を入力"
-          dataSource={tagSource}
-          onNewRequest={this.handleAddTag}
-          onUpdateInput={this.handleUpdateInput}
-        />
-
-        <TagList
-          className={b("tags")()}
+        <TagInput
+          placeholder="Type tag name"
           tags={tags}
-          onItemDelete={this.handleTagDelete}
+          dataSource={tagSource}
+          onAddTag={this.handleAddTag}
+          onRemoveTag={this.handleRemoveTag}
         />
       </div>
     );
