@@ -31,6 +31,7 @@ export default class TagInput extends Component {
     menuCloseDelay: PropTypes.number,
     onAddTag: PropTypes.func,
     onRemoveTag: PropTypes.func,
+    onNewTag: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     onKeyDown: PropTypes.func,
@@ -42,7 +43,8 @@ export default class TagInput extends Component {
     tags: [],
     openOnFocus: true,
     onAddTag: () => {},
-    onRemoveTag: () => {}
+    onRemoveTag: () => {},
+    onNewTag: () => {}
   };
 
   constructor(props, context) {
@@ -140,10 +142,13 @@ export default class TagInput extends Component {
       const tag = this.findTagByValue(value);
 
       if (tag) {
-        this.setState({ searchText: "" });
         this.props.onAddTag(tag);
       }
+    } else {
+      this.props.onNewTag(value);
     }
+
+    this.setState({ searchText: "" });
   }
 
   handleRequestDelete(value) {

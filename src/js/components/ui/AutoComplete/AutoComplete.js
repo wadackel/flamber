@@ -161,6 +161,15 @@ export default class AutoComplete extends React.Component {
     }
   }
 
+  handleEnter() {
+    const { searchText } = this.state;
+    const finalSearchText = searchText.trim();
+
+    if (finalSearchText !== "") {
+      this.props.onNewRequest(finalSearchText, -1);
+    }
+  }
+
   handleMenuItemClick(menuItem, value, index) {
     const { menuCloseDelay } = this.props;
 
@@ -296,6 +305,7 @@ export default class AutoComplete extends React.Component {
           onChange={this.handleChange}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
+          onEnter={this.handleEnter}
           onKeyDown={this.handleKeyDown}
           onKeyUp={onKeyUp}
           onKeyPress={onKeyPress}

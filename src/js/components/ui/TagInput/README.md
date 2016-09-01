@@ -22,6 +22,7 @@ class TagInputExample extends React.Component {
             { label: "Iwate", value: 6 }
           ]}
           onAddTag={tag => this.setState({ tags: [...this.state.tags, tag] })}
+          onNewTag={label => this.setState({ tags: [...this.state.tags, { label, value: this.state.tags.length + 1 }] })}
           onRemoveTag={tag => this.setState({ tags: this.state.tags.filter(o => o.value !== tag.value) })}
         />
       </div>
