@@ -16,10 +16,12 @@ export default class Chip extends Component {
     onClick: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
+    onKeyDown: PropTypes.func,
     onRequestDelete: PropTypes.func
   };
 
   static defaultProps = {
+    onKeyDown: () => {},
     onFocus: () => {},
     onBlur: () => {}
   };
@@ -38,12 +40,12 @@ export default class Chip extends Component {
   }
 
   handleFocus(e) {
-    this.props.onFocus(e);
+    this.props.onFocus(e, this.props.value);
     this.setState({ focused: true });
   }
 
   handleBlur(e) {
-    this.props.onBlur(e);
+    this.props.onBlur(e, this.props.value);
     this.setState({ focused: false });
   }
 
@@ -63,6 +65,8 @@ export default class Chip extends Component {
         }
         break;
     }
+
+    this.props.onKeyDown(e);
   }
 
   isClickable() {
@@ -71,6 +75,14 @@ export default class Chip extends Component {
 
   isDeletable() {
     return _.isFunction(this.props.onRequestDelete);
+  }
+
+  focus() {
+    this.refs.chip.focus();
+  }
+
+  blur() {
+    this.refs.chip.blur();
   }
 
   render() {
