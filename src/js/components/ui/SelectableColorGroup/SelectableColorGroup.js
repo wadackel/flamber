@@ -38,11 +38,11 @@ export default class SelectableColorGroup extends Component {
 
     return validChildren.map((child, index) =>
       <div
+        key={child.props.color}
         className={b("color")()}
         style={{ transitionDelay: `${index * 15}ms` }}
       >
         {React.cloneElement(child, {
-          key: child.props.color,
           selected: selectColors.indexOf(child.props.color) > -1,
           onClick: this.handleColorClick
         })}
@@ -58,6 +58,7 @@ export default class SelectableColorGroup extends Component {
         <ReactCSSTransitionGroup
           transitionName="color"
           transitionAppear={true}
+          transitionAppearTimeout={shareConfig["selectable-color-enter-duration"]}
           transitionEnterTimeout={shareConfig["selectable-color-enter-duration"]}
           transitionLeaveTimeout={shareConfig["selectable-color-leave-duration"]}
         >
