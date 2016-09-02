@@ -44,6 +44,23 @@
     }
   }
 
+  &--processing {
+    padding-left: 35px;
+    opacity: .6;
+
+    &,
+    &:hover,
+    &:active {
+      background: lighten($bg-color, 10%);
+      cursor: default;
+    }
+  }
+
+  &__spinner {
+    @include absolute(50%, auto, auto, 10px, 1);
+    margin-top: -9px;
+  }
+
   &__delete {
     @include absolute(50%, 5px, auto, auto, 1);
     @include transition(all, $transition-duration-fast);
@@ -70,6 +87,14 @@
       &:hover {
         background: darken($brand-primary, 8%);
         color: #fff;
+      }
+    }
+
+    &--processing {
+      &,
+      &:hover {
+        background: lighten($gray-dark, 4%);
+        color: lighten($bg-color, 10%);
       }
     }
   }

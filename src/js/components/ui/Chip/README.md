@@ -13,5 +13,13 @@ Basic:
   >
     Deletable chip
   </Chip>
+
+  <Chip
+    processing
+    onClick={console.log}
+    onRequestDelete={console.log}
+  >
+    Processing chip
+  </Chip>
 </div>
 ```

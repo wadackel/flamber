@@ -2,6 +2,7 @@ import _ from "lodash";
 import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component, PropTypes } from "react";
+import MDSpinner from "react-md-spinner";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { CloseIcon } from "../../svg-icons/";
@@ -13,6 +14,7 @@ export default class Chip extends Component {
     children: PropTypes.node,
     className: PropTypes.string,
     value: PropTypes.any,
+    processing: PropTypes.bool,
     onClick: PropTypes.func,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
@@ -21,6 +23,7 @@ export default class Chip extends Component {
   };
 
   static defaultProps = {
+    processing: false,
     onKeyDown: () => {},
     onFocus: () => {},
     onBlur: () => {}
@@ -86,17 +89,24 @@ export default class Chip extends Component {
   }
 
   render() {
-    const { children, className } = this.props;
+    const { children, className, processing } = this.props;
     const { focused } = this.state;
 
     const clickable = this.isClickable();
     const deletable = this.isDeletable();
 
     const modifier = {
+      processing,
       clickable,
       deletable,
       focused: (clickable && focused) || (deletable && focused)
     };
+
+    const spinnerIcon = processing && <MDSpinner
+      className={b("spinner")()}
+      size={18}
+      style={{ position: "absolute", display: "block" }}
+    />;
 
     const deleteIcon = deletable && <span
       className={b("delete", modifier)()}
@@ -108,13 +118,14 @@ export default class Chip extends Component {
     return (
       <span
         ref="chip"
-        tabIndex={clickable || deletable ? 0 : -1}
+        tabIndex={(clickable || deletable) && !processing ? 0 : -1}
         className={mergeClassNames(b(modifier)(), className)}
         onClick={clickable ? this.handleClick : null}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onKeyDown={this.handleKeyDown}
       >
+        {spinnerIcon}
         {children}
         {deleteIcon}
       </span>
