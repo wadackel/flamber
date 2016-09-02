@@ -124,14 +124,23 @@ function *handleRemoveItemTagFailure() {
 
 // Register
 export function *handleRegisterItemTagRequest({ payload }) {
+  const entity = yield select(getItemEntityById, payload.id);
+
   yield put(Tags.addTagRequest(payload.label));
   const res = yield take([Tags.ADD_TAG_SUCCESS, Tags.ADD_TAG_FAILURE]);
 
   if (res.payload instanceof Error) {
-    // TODO: error
+    yield put(Items.registerItemTagFailure(res.payload, payload));
+  }
 
-  } else {
-    // TODO: success
+  try {
+    const response = yield call(Services.updateItems, [entity]);
+    const normalized = normalize(response, {
+      items: arrayOf(ItemSchema)
+    });
+    yield put(Items.registerItemTagSuccess(normalized, payload));
+  } catch (error) {
+    yield put(Items.registerItemTagFailure(error, payload));
   }
 }
 

@@ -281,6 +281,22 @@ export default handleActions({
     )
   ),
 
+  // TODO
+  [Items.REGISTER_ITEM_TAG_SUCCESS]: (state, { payload, meta }) => (
+    state
+  ),
+
+  [Items.REGISTER_ITEM_TAG_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.id ? entity : {
+        ...entity,
+        tags: _.without(entity.tags, meta.tagId),
+        isUpdating: false,
+        isTagAdding: false
+      }
+    )
+  ),
+
 
   // Move
   [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => (

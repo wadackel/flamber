@@ -86,5 +86,11 @@ export default handleActions({
         modified: new Date()
       }, TagSchema).entities.tags
     )
+  ),
+
+  [Items.REGISTER_ITEM_TAG_FAILURE]: (state, { meta }) => (
+    _.pickBy(state, (entity, id) =>
+      id !== meta.tagId
+    )
   )
 }, {});

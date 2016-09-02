@@ -165,7 +165,10 @@ export const REGISTER_ITEM_TAG_FAILURE = "REGISTER_ITEM_TAG_FAILURE";
 export const registerItemTagRequest = createAction(REGISTER_ITEM_TAG_REQUEST,
   (id, label) => ({ id, label, tagId: uuid.v4() })
 );
-export const registerItemTagSuccess = createAction(REGISTER_ITEM_TAG_SUCCESS);
+export const registerItemTagSuccess = createAction(REGISTER_ITEM_TAG_SUCCESS,
+  null,
+  (normalized, payload) => ({ ...normalized, payload })
+);
 export const registerItemTagFailure = createAction(REGISTER_ITEM_TAG_FAILURE,
   null,
   updateItemMetaCreator
