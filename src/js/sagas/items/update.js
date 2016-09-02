@@ -1,12 +1,13 @@
 /* eslint-disable */
 import { normalize, arrayOf } from "normalizr";
 import { takeEvery } from "redux-saga";
-import { call, put, select } from "redux-saga/effects";
+import { take, call, put, select } from "redux-saga/effects";
 import ItemSchema from "../../schemas/item";
 import { getItemEntityById } from "../../selectors/items";
 import * as Services from "../../services/items";
 import * as Notifications from "../../actions/notifications";
 import * as Items from "../../actions/items";
+import * as Tags from "../../actions/tags";
 
 
 function *callUpdateItem(payload, success, failure) {
@@ -121,6 +122,17 @@ function *handleRemoveItemTagFailure() {
 }
 
 
+// Register
+export function *handleRegisterItemTagRequest({ payload }) {
+  yield put(Tags.addTagRequest(payload.label));
+  const res = yield take([Tags.ADD_TAG_SUCCESS, Tags.ADD_TAG_FAILURE]);
+
+  if (res.payload instanceof Error) {
+  } else {
+  }
+}
+
+
 export default function *updateItemSaga() {
   yield [
     // Name
@@ -143,6 +155,9 @@ export default function *updateItemSaga() {
 
     // Remove tag
     takeEvery(Items.REMOVE_ITEM_TAG_REQUEST, handleRemoveItemTagRequest),
-    takeEvery(Items.REMOVE_ITEM_TAG_FAILURE, handleRemoveItemTagFailure)
+    takeEvery(Items.REMOVE_ITEM_TAG_FAILURE, handleRemoveItemTagFailure),
+
+    // Register tag
+    takeEvery(Items.REGISTER_ITEM_TAG_REQUEST, handleRegisterItemTagRequest)
   ];
 }

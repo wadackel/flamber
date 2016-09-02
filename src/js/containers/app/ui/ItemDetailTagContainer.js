@@ -31,6 +31,11 @@ export class ItemDetailTagContainer extends Component {
     dispatch(ItemActions.addItemTagIfNeeded(currentItem.id, tag.value));
   }
 
+  handleNewTag(label) {
+    const { dispatch, currentItem } = this.props;
+    dispatch(ItemActions.registerItemTagRequest(currentItem.id, label));
+  }
+
   handleRemoveTag(tag) {
     const { dispatch, currentItem } = this.props;
     dispatch(ItemActions.removeItemTagRequest(currentItem.id, tag.value));
@@ -63,6 +68,7 @@ export class ItemDetailTagContainer extends Component {
           tags={tags}
           dataSource={tagSource}
           onAddTag={this.handleAddTag}
+          onNewTag={this.handleNewTag}
           onRemoveTag={this.handleRemoveTag}
         />
       </div>
