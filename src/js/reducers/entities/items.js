@@ -269,6 +269,19 @@ export default handleActions({
   ),
 
 
+  // Register tag
+  [Items.REGISTER_ITEM_TAG_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        tags: [...entity.tags, payload.tagId],
+        isUpdating: true,
+        isTagAdding: true
+      }
+    )
+  ),
+
+
   // Move
   [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)

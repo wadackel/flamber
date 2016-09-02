@@ -1,6 +1,9 @@
 /* eslint-disable */
 import _ from "lodash";
+import { normalize } from "normalizr";
 import { handleActions } from "redux-actions";
+import TagSchema from "../../schemas/tag";
+import * as Items from "../../actions/items";
 import * as Tags from "../../actions/tags";
 
 function mergeEntities(state, entities) {
@@ -68,6 +71,20 @@ export default handleActions({
         ...entity,
         isDeleting: false
       }
+    )
+  ),
+
+
+  // Register item tag
+  [Items.REGISTER_ITEM_TAG_REQUEST]: (state, { payload }) => (
+    mergeEntities(state,
+      normalize({
+        id: payload.tagId,
+        user: "processing",
+        name: payload.label,
+        created: new Date(),
+        modified: new Date()
+      }, TagSchema).entities.tags
     )
   )
 }, {});

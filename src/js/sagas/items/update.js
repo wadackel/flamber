@@ -128,7 +128,10 @@ export function *handleRegisterItemTagRequest({ payload }) {
   const res = yield take([Tags.ADD_TAG_SUCCESS, Tags.ADD_TAG_FAILURE]);
 
   if (res.payload instanceof Error) {
+    // TODO: error
+
   } else {
+    // TODO: success
   }
 }
 
