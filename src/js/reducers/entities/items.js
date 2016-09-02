@@ -23,7 +23,7 @@ export default handleActions({
       const prevEntity = state[nextEntity.id];
       if (prevEntity.isUpdating) return prevEntity;
 
-      const frontOnlyProps = _.keys(ItemSchema._defaults);
+      const frontOnlyProps = _.keys(ItemSchema.getDefaults());
 
       return _.assignWith(prevEntity, nextEntity, (prev, next, key) => {
         if (frontOnlyProps.indexOf(key) > -1) {
