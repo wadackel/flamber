@@ -167,7 +167,7 @@ export const registerItemTagRequest = createAction(REGISTER_ITEM_TAG_REQUEST,
 );
 export const registerItemTagSuccess = createAction(REGISTER_ITEM_TAG_SUCCESS,
   null,
-  (normalized, payload) => ({ ...normalized, payload })
+  (normalized, payload) => ({ ...payload })
 );
 export const registerItemTagFailure = createAction(REGISTER_ITEM_TAG_FAILURE,
   null,

@@ -134,11 +134,19 @@ export function *handleRegisterItemTagRequest({ payload }) {
   }
 
   try {
-    const response = yield call(Services.updateItems, [entity]);
+    const newTagId = res.payload.result.tag;
+    const newEntity = {
+      ...entity,
+      tags: entity.tags.map(id => id === payload.tagId ? newTagId : id)
+    };
+
+    const response = yield call(Services.updateItems, [newEntity]);
     const normalized = normalize(response, {
       items: arrayOf(ItemSchema)
     });
+
     yield put(Items.registerItemTagSuccess(normalized, payload));
+
   } catch (error) {
     yield put(Items.registerItemTagFailure(error, payload));
   }

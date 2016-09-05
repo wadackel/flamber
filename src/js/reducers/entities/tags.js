@@ -88,6 +88,12 @@ export default handleActions({
     )
   ),
 
+  [Items.REGISTER_ITEM_TAG_SUCCESS]: (state, { meta }) => (
+    _.pickBy(state, (entity, id) =>
+      id !== meta.tagId
+    )
+  ),
+
   [Items.REGISTER_ITEM_TAG_FAILURE]: (state, { meta }) => (
     _.pickBy(state, (entity, id) =>
       id !== meta.tagId
