@@ -10,6 +10,7 @@ export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 export Checkbox from "./Checkbox/Checkbox";
 export Chip from "./Chip/Chip";
 export ColorBar from "./ColorBar/ColorBar";
+export Cropper from "./Cropper/Cropper";
 export Dialog from "./Dialog/Dialog";
 export Drawer from "./Drawer/Drawer";
 export DriveCapacity from "./DriveCapacity/DriveCapacity";

@@ -102,6 +102,7 @@
     "rc-slider": "^4.0.1",
     "react": "^15.3.1",
     "react-addons-css-transition-group": "^15.3.1",
+    "react-cropper": "^0.9.4",
     "react-dom": "^15.3.1",
     "react-event-listener": "^0.2.1",
     "react-helmet": "^3.1.0",
