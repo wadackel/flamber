@@ -9,6 +9,7 @@ const initialState = {
   isFetching: false,
   isAdding: false,
   isMoving: false,
+  isImageEditing: false,
   error: null,
   currentItem: null,
   currentColor: null,
@@ -26,6 +27,14 @@ export default handleActions({
     ...state,
     currentItem: payload,
     detailDrawerOpen: true
+  }),
+
+
+  // Image editing
+  [Items.SET_ITEM_IMAGE_EDITING]: (state, { payload }) => ({
+    ...state,
+    isImageEditing: payload,
+    detailDrawerOpen: !payload
   }),
 
 

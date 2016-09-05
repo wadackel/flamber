@@ -46,6 +46,24 @@
 
   &__viewer {
     @include absolute(0, 0, 0, 0, 10);
+    opacity: 0;
+    visibility: hidden;
+
+    &--enable {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__cropper {
+    @include absolute(0, 0, 0, 0, 15);
+    opacity: 0;
+    visibility: hidden;
+
+    &--enable {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 
   &__zoom {

@@ -17,6 +17,7 @@ import Overlay from "../../../components/ui/internal/Overlay";
 import { ItemDetailContainer } from "./";
 import {
   ImageViewer,
+  Cropper,
   ToolBar,
   ToolBarItem,
   Slider,
@@ -30,11 +31,17 @@ import {
 import {
   PencilIcon,
   CloseIcon,
-  CropIcon,
+  CropRotateIcon,
   ResizeIcon,
   MoreVertIcon,
   FolderIcon,
-  TrashIcon
+  TrashIcon,
+  CheckIcon,
+  RefreshIcon,
+  SwapVerticalIcon,
+  SwapHorizontalIcon,
+  RotateLeftIcon,
+  RotateRightIcon
 } from "../../../components/svg-icons/";
 
 const b = bem("item-viewer-container");
@@ -72,6 +79,10 @@ export class ItemViewerContainer extends Component {
     dispatch(ItemActions.starItemToggleRequest(currentItem.id));
   }
 
+  handleEditClick() {
+    this.props.dispatch(ItemActions.setItemImageEditing(true));
+  }
+
   handleMoreMenuClick(menuItem, value) {
     value();
   }
@@ -95,17 +106,195 @@ export class ItemViewerContainer extends Component {
     dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
   }
 
+  handleEditComplete() {
+    // TODO
+  }
+
+  handleEditCancel() {
+    this.props.dispatch(ItemActions.setItemImageEditing(false));
+  }
+
+  handleEditReset(e) {
+    e.preventDefault();
+    this.refs.cropper.reset();
+  }
+
+  handleRotateLeft() {
+    this.refs.cropper.rotate(-45);
+  }
+
+  handleRotateRight() {
+    this.refs.cropper.rotate(45);
+  }
+
+  handleSwapVertical() {
+    const { cropper } = this.refs;
+    const { scaleY } = cropper.getData();
+    cropper.scaleY(scaleY * -1);
+  }
+
+  handleSwapHorizontal() {
+    const { cropper } = this.refs;
+    const { scaleX } = cropper.getData();
+    cropper.scaleX(scaleX * -1);
+  }
+
+  getModifier() {
+    const { items, currentItem } = this.props;
+
+    return {
+      "drawer-open": items.detailDrawerOpen,
+      show: !!currentItem
+    };
+  }
+
+  renderNormalToolBar() {
+    const { currentItem } = this.props;
+
+    return (
+      <ToolBar
+        className={b("tool-bar")()}
+        title={
+          <div>
+            <CancelableEditText
+              icon={<PencilIcon />}
+              value={currentItem.name}
+              onComplete={this.handleItemNameComplete}
+            />
+            <MDSpinner
+              size={14}
+              style={{
+                visibility: currentItem.isNameUpdating ? "visible" : "hidden",
+                marginLeft: 10
+              }}
+            />
+          </div>
+        }
+        left={[
+          <ToolBarItem>
+            <IconButton
+              icon={<CloseIcon />}
+              onClick={this.handleClose}
+            />
+          </ToolBarItem>
+        ]}
+        right={[
+          <ToolBarItem>
+            <IconButton
+              icon={<CropRotateIcon />}
+              tooltip="画像を編集"
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleEditClick}
+            />
+          </ToolBarItem>,
+          <ToolBarItem>
+            <StarButton
+              active={currentItem.star}
+              tooltip={currentItem.star ? "スターを外す" : "スターを付ける"}
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleStarClick}
+            />
+          </ToolBarItem>,
+          <ToolBarItem>
+            <IconMenu
+              icon={<IconButton icon={<MoreVertIcon />} />}
+              origin={{ vertical: "top", horizontal: "right" }}
+              triggerOrigin={{ vertical: "top", horizontal: "right" }}
+              onItemClick={this.handleMoreMenuClick}
+            >
+              <MenuItem icon={<FolderIcon />} text="移動" value={this.handleMove} />
+              <MenuItem icon={<TrashIcon />} text="削除" value={this.handleDelete} />
+            </IconMenu>
+          </ToolBarItem>
+        ]}
+      />
+    );
+  }
+
+  renderEditingToolBar() {
+    const { currentItem } = this.props;
+
+    return (
+      <ToolBar
+        className={b("tool-bar")()}
+        title={currentItem.name}
+        left={[
+          <ToolBarItem>
+            <IconButton
+              icon={<CheckIcon />}
+              tooltip="画像を更新"
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleEditComplete}
+            />
+          </ToolBarItem>,
+          <ToolBarItem>
+            <IconButton
+              icon={<CloseIcon />}
+              tooltip="キャンセル"
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleEditCancel}
+            />
+          </ToolBarItem>,
+          <ToolBarItem>
+            <IconButton
+              icon={<RefreshIcon />}
+              tooltip="やり直し"
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleEditReset}
+            />
+          </ToolBarItem>
+        ]}
+        right={[
+          <ToolBarItem>
+            <IconButton
+              icon={<RotateLeftIcon />}
+              tooltip="左に回転"
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleRotateLeft}
+            />
+          </ToolBarItem>,
+          <ToolBarItem>
+            <IconButton
+              icon={<RotateRightIcon />}
+              tooltip="右に回転"
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleRotateRight}
+            />
+          </ToolBarItem>,
+          <ToolBarItem>
+            <IconButton
+              icon={<SwapVerticalIcon />}
+              tooltip="縦に反転"
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleSwapVertical}
+            />
+          </ToolBarItem>,
+          <ToolBarItem>
+            <IconButton
+              icon={<SwapHorizontalIcon />}
+              tooltip="横に反転"
+              tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
+              onClick={this.handleSwapHorizontal}
+            />
+          </ToolBarItem>,
+        ]}
+      />
+    );
+  }
+
+  renderToolBar() {
+    return this.props.items.isImageEditing
+      ? this.renderEditingToolBar()
+      : this.renderNormalToolBar();
+  }
+
   render() {
     const { items, currentItem } = this.props;
     const { zoom } = this.state;
-
-    const show = !!currentItem;
-    const modifier = {
-      "drawer-open": items.detailDrawerOpen,
-      show
-    };
-
-    const firstColor = show ? hexToRgb(currentItem.palette[0]) || {} : null;
+    const { isImageEditing } = items;
+    const modifier = this.getModifier();
+    const imageSrc = `/api/items/image/${currentItem ? currentItem.id : ""}`;
+    const firstColor = modifier.show ? hexToRgb(currentItem.palette[0]) || {} : null;
 
     return (
       <ReactCSSTransitionGroup
@@ -114,20 +303,22 @@ export class ItemViewerContainer extends Component {
         transitionEnterTimeout={shareConfig["item-viewer-enter-duration"]}
         transitionLeaveTimeout={shareConfig["item-viewer-leave-duration"]}
       >
-        {show && <div className={b(modifier)()}>
+        {modifier.show && <div className={b(modifier)()}>
+          {this.renderToolBar()}
+
           <div className={b("body", modifier)()}>
-            <Slider
+            {!isImageEditing && <Slider
               className={b("zoom")()}
               min={0.2}
               max={1.8}
               step={0.1}
               value={zoom}
               onChange={this.handleZoomChange}
-            />
+            />}
 
             <ImageViewer
-              className={b("viewer")()}
-              image={`/api/items/image/${currentItem.id}`}
+              className={b("viewer", { enable: !isImageEditing })()}
+              image={imageSrc}
               zoom={zoom}
               onZoomChange={this.handleZoomChange}
               onBodyClick={this.handleClose}
@@ -135,67 +326,24 @@ export class ItemViewerContainer extends Component {
             />
           </div>
 
-          <ToolBar
-            className={b("tool-bar")()}
-            title={
-              <div>
-                <CancelableEditText
-                  icon={<PencilIcon />}
-                  value={currentItem.name}
-                  onComplete={this.handleItemNameComplete}
-                />
-                <MDSpinner
-                  size={14}
-                  style={{
-                    visibility: currentItem.isNameUpdating ? "visible" : "hidden",
-                    marginLeft: 10
-                  }}
-                />
-              </div>
-            }
-            left={[
-              <ToolBarItem>
-                <IconButton
-                  icon={<CloseIcon />}
-                  onClick={this.handleClose}
-                />
-              </ToolBarItem>
-            ]}
-            right={[
-              <ToolBarItem>
-                <IconButton
-                  icon={<CropIcon />}
-                  tooltip="画像をクロップ"
-                  tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
-                />
-              </ToolBarItem>,
-              <ToolBarItem>
-                <StarButton
-                  active={currentItem.star}
-                  tooltip={currentItem.star ? "スターを外す" : "スターを付ける"}
-                  tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
-                  onClick={this.handleStarClick}
-                />
-              </ToolBarItem>,
-              <ToolBarItem>
-                <IconMenu
-                  icon={<IconButton icon={<MoreVertIcon />} />}
-                  origin={{ vertical: "top", horizontal: "right" }}
-                  triggerOrigin={{ vertical: "top", horizontal: "right" }}
-                  onItemClick={this.handleMoreMenuClick}
-                >
-                  <MenuItem icon={<FolderIcon />} text="移動" value={this.handleMove} />
-                  <MenuItem icon={<TrashIcon />} text="削除" value={this.handleDelete} />
-                </IconMenu>
-              </ToolBarItem>,
-            ]}
+          <Cropper
+            ref="cropper"
+            className={b("cropper", { enable: isImageEditing })()}
+            src={imageSrc}
+            enable={isImageEditing}
+            viewMode={2}
+            dragMode="move"
+            toggleDragModeOnDblclick={false}
+            onDoubleClick={this.handleEditReset}
           />
 
-          <FloatingButton
-            className={b("drawer-toggle", modifier)()}
-            icon={<ResizeIcon />}
-            onClick={this.handleDrawerToggle}
-          />
+          {!isImageEditing &&
+            <FloatingButton
+              className={b("drawer-toggle", modifier)()}
+              icon={<ResizeIcon />}
+              onClick={this.handleDrawerToggle}
+            />
+          }
 
           <ItemDetailContainer />
 

@@ -309,6 +309,11 @@ export const SET_CURRENT_ITEM = "SET_CURRENT_ITEM";
 export const setCurrentItem = createAction(SET_CURRENT_ITEM);
 
 
+// Image editing
+export const SET_ITEM_IMAGE_EDITING = "SET_ITEM_IMAGE_EDITING";
+export const setItemImageEditing = createAction(SET_ITEM_IMAGE_EDITING);
+
+
 // Detail drawer
 export const ITEM_DETAIL_DRAWER_TOGGLE = "ITEM_DETAIL_DRAWER_TOGGLE";
 export const ITEM_DETAIL_DRAWER_OPEN = "ITEM_DETAIL_DRAWER_OPEN";
