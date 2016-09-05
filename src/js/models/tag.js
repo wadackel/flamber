@@ -48,12 +48,22 @@ TagSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
 };
 
 TagSchema.statics.removeByUserAndId = function(user, id) {
-  // TODO: Eliminate the dependence of the item
   return this.findOne({ _id: id, user })
     .then(entity =>
       entity.remove().then(() => entity)
     );
 };
+
+
+// Middleware
+TagSchema.pre("remove", function(next) {
+  this.model("Item").update(
+    { tags: this._id },
+    { $pull: { tags: this._id } },
+    { multi: true },
+    next
+  );
+});
 
 
 export default mongoose.model("Tag", TagSchema);
