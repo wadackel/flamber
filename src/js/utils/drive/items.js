@@ -69,12 +69,35 @@ export function uploadItemFile(drive, file) {
         body: file.buffer
       },
       fields: "id"
-    }, (err, tmpResult) => {
+    }, (err, res) => {
       if (err) return reject(err);
 
-      getItemThumbnail(drive, tmpResult.id).then(res => {
-        resolve(res);
-      }).catch(reject);
+      getItemThumbnail(drive, res.id)
+        .then(resolve)
+        .catch(reject);
+    });
+  });
+}
+
+export function updateItemFile(drive, id, file) {
+  return new Promise((resolve, reject) => {
+    drive.files.update({
+      fileId: id,
+      resource: {
+        name: file.originalname,
+        mimeType: file.mimetype
+      },
+      media: {
+        mimeType: file.mimetype,
+        body: file.buffer
+      },
+      fields: "id"
+    }, (err, res) => {
+      if (err) return reject(err);
+
+      getItemThumbnail(drive, res.id)
+        .then(resolve)
+        .catch(reject);
     });
   });
 }

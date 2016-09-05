@@ -1,6 +1,9 @@
+import { normalize } from "normalizr";
 import { takeEvery } from "redux-saga";
-import { put, select } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import { getItemEntityById } from "../../selectors/items";
+import ItemSchema from "../../schemas/item";
+import * as Services from "../../services/items";
 import * as Notifications from "../../actions/notifications";
 import * as Items from "../../actions/items";
 import { callUpdateItem } from "./helpers";
@@ -59,6 +62,29 @@ function *handleUpdateItemPaletteFailure() {
 }
 
 
+// Image
+export function *handleUpdateItemImageRequest({ payload }) {
+  try {
+    const response = yield call(Services.updateItemImage, payload);
+    const normalized = normalize(response, {
+      item: ItemSchema
+    });
+    yield put(Items.updateItemImageSuccess(normalized));
+  } catch (error) {
+    yield put(Items.updateItemImageFailure(error, payload));
+  }
+}
+
+export function *handleUpdateItemImageSuccess() {
+  yield put(Items.setItemImageEditing(false));
+}
+
+function *handleUpdateItemImageFailure() {
+  // TODO: More erro message
+  yield put(Notifications.showNotify("アイテムの更新に失敗しました"));
+}
+
+
 export default function *updateItemSaga() {
   yield [
     // Name
@@ -72,6 +98,11 @@ export default function *updateItemSaga() {
 
     // Palette
     takeEvery(Items.UPDATE_ITEM_PALETTE_REQUEST, handleUpdateItemPaletteRequest),
-    takeEvery(Items.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure)
+    takeEvery(Items.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure),
+
+    // Image
+    takeEvery(Items.UPDATE_ITEM_IMAGE_REQUEST, handleUpdateItemImageRequest),
+    takeEvery(Items.UPDATE_ITEM_IMAGE_SUCCESS, handleUpdateItemImageSuccess),
+    takeEvery(Items.UPDATE_ITEM_IMAGE_FAILURE, handleUpdateItemImageFailure)
   ];
 }

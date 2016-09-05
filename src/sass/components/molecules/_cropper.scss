@@ -1,3 +1,13 @@
 .cropper {
   display: block;
+  position: relative;
+
+  &__cropper {
+    @include size(100%);
+  }
+
+  &__processing-overlay {
+    @include absolute(0, 0, 0, 0, 100);
+    @include size(100%);
+  }
 }

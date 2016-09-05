@@ -19,6 +19,7 @@ const ItemSchema = new Schema("items", {
     isNameUpdating: false,
     isDescriptionUpdating: false,
     isPaletteUpdating: false,
+    isImageUpdating: false,
     isTagAdding: false
   }
 });

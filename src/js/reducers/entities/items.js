@@ -203,6 +203,30 @@ export default handleActions({
   ),
 
 
+  // Image
+  [Items.UPDATE_ITEM_IMAGE_REQUEST]: (state, { payload }) => (
+    _.mapValues(state, entity =>
+      entity.id !== payload.id ? entity : {
+        ...entity,
+        isImageUpdating: true
+      }
+    )
+  ),
+
+  [Items.UPDATE_ITEM_IMAGE_SUCCESS]: (state, { payload }) => (
+    mergeEntities(state, payload.entities.items)
+  ),
+
+  [Items.UPDATE_ITEM_IMAGE_FAILURE]: (state, { meta }) => (
+    _.mapValues(state, entity =>
+      entity.id !== meta.id ? entity : {
+        ...entity,
+        isImageUpdating: false
+      }
+    )
+  ),
+
+
   // Add tag
   [Items.ADD_ITEM_TAG_REQUEST]: (state, { payload }) => (
     _.mapValues(state, entity =>

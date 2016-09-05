@@ -5,6 +5,8 @@ import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
+import ExecutionEnvironment from "../../../constants/execution-environment";
+const dataURLtoBlob = ExecutionEnvironment.canUseDOM ? require("blueimp-canvas-to-blob") : null;
 import shareConfig from "../../../../share-config";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
@@ -107,7 +109,10 @@ export class ItemViewerContainer extends Component {
   }
 
   handleEditComplete() {
-    // TODO
+    const { dispatch, currentItem } = this.props;
+    const blob = dataURLtoBlob(this.refs.cropper.getCroppedCanvas().toDataURL());
+
+    dispatch(ItemActions.updateItemImageRequest(currentItem.id, blob));
   }
 
   handleEditCancel() {
@@ -317,7 +322,7 @@ export class ItemViewerContainer extends Component {
             />}
 
             <ImageViewer
-              className={b("viewer", { enable: !isImageEditing })()}
+              className={b("viewer", { show: !isImageEditing })()}
               image={imageSrc}
               zoom={zoom}
               onZoomChange={this.handleZoomChange}
@@ -328,9 +333,10 @@ export class ItemViewerContainer extends Component {
 
           <Cropper
             ref="cropper"
-            className={b("cropper", { enable: isImageEditing })()}
+            className={b("cropper", { show: isImageEditing })()}
             src={imageSrc}
-            enable={isImageEditing}
+            processing={currentItem.isImageUpdating}
+            enable={isImageEditing && !currentItem.isImageUpdating}
             viewMode={2}
             dragMode="move"
             toggleDragModeOnDblclick={false}

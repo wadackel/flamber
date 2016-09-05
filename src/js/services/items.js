@@ -36,6 +36,20 @@ export function updateItems(items) {
 }
 
 
+export function updateItemImage({ id, image }) {
+  const data = new FormData();
+  data.append("id", id);
+  data.append("file", image);
+
+  const params = {
+    method: "PUT",
+    body: data
+  };
+
+  return fetch(`${ITEMS_ENDPOINT}/image`, params);
+}
+
+
 export function deleteItems(items) {
   return fetchJSON(ITEMS_ENDPOINT, items, "DELETE");
 }

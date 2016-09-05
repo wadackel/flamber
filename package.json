@@ -74,6 +74,7 @@
     "babel-core": "^6.14.0",
     "babel-polyfill": "^6.13.0",
     "bem-cn": "^2.1.2",
+    "blueimp-canvas-to-blob": "^3.3.0",
     "body-parser": "^1.15.2",
     "color-classifier": "0.0.1",
     "combokeys": "^2.4.6",

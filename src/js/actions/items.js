@@ -125,6 +125,21 @@ export const updateItemPaletteFailure = createAction(UPDATE_ITEM_PALETTE_FAILURE
 );
 
 
+// Update image
+export const UPDATE_ITEM_IMAGE_REQUEST = "UPDATE_ITEM_IMAGE_REQUEST";
+export const UPDATE_ITEM_IMAGE_SUCCESS = "UPDATE_ITEM_IMAGE_SUCCESS";
+export const UPDATE_ITEM_IMAGE_FAILURE = "UPDATE_ITEM_IMAGE_FAILURE";
+
+export const updateItemImageRequest = createAction(UPDATE_ITEM_IMAGE_REQUEST,
+  (id, image) => ({ id, image })
+);
+export const updateItemImageSuccess = createAction(UPDATE_ITEM_IMAGE_SUCCESS);
+export const updateItemImageFailure = createAction(UPDATE_ITEM_IMAGE_FAILURE,
+  null,
+  updateItemMetaCreator
+);
+
+
 // Add tag
 export const ADD_ITEM_TAG_IF_NEEDED = "ADD_ITEM_TAG_IF_NEEDED";
 export const ADD_ITEM_TAG_REQUEST = "ADD_ITEM_TAG_REQUEST";

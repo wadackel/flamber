@@ -5,14 +5,20 @@ const ReactCropper = ExecutionEnvironment.canUseDOM
   : function ReactCropper() { return null }; // eslint-disable-line
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import { ProcessingOverlay } from "../";
 
 const b = bem("cropper");
 
 export default class Cropper extends Component {
   static propTypes = {
     className: PropTypes.string,
+    processing: PropTypes.bool,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func
+  };
+
+  static defaultProps = {
+    processing: false
   };
 
   // Methods by: https://github.com/fengyuanchen/cropperjs#methods
@@ -127,6 +133,7 @@ export default class Cropper extends Component {
   render() {
     const {
       className,
+      processing,
       onClick,
       onDoubleClick,
       ...props
@@ -138,6 +145,12 @@ export default class Cropper extends Component {
         onClick={onClick}
         onDoubleClick={onDoubleClick}
       >
+        <ProcessingOverlay
+          className={b("processing-overlay", { processing })()}
+          show={processing}
+          spinerSize={34}
+        />
+
         <ReactCropper
           ref={cropper => {
             this.cropper = cropper;

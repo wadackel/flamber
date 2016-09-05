@@ -7,6 +7,7 @@ import {
   uploadItemFile,
   updateItemThumbnail,
   updateItemThumbnailIfNeeded,
+  updateItemFile,
   deleteItemFile
 } from "../utils/drive/items";
 
@@ -64,6 +65,24 @@ ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, 
       { path: "board" },
       { path: "tags" }
     ]));
+};
+
+
+ItemSchema.statics.updateFileByUserAndId = function(drive, user, id, file) {
+  return this.findByUserAndId(user, id)
+    .then(entity =>
+      updateItemFile(drive, entity.fileId, file).then(res => ({ entity, res }))
+    )
+    .then(({ entity, res }) => {
+      const { thumbnailLink, imageMediaMetadata } = res;
+      const { width, height } = imageMediaMetadata;
+
+      entity.width = width;
+      entity.height = height;
+      entity.thumbnail = thumbnailLink;
+
+      return entity.save();
+    });
 };
 
 
