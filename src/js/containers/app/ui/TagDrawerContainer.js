@@ -1,5 +1,6 @@
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
+import { push } from "react-router-redux";
 import { connect } from "react-redux";
 import * as TagActions from "../../../actions/tags";
 import { getTagEntities } from "../../../selectors/tags";
@@ -58,6 +59,10 @@ export class TagDrawerContainer extends Component {
     this.props.dispatch(TagActions.deleteTagRequest(item.props.value));
   }
 
+  handleTagClick(item, id) {
+    this.props.dispatch(push(`/app/tag/${id}`));
+  }
+
   renderFooter() {
     const { tags } = this.props;
     const { addTagName } = this.state;
@@ -109,6 +114,7 @@ export class TagDrawerContainer extends Component {
             text={entity.name}
             editable={true}
             onComplete={this.handleTagUpdate}
+            onClick={this.handleTagClick}
             onRequestDelete={this.handleTagDelete}
           />
         )}

@@ -12,6 +12,12 @@ const initialState = {
 };
 
 export default handleActions({
+  // Set current tag
+  [Tags.SET_CURRENT_TAG]: (state, { payload }) => ({
+    ...state,
+    currentTag: payload
+  }),
+
   // Drawer
   [Tags.TAG_DRAWER_OPEN]: state => ({
     ...state,

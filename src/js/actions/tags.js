@@ -1,6 +1,11 @@
 import { createAction } from "redux-actions";
 
 
+// Current
+export const SET_CURRENT_TAG = "SET_CURRENT_TAG";
+export const setCurrentTag = createAction(SET_CURRENT_TAG);
+
+
 // Drawer
 export const TAG_DRAWER_OPEN = "TAG_DRAWER_OPEN";
 export const TAG_DRAWER_CLOSE = "TAG_DRAWER_CLOSE";

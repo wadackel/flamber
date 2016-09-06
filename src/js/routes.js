@@ -11,7 +11,8 @@ import {
   BoardsPage,
   BoardDetailPage,
   SettingsPage,
-  StarsPage
+  StarsPage,
+  TagsPage
 } from "./containers/app/pages";
 import ThemeProvider from "./components/ThemeProvider";
 
@@ -47,6 +48,7 @@ export default function getRoutes(store) {
           <Route path="boards" component={BoardsPage} />
           <Route path="board/:id" component={BoardDetailPage} />
           <Route path="stars" component={StarsPage} />
+          <Route path="tag/:id" component={TagsPage} />
           <IndexRoute component={BoardsPage} />
         </Route>
       </Route>

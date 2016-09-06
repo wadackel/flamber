@@ -13,11 +13,6 @@ import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
 import { getCurrentBoard, getSelectedBoardEntities } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
-import { AllItemsPage } from "../pages/AllItemsPage";
-import { BoardsPage } from "../pages/BoardsPage";
-import { BoardDetailPage } from "../pages/BoardDetailPage";
-import { SettingsPage } from "../pages/SettingsPage";
-import { StarsPage } from "../pages/StarsPage";
 import {
   Header,
   CancelableEditText,
@@ -278,21 +273,25 @@ export class HeaderContainer extends Component {
   getHeaderProps() {
     const { routes } = this.props;
     const currentComponent = routes[routes.length - 1].component.WrappedComponent;
+    const currentComponentName = currentComponent ? currentComponent.name : "";
 
-    switch (currentComponent) {
-      case BoardsPage:
+    switch (currentComponentName) {
+      case "BoardsPage":
         return this.getHeaderBoardsProps();
 
-      case BoardDetailPage:
+      case "BoardDetailPage":
         return this.getHeaderBoardDetailProps(NavItemActive.BOARDS);
 
-      case AllItemsPage:
+      case "AllItemsPage":
         return this.getHeaderBoardDetailProps(NavItemActive.ALL_ITEMS);
 
-      case StarsPage:
+      case "StarsPage":
         return this.getHeaderBoardDetailProps();
 
-      case SettingsPage:
+      case "TagsPage":
+        return this.getHeaderBoardDetailProps();
+
+      case "SettingsPage":
         return this.getHeaderSettingsProps();
 
       default:

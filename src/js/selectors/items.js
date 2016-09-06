@@ -35,9 +35,10 @@ export function getItemEntities(state) {
 }
 
 export function getVisibleItemEntities(state) {
-  const { items, boards, settings } = state;
+  const { items, boards, tags, settings } = state;
   const { visibilityFilter, currentColor } = items;
   const { currentBoardId } = boards;
+  const { currentTag } = tags;
   const { itemsOrderBy, itemsOrder } = settings;
   let entities = getItemEntities(state);
   entities = currentColor ? entities.filter(entity => entity.palette.indexOf(currentColor) > -1) : entities;
@@ -49,6 +50,9 @@ export function getVisibleItemEntities(state) {
 
     case ItemVisibilityFilters.SHOW_ITEM_CURRENT_BOARD:
       return entities.filter(entity => entity.board === currentBoardId);
+
+    case ItemVisibilityFilters.SHOW_ITEM_CURRENT_TAG:
+      return entities.filter(entity => entity.tags.indexOf(currentTag) > -1);
 
     case ItemVisibilityFilters.SHOW_ITEM_STAR:
       return entities.filter(entity => entity.star);

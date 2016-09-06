@@ -13,3 +13,7 @@ export function getTagEntitiesByItemId(state, itemId) {
 
   return !item ? [] : item.tags.map(id => getTagEntityById(state, id));
 }
+
+export function getCurrentTag(state) {
+  return getTagEntityById(state, state.tags.currentTag);
+}
