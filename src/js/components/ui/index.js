@@ -1,5 +1,6 @@
 export AddBoardDialog from "./AddBoardDialog/AddBoardDialog";
 export AddItemFileDialog from "./AddItemFileDialog/AddItemFileDialog";
+export AddItemURLDialog from "./AddItemURLDialog/AddItemURLDialog";
 export AlertDialog from "./AlertDialog/AlertDialog";
 export AutoComplete from "./AutoComplete/AutoComplete";
 export Avatar from "./Avatar/Avatar";

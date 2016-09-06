@@ -208,6 +208,15 @@
     .drop-down-menu__trigger--block {
       border-bottom-color: $gray-lightest;
     }
+
+    .text-field__placeholder {
+      color: $color-root;
+    }
+
+    .text-field__control {
+      border-bottom-color: $gray-lightest;
+      color: $gray-dark;
+    }
   }
 
   &__actions {
