@@ -36,12 +36,20 @@ export const fetchItemsSuccess = createAction(FETCH_ITEMS_SUCCESS);
 export const fetchItemsFailure = createAction(FETCH_ITEMS_FAILURE);
 
 
-// Add (UI)
-export const ADD_ITEM_DIALOG_OPEN = "ADD_ITEM_DIALOG_OPEN";
-export const ADD_ITEM_DIALOG_CLOSE = "ADD_ITEM_DIALOG_CLOSE";
+// Add from URL (UI)
+export const ADD_ITEM_URL_DIALOG_OPEN = "ADD_ITEM_URL_DIALOG_OPEN";
+export const ADD_ITEM_URL_DIALOG_CLOSE = "ADD_ITEM_URL_DIALOG_CLOSE";
 
-export const addItemDialogOpen = createAction(ADD_ITEM_DIALOG_OPEN);
-export const addItemDialogClose = createAction(ADD_ITEM_DIALOG_CLOSE);
+export const addItemURLDialogOpen = createAction(ADD_ITEM_URL_DIALOG_OPEN);
+export const addItemURLDialogClose = createAction(ADD_ITEM_URL_DIALOG_CLOSE);
+
+
+// Add from File (UI)
+export const ADD_ITEM_FILE_DIALOG_OPEN = "ADD_ITEM_FILE_DIALOG_OPEN";
+export const ADD_ITEM_FILE_DIALOG_CLOSE = "ADD_ITEM_FILE_DIALOG_CLOSE";
+
+export const addItemFileDialogOpen = createAction(ADD_ITEM_FILE_DIALOG_OPEN);
+export const addItemFileDialogClose = createAction(ADD_ITEM_FILE_DIALOG_CLOSE);
 
 
 // Add

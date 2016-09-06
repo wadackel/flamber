@@ -14,7 +14,8 @@ const initialState = {
   currentItem: null,
   currentColor: null,
   visibilityFilter: ItemVisibilityFilters.SHOW_ITEM_ALL,
-  addDialogOpen: false,
+  addFileDialogOpen: false,
+  addURLDialogOpen: false,
   addSnackbarOpen: false,
   moveItems: [],
   selectBoardDialogOpen: false,
@@ -87,16 +88,29 @@ export default handleActions({
   }),
 
 
-  // Add (UI)
-  [Items.ADD_ITEM_DIALOG_OPEN]: state => ({
+  // Add from URL (UI)
+  [Items.ADD_ITEM_URL_DIALOG_OPEN]: state => ({
     ...state,
-    addDialogOpen: true,
+    addURLDialogOpen: true,
     addSnackbarOpen: false
   }),
 
-  [Items.ADD_ITEM_DIALOG_CLOSE]: state => ({
+  [Items.ADD_ITEM_URL_DIALOG_CLOSE]: state => ({
     ...state,
-    addDialogOpen: false
+    addURLDialogOpen: false
+  }),
+
+
+  // Add from File (UI)
+  [Items.ADD_ITEM_FILE_DIALOG_OPEN]: state => ({
+    ...state,
+    addFileDialogOpen: true,
+    addSnackbarOpen: false
+  }),
+
+  [Items.ADD_ITEM_FILE_DIALOG_CLOSE]: state => ({
+    ...state,
+    addFileDialogOpen: false
   }),
 
   [Items.ADD_ITEM_SNACKBAR_CLOSE]: state => ({
@@ -115,7 +129,7 @@ export default handleActions({
     ...state,
     isAdding: false,
     error: null,
-    addDialogOpen: false,
+    addFileDialogOpen: false,
     addSnackbarOpen: true
   }),
 
@@ -123,7 +137,7 @@ export default handleActions({
     ...state,
     isAdding: false,
     error: payload,
-    addDialogOpen: false,
+    addFileDialogOpen: false,
     addSnackbarOpen: true
   }),
 

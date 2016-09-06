@@ -23,6 +23,7 @@ import {
 import {
   AddBoardDialog,
   AddItemFileDialog,
+  AddItemURLDialog,
   FloatingMenu,
   FloatingButton
 } from "../../../components/ui/";
@@ -70,17 +71,21 @@ export class AppPage extends Component {
   }
 
   // Add item (link)
-  handleAddLinkItemOpen() {
-    // TODO
+  handleAddItemURLOpen() {
+    this.props.dispatch(ItemActions.addItemURLDialogOpen());
+  }
+
+  handleAddItemURLClose() {
+    this.props.dispatch(ItemActions.addItemURLDialogClose());
   }
 
   // Add item
   handleAddItemFileOpen() {
-    this.props.dispatch(ItemActions.addItemDialogOpen());
+    this.props.dispatch(ItemActions.addItemFileDialogOpen());
   }
 
   handleAddItemFileClose() {
-    this.props.dispatch(ItemActions.addItemDialogClose());
+    this.props.dispatch(ItemActions.addItemFileDialogClose());
   }
 
   handleAddItemFile(file, palette, boardId) {
@@ -120,6 +125,11 @@ export class AppPage extends Component {
       selectedItemEntities.length > 0
       || selectedBoardEntities.length > 0;
 
+    const selectBoards = boardEntities.map(board => ({
+      name: board.name,
+      value: board.id
+    }));
+
     return (
       <div className={b()}>
         {/* Header */}
@@ -156,7 +166,7 @@ export class AppPage extends Component {
             icon={<PictureLinkIcon />}
             tooltip="URLからアイテムを追加"
             tooltipOrigin={floatingButtonTooltipOrigin}
-            onClick={this.handleAddLinkItemOpen}
+            onClick={this.handleAddItemURLOpen}
           />
           <FloatingButton
             type="primary"
@@ -176,16 +186,19 @@ export class AppPage extends Component {
         />
 
         {/* Add item */}
-        {/* TODO */}
+        <AddItemURLDialog
+          processing={boards.isFetching || items.isAdding}
+          open={items.addURLDialogOpen}
+          selectBoards={selectBoards}
+          defaultBoard={boards.currentBoardId}
+          onRequestClose={this.handleAddItemURLClose}
+        />
 
         {/* Add item file */}
         <AddItemFileDialog
           processing={boards.isFetching || items.isAdding}
-          open={items.addDialogOpen}
-          selectBoards={boardEntities.map(board => ({
-            name: board.name,
-            value: board.id
-          }))}
+          open={items.addFileDialogOpen}
+          selectBoards={selectBoards}
           defaultBoard={boards.currentBoardId}
           onRequestClose={this.handleAddItemFileClose}
           onRequestAdd={this.handleAddItemFile}

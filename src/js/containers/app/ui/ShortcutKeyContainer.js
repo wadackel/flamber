@@ -56,11 +56,11 @@ export class ShortcutKeyContainer extends Component {
   }
 
   handleAddItemFile() {
-    this.props.dispatch(ItemActions.addItemDialogOpen());
+    this.props.dispatch(ItemActions.addItemFileDialogOpen());
   }
 
   handleAddItem() {
-    console.log("TODO: Add item");
+    this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 
   handleSettings() {

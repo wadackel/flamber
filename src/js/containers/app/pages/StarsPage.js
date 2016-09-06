@@ -42,7 +42,7 @@ export class StarsPage extends Component {
   }
 
   handleAddItemClick() {
-    this.props.dispatch(ItemActions.addItemDialogOpen());
+    this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 
   handleViewAllItemsClick() {
