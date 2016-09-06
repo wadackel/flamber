@@ -1,6 +1,7 @@
 /* eslint-disable */
 import _ from "lodash";
 import autoBind from "auto-bind";
+import uuid from "node-uuid";
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import MDSpinner from "react-md-spinner";
@@ -58,9 +59,30 @@ export class ItemViewerContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = { zoom: 1 };
+    this.state = {
+      zoom: 1,
+      imageSuffix: ""
+    };
 
     autoBind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentItem } = this.props;
+    const { currentItem: _currentItem } = nextProps;
+
+    if (!currentItem && _currentItem) {
+      this.setState({ imageSuffix: "" });
+    }
+
+    if (
+      currentItem
+      && _currentItem
+      && currentItem.isImageUpdating
+      && !_currentItem.isImageUpdating
+    ) {
+      this.setState({ imageSuffix: uuid.v4() });
+    }
   }
 
   handleClose() {
@@ -295,10 +317,10 @@ export class ItemViewerContainer extends Component {
 
   render() {
     const { items, currentItem } = this.props;
-    const { zoom } = this.state;
+    const { zoom, imageSuffix } = this.state;
     const { isImageEditing } = items;
     const modifier = this.getModifier();
-    const imageSrc = `/api/items/image/${currentItem ? currentItem.id : ""}`;
+    const imageSrc = `/api/items/image/${currentItem ? currentItem.id : ""}?${imageSuffix}`;
     const firstColor = modifier.show ? hexToRgb(currentItem.palette[0]) || {} : null;
 
     return (
