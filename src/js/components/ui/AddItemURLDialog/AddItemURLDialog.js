@@ -138,6 +138,7 @@ export default class AddItemURLDialog extends Component {
           className={b("url")()}
           placeholder="http://flamber.org/"
           value={url}
+          error={!isValidURL && url !== "" ? "無効な形式です" : null}
           onChange={this.handleURLChange}
         />
 
