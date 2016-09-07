@@ -52,14 +52,26 @@ export const addItemFileDialogOpen = createAction(ADD_ITEM_FILE_DIALOG_OPEN);
 export const addItemFileDialogClose = createAction(ADD_ITEM_FILE_DIALOG_CLOSE);
 
 
-// Add
-export const ADD_ITEM_REQUEST = "ADD_ITEM_REQUEST";
-export const ADD_ITEM_SUCCESS = "ADD_ITEM_SUCCESS";
-export const ADD_ITEM_FAILURE = "ADD_ITEM_FAILURE";
+// Add from URL
+export const ADD_ITEM_URL_REQUEST = "ADD_ITEM_URL_REQUEST";
+export const ADD_ITEM_URL_SUCCESS = "ADD_ITEM_URL_SUCCESS";
+export const ADD_ITEM_URL_FAILURE = "ADD_ITEM_URL_FAILURE";
 
-export const addItemRequest = createAction(ADD_ITEM_REQUEST);
-export const addItemSuccess = createAction(ADD_ITEM_SUCCESS);
-export const addItemFailure = createAction(ADD_ITEM_FAILURE);
+export const addItemURLRequest = createAction(ADD_ITEM_URL_REQUEST,
+  (url, board) => ({ url, board })
+);
+export const addItemURLSuccess = createAction(ADD_ITEM_URL_SUCCESS);
+export const addItemURLFailure = createAction(ADD_ITEM_URL_FAILURE);
+
+
+// Add from file
+export const ADD_ITEM_FILE_REQUEST = "ADD_ITEM_FILE_REQUEST";
+export const ADD_ITEM_FILE_SUCCESS = "ADD_ITEM_FILE_SUCCESS";
+export const ADD_ITEM_FILE_FAILURE = "ADD_ITEM_FILE_FAILURE";
+
+export const addItemFileRequest = createAction(ADD_ITEM_FILE_REQUEST);
+export const addItemFileSuccess = createAction(ADD_ITEM_FILE_SUCCESS);
+export const addItemFileFailure = createAction(ADD_ITEM_FILE_FAILURE);
 
 
 // Goto added item

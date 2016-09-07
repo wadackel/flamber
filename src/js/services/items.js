@@ -31,6 +31,11 @@ export function addItemByFile({ file, palette, boardId }) {
 }
 
 
+export function addItemByURL({ url, board }) {
+  // TODO
+}
+
+
 export function updateItems(items) {
   return fetchJSON(ITEMS_ENDPOINT, items, "PUT");
 }

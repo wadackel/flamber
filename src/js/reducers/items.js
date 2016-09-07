@@ -119,13 +119,36 @@ export default handleActions({
   }),
 
 
-  // Add
-  [Items.ADD_ITEM_REQUEST]: state => ({
+  // Add from URL
+  [Items.ADD_ITEM_URL_REQUEST]: (state, { payload }) => ({
     ...state,
     isAdding: true
   }),
 
-  [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => ({
+  [Items.ADD_ITEM_URL_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    error: null,
+    addURLDialogOpen: false,
+    addSnackbarOpen: true
+  }),
+
+  [Items.ADD_ITEM_URL_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isAdding: false,
+    error: payload,
+    addURLDialogOpen: false,
+    addSnackbarOpen: true
+  }),
+
+
+  // Add from file
+  [Items.ADD_ITEM_FILE_REQUEST]: state => ({
+    ...state,
+    isAdding: true
+  }),
+
+  [Items.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => ({
     ...state,
     isAdding: false,
     error: null,
@@ -133,7 +156,7 @@ export default handleActions({
     addSnackbarOpen: true
   }),
 
-  [Items.ADD_ITEM_FAILURE]: (state, { payload }) => ({
+  [Items.ADD_ITEM_FILE_FAILURE]: (state, { payload }) => ({
     ...state,
     isAdding: false,
     error: payload,

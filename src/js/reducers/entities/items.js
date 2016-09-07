@@ -41,7 +41,7 @@ export default handleActions({
 
 
   // Add
-  [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
+  [Items.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
   ),
 
