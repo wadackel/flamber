@@ -112,7 +112,7 @@ export default handleActions({
 
 
   // Items
-  [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
+  [Items.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => (
     _.mapValues(state, entity => {
       const item = payload.entities.items[payload.result.item];
       return item.board !== entity.id ? entity : {

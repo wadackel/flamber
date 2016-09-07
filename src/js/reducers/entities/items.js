@@ -40,8 +40,14 @@ export default handleActions({
   ),
 
 
-  // Add
-  [Items.ADD_ITEM_SUCCESS]: (state, { payload }) => (
+  // Add from URL
+  [Items.ADD_ITEM_URL_SUCCESS]: (state, { payload }) => (
+    mergeEntities(state, payload.entities.items)
+  ),
+
+
+  // Add from file
+  [Items.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
   ),
 

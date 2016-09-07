@@ -79,6 +79,10 @@ export class AppPage extends Component {
     this.props.dispatch(ItemActions.addItemURLDialogClose());
   }
 
+  handleAddItemURL(url, board) {
+    this.props.dispatch(ItemActions.addItemURLRequest(url, board));
+  }
+
   // Add item
   handleAddItemFileOpen() {
     this.props.dispatch(ItemActions.addItemFileDialogOpen());
@@ -89,7 +93,7 @@ export class AppPage extends Component {
   }
 
   handleAddItemFile(file, palette, boardId) {
-    this.props.dispatch(ItemActions.addItemRequest({
+    this.props.dispatch(ItemActions.addItemFileRequest({
       file,
       palette,
       boardId
@@ -192,6 +196,7 @@ export class AppPage extends Component {
           selectBoards={selectBoards}
           defaultBoard={boards.currentBoardId}
           onRequestClose={this.handleAddItemURLClose}
+          onRequestAdd={this.handleAddItemURL}
         />
 
         {/* Add item file */}

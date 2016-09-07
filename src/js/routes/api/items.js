@@ -61,6 +61,25 @@ router.post("/file", upload.single("file"), (req, res) => {
 });
 
 
+router.post("/url", upload.single("file"), (req, res) => {
+  const { drive, user, body, file } = req;
+  const { board, url } = body;
+  const palette = body.palette.split(",");
+  const params = {
+    file,
+    url,
+    board,
+    palette
+  };
+
+  Item.appendByUserAndURL(drive, user.id, params)
+    .then(item => {
+      res.json({ item });
+    })
+    .catch(res.errorJSON);
+});
+
+
 router.put("/", (req, res) => {
   const { drive, user, body } = req;
   const promises = body.map(item =>

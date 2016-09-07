@@ -1,5 +1,6 @@
 /* eslint-disable */
 import path from "path";
+import Url from "url";
 import _ from "lodash";
 import mongoose, { Schema } from "mongoose";
 import Board from "./board";
@@ -35,6 +36,7 @@ ItemSchema.set("toJSON", { virtuals: true });
 ItemSchema.set("toObject", { virtuals: true });
 
 
+// TODO: Refactor
 // Static methods
 ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, palette }) {
   return uploadItemFile(drive, file)
@@ -60,6 +62,39 @@ ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, 
     .then(({ entity, board }) => {
       board.items.push(entity.id);
       return board.save().then(() => entity);
+    })
+    .then(entity => this.populate(entity, [
+      { path: "board" },
+      { path: "tags" }
+    ]));
+};
+
+
+ItemSchema.statics.appendByUserAndURL = function(drive, user, { file, url, board, palette }) {
+  return uploadItemFile(drive, file)
+    .then(res => {
+      const { id, thumbnailLink, imageMediaMetadata } = res;
+      const { width, height } = imageMediaMetadata;
+      const item = new this({
+        fileId: id,
+        name: Url.parse(url).hostname,
+        thumbnail: thumbnailLink,
+        user,
+        url,
+        board,
+        width,
+        height,
+        palette
+      });
+
+      return item.save();
+    })
+    .then(entity =>
+      Board.findById(entity.board).then(boardEntity => ({ entity, boardEntity }))
+    )
+    .then(({ entity, boardEntity }) => {
+      boardEntity.items.push(entity.id);
+      return boardEntity.save().then(() => entity);
     })
     .then(entity => this.populate(entity, [
       { path: "board" },
