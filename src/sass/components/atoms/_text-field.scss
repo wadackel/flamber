@@ -23,6 +23,14 @@ $text-field-duration: 180ms;
     }
   }
 
+  &--has-error {
+    &::after {
+      border-color: $brand-danger;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
   &__label,
   &__placeholder {
     @include transition(all, $text-field-duration);
@@ -45,6 +53,10 @@ $text-field-duration: 180ms;
 
     &--is-focused {
       color: $brand-primary;
+
+      &.text-field__label--has-error {
+        color: $brand-danger;
+      }
     }
   }
 
@@ -64,6 +76,13 @@ $text-field-duration: 180ms;
     &--has-value {
       opacity: 0;
     }
+  }
+
+  &__error {
+    @include absolute(auto, 0, -1.75em, 0);
+    color: $brand-danger;
+    font-size: .75em;
+    line-height: 1;
   }
 
   &__control {

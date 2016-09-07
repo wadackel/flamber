@@ -20,6 +20,7 @@ export default class TextField extends React.Component {
     value: PropTypes.any,
     label: PropTypes.string,
     placeholder: PropTypes.string,
+    error: PropTypes.string,
     rows: PropTypes.number,
     minRows: PropTypes.number,
     maxRows: PropTypes.number,
@@ -130,6 +131,7 @@ export default class TextField extends React.Component {
       defaultValue,
       label,
       placeholder,
+      error,
       value,
       multiLine,
       rows,
@@ -148,6 +150,7 @@ export default class TextField extends React.Component {
 
     const modifier = {
       "is-focused": isFocused,
+      "has-error": !!error,
       "has-value": hasValue
     };
 
@@ -195,6 +198,10 @@ export default class TextField extends React.Component {
         {multiLine
           ? <Textarea ref="control" {...textAreaProps} />
           : <Input ref="control" {...inputProps} />
+        }
+        {error
+          ? <div className={b("error", modifier)()}>{error}</div>
+          : null
         }
       </div>
     );
