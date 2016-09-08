@@ -10,7 +10,6 @@ import {
   DropDownMenu,
   MenuItem,
   FlatButton,
-  FileDnD,
   IconButton
 } from "../";
 import {
@@ -30,6 +29,7 @@ export default class AddItemFileDialog extends Component {
       name: PropTypes.string,
       value: PropTypes.any
     })),
+    file: PropTypes.any,
     defaultBoard: PropTypes.any,
     onRequestAdd: PropTypes.func,
     onRequestClose: PropTypes.func
@@ -55,7 +55,6 @@ export default class AddItemFileDialog extends Component {
     super(props, context);
 
     this.state = {
-      dragging: false,
       selectImage: {
         file: null,
         src: null,
@@ -67,12 +66,12 @@ export default class AddItemFileDialog extends Component {
     autoBind(this);
   }
 
-  getInitialBoard(props) {
-    return props.defaultBoard || (props.selectBoards[0] && props.selectBoards[0].value);
-  }
-
   componentWillReceiveProps(nextProps) {
     const { props } = this;
+
+    if (props.file !== nextProps.file) {
+      this.setImageByFile(nextProps.file);
+    }
 
     if (
       !deepEqual(props.selectBoards, nextProps.selectBoards) ||
@@ -111,26 +110,6 @@ export default class AddItemFileDialog extends Component {
     );
   }
 
-  handleDragStart() {
-    if (!this.state.dragging) {
-      this.setState({ dragging: true });
-    }
-  }
-
-  handleDragEnd() {
-    if (this.state.dragging) {
-      this.setState({ dragging: false });
-    }
-  }
-
-  handleDrop(dataTransfer) {
-    const { files } = dataTransfer;
-
-    if (files.length > 0) {
-      this.setImageByFile(files[0]);
-    }
-  }
-
   handleFileChange() {
     const { files } = this.refs.file;
 
@@ -155,7 +134,23 @@ export default class AddItemFileDialog extends Component {
     this.setState({ selectBoard: value });
   }
 
+  getInitialBoard(props) {
+    return props.defaultBoard || (props.selectBoards[0] && props.selectBoards[0].value);
+  }
+
   setImageByFile(file) {
+    if (!file) {
+      this.setState({
+        selectImage: {
+          file: null,
+          src: null,
+          palette: null
+        }
+      });
+
+      return;
+    }
+
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -186,14 +181,13 @@ export default class AddItemFileDialog extends Component {
     } = this.props;
 
     const {
-      dragging,
       selectImage,
       selectBoard
     } = this.state;
 
     return (
       <Dialog
-        className={mergeClassNames(b({ dragging })(), className)}
+        className={mergeClassNames(b(), className)}
         processing={processing}
         title="Add item from file"
         titleIcon={<UploadIcon />}
@@ -207,19 +201,8 @@ export default class AddItemFileDialog extends Component {
             Add
           </FlatButton>
         ]}
-        onDragEnter={this.handleDragStart}
         {...props}
       >
-        <FileDnD
-          className={b("dnd")()}
-          overlay={
-            <p className={b("dnd__title")()}>Drop to your image file</p>
-          }
-          onDragStart={this.handleDragStart}
-          onDragEnd={this.handleDragEnd}
-          onDrop={this.handleDrop}
-        />
-
         <div className={b("browse")()}>
           <input
             type="file"

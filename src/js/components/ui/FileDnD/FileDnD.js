@@ -64,37 +64,41 @@ export default class FileDnD extends Component {
     dnd.removeEventListener("drop", this.handleDrop, false);
   }
 
-  handleDragEnter(e) {
+  cancelEvent(e, bubbling = true) {
     e.preventDefault();
-    e.stopPropagation();
-    this.dragStart();
+    if (bubbling) {
+      e.stopPropagation();
+    }
+  }
+
+  handleDragEnter(e) {
+    this.cancelEvent(e);
     this.props.onDragEnter(e);
   }
 
   handleDragLeave(e) {
-    e.stopPropagation();
-    if (e.target === e.currentTarget) {
+    this.cancelEvent(e);
+    this.props.onDragLeave(e);
+
+    if (e.target === this.refs.dnd || e.target === this.refs.overlay) {
       this.dragEnd();
     }
-    this.props.onDragLeave(e);
   }
 
   handleDragOver(e) {
-    e.preventDefault();
-    e.stopPropagation();
+    this.cancelEvent(e);
     this.dragStart();
     this.props.onDragOver(e);
   }
 
   handleDrop(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    this.dragEnd();
+    this.cancelEvent(e);
 
     if (e.dataTransfer.files.length > 0) {
       this.props.onDrop(e.dataTransfer);
     }
+
+    this.dragEnd();
   }
 
   dragStart() {
@@ -121,7 +125,10 @@ export default class FileDnD extends Component {
     const { dragging } = this.state;
     const modifier = { dragging };
 
-    const dropOverlay = dragging && <div className={b("overlay")()}>
+    const dropOverlay = dragging && <div
+      ref="overlay"
+      className={b("overlay")()}
+    >
       {overlay}
     </div>;
 
@@ -134,6 +141,7 @@ export default class FileDnD extends Component {
         <div className={b("content", modifier)()}>
           {this.props.children}
         </div>
+
         <ReactCSSTransitionGroup
           transitionName="drop-overlay"
           transitionEnterTimeout={shareConfig["file-dnd-overlay-enter-duration"]}

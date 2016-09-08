@@ -24,6 +24,7 @@ import {
   AddBoardDialog,
   AddItemFileDialog,
   AddItemURLDialog,
+  FileDnD,
   FloatingMenu,
   FloatingButton
 } from "../../../components/ui/";
@@ -45,12 +46,40 @@ export class AppPage extends Component {
 
   constructor(props, context) {
     super(props, context);
+
+    this.state = {
+      dropFile: null,
+      dragging: false
+    };
+
     autoBind(this);
   }
 
   componentDidMount() {
     this.props.dispatch(BoardActions.fetchBoardsRequest());
     this.props.dispatch(TagActions.fetchTagsRequest());
+  }
+
+  // Dragging
+  handleDragStart() {
+    if (!this.state.dragging) {
+      this.setState({ dragging: true });
+    }
+  }
+
+  handleDragEnd() {
+    if (this.state.dragging) {
+      this.setState({ dragging: false });
+    }
+  }
+
+  handleDrop(dataTransfer) {
+    const { files } = dataTransfer;
+
+    if (files.length > 0) {
+      this.setState({ dropFile: files[0] });
+      this.props.dispatch(ItemActions.addItemFileDialogOpen());
+    }
   }
 
   // Add board
@@ -120,6 +149,8 @@ export class AppPage extends Component {
       ...routerParams
     } = this.props;
 
+    const { dropFile, dragging } = this.state;
+
     const floatingButtonTooltipOrigin = {
       vertical: "middle",
       horizontal: "left"
@@ -135,79 +166,91 @@ export class AppPage extends Component {
     }));
 
     return (
-      <div className={b()}>
-        {/* Header */}
-        <HeaderContainer {...routerParams} />
+      <div className={b({ dragging })()}>
+        <FileDnD
+          className={b("dnd", { dragging })()}
+          overlay={
+            <p className={b("dnd__title")()}>画像のドラッグ&ドロップでアイテム作成</p>
+          }
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
+          onDrop={this.handleDrop}
+        >
 
-        {/* Item viewer */}
-        <ItemViewerContainer />
+          {/* Header */}
+          <HeaderContainer {...routerParams} />
 
-        {/* Tag sidebar */}
-        <TagDrawerContainer />
+          {/* Item viewer */}
+          <ItemViewerContainer />
 
-        {/* Shortcut */}
-        <ShortcutKeyContainer />
+          {/* Tag sidebar */}
+          <TagDrawerContainer />
 
-        {/* Notifications */}
-        <NotificationsContainer />
+          {/* Shortcut */}
+          <ShortcutKeyContainer />
 
-        {/* Content */}
-        <div className={b("content")()}>
-          {this.props.children}
-        </div>
+          {/* Notifications */}
+          <NotificationsContainer />
 
-        {/* Menu */}
-        <FloatingMenu className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })()}>
-          <FloatingButton
-            type="primary"
-            icon={<BoardIcon />}
-            tooltip="ボードの追加"
-            tooltipOrigin={floatingButtonTooltipOrigin}
-            onClick={this.handleAddBoardOpen}
+          {/* Content */}
+          <div className={b("content")()}>
+            {this.props.children}
+          </div>
+
+          {/* Menu */}
+          <FloatingMenu className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })()}>
+            <FloatingButton
+              type="primary"
+              icon={<BoardIcon />}
+              tooltip="ボードの追加"
+              tooltipOrigin={floatingButtonTooltipOrigin}
+              onClick={this.handleAddBoardOpen}
+            />
+            <FloatingButton
+              type="primary"
+              icon={<PictureLinkIcon />}
+              tooltip="URLからアイテムを追加"
+              tooltipOrigin={floatingButtonTooltipOrigin}
+              onClick={this.handleAddItemURLOpen}
+            />
+            <FloatingButton
+              type="primary"
+              icon={<UploadIcon />}
+              tooltip="ファイルからアイテムを追加"
+              tooltipOrigin={floatingButtonTooltipOrigin}
+              onClick={this.handleAddItemFileOpen}
+            />
+          </FloatingMenu>
+
+          {/* Add board */}
+          <AddBoardDialog
+            processing={boards.isAdding}
+            open={boards.addDialogOpen}
+            onRequestClose={this.handleAddBoardClose}
+            onRequestAdd={this.handleAddBoard}
           />
-          <FloatingButton
-            type="primary"
-            icon={<PictureLinkIcon />}
-            tooltip="URLからアイテムを追加"
-            tooltipOrigin={floatingButtonTooltipOrigin}
-            onClick={this.handleAddItemURLOpen}
+
+          {/* Add item */}
+          <AddItemURLDialog
+            processing={boards.isFetching || items.isAdding}
+            open={items.addURLDialogOpen}
+            selectBoards={selectBoards}
+            defaultBoard={boards.currentBoardId}
+            onRequestClose={this.handleAddItemURLClose}
+            onRequestAdd={this.handleAddItemURL}
           />
-          <FloatingButton
-            type="primary"
-            icon={<UploadIcon />}
-            tooltip="ファイルからアイテムを追加"
-            tooltipOrigin={floatingButtonTooltipOrigin}
-            onClick={this.handleAddItemFileOpen}
+
+          {/* Add item file */}
+          <AddItemFileDialog
+            processing={boards.isFetching || items.isAdding}
+            open={items.addFileDialogOpen}
+            file={dropFile}
+            selectBoards={selectBoards}
+            defaultBoard={boards.currentBoardId}
+            onRequestClose={this.handleAddItemFileClose}
+            onRequestAdd={this.handleAddItemFile}
           />
-        </FloatingMenu>
-
-        {/* Add board */}
-        <AddBoardDialog
-          processing={boards.isAdding}
-          open={boards.addDialogOpen}
-          onRequestClose={this.handleAddBoardClose}
-          onRequestAdd={this.handleAddBoard}
-        />
-
-        {/* Add item */}
-        <AddItemURLDialog
-          processing={boards.isFetching || items.isAdding}
-          open={items.addURLDialogOpen}
-          selectBoards={selectBoards}
-          defaultBoard={boards.currentBoardId}
-          onRequestClose={this.handleAddItemURLClose}
-          onRequestAdd={this.handleAddItemURL}
-        />
-
-        {/* Add item file */}
-        <AddItemFileDialog
-          processing={boards.isFetching || items.isAdding}
-          open={items.addFileDialogOpen}
-          selectBoards={selectBoards}
-          defaultBoard={boards.currentBoardId}
-          onRequestClose={this.handleAddItemFileClose}
-          onRequestAdd={this.handleAddItemFile}
-        />
+        </FileDnD>
       </div>
     );
   }
