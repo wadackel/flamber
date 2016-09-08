@@ -18,7 +18,7 @@
     "clean": "rimraf public",
     "uglify": "uglifyjs public/js/client.bundle.js -o public/js/client.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npm-run-all link:*",
+    "lint": "npm-run-all lint:*",
     "lint:js": "eslint src/js/**/*.js .eslintrc.js --no-ignore",
     "lint:sass": "sass-lint -c .sass-lint.yml 'src/sass/**/*.scss' -i 'src/sass/vendors/**/*' -v",
     "styleguide": "NODE_ENV=styleguide styleguidist server"
