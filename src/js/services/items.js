@@ -51,7 +51,7 @@ function takeScreenshotAndPalette(url) {
       ctx.drawImage(image, 0, 0);
 
       resolve({
-        image: canvas.toDataURL(),
+        image: canvas.toDataURL("image/jpeg"),
         palette
       });
     };

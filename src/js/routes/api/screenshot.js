@@ -31,7 +31,9 @@ router.get("/:url", (req, res) => {
       width: "window",
       height: "all"
     },
-    userAgent: req.get("User-Agent")
+    userAgent: req.get("User-Agent"),
+    streamType: "jpg",
+    quality: 100
   };
 
   takeScreenshot(req.params.url, options)
