@@ -1,19 +1,10 @@
 import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import { unstable_renderSubtreeIntoContainer, unmountComponentAtNode } from "react-dom"; // eslint-disable-line
+import elementClosest from "../../../utils/element-closest";
+
 
 // inspired by: https://github.com/callemall/material-ui/blob/master/src/internal/RenderToLayer.js
-
-function matches(el, target) {
-  let node = target.parentNode;
-
-  while (node !== null) {
-    if (node === el) return true;
-    node = node.parentNode;
-  }
-
-  return false;
-}
 
 export default class RenderToLayer extends React.Component {
   static propTypes = {
@@ -51,7 +42,7 @@ export default class RenderToLayer extends React.Component {
 
     const el = this.layer;
     if (event.target !== el && event.target === window ||
-      (document.documentElement.contains(event.target) && !matches(el, event.target))) {
+      (document.documentElement.contains(event.target) && !elementClosest(el, event.target))) {
       this.props.componentClickAway(event);
     }
   }
