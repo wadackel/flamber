@@ -1,6 +1,5 @@
 import { Router } from "express";
 import webshot from "webshot";
-import useragent from "express-useragent";
 
 const router = Router();
 
@@ -22,7 +21,7 @@ function takeScreenshot(url, options = {}) {
 }
 
 
-router.get("/:url", useragent.express(), (req, res) => {
+router.get("/:url", (req, res) => {
   const options = {
     windowSize: {
       width: 1280,
