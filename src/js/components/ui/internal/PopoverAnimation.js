@@ -77,11 +77,11 @@ export default class PopoverAnimation extends React.Component {
           scrollbars: "custom",
           preventDefault: false
         });
-      }
 
-      const selectedItem = scrollContainer.querySelector(".menu-item--selected");
-      if (selectedItem) {
-        this.iscroll.scrollToElement(selectedItem, 0);
+        const selectedItem = scrollContainer.querySelector(".menu-item--selected");
+        if (selectedItem) {
+          this.iscroll.scrollToElement(selectedItem, 0);
+        }
       }
 
     } else {
