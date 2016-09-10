@@ -15,7 +15,7 @@ import { Provider } from "react-redux";
 import { match, RouterContext, createMemoryHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
-import configureStore from "./store/configureStore";
+import configureStore from "./store/configure-store";
 import errorJSONMiddleware from "./middleware/error-json";
 import authMiddleware from "./middleware/auth";
 import setUpMiddleware from "./middleware/setup-data";
