@@ -1,6 +1,6 @@
 import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
-import shareConfig from "../../../../share-config.json";
+import shareConfig from "../../../share-config.json";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";

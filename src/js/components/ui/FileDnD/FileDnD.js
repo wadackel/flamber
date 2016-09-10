@@ -2,7 +2,7 @@ import _ from "lodash";
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-import shareConfig from "../../../../share-config.json";
+import shareConfig from "../../../share-config.json";
 import FirstChild from "../internal/FirstChild";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";

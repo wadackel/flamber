@@ -6,7 +6,8 @@ dotenv.config();
 import path from "path";
 import mongoose from "mongoose";
 import express from "express";
-import cookieParser from "cookie-parser";
+import session from "express-session";
+import connectMongo from "connect-mongo";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
 import React from "react";
@@ -17,8 +18,8 @@ import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
 import configureStore from "./store/configure-store";
 import errorJSONMiddleware from "./middleware/error-json";
-import authMiddleware from "./middleware/auth";
-import setUpMiddleware from "./middleware/setup-data";
+// import authMiddleware from "./middleware/auth";
+// import setUpMiddleware from "./middleware/setup-data";
 import authRoutes from "./routes/auth";
 import apiRoutes from "./routes/api";
 import getRoutes from "./routes";
@@ -26,13 +27,14 @@ import { initialState as authInitialState } from "./reducers/auth";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+const MongoStore = connectMongo(session);
 
 mongoose.connect("mongodb://localhost/flamber");
 
 
 // Layout
 /* eslint-disable react/no-danger, react/prop-types */
-function HTML({ content, store }) {
+const HTML = ({ content, store }) => {
   const head = Helmet.rewind();
   const attrs = head.htmlAttributes.toComponent();
 
@@ -54,24 +56,30 @@ function HTML({ content, store }) {
       </body>
     </html>
   );
-}
+};
 /* eslint-enable react/no-danger, react/prop-types */
 
 
 // Express middleware
-app.use(cookieParser());
+app.use(express.static(path.resolve(__dirname, "../public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride("X-HTTP-Method"));
 app.use(methodOverride("X-HTTP-Method-Override"));
 app.use(methodOverride("X-Method-Override"));
-app.use(express.static(path.resolve(__dirname, "../../public")));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+    ttl: 14 * 24 * 60 * 60
+  })
+}));
 
 app.use(errorJSONMiddleware);
-app.use(authMiddleware);
+// app.use(authMiddleware);
 app.use("/auth", authRoutes);
 app.use("/api", apiRoutes);
-app.use(setUpMiddleware);
+// app.use(setUpMiddleware);
 
 
 // Basic routes

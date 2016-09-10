@@ -8,7 +8,7 @@ import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
 import ExecutionEnvironment from "../../../constants/execution-environment";
 const dataURLtoBlob = ExecutionEnvironment.canUseDOM ? require("blueimp-canvas-to-blob") : null;
-import shareConfig from "../../../../share-config";
+import shareConfig from "../../../share-config.json";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";

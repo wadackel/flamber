@@ -1,7 +1,7 @@
 import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { PropTypes, isValidElement } from "react";
-import shareConfig from "../../../../share-config.json";
+import shareConfig from "../../../share-config.json";
 import prefixer from "../../../helpers/prefixer";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";

@@ -1,6 +1,6 @@
 import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
-import shareConfig from "../../../../share-config.json";
+import shareConfig from "../../../share-config.json";
 
 const RIPPLE_DURATION = shareConfig["ripple-duration"];
 
