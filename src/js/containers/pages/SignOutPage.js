@@ -1,8 +1,8 @@
 import { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { signOutRequest } from "../actions/auth";
+import { signOutRequest } from "../../actions/auth";
 
-class SignOutContainer extends Component {
+class SignOutPage extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     auth: PropTypes.object
@@ -21,4 +21,4 @@ class SignOutContainer extends Component {
 
 export default connect(state => ({
   auth: state.auth
-}))(SignOutContainer);
+}))(SignOutPage);

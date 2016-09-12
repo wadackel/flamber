@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, IndexRoute } from "react-router";
 import {
-  SignInContainer,
-  SignOutContainer,
-  LandingContainer
-} from "./containers";
+  SignInPage,
+  SignOutPage,
+  LandingPage
+} from "./containers/pages";
 import {
   AllItemsPage,
   AppPage,
@@ -16,32 +16,32 @@ import {
 } from "./containers/app/pages";
 import ThemeProvider from "./components/ThemeProvider";
 
-function getAuthenticated(store) {
+
+const isAuthenticated = store => {
+  // TODO
+  console.log(store); // eslint-disable-line no-console
   return store.getState().auth.authenticated;
-}
+};
+
 
 export default function getRoutes(store) {
 
-  function userOnly(nextState, replace, cb) {
-    if (!getAuthenticated(store)) {
-      replace("/");
-    }
-    cb();
-  }
+  const userOnly = (nextState, replace, done) => {
+    if (!isAuthenticated(store)) replace("/");
+    done();
+  };
 
-  function guestOnly(nextState, replace, cb) {
-    if (getAuthenticated(store)) {
-      replace("/");
-    }
-    cb();
-  }
+  const guestOnly = (nextState, replace, done) => {
+    if (isAuthenticated(store)) replace("/");
+    done();
+  };
 
   const routes = (
     <Route path="/" component={ThemeProvider}>
-      <IndexRoute component={LandingContainer} />
+      <IndexRoute component={LandingPage} />
 
       <Route onEnter={userOnly}>
-        <Route path="/signout" component={SignOutContainer} />
+        <Route path="/signout" component={SignOutPage} />
         <Route path="/app/" component={AppPage}>
           <Route path="settings" component={SettingsPage} />
           <Route path="items" component={AllItemsPage} />
@@ -54,7 +54,7 @@ export default function getRoutes(store) {
       </Route>
 
       <Route onEnter={guestOnly}>
-        <Route path="/signin" component={SignInContainer} />
+        <Route path="/signin" component={SignInPage} />
       </Route>
     </Route>
   );

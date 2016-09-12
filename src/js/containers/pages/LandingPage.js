@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 
-class LandingContainer extends React.Component {
+class LandingPage extends React.Component {
   renderUser() {
     const { user } = this.props.auth;
     if (!user) return null;
@@ -34,4 +34,4 @@ class LandingContainer extends React.Component {
 
 export default connect(
   state => ({ auth: state.auth })
-)(LandingContainer);
+)(LandingPage);

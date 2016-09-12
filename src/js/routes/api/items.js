@@ -1,15 +1,8 @@
-/* eslint-disable */
-import _ from "lodash";
+// import _ from "lodash";
 import { Router } from "express";
 import multer from "multer";
 import Item from "../../models/item";
-import Board from "../../models/board";
-import {
-  uploadItemFile,
-  updateItemThumbnail,
-  updateItemsThumbnailIfNeeded,
-  deleteItemFile
-} from "../../utils/drive/items";
+// import Board from "../../models/board";
 
 const router = Router();
 const storage = multer.memoryStorage();
@@ -86,9 +79,7 @@ router.put("/", (req, res) => {
     () => Item.updateByUserAndIdFromObject(drive, user.id, item.id, item)
   );
 
-  const sequence = promises.reduce((prev, current) => {
-    return prev.then(current);
-  }, promises.shift()());
+  const sequence = promises.reduce((prev, current) => prev.then(current), promises.shift()());
 
   sequence
     .then(() =>

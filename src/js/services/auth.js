@@ -1,34 +1,35 @@
+/* eslint-disable */
 import queryString from "query-string";
 import fetch from "../utils/fetch";
 import openPopup from "../utils/popup";
+import * as AuthProviders from "../constants/auth-providers";
 import { URL_ROOT } from "../constants/application";
 
-export const AUTH_VALIDATE_ENDPOINT = `${URL_ROOT}/auth/validate`;
-export const AUTH_REVOKE_ENDPOINT = `${URL_ROOT}/auth/revoke`;
+export const AUTH_ENDPOINT = `${URL_ROOT}/auth`;
+
+const POPUP_CONFIG = {
+  [AuthProviders.GOOGLE]: {
+    width: 452,
+    height: 634
+  }
+};
 
 
 function listenForCredentials(popup, resolve, reject) {
-  let params = {};
+  let query = {};
 
   try {
-    params = queryString.parse(popup.location.search);
-  } catch (err) {}
+    query = queryString.parse(popup.location.search);
+  } catch (error) {}
 
-  if (params.code) {
+  if (popup.closed || query.s === "failure") {
+    reject({ error: "cancel" });
+
+  } else if (query.s === "success" && query.t) {
     popup.close();
 
-    fetch(`${AUTH_VALIDATE_ENDPOINT}?code=${params.code}`)
-      .then(res => {
-        if (res.status === "ok") {
-          resolve(res);
-        } else {
-          reject({ error: res.err });
-        }
-      })
-      .catch(error => reject({ error }));
-
-  } else if (popup.closed) {
-    reject({ error: "cancel" });
+    // TODO
+    console.log(query);
 
   } else {
     setTimeout(() => {
@@ -37,23 +38,11 @@ function listenForCredentials(popup, resolve, reject) {
   }
 }
 
-export function authenticate(url) {
-  return new Promise((resolve, reject) => {
-    const popup = openPopup(url, "googleauthpopup");
-    listenForCredentials(popup, resolve, reject);
-  });
-}
 
-export function revokeCredentials() {
+export function authenticate(provider) {
   return new Promise((resolve, reject) => {
-    fetch(AUTH_REVOKE_ENDPOINT)
-      .then(res => {
-        if (res.status === "ok") {
-          resolve();
-        } else {
-          reject({ error: res.err });
-        }
-      })
-      .catch(error => reject({ error }));
+    const config = POPUP_CONFIG[provider];
+    const popup = openPopup(`/auth/${provider}`, `${provider}authpopup`, config);
+    listenForCredentials(popup, resolve, reject);
   });
 }

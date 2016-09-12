@@ -6,16 +6,19 @@ dotenv.config();
 import path from "path";
 import mongoose from "mongoose";
 import express from "express";
-import session from "express-session";
-import connectMongo from "connect-mongo";
+import favicon from "serve-favicon";
+import compression from "compression";
 import bodyParser from "body-parser";
 import methodOverride from "method-override";
+import cookieParser from "cookie-parser";
 import React from "react";
+import cookie from "react-cookie";
 import { renderToString } from "react-dom/server";
 import { Provider } from "react-redux";
 import { match, RouterContext, createMemoryHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
+import passport from "./passport";
 import configureStore from "./store/configure-store";
 import errorJSONMiddleware from "./middleware/error-json";
 // import authMiddleware from "./middleware/auth";
@@ -27,7 +30,6 @@ import { initialState as authInitialState } from "./reducers/auth";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-const MongoStore = connectMongo(session);
 
 mongoose.connect("mongodb://localhost/flamber");
 
@@ -61,19 +63,21 @@ const HTML = ({ content, store }) => {
 
 
 // Express middleware
+app.use(compression());
+app.use(favicon(path.resolve(__dirname, "../public/favicon.ico")));
 app.use(express.static(path.resolve(__dirname, "../public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride("X-HTTP-Method"));
 app.use(methodOverride("X-HTTP-Method-Override"));
 app.use(methodOverride("X-Method-Override"));
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  store: new MongoStore({
-    mongooseConnection: mongoose.connection,
-    ttl: 14 * 24 * 60 * 60
-  })
-}));
+app.use(passport.initialize());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use((req, res, next) => {
+  cookie.plugToRequest(req, res);
+  next();
+});
+
 
 app.use(errorJSONMiddleware);
 // app.use(authMiddleware);
@@ -98,24 +102,27 @@ app.use((req, res) => {
   const history = syncHistoryWithStore(memoryHistory, store);
 
   match({ history, routes: getRoutes(store), location: req.url }, (error, redirectLocation, renderProps) => {
-    if (error) {
-      res.status(500).send(error.message);
-
-    } else if (redirectLocation) {
+    if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+      return;
 
-    } else if (renderProps) {
-      const content = renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>
-      );
+    } else if (error) {
+      res.status(500);
 
-      res.status(200).send(`<!doctype html>\n${renderToString(<HTML content={content} store={store} />)}`);
+    } else if (!renderProps) {
+      res.status(404);
 
     } else {
-      res.status(404).send("404 Not found");
+      res.status(200);
     }
+
+    const content = renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    );
+
+    res.send(`<!doctype html>\n${renderToString(<HTML content={content} store={store} />)}`);
   });
 });
 

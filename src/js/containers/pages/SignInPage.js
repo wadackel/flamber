@@ -1,8 +1,10 @@
+/* eslint-disable */
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { signInRequest } from "../actions/auth";
+import * as AuthProviders from "../../constants/auth-providers";
+import { signInRequest } from "../../actions/auth";
 
-class SignInContainer extends Component {
+class SignInPage extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     auth: PropTypes.object
@@ -10,15 +12,14 @@ class SignInContainer extends Component {
 
   handleSignInClick(e) {
     e.preventDefault();
-    const { authenticateURL } = this.props.auth;
-    this.props.dispatch(signInRequest(authenticateURL));
+    this.props.dispatch(signInRequest(AuthProviders.GOOGLE));
   }
 
   render() {
     return (
       <div>
         <h1>Login</h1>
-        <button onClick={::this.handleSignInClick}>Visit Google</button>
+        <button onClick={::this.handleSignInClick}>Googleでログイン</button>
       </div>
     );
   }
@@ -26,4 +27,4 @@ class SignInContainer extends Component {
 
 export default connect(state => ({
   auth: state.auth
-}))(SignInContainer);
+}))(SignInPage);

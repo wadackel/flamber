@@ -1,53 +1,56 @@
+import queryString from "query-string";
 import { Router } from "express";
-import * as C from "../constants/cookie";
-import verifyAuth, { refreshAccessToken } from "../utils/verify-auth";
+import jwt from "jwt-simple";
+import passport from "passport";
+import * as AuthProviders from "../constants/auth-providers";
 
 const router = Router();
+const { JWT_SECRET } = process.env;
 
 
-router.get("/validate", (req, res) => {
-  const { oauth2Client } = req;
+router.get("/authenticate/:provider", (req, res) => {
+  let url = null;
 
-  verifyAuth(oauth2Client, req.query.code)
-    .then(({ token, user }) => {
-      res.json({
-        status: "ok",
-        token,
-        user
-      });
-    })
-    .catch(err => {
-      res.json({
-        status: "error",
-        err
-      });
-    });
+  switch (req.query.provider) {
+    case AuthProviders.GOOGLE:
+      url = "/auth/google";
+      break;
+  }
+
+  if (url == null) {
+    res.status(500).send("Error: Not found provider");
+
+  } else {
+    res.redirect(302, url);
+  }
 });
 
 
-router.get("/revoke", (req, res) => {
-  const { oauth2Client, cookies } = req;
-  const configObj = JSON.parse(cookies[C.CONFIG_KEY] || "{}");
+// Google
+router.get("/google",
+  passport.authenticate("google", {
+    session: false,
+    scope: ["profile"]
+  })
+);
 
-  function errorResponse(err) {
-    console.log(err); // eslint-disable-line no-console
-    res.json({
-      status: "error",
-      err
-    });
+router.get("/google/callback",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "/auth/callback?s=failure"
+  }),
+  (req, res) => {
+    const { user: { id, providerId } } = req;
+    const jwtToken = jwt.encode({ id, providerId }, JWT_SECRET);
+    const qs = queryString.stringify({ s: "success", t: jwtToken });
+    res.redirect(302, `/auth/callback?${qs}`);
   }
+);
 
-  refreshAccessToken(oauth2Client, configObj.expiry_date)
-    .then(token => {
-      oauth2Client.revokeToken(token.access_token, err => {
-        if (err) {
-          return errorResponse(err);
-        }
 
-        res.json({ status: "ok" });
-      });
-    })
-    .catch(err => errorResponse(err));
+// Popup routing
+router.get("/callback", (req, res) => {
+  res.send("");
 });
 
 

@@ -41,16 +41,16 @@ export function *watchBgSync() {
 
 
 export default function *bgSyncItemSaga() {
-  yield fork(watchBgSync);
+  // yield fork(watchBgSync);
 
   const { authenticated } = yield select(state => state.auth);
 
   if (authenticated) {
     yield call(delay, 5000);
-    yield put(Items.bgSyncItemsStart());
+    // yield put(Items.bgSyncItemsStart());
 
   } else {
     yield take(Auth.SIGN_IN_SUCCESS);
-    yield put(Items.bgSyncItemsStart());
+    // yield put(Items.bgSyncItemsStart());
   }
 }
