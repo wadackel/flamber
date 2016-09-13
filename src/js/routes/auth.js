@@ -13,19 +13,17 @@ router.get("/me/", (req, res) => {
   const { authorization } = req.headers;
   const token = (authorization || "").replace("Bearer ", "");
 
-  try {
-    const decodedToken = jwt.decode(token, JWT_SECRET);
-    User.findById(decodedToken.id)
-      .then(user => {
+  User.findByJwtToken(token)
+    .then(user => {
+      if (user) {
         res.json({ user, token });
-      })
-      .catch(error => {
-        res.status(401).json({ error });
-      });
-
-  } catch (error) {
-    res.status(401).json({ error });
-  }
+      } else {
+        res.status(401).json({ error: "Not found user" });
+      }
+    })
+    .catch(error => {
+      res.status(401).json({ error });
+    });
 });
 
 

@@ -9,6 +9,7 @@ import tags from "./api/tags";
 const router = Router();
 
 router.use((req, res, next) => {
+  // TODO
   if (req.authenticated) {
     next();
   } else {

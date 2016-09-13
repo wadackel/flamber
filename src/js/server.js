@@ -21,16 +21,15 @@ import Helmet from "react-helmet";
 import passport from "./passport";
 import configureStore from "./store/configure-store";
 import errorJSONMiddleware from "./middleware/error-json";
-// import authMiddleware from "./middleware/auth";
-// import setUpMiddleware from "./middleware/setup-data";
+import authMiddleware from "./middleware/auth";
 import authRoutes from "./routes/auth";
 import apiRoutes from "./routes/api";
 import getRoutes from "./routes";
-import { initialState as authInitialState } from "./reducers/auth";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/flamber");
 
 
@@ -80,21 +79,18 @@ app.use((req, res, next) => {
 
 
 app.use(errorJSONMiddleware);
-// app.use(authMiddleware);
+app.use(authMiddleware);
 app.use("/auth", authRoutes);
 app.use("/api", apiRoutes);
-// app.use(setUpMiddleware);
 
 
 // Basic routes
 app.use((req, res) => {
   const initialState = {
-    auth: Object.assign({}, authInitialState, {
-      authenticated: req.authenticated,
-      authenticateURL: req.authenticateURL,
-      user: req.user
-    }),
-    settings: req.settings
+    auth: {
+      authenticated: false,
+      hasJwtToken: req.hasJwtToken
+    }
   };
 
   const memoryHistory = createMemoryHistory(req.url);

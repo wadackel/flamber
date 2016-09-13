@@ -26,7 +26,8 @@ import {
   AddItemURLDialog,
   FileDnD,
   FloatingMenu,
-  FloatingButton
+  FloatingButton,
+  ProcessingOverlay
 } from "../../../components/ui/";
 import {
   BoardIcon,
@@ -56,19 +57,18 @@ export class AppPage extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(BoardActions.fetchBoardsRequest());
-    this.props.dispatch(TagActions.fetchTagsRequest());
+    // TODO: Initialize application data
   }
 
   // Dragging
   handleDragStart() {
-    if (!this.state.dragging) {
+    if (this.props.auth.authenticated && !this.state.dragging) {
       this.setState({ dragging: true });
     }
   }
 
   handleDragEnd() {
-    if (this.state.dragging) {
+    if (this.props.auth.authenticated && this.state.dragging) {
       this.setState({ dragging: false });
     }
   }
@@ -133,23 +133,30 @@ export class AppPage extends Component {
     // TODO
   }
 
-
   // Render
-  render() {
+  renderContent() {
     const {
-      auth, // eslint-disable-line no-unused-vars
-      settings, // eslint-disable-line no-unused-vars
-      dispatch, // eslint-disable-line no-unused-vars
-      children, // eslint-disable-line no-unused-vars
-      boards,
-      boardEntities,
-      selectedBoardEntities,
-      items,
-      selectedItemEntities,
-      ...routerParams
+      children,
+      auth: { authenticated, hasJwtToken }
     } = this.props;
 
-    const { dropFile, dragging } = this.state;
+    // loading
+    if (!authenticated && hasJwtToken) {
+      // TODO: Styling
+      return (
+        <ProcessingOverlay
+          style={{
+            position: "fixed",
+            zIndex: 900,
+            backgroundColor: "rgb(0, 0, 0)"
+          }}
+          show
+        />
+      );
+    }
+
+    // contents
+    const { dropFile } = this.state;
 
     const floatingButtonTooltipOrigin = {
       vertical: "middle",
@@ -164,6 +171,85 @@ export class AppPage extends Component {
       name: board.name,
       value: board.id
     }));
+
+    return (
+      <div>
+        <div className={b("content")()}>
+          {children}
+        </div>
+
+        {/* Menu */}
+        <FloatingMenu className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })()}>
+          <FloatingButton
+            type="primary"
+            icon={<BoardIcon />}
+            tooltip="ボードの追加"
+            tooltipOrigin={floatingButtonTooltipOrigin}
+            onClick={this.handleAddBoardOpen}
+          />
+          <FloatingButton
+            type="primary"
+            icon={<PictureLinkIcon />}
+            tooltip="URLからアイテムを追加"
+            tooltipOrigin={floatingButtonTooltipOrigin}
+            onClick={this.handleAddItemURLOpen}
+          />
+          <FloatingButton
+            type="primary"
+            icon={<UploadIcon />}
+            tooltip="ファイルからアイテムを追加"
+            tooltipOrigin={floatingButtonTooltipOrigin}
+            onClick={this.handleAddItemFileOpen}
+          />
+        </FloatingMenu>
+
+        {/* Add board */}
+        <AddBoardDialog
+          processing={boards.isAdding}
+          open={boards.addDialogOpen}
+          onRequestClose={this.handleAddBoardClose}
+          onRequestAdd={this.handleAddBoard}
+        />
+
+        {/* Add item */}
+        <AddItemURLDialog
+          processing={boards.isFetching || items.isAdding}
+          open={items.addURLDialogOpen}
+          selectBoards={selectBoards}
+          defaultBoard={boards.currentBoardId}
+          onRequestClose={this.handleAddItemURLClose}
+          onRequestAdd={this.handleAddItemURL}
+        />
+
+        {/* Add item file */}
+        <AddItemFileDialog
+          processing={boards.isFetching || items.isAdding}
+          open={items.addFileDialogOpen}
+          file={dropFile}
+          selectBoards={selectBoards}
+          defaultBoard={boards.currentBoardId}
+          onRequestClose={this.handleAddItemFileClose}
+          onRequestAdd={this.handleAddItemFile}
+        />
+      </div>
+    );
+  }
+
+  render() {
+    const {
+      auth, // eslint-disable-line no-unused-vars
+      settings, // eslint-disable-line no-unused-vars
+      dispatch, // eslint-disable-line no-unused-vars
+      children, // eslint-disable-line no-unused-vars
+      boards,
+      boardEntities,
+      selectedBoardEntities,
+      items,
+      selectedItemEntities,
+      ...routerParams
+    } = this.props;
+
+    const { dragging } = this.state;
 
     return (
       <div className={b({ dragging })()}>
@@ -193,63 +279,7 @@ export class AppPage extends Component {
           <NotificationsContainer />
 
           {/* Content */}
-          <div className={b("content")()}>
-            {this.props.children}
-          </div>
-
-          {/* Menu */}
-          <FloatingMenu className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })()}>
-            <FloatingButton
-              type="primary"
-              icon={<BoardIcon />}
-              tooltip="ボードの追加"
-              tooltipOrigin={floatingButtonTooltipOrigin}
-              onClick={this.handleAddBoardOpen}
-            />
-            <FloatingButton
-              type="primary"
-              icon={<PictureLinkIcon />}
-              tooltip="URLからアイテムを追加"
-              tooltipOrigin={floatingButtonTooltipOrigin}
-              onClick={this.handleAddItemURLOpen}
-            />
-            <FloatingButton
-              type="primary"
-              icon={<UploadIcon />}
-              tooltip="ファイルからアイテムを追加"
-              tooltipOrigin={floatingButtonTooltipOrigin}
-              onClick={this.handleAddItemFileOpen}
-            />
-          </FloatingMenu>
-
-          {/* Add board */}
-          <AddBoardDialog
-            processing={boards.isAdding}
-            open={boards.addDialogOpen}
-            onRequestClose={this.handleAddBoardClose}
-            onRequestAdd={this.handleAddBoard}
-          />
-
-          {/* Add item */}
-          <AddItemURLDialog
-            processing={boards.isFetching || items.isAdding}
-            open={items.addURLDialogOpen}
-            selectBoards={selectBoards}
-            defaultBoard={boards.currentBoardId}
-            onRequestClose={this.handleAddItemURLClose}
-            onRequestAdd={this.handleAddItemURL}
-          />
-
-          {/* Add item file */}
-          <AddItemFileDialog
-            processing={boards.isFetching || items.isAdding}
-            open={items.addFileDialogOpen}
-            file={dropFile}
-            selectBoards={selectBoards}
-            defaultBoard={boards.currentBoardId}
-            onRequestClose={this.handleAddItemFileClose}
-            onRequestAdd={this.handleAddItemFile}
-          />
+          {this.renderContent()}
         </FileDnD>
       </div>
     );

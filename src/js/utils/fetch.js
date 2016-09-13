@@ -1,4 +1,3 @@
-import assign from "object-assign";
 import libFetch from "isomorphic-fetch";
 
 function handleErrors(res) {
@@ -21,9 +20,10 @@ export function checkStatus(res) {
 }
 
 export default function fetch(url, params = {}) {
-  const options = assign({}, {
-    credentials: "include"
-  }, params);
+  const options = {
+    credentials: "include",
+    ...params
+  };
 
   return libFetch(url, options)
     .then(handleErrors)
@@ -33,14 +33,15 @@ export default function fetch(url, params = {}) {
 
 // TODO: Rename
 export function fetchJSON(url, body, method = "POST", params = {}) {
-  const options = assign({}, {
+  const options = {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
     body: JSON.stringify(body),
-    method
-  }, params);
+    method,
+    ...params
+  };
 
   return fetch(url, options);
 }

@@ -1,61 +1,53 @@
-import assign from "object-assign";
-import {
-  SIGN_IN_SUCCESS,
-  SIGN_IN_REQUEST,
-  SIGN_IN_FAILURE,
-  SIGN_OUT_REQUEST,
-  SIGN_OUT_SUCCESS,
-  SIGN_OUT_FAILURE
-} from "../actions/auth";
+import { handleActions } from "redux-actions";
+import * as Auth from "../actions/auth";
 
-export const initialState = {
+const initialState = {
   isFetching: false,
   authenticated: false,
-  authenticateURL: "",
+  hasJwtToken: false,
   user: null
 };
 
-export default function auth(state = initialState, action) {
-  switch (action.type) {
-    // Sign in
-    case SIGN_IN_REQUEST:
-      return assign({}, state, {
-        isFetching: true
-      });
+export default handleActions({
+  // Sign in
+  [Auth.SIGN_IN_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
 
-    case SIGN_IN_SUCCESS:
-      return assign({}, state, {
-        isFetching: false,
-        authenticated: true,
-        user: action.payload
-      });
+  [Auth.SIGN_IN_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    authenticated: true,
+    hasJwtToken: true,
+    user: payload
+  }),
 
-    case SIGN_IN_FAILURE:
-      return assign({}, state, {
-        isFetching: false,
-        authenticated: false,
-        user: null
-      });
+  [Auth.SIGN_IN_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    authenticated: false,
+    error: payload
+  }),
 
-    // Sign out
-    case SIGN_OUT_REQUEST:
-      return assign({}, state, {
-        isFetching: true
-      });
 
-    case SIGN_OUT_SUCCESS:
-      return assign({}, state, {
-        isFetching: false,
-        authenticated: false,
-        user: null
-      });
+  // Sign out
+  [Auth.SIGN_OUT_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
 
-    case SIGN_OUT_FAILURE:
-      return assign({}, state, {
-        isFetching: false
-      });
+  [Auth.SIGN_OUT_SUCCESS]: state => ({
+    ...state,
+    isFetching: false,
+    authenticated: false,
+    hasJwtToken: false,
+    user: null
+  }),
 
-    default:
-      return state;
-  }
-}
+  [Auth.SIGN_OUT_FAILURE]: (state, { payload }) => ({
+    ...state,
+    isFetching: false,
+    error: payload
+  })
+}, initialState);

@@ -18,9 +18,8 @@ import ThemeProvider from "./components/ThemeProvider";
 
 
 const isAuthenticated = store => {
-  // TODO
-  console.log(store); // eslint-disable-line no-console
-  return store.getState().auth.authenticated;
+  const { auth } = store.getState();
+  return !!auth.user || auth.hasJwtToken;
 };
 
 

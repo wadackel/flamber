@@ -147,22 +147,26 @@ export default class Header extends Component {
             </div>}
             <div className={b("col", { "main-right": true })()}>
               <div className={b("user")()}>
-                <Avatar
-                  className={b("user__avatar")()}
-                  name={user.name}
-                  email={user.email}
-                  icon={user.icon}
-                  onIconClick={this.handleUserDropDownClick}
-                />
-                <UserDropDown
-                  className={b("user__drop-down")()}
-                  open={userDropDownOpen}
-                  triggerElement={userDropDownTrigger}
-                  limit={parseInt(user.limit, 10)}
-                  usage={parseInt(user.usage, 10)}
-                  onRequestClose={this.handleUserDropDownRequestClose}
-                  onRequestSignOut={this.handleSignOut}
-                />
+                {user &&
+                  <Avatar
+                    className={b("user__avatar")()}
+                    name={user.name}
+                    email={user.email}
+                    icon={user.icon}
+                    onIconClick={this.handleUserDropDownClick}
+                  />
+                }
+                {user &&
+                  <UserDropDown
+                    className={b("user__drop-down")()}
+                    open={userDropDownOpen}
+                    triggerElement={userDropDownTrigger}
+                    limit={parseInt(user.limit, 10)}
+                    usage={parseInt(user.usage, 10)}
+                    onRequestClose={this.handleUserDropDownRequestClose}
+                    onRequestSignOut={this.handleSignOut}
+                  />
+                }
               </div>
               <div className={b("setting")()}>
                 <IconButton icon={<CogIcon />} onClick={onSettingsClick} />

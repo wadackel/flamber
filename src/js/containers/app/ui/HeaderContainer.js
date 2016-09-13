@@ -310,7 +310,10 @@ export class HeaderContainer extends Component {
 
   render() {
     const {
-      auth: { user },
+      auth: {
+        hasJwtToken,
+        user
+      },
       items
     } = this.props;
 
