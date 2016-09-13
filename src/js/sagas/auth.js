@@ -43,36 +43,20 @@ export function *handleSignOutRequest() {
   while (true) {
     yield take(Auth.SIGN_OUT_REQUEST);
 
-    try {
-      throw new Error("TODO: Implement sign out");
-      // yield call(revokeCredentials);
+    cookie.remove(C.TOKEN_KEY, {
+      path: C.PATH
+    });
 
-      // // destroy token
-      // Cookies.remove(C.CREDS_KEY, {
-      //   path: C.PATH
-      // });
-      //
-      // // destroy config
-      // Cookies.remove(C.CONFIG_KEY, {
-      //   path: C.PATH
-      // });
-
-      // yield put(Auth.signOutSuccess());
-
-    } catch (err) {
-      yield put(Auth.signOutFailure(err));
-    }
+    yield put(Auth.signOutSuccess());
   }
 }
 
 
 export function *handleSignOutSuccess() {
-  yield take(Auth.SIGN_OUT_SUCCESS);
   yield put(replace("/signin"));
 }
 
 export function *handleSignOutFailure() {
-  yield take(Auth.SIGN_OUT_FAILURE);
   yield put(replace("/"));
 }
 

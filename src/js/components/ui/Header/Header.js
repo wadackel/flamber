@@ -42,14 +42,16 @@ export default class Header extends Component {
     subRight: PropTypes.node,
     onLogoClick: PropTypes.func,
     onSettingsClick: PropTypes.func,
-    onColorChange: PropTypes.func
+    onColorChange: PropTypes.func,
+    onRequestSignOut: PropTypes.func
   };
 
   static defaultProps = {
     showColorBar: false,
     onLogoClick: () => {},
     onSettingsClick: () => {},
-    onColorChange: () => {}
+    onColorChange: () => {},
+    onRequestSignOut: () => {}
   };
 
   constructor(props, context) {
@@ -77,7 +79,7 @@ export default class Header extends Component {
   }
 
   handleSignOut() {
-    // TODO
+    this.props.onRequestSignOut();
   }
 
   handleColorChange(color) {

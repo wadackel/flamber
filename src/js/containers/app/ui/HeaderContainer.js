@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import MDSpinner from "react-md-spinner";
 import * as Layout from "../../../constants/layouts";
+import * as AuthActions from "../../../actions/auth";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
@@ -92,6 +93,10 @@ export class HeaderContainer extends Component {
 
   handleStarClick() {
     this.push("/app/stars");
+  }
+
+  handleSignOut() {
+    this.props.dispatch(AuthActions.signOutRequest());
   }
 
   // Update board
@@ -343,6 +348,7 @@ export class HeaderContainer extends Component {
         onLogoClick={this.handleLogoClick}
         onSettingsClick={this.handleSettingsClick}
         onColorChange={this.handleColorChange}
+        onRequestSignOut={this.handleSignOut}
         {...headerProps}
       />
     );
