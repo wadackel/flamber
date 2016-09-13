@@ -15,6 +15,15 @@ const POPUP_CONFIG = {
 };
 
 
+export function fetchUser(token) {
+  return fetch(`${AUTH_ENDPOINT}/me`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
+}
+
+
 function listenForCredentials(popup, resolve, reject) {
   let query = {};
 
@@ -27,9 +36,7 @@ function listenForCredentials(popup, resolve, reject) {
 
   } else if (query.s === "success" && query.t) {
     popup.close();
-
-    // TODO
-    console.log(query);
+    fetchUser(query.t).then(resolve).catch(reject);
 
   } else {
     setTimeout(() => {

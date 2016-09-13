@@ -3,9 +3,30 @@ import { Router } from "express";
 import jwt from "jwt-simple";
 import passport from "passport";
 import * as AuthProviders from "../constants/auth-providers";
+import User from "../models/user";
 
 const router = Router();
 const { JWT_SECRET } = process.env;
+
+
+router.get("/me/", (req, res) => {
+  const { authorization } = req.headers;
+  const token = (authorization || "").replace("Bearer ", "");
+
+  try {
+    const decodedToken = jwt.decode(token, JWT_SECRET);
+    User.findById(decodedToken.id)
+      .then(user => {
+        res.json({ user, token });
+      })
+      .catch(error => {
+        res.status(401).json({ error });
+      });
+
+  } catch (error) {
+    res.status(401).json({ error });
+  }
+});
 
 
 router.get("/authenticate/:provider", (req, res) => {
