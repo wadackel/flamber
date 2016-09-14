@@ -3,6 +3,7 @@ import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
+import * as AuthActions from "../../../actions/auth";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
@@ -57,7 +58,7 @@ export class AppPage extends Component {
   }
 
   componentDidMount() {
-    // TODO: Initialize application data
+    this.props.dispatch(AuthActions.fetchCurrentUserRequest());
   }
 
   // Dragging
@@ -136,8 +137,13 @@ export class AppPage extends Component {
   // Render
   renderContent() {
     const {
+      auth: { authenticated, hasJwtToken },
       children,
-      auth: { authenticated, hasJwtToken }
+      boards,
+      boardEntities,
+      selectedBoardEntities,
+      items,
+      selectedItemEntities
     } = this.props;
 
     // loading
@@ -245,7 +251,7 @@ export class AppPage extends Component {
       boardEntities,
       selectedBoardEntities,
       items,
-      selectedItemEntities,
+      selectedItemEntities, // eslint-disable-line no-unused-vars
       ...routerParams
     } = this.props;
 

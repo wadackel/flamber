@@ -49,5 +49,27 @@ export default handleActions({
     ...state,
     isFetching: false,
     error: payload
+  }),
+
+
+  // Fetch
+  [Auth.FETCH_CURRENT_USER_REQUEST]: state => ({
+    ...state,
+    isFetching: true
+  }),
+
+  [Auth.FETCH_CURRENT_USER_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    user: payload,
+    authenticated: true,
+    hasJwtToken: true,
+    isFetching: false
+  }),
+
+  [Auth.FETCH_CURRENT_USER_FAILURE]: (state, { payload }) => ({
+    ...state,
+    authenticated: false,
+    isFetching: false,
+    error: payload
   })
 }, initialState);
