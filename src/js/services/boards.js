@@ -1,30 +1,25 @@
-import fetch, { fetchJSON } from "../utils/fetch";
-import { API_ROOT } from "../constants/application";
+import ApiClient from "../utils/api-client";
 
-export const BOARDS_ENDPOINT = `${API_ROOT}/boards`;
+const apiClient = new ApiClient("/boards");
 
 
 export function fetchBoard(id) {
-  return fetch(`${BOARDS_ENDPOINT}/${id}`)
-    .then(res => res);
+  return apiClient.get(`/${id}`);
 }
 
 export function addBoard(name) {
-  return fetchJSON(BOARDS_ENDPOINT, { name })
-    .then(res => res);
+  return apiClient.post("/", { body: { name } });
 }
 
 export function fetchBoards() {
-  return fetch(BOARDS_ENDPOINT)
-    .then(res => res);
+  return apiClient.get("/");
 }
 
 export function updateBoards(boards) {
-  return fetchJSON(BOARDS_ENDPOINT, boards, "PUT")
-    .then(res => res);
+  return apiClient.put("/", { body: boards });
 }
 
 export function deleteBoards(boards) {
-  return fetchJSON(BOARDS_ENDPOINT, boards, "DELETE")
+  return apiClient.delete("/", { body: boards })
     .then(() => boards);
 }

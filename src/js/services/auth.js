@@ -1,4 +1,3 @@
-/* eslint-disable */
 import queryString from "query-string";
 import fetch from "../utils/fetch";
 import openPopup from "../utils/popup";
@@ -18,7 +17,7 @@ const POPUP_CONFIG = {
 export function fetchUser(token) {
   return fetch(`${AUTH_ENDPOINT}/me`, {
     headers: {
-      "Authorization": `Bearer ${token}`
+      Authorization: `Bearer ${token}`
     }
   });
 }
