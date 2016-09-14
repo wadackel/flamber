@@ -1,12 +1,11 @@
 import queryString from "query-string";
 import { Router } from "express";
-import jwt from "jwt-simple";
 import passport from "passport";
 import * as AuthProviders from "../constants/auth-providers";
+import * as jwtUtils from "../utils/jwt";
 import User from "../models/user";
 
 const router = Router();
-const { JWT_SECRET } = process.env;
 
 
 router.get("/me/", (req, res) => {
@@ -60,8 +59,8 @@ router.get("/google/callback",
   }),
   (req, res) => {
     const { user: { id, providerId } } = req;
-    const jwtToken = jwt.encode({ id, providerId }, JWT_SECRET);
-    const qs = queryString.stringify({ s: "success", t: jwtToken });
+    const token = jwtUtils.generateToken(id, providerId);
+    const qs = queryString.stringify({ s: "success", t: token });
     res.redirect(302, `/auth/callback?${qs}`);
   }
 );

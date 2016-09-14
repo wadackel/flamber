@@ -1,10 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import mongoose, { Schema } from "mongoose";
-import jwt from "jwt-simple";
-
-const { JWT_SECRET } = process.env;
+import * as jwtUtils from "../utils/jwt";
 
 const UserSchema = new Schema({
   name: String,
@@ -26,7 +21,8 @@ UserSchema.set("toObject", { virtuals: true });
 // Static
 UserSchema.statics.findByJwtToken = function(token) {
   try {
-    return this.findById(jwt.decode(token, JWT_SECRET).id);
+    const { id } = jwtUtils.getVerifyToken(token);
+    return this.findById(id);
 
   } catch (error) {
     return Promise.reject(error);

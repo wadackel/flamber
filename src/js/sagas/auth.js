@@ -1,10 +1,9 @@
 import { replace } from "react-router-redux";
 import { takeEvery } from "redux-saga";
 import { fork, take, put, call } from "redux-saga/effects";
-import moment from "moment";
-import cookie from "react-cookie";
-import * as C from "../constants/cookie";
+import * as cookie from "../utils/cookie";
 import { authenticate, fetchUser } from "../services/auth";
+import * as Notifications from "../actions/notifications";
 import * as Auth from "../actions/auth";
 
 
@@ -16,10 +15,7 @@ export function *handleSignInRequest() {
     try {
       const { user, token } = yield call(authenticate, payload);
 
-      cookie.save(C.TOKEN_KEY, token, {
-        path: C.PATH,
-        expires: moment().add(C.EXPIRES, "days").toDate()
-      });
+      cookie.saveToken(token);
 
       yield put(Auth.signInSuccess(user));
 
@@ -35,6 +31,7 @@ export function *handleSignInSuccess() {
 
 export function *handleSignInFailure() {
   yield put(replace("/signin"));
+  yield put(Notifications.showNotify("ログインに失敗しました"));
 }
 
 
@@ -43,9 +40,7 @@ export function *handleSignOutRequest() {
   while (true) {
     yield take(Auth.SIGN_OUT_REQUEST);
 
-    cookie.remove(C.TOKEN_KEY, {
-      path: C.PATH
-    });
+    cookie.removeToken();
 
     yield put(Auth.signOutSuccess());
   }
@@ -53,10 +48,12 @@ export function *handleSignOutRequest() {
 
 export function *handleSignOutSuccess() {
   yield put(replace("/signin"));
+  yield put(Notifications.showNotify("ログアウトしました"));
 }
 
 export function *handleSignOutFailure() {
   yield put(replace("/"));
+  yield put(Notifications.showNotify("ログアウトに失敗しました"));
 }
 
 
@@ -66,13 +63,10 @@ export function *handleFetchCurrentUserRequest() {
     yield take(Auth.FETCH_CURRENT_USER_REQUEST);
 
     try {
-      const jwtToken = cookie.load(C.TOKEN_KEY);
+      const jwtToken = cookie.loadToken();
       const { user, token } = yield call(fetchUser, jwtToken);
 
-      cookie.save(C.TOKEN_KEY, token, {
-        path: C.PATH,
-        expires: moment().add(C.EXPIRES, "days").toDate()
-      });
+      cookie.saveToken(token);
 
       yield put(Auth.fetchCurrentUserSuccess(user));
 
@@ -83,8 +77,8 @@ export function *handleFetchCurrentUserRequest() {
 }
 
 export function *handleFetchCurrentUserFailure() {
-  // TODO: Notify messages
   yield put(replace("/signin"));
+  yield put(Notifications.showNotify("ユーザーの取得に失敗しました"));
 }
 
 
