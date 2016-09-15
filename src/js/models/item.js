@@ -36,6 +36,13 @@ ItemSchema.set("toObject", { virtuals: true });
 
 // TODO: Refactor
 // Static methods
+ItemSchema.statics.populateEntity = function(entity) {
+  return this.populate(entity, [
+    { path: "board" },
+    { path: "tags" }
+  ]);
+};
+
 ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
   const base64 = file.buffer.toString("base64");
 
@@ -66,10 +73,7 @@ ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
       boardEntity.items.push(entity.id);
       return boardEntity.save().then(() => entity);
     })
-    .then(entity => this.populate(entity, [
-      { path: "board" },
-      { path: "tags" }
-    ]));
+    .then(entity => this.populateEntity(entity));
 };
 
 
@@ -179,34 +183,23 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
         return entity.save();
       }
     })
-    .then(entity => this.populate(entity, [
-      { path: "board" },
-      { path: "tags" }
-    ]));
+    .then(entity => this.populateEntity(entity));
 };
-//
-//
-// ItemSchema.statics.removeByUserAndId = function(drive, user, id) {
-//   return this.findOne({ _id: id, user })
-//     .then(entity =>
-//       deleteItemFile(drive, entity.fileId).then(() => entity)
-//     )
-//     .then(entity =>
-//       this.findByIdAndRemove(entity.id).then(() => entity)
-//     )
-//     .then(entity =>
-//       Board.findById(entity.board)
-//         .then(board => {
-//           board.items = board.items.filter(id => id.toString() !== entity.id);
-//           return board.save();
-//         })
-//         .then(() => entity)
-//     )
-//     .then(entity => this.populate(entity, [
-//       { path: "board" },
-//       { path: "tags" }
-//     ]));
-// };
+
+
+ItemSchema.statics.removeByUserAndId = function(user, id) {
+  return this.findOne({ _id: id, user })
+    .then(entity => this.findByIdAndRemove(entity.id).then(() => entity))
+    .then(entity =>
+      Board.findById(entity.board)
+        .then(board => {
+          board.items = board.items.filter(o => o.toString() !== entity.id);
+          return board.save();
+        })
+        .then(() => entity)
+    )
+    .then(entity => this.populateEntity(entity));
+};
 //
 //
 // ItemSchema.statics.getImageBufferByUserAndId = function(drive, user, id) {

@@ -320,7 +320,6 @@ export class ItemViewerContainer extends Component {
     const { zoom, imageSuffix } = this.state;
     const { isImageEditing } = items;
     const modifier = this.getModifier();
-    const imageSrc = `/api/items/image/${currentItem ? currentItem.id : ""}?${imageSuffix}`;
     const firstColor = modifier.show ? hexToRgb(currentItem.palette[0]) || {} : null;
 
     return (
@@ -345,7 +344,7 @@ export class ItemViewerContainer extends Component {
 
             <ImageViewer
               className={b("viewer", { show: !isImageEditing })()}
-              image={imageSrc}
+              image={currentItem.image}
               zoom={zoom}
               onZoomChange={this.handleZoomChange}
               onBodyClick={this.handleClose}
@@ -356,7 +355,7 @@ export class ItemViewerContainer extends Component {
           <Cropper
             ref="cropper"
             className={b("cropper", { show: isImageEditing })()}
-            src={imageSrc}
+            src={currentItem.image}
             processing={currentItem.isImageUpdating}
             enable={isImageEditing && !currentItem.isImageUpdating}
             viewMode={2}

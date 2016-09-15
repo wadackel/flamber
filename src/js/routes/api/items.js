@@ -99,9 +99,9 @@ router.put("/image", upload.single("file"), (req, res) => {
 
 
 router.delete("/", (req, res) => {
-  const { drive, user, body } = req;
+  const { user, body } = req;
 
-  Promise.all(body.map(item => Item.removeByUserAndId(drive, user.id, item.id)))
+  Promise.all(body.map(item => Item.removeByUserAndId(user.id, item.id)))
     .then(() => {
       res.json({});
     })
