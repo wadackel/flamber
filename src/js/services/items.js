@@ -1,36 +1,31 @@
 import queryString from "query-string";
 import { API_ROOT } from "../constants/application";
 import ExecutionEnvironment from "../constants/execution-environment";
-import fetch, { fetchJSON } from "../utils/fetch";
+import ApiClient from "../utils/api-client";
 const dataURLtoBlob = ExecutionEnvironment.canUseDOM ? require("blueimp-canvas-to-blob") : null;
 import getImagePalette from "../utils/get-image-palette";
 
-export const ITEMS_ENDPOINT = `${API_ROOT}/items`;
+const apiClient = new ApiClient("/items");
 
 
 export function fetchItems(query = {}) {
-  const queryStr = queryString.stringify(query);
-  return fetch(`${ITEMS_ENDPOINT}?${queryStr}`);
+  const qs = queryString.stringify(query);
+  return apiClient.get(`?${qs}`);
 }
 
 
 export function fetchBoardItems(boardId) {
-  return fetch(`${ITEMS_ENDPOINT}/board/${boardId}`);
+  return apiClient.get(`/board/${boardId}`);
 }
 
 
-export function addItemByFile({ file, palette, boardId }) {
+export function addItemByFile({ file, palette, board }) {
   const data = new FormData();
   data.append("file", file);
-  data.append("boardId", boardId);
+  data.append("board", board);
   data.append("palette", palette);
 
-  const params = {
-    method: "POST",
-    body: data
-  };
-
-  return fetch(`${ITEMS_ENDPOINT}/file`, params);
+  return apiClient.post("/file", { body: data });
 }
 
 
@@ -71,18 +66,13 @@ export function addItemByURL({ url, board }) {
       data.append("board", board);
       data.append("palette", palette);
 
-      const params = {
-        method: "POST",
-        body: data
-      };
-
-      return fetch(`${ITEMS_ENDPOINT}/url`, params);
+      return apiClient.post("/url", { body: data });
     });
 }
 
 
 export function updateItems(items) {
-  return fetchJSON(ITEMS_ENDPOINT, items, "PUT");
+  return apiClient.put("/", { body: items });
 }
 
 
@@ -91,15 +81,10 @@ export function updateItemImage({ id, image }) {
   data.append("id", id);
   data.append("file", image);
 
-  const params = {
-    method: "PUT",
-    body: data
-  };
-
-  return fetch(`${ITEMS_ENDPOINT}/image`, params);
+  return apiClient.put("/image", { body: data });
 }
 
 
 export function deleteItems(items) {
-  return fetchJSON(ITEMS_ENDPOINT, items, "DELETE");
+  return apiClient.delete("/", { body: items });
 }

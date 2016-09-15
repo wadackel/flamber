@@ -8,7 +8,7 @@ const router = Router();
 
 
 router.get("/", (req, res) => {
-  Board.findAllByUser(req.drive, req.user.id)
+  Board.findAllByUser(req.user.id)
     .then(boards => {
       res.json({ boards });
     })

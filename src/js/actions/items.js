@@ -69,7 +69,9 @@ export const ADD_ITEM_FILE_REQUEST = "ADD_ITEM_FILE_REQUEST";
 export const ADD_ITEM_FILE_SUCCESS = "ADD_ITEM_FILE_SUCCESS";
 export const ADD_ITEM_FILE_FAILURE = "ADD_ITEM_FILE_FAILURE";
 
-export const addItemFileRequest = createAction(ADD_ITEM_FILE_REQUEST);
+export const addItemFileRequest = createAction(ADD_ITEM_FILE_REQUEST,
+  (board, file, palette) => ({ board, file, palette })
+);
 export const addItemFileSuccess = createAction(ADD_ITEM_FILE_SUCCESS);
 export const addItemFileFailure = createAction(ADD_ITEM_FILE_FAILURE);
 

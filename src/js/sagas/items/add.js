@@ -18,6 +18,7 @@ export function *handleAddItemFileRequest() {
         item: ItemSchema
       });
       yield put(Items.addItemFileSuccess(normalized));
+
     } catch (error) {
       yield put(Items.addItemFileFailure(error));
     }
@@ -50,6 +51,7 @@ export function *handleAddItemURLRequest() {
         item: ItemSchema
       });
       yield put(Items.addItemURLSuccess(normalized));
+
     } catch (error) {
       yield put(Items.addItemURLFailure(error));
     }

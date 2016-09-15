@@ -18,19 +18,13 @@ BoardSchema.set("toObject", { virtuals: true });
 
 
 // Static methods
-BoardSchema.statics.findAllByUser = function(drive, user, query = {}) {
+BoardSchema.statics.findAllByUser = function(user, query = {}) {
   const params = {
     ...query,
     user
   };
 
-  return this.find(params)
-    .populate("items")
-    .then(boards =>
-      Promise.all(boards.map(board =>
-        Item.updateEntitiesThumbnailIfNeeded(drive, board.items)
-      )).then(() => boards)
-    );
+  return this.find(params).populate("items");
 };
 
 BoardSchema.statics.removeByUserAndId = function(drive, user, id) {

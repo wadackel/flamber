@@ -1,22 +1,28 @@
-// import path from "path";
+import path from "path";
 // import Url from "url";
 // import _ from "lodash";
+import imgur from "imgur";
 import mongoose, { Schema } from "mongoose";
-// import Board from "./board";
+import Board from "./board";
+import { makeThumbnailURL } from "../utils/imgur";
 
 const ItemSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
-  fileId: { type: String, required: true },
+  file: { type: String, required: true },
   board: { type: Schema.Types.ObjectId, ref: "Board" },
   name: { type: String, required: true },
-  url: { type: String, default: "" },
   description: { type: String, default: "" },
-  width: { type: Number, default: 0 },
-  height: { type: Number, default: 0 },
-  thumbnail: { type: String, default: "" },
+  url: String,
+  type: String,
+  size: Number,
+  image: String,
+  width: Number,
+  height: Number,
+  thumbnail: String,
   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
   palette: { type: Array, default: [] },
   star: { type: Boolean, default: false },
+  views: { type: Number, default: 0 },
   created: { type: Date, default: Date.now },
   modified: { type: Date, default: Date.now },
   lastView: { type: Date, default: Date.now }
@@ -28,38 +34,43 @@ ItemSchema.set("toJSON", { virtuals: true });
 ItemSchema.set("toObject", { virtuals: true });
 
 
-// // TODO: Refactor
-// // Static methods
-// ItemSchema.statics.appendByUserAndFile = function(drive, user, { file, boardId, palette }) {
-//   return uploadItemFile(drive, file)
-//     .then(res => {
-//       const { width, height } = res.imageMediaMetadata;
-//       const item = new this({
-//         board: boardId,
-//         fileId: res.id,
-//         name: path.parse(file.originalname).name,
-//         thumbnail: res.thumbnailLink,
-//         url: file.originalname,
-//         user,
-//         width,
-//         height,
-//         palette
-//       });
-//
-//       return item.save();
-//     })
-//     .then(entity =>
-//       Board.findById(entity.board).then(board => ({ entity, board }))
-//     )
-//     .then(({ entity, board }) => {
-//       board.items.push(entity.id);
-//       return board.save().then(() => entity);
-//     })
-//     .then(entity => this.populate(entity, [
-//       { path: "board" },
-//       { path: "tags" }
-//     ]));
-// };
+// TODO: Refactor
+// Static methods
+ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
+  const base64 = file.buffer.toString("base64");
+
+  return imgur.uploadBase64(base64)
+    .then(json => {
+      const { data } = json;
+      const entity = new this({
+        user,
+        board,
+        palette,
+        url: file.originalname,
+        name: path.parse(file.originalname).name,
+        file: data.id,
+        width: data.width,
+        height: data.height,
+        image: data.link,
+        thumbnail: makeThumbnailURL(data.link, "l"),
+        size: data.size,
+        type: data.type
+      });
+
+      return entity.save();
+    })
+    .then(entity =>
+      Board.findById(entity.board).then(boardEntity => ({ entity, boardEntity }))
+    )
+    .then(({ entity, boardEntity }) => {
+      boardEntity.items.push(entity.id);
+      return boardEntity.save(() => entity);
+    })
+    .then(entity => this.populate(entity, [
+      { path: "board" },
+      { path: "tags" }
+    ]));
+};
 //
 //
 // ItemSchema.statics.appendByUserAndURL = function(drive, user, { file, url, board, palette }) {

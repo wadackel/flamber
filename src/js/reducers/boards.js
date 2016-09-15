@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { handleActions } from "redux-actions";
+import * as Auth from "../actions/auth";
 import * as Boards from "../actions/boards";
 
 const initialState = {
@@ -14,6 +15,11 @@ const initialState = {
 
 export default handleActions({
   // Fetch list
+  [Auth.FETCH_CURRENT_USER_SUCCESS]: state => ({
+    ...state,
+    isFetching: true
+  }),
+
   [Boards.FETCH_BOARDS_REQUEST]: state => ({
     ...state,
     isFetching: true

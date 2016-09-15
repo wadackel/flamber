@@ -27,8 +27,7 @@ import {
   AddItemURLDialog,
   FileDnD,
   FloatingMenu,
-  FloatingButton,
-  ProcessingOverlay
+  FloatingButton
 } from "../../../components/ui/";
 import {
   BoardIcon,
@@ -122,12 +121,8 @@ export class AppPage extends Component {
     this.props.dispatch(ItemActions.addItemFileDialogClose());
   }
 
-  handleAddItemFile(file, palette, boardId) {
-    this.props.dispatch(ItemActions.addItemFileRequest({
-      file,
-      palette,
-      boardId
-    }));
+  handleAddItemFile(file, palette, board) {
+    this.props.dispatch(ItemActions.addItemFileRequest(board, file, palette));
   }
 
   handleAddItemActionClick() {
@@ -149,16 +144,7 @@ export class AppPage extends Component {
     // loading
     if (!authenticated && hasJwtToken) {
       // TODO: Styling
-      return (
-        <ProcessingOverlay
-          style={{
-            position: "fixed",
-            zIndex: 900,
-            backgroundColor: "rgb(0, 0, 0)"
-          }}
-          show
-        />
-      );
+      return null;
     }
 
     // contents

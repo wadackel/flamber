@@ -37,16 +37,11 @@ router.get("/image/:id", (req, res) => {
 
 
 router.post("/file", upload.single("file"), (req, res) => {
-  const { drive, user, body, file } = req;
-  const { boardId } = body;
+  const { user, body, file } = req;
+  const { board } = body;
   const palette = body.palette.split(",");
-  const params = {
-    file,
-    boardId,
-    palette
-  };
 
-  Item.appendByUserAndFile(drive, user.id, params)
+  Item.appendByUserAndFile(user.id, board, file, palette)
     .then(item => {
       res.json({ item });
     })

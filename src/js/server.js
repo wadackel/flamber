@@ -5,6 +5,7 @@ dotenv.config();
 
 import path from "path";
 import mongoose from "mongoose";
+import imgur from "imgur";
 import express from "express";
 import favicon from "serve-favicon";
 import compression from "compression";
@@ -29,8 +30,14 @@ import getRoutes from "./routes";
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+
+// Mongoose
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/flamber");
+
+
+// Imgur
+imgur.setClientId(process.env.IMGUR_CLIENT_ID);
 
 
 // Layout

@@ -3,6 +3,7 @@ import { takeEvery } from "redux-saga";
 import { call, put } from "redux-saga/effects";
 import BoardSchema from "../../schemas/board";
 import * as Services from "../../services/boards";
+import * as Auth from "../../actions/auth";
 import * as Boards from "../../actions/boards";
 
 
@@ -20,6 +21,6 @@ export function *handleFetchBoardsRequest() {
 
 export default function *fetchBoardSaga() {
   yield [
-    takeEvery(Boards.FETCH_BOARDS_REQUEST, handleFetchBoardsRequest)
+    takeEvery([Auth.FETCH_CURRENT_USER_SUCCESS, Boards.FETCH_BOARDS_REQUEST], handleFetchBoardsRequest)
   ];
 }
