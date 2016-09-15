@@ -66,13 +66,6 @@ ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
 
       return entity.save();
     })
-    .then(entity =>
-      Board.findById(entity.board).then(boardEntity => ({ entity, boardEntity }))
-    )
-    .then(({ entity, boardEntity }) => {
-      boardEntity.items.push(entity.id);
-      return boardEntity.save().then(() => entity);
-    })
     .then(entity => this.populateEntity(entity));
 };
 
@@ -163,8 +156,6 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
 
   return this.findOne({ _id: id, user })
     .then(entity => {
-      const prevBoard = entity.board.toString();
-
       fields.forEach(key => {
         if (newProps.hasOwnProperty(key)) {
           entity[key] = newProps[key];
@@ -173,15 +164,7 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
 
       entity.modified = new Date();
 
-      if (newProps.hasOwnProperty("board") && prevBoard !== newProps.board) {
-        return Promise.all([
-          Board.removeItemByUserAndId(user, prevBoard, entity.id),
-          Board.addItemByUserAndId(user, newProps.board, entity.id)
-        ]).then(() => entity.save());
-
-      } else {
-        return entity.save();
-      }
+      return entity.save();
     })
     .then(entity => this.populateEntity(entity));
 };
@@ -190,14 +173,6 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
 ItemSchema.statics.removeByUserAndId = function(user, id) {
   return this.findOne({ _id: id, user })
     .then(entity => this.findByIdAndRemove(entity.id).then(() => entity))
-    .then(entity =>
-      Board.findById(entity.board)
-        .then(board => {
-          board.items = board.items.filter(o => o.toString() !== entity.id);
-          return board.save();
-        })
-        .then(() => entity)
-    )
     .then(entity => this.populateEntity(entity));
 };
 //
@@ -219,6 +194,52 @@ ItemSchema.statics.removeByUserAndId = function(user, id) {
 //       });
 //   });
 // };
+
+
+// Middleware
+ItemSchema.post("init", entity => {
+  entity._original = entity.toObject();
+});
+
+ItemSchema.post("save", (entity, next) => {
+  // Create
+  if (_.isUndefined(entity._original)) {
+    Board.findById(entity.board)
+      .then(board => {
+        board.items.push(entity.id);
+        board.save(next);
+      })
+      .catch(next);
+
+  // Update
+  } else {
+    const prevProps = { ...entity._original };
+    const nextProps = entity.toObject();
+    entity._original = nextProps;
+
+    if (prevProps.board.toString() === nextProps.board.toString()) {
+      next();
+    }
+
+    Promise.all([
+      Board.removeItemByUserAndId(entity.user, prevProps.board.toString(), entity.id),
+      Board.addItemByUserAndId(entity.user, nextProps.board.toString(), entity.id)
+    ])
+      .then(() => {
+        next();
+      })
+      .catch(next);
+  }
+});
+
+ItemSchema.post("remove", (entity, next) => {
+  Board.findById(entity.board)
+    .then(board => {
+      board.items = board.items.filter(id => id.toString() !== entity.id);
+      board.save(next);
+    })
+    .catch(next);
+});
 
 
 export default mongoose.model("Item", ItemSchema);
