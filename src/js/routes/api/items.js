@@ -69,9 +69,9 @@ router.post("/url", upload.single("file"), (req, res) => {
 
 
 router.put("/", (req, res) => {
-  const { drive, user, body } = req;
+  const { user, body } = req;
   const promises = body.map(item =>
-    () => Item.updateByUserAndIdFromObject(drive, user.id, item.id, item)
+    () => Item.updateByUserAndIdFromObject(user.id, item.id, item)
   );
 
   const sequence = promises.reduce((prev, current) => prev.then(current), promises.shift()());

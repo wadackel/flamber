@@ -27,7 +27,7 @@ export default class ApiClient {
       };
     }
 
-    if (params.hasOwnProperty("body") && _.isPlainObject(params.body)) {
+    if (params.hasOwnProperty("body") && (_.isPlainObject(params.body) || Array.isArray(params.body))) {
       headers = {
         ...headers,
         Accept: "application/json",

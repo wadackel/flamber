@@ -1,6 +1,6 @@
 import path from "path";
 // import Url from "url";
-// import _ from "lodash";
+import _ from "lodash";
 import imgur from "imgur";
 import mongoose, { Schema } from "mongoose";
 import Board from "./board";
@@ -64,15 +64,15 @@ ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
     )
     .then(({ entity, boardEntity }) => {
       boardEntity.items.push(entity.id);
-      return boardEntity.save(() => entity);
+      return boardEntity.save().then(() => entity);
     })
     .then(entity => this.populate(entity, [
       { path: "board" },
       { path: "tags" }
     ]));
 };
-//
-//
+
+
 // ItemSchema.statics.appendByUserAndURL = function(drive, user, { file, url, board, palette }) {
 //   return uploadItemFile(drive, file)
 //     .then(res => {
@@ -152,39 +152,38 @@ ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
 //   return this.findOne({ user, _id: id })
 //     .populate("board tags");
 // }
-//
-//
-// ItemSchema.statics.updateByUserAndIdFromObject = function(drive, user, id, newProps) {
-//   const fields = _.keys(this.schema.paths);
-//
-//   return this.findOne({ _id: id, user })
-//     .then(entity => {
-//       const prevBoard = entity.board.toString();
-//
-//       fields.forEach(key => {
-//         if (newProps.hasOwnProperty(key)) {
-//           entity[key] = newProps[key];
-//         }
-//       });
-//
-//       entity.modified = new Date();
-//
-//       if (newProps.hasOwnProperty("board") && prevBoard !== newProps.board) {
-//         return Promise.all([
-//           Board.removeItemByUserAndId(user, prevBoard, entity.id),
-//           Board.addItemByUserAndId(user, newProps.board, entity.id)
-//         ]).then(() => entity.save());
-//
-//       } else {
-//         return entity.save();
-//       }
-//     })
-//     .then(entity => updateItemThumbnail(drive, entity))
-//     .then(entity => this.populate(entity, [
-//       { path: "board" },
-//       { path: "tags" }
-//     ]));
-// };
+
+
+ItemSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
+  const fields = _.keys(this.schema.paths);
+
+  return this.findOne({ _id: id, user })
+    .then(entity => {
+      const prevBoard = entity.board.toString();
+
+      fields.forEach(key => {
+        if (newProps.hasOwnProperty(key)) {
+          entity[key] = newProps[key];
+        }
+      });
+
+      entity.modified = new Date();
+
+      if (newProps.hasOwnProperty("board") && prevBoard !== newProps.board) {
+        return Promise.all([
+          Board.removeItemByUserAndId(user, prevBoard, entity.id),
+          Board.addItemByUserAndId(user, newProps.board, entity.id)
+        ]).then(() => entity.save());
+
+      } else {
+        return entity.save();
+      }
+    })
+    .then(entity => this.populate(entity, [
+      { path: "board" },
+      { path: "tags" }
+    ]));
+};
 //
 //
 // ItemSchema.statics.removeByUserAndId = function(drive, user, id) {
