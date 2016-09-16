@@ -95,24 +95,28 @@ ItemSchema.statics.appendByUserAndURL = function(user, board, file, palette, url
     })
     .then(entity => this.populateEntity(entity));
 };
-//
-//
-// ItemSchema.statics.updateFileByUserAndId = function(drive, user, id, file) {
-//   return this.findByUserAndId(user, id)
-//     .then(entity =>
-//       updateItemFile(drive, entity.fileId, file).then(res => ({ entity, res }))
-//     )
-//     .then(({ entity, res }) => {
-//       const { thumbnailLink, imageMediaMetadata } = res;
-//       const { width, height } = imageMediaMetadata;
-//
-//       entity.width = width;
-//       entity.height = height;
-//       entity.thumbnail = thumbnailLink;
-//
-//       return entity.save();
-//     });
-// };
+
+
+ItemSchema.statics.updateImageByUserAndId = function(user, id, file) {
+  const base64 = file.buffer.toString("base64");
+
+  return this.findByUserAndId(user, id)
+    .then(entity =>
+      imgur.uploadBase64(base64).then(json => ({ json, entity }))
+    )
+    .then(({ json, entity }) => {
+      const { data } = json;
+      entity.file = data.id;
+      entity.image = data.link;
+      entity.thumbnail = makeThumbnailURL(data.link, "l");
+      entity.width = data.width;
+      entity.height = data.height;
+      entity.size = data.size;
+      entity.type = data.type;
+      return entity.save();
+    })
+    .then(entity => this.populateEntity(entity));
+};
 //
 //
 // ItemSchema.statics.updateEntitiesThumbnailIfNeeded = function(drive, entities) {
@@ -139,10 +143,10 @@ ItemSchema.statics.appendByUserAndURL = function(user, board, file, palette, url
 // };
 //
 //
-// ItemSchema.statics.findByUserAndId = function(user, id) {
-//   return this.findOne({ user, _id: id })
-//     .populate("board tags");
-// }
+ItemSchema.statics.findByUserAndId = function(user, id) {
+  return this.findOne({ user, _id: id })
+    .populate("board tags");
+};
 
 
 ItemSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {

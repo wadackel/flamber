@@ -82,9 +82,9 @@ router.put("/", (req, res) => {
 
 
 router.put("/image", upload.single("file"), (req, res) => {
-  const { drive, user, body, file } = req;
+  const { user, body, file } = req;
 
-  Item.updateFileByUserAndId(drive, user.id, body.id, file)
+  Item.updateImageByUserAndId(user.id, body.id, file)
     .then(item => {
       res.json({ item });
     })
