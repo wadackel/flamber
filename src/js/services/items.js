@@ -1,6 +1,9 @@
 import queryString from "query-string";
+import libFetch from "isomorphic-fetch";
 import { API_ROOT } from "../constants/application";
 import ExecutionEnvironment from "../constants/execution-environment";
+import { checkStatus } from "../utils/fetch";
+import * as cookie from "../utils/cookie";
 import ApiClient from "../utils/api-client";
 const dataURLtoBlob = ExecutionEnvironment.canUseDOM ? require("blueimp-canvas-to-blob") : null;
 import getImagePalette from "../utils/get-image-palette";
@@ -29,31 +32,43 @@ export function addItemByFile({ file, palette, board }) {
 }
 
 
+// TODO: Refactor
 function takeScreenshotAndPalette(url) {
-  const apiURL = `${API_ROOT}/screenshot/${encodeURIComponent(url)}`;
-
   return new Promise((resolve, reject) => {
-    const image = new Image();
+    const screenshotURL = `${API_ROOT}/screenshot/${encodeURIComponent(url)}`;
 
-    image.onload = () => {
-      const palette = getImagePalette(image);
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = image.naturalWidth;
-      canvas.height = image.naturalHeight;
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, 0, 0);
+    libFetch(screenshotURL, {
+      headers: {
+        Authorization: `Bearer ${cookie.loadToken()}`
+      }
+    })
+      .then(checkStatus)
+      .then(res => res.blob())
+      .then(blob => {
+        const image = new Image();
 
-      resolve({
-        image: canvas.toDataURL("image/jpeg"),
-        palette
+        console.log("START");
+        image.onload = () => {
+          console.log("LOAD");
+          const palette = getImagePalette(image);
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          canvas.width = image.naturalWidth;
+          canvas.height = image.naturalHeight;
+          ctx.fillStyle = "white";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(image, 0, 0);
+
+          resolve({
+            image: canvas.toDataURL("image/jpeg"),
+            palette
+          });
+        };
+
+        image.onerror = reject;
+
+        image.src = URL.createObjectURL(blob);
       });
-    };
-
-    image.onerror = reject;
-
-    image.src = apiURL;
   });
 }
 

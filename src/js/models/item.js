@@ -1,5 +1,5 @@
 import path from "path";
-// import Url from "url";
+import Url from "url";
 import _ from "lodash";
 import imgur from "imgur";
 import mongoose, { Schema } from "mongoose";
@@ -70,37 +70,31 @@ ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
 };
 
 
-// ItemSchema.statics.appendByUserAndURL = function(drive, user, { file, url, board, palette }) {
-//   return uploadItemFile(drive, file)
-//     .then(res => {
-//       const { id, thumbnailLink, imageMediaMetadata } = res;
-//       const { width, height } = imageMediaMetadata;
-//       const item = new this({
-//         fileId: id,
-//         name: Url.parse(url).hostname,
-//         thumbnail: thumbnailLink,
-//         user,
-//         url,
-//         board,
-//         width,
-//         height,
-//         palette
-//       });
-//
-//       return item.save();
-//     })
-//     .then(entity =>
-//       Board.findById(entity.board).then(boardEntity => ({ entity, boardEntity }))
-//     )
-//     .then(({ entity, boardEntity }) => {
-//       boardEntity.items.push(entity.id);
-//       return boardEntity.save().then(() => entity);
-//     })
-//     .then(entity => this.populate(entity, [
-//       { path: "board" },
-//       { path: "tags" }
-//     ]));
-// };
+ItemSchema.statics.appendByUserAndURL = function(user, board, file, palette, url) {
+  const base64 = file.buffer.toString("base64");
+
+  return imgur.uploadBase64(base64)
+    .then(json => {
+      const { data } = json;
+      const entity = new this({
+        user,
+        board,
+        palette,
+        url,
+        name: Url.parse(url).hostname,
+        file: data.id,
+        width: data.width,
+        height: data.height,
+        image: data.link,
+        thumbnail: makeThumbnailURL(data.link, "l"),
+        size: data.size,
+        type: data.type
+      });
+
+      return entity.save();
+    })
+    .then(entity => this.populateEntity(entity));
+};
 //
 //
 // ItemSchema.statics.updateFileByUserAndId = function(drive, user, id, file) {
