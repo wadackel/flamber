@@ -47,9 +47,7 @@ function takeScreenshotAndPalette(url) {
       .then(blob => {
         const image = new Image();
 
-        console.log("START");
         image.onload = () => {
-          console.log("LOAD");
           const palette = getImagePalette(image);
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");

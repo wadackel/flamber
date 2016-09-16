@@ -1,8 +1,6 @@
-// import _ from "lodash";
 import { Router } from "express";
 import multer from "multer";
 import Item from "../../models/item";
-// import Board from "../../models/board";
 
 const router = Router();
 const storage = multer.memoryStorage();
@@ -64,16 +62,8 @@ router.post("/url", upload.single("file"), (req, res) => {
 
 router.put("/", (req, res) => {
   const { user, body } = req;
-  const promises = body.map(item =>
-    () => Item.updateByUserAndIdFromObject(user.id, item.id, item)
-  );
 
-  const sequence = promises.reduce((prev, current) => prev.then(current), promises.shift()());
-
-  sequence
-    .then(() =>
-      Promise.all(body.map(item => Item.findOne({ user: user.id, _id: item.id }).populate("board")))
-    )
+  Item.updateByUserFromArray(user.id, body)
     .then(items => {
       res.json({ items });
     })

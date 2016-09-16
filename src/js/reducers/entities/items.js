@@ -1,39 +1,14 @@
-/* eslint-disable */
 import _ from "lodash";
 import { handleActions } from "redux-actions";
 import * as Boards from "../../actions/boards";
 import * as Items from "../../actions/items";
-import ItemSchema from "../../schemas/item";
 
 // TODO: Refactor
-
-
 function mergeEntities(state, entities) {
   return _.assign(state, entities || {});
 }
 
 export default handleActions({
-  // Background sync
-  [Items.BG_SYNC_ITEMS_SUCCESS]: (state, { payload }) => {
-    const newItems = payload.entities.items || {};
-
-    return _.assign(state, _.mapValues(newItems, nextEntity => {
-      if (!state.hasOwnProperty(nextEntity.id)) return nextEntity;
-
-      const prevEntity = state[nextEntity.id];
-      if (prevEntity.isUpdating) return prevEntity;
-
-      const frontOnlyProps = _.keys(ItemSchema.getDefaults());
-
-      return _.assignWith(prevEntity, nextEntity, (prev, next, key) => {
-        if (frontOnlyProps.indexOf(key) > -1) {
-          return prev;
-        }
-      });
-    }));
-  },
-
-
   // Fetch
   [Items.FETCH_ITEMS_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
@@ -405,7 +380,7 @@ export default handleActions({
 
   [Items.SELECTED_ITEMS_DELETE_FAILURE]: (state, { meta }) => (
     _.mapValues(state, entity =>
-      !meta.entities.indexOf(entity.id) < 0 ? entiy : {
+      !meta.entities.indexOf(entity.id) < 0 ? entity : {
         ...entity,
         isDeleting: false
       }
@@ -414,7 +389,7 @@ export default handleActions({
 
 
   // Selected star
-  [Items.SELECTED_ITEMS_STAR_REQUEST]: (state, { payload }) => (
+  [Items.SELECTED_ITEMS_STAR_REQUEST]: state => (
     _.mapValues(state, entity =>
       !entity.select ? entity : {
         ...entity,
@@ -440,7 +415,7 @@ export default handleActions({
       return index < 0 ? entity : {
         ...meta.entities[index],
         isUpdating: false
-      }
+      };
     })
   ),
 
@@ -459,7 +434,7 @@ export default handleActions({
     mergeEntities(state, payload.entities.items)
   ),
 
-  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload, meta }) => (
+  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { meta }) => (
     _.mapValues(state, entity =>
       meta.prevBoards.indexOf(entity.board) < 0 ? entity : {
         ...entity,
@@ -471,6 +446,6 @@ export default handleActions({
 
   // Boards
   [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
-    _.assign(state, payload.entities.items || {})
-  ),
+    mergeEntities(state, payload.entities.items)
+  )
 }, {});

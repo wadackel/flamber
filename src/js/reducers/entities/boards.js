@@ -140,9 +140,7 @@ export default handleActions({
     _.mapValues(mergeEntities(state, payload.entities.boards), entity =>
       entity.id !== meta.prevBoard ? entity : {
         ...entity,
-        items: entity.items.filter(id =>
-          payload.result.items.indexOf(id) < 0
-        )
+        items: _.without(entity.items, ...payload.result.items)
       }
     )
   ),
@@ -151,9 +149,7 @@ export default handleActions({
     _.mapValues(mergeEntities(state, payload.entities.boards), entity =>
       meta.prevBoards.indexOf(entity.id) < 0 ? entity : {
         ...entity,
-        items: entity.items.filter(id =>
-          payload.result.items.indexOf(id) < 0
-        )
+        items: _.without(entity.items, ...payload.result.items)
       }
     )
   )

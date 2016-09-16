@@ -119,13 +119,6 @@ ItemSchema.statics.updateImageByUserAndId = function(user, id, file) {
 };
 //
 //
-// ItemSchema.statics.updateEntitiesThumbnailIfNeeded = function(drive, entities) {
-//   return Promise.all(entities.map(entity =>
-//     updateItemThumbnailIfNeeded(drive, entity)
-//   ));
-// };
-//
-//
 // ItemSchema.statics.findAllByUser = function(drive, user, query = {}) {
 //   const params = {
 //     ...query,
@@ -168,30 +161,27 @@ ItemSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
 };
 
 
+ItemSchema.statics.updateByUserFromArray = function(user, entities) {
+  const promises = entities.map(entity =>
+    () => this.updateByUserAndIdFromObject(user, entity.id, entity)
+  );
+
+  const sequence = promises.reduce((prev, current) =>
+    prev.then(current),
+    promises.shift()()
+  );
+
+  return sequence.then(() =>
+    Promise.all(entities.map(entity => this.findOne({ user, _id: entity.id }).populate("board tags")))
+  );
+};
+
+
 ItemSchema.statics.removeByUserAndId = function(user, id) {
   return this.findOne({ _id: id, user })
     .then(entity => this.findByIdAndRemove(entity.id).then(() => entity))
     .then(entity => this.populateEntity(entity));
 };
-//
-//
-// ItemSchema.statics.getImageBufferByUserAndId = function(drive, user, id) {
-//   return new Promise((resolve, reject) => {
-//     this.findByUserAndId(user, id)
-//       .then(item => {
-//         const { fileId } = item;
-//         const chunks = [];
-//
-//         drive.files.get({ fileId, alt: "media" })
-//           .on("error", reject)
-//           .on("data", data => chunks.push(new Buffer(data)))
-//           .on("end", () => {
-//             const buffer = Buffer.concat(chunks);
-//             resolve(buffer);
-//           });
-//       });
-//   });
-// };
 
 
 // Middleware
@@ -226,7 +216,9 @@ ItemSchema.post("save", (entity, next) => {
       .then(() => {
         next();
       })
-      .catch(next);
+      .catch(() => {
+        next();
+      });
   }
 });
 

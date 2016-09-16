@@ -1,4 +1,3 @@
-/* eslint-disable */
 import _ from "lodash";
 import mongoose, { Schema } from "mongoose";
 import Item from "./item";
@@ -27,10 +26,10 @@ BoardSchema.statics.findAllByUser = function(user, query = {}) {
   return this.find(params).populate("items");
 };
 
-BoardSchema.statics.removeByUserAndId = function(drive, user, id) {
+BoardSchema.statics.removeByUserAndId = function(user, id) {
   return this.findOne({ _id: id, user })
     .then(entity =>
-      Promise.all(entity.items.map(id => Item.removeByUserAndId(drive, user, id)))
+      Promise.all(entity.items.map(itemId => Item.removeByUserAndId(user, itemId)))
         .then(() => entity)
     )
     .then(entity =>

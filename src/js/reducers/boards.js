@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { handleActions } from "redux-actions";
 import * as Auth from "../actions/auth";
 import * as Boards from "../actions/boards";
@@ -78,7 +77,7 @@ export default handleActions({
 
 
   // Delete
-  [Boards.DELETE_BOARD_REQUEST]: (state, { payload }) => ({
+  [Boards.DELETE_BOARD_REQUEST]: state => ({
     ...state,
     isDeleting: true
   }),
