@@ -1,4 +1,5 @@
 import { handleActions } from "redux-actions";
+import * as App from "../actions/application";
 import * as Auth from "../actions/auth";
 
 const initialState = {
@@ -9,6 +10,13 @@ const initialState = {
 };
 
 export default handleActions({
+  // Create app
+  [App.CREATE_APP_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    authenticated: true,
+    user: payload.user
+  }),
+
   // Sign in
   [Auth.SIGN_IN_REQUEST]: state => ({
     ...state,

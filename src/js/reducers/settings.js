@@ -1,4 +1,5 @@
 import { handleActions } from "redux-actions";
+import * as App from "../actions/application";
 import * as OrderBy from "../constants/order-by";
 import * as Order from "../constants/order";
 import * as Themes from "../constants/themes";
@@ -35,6 +36,12 @@ const initialState = {
 };
 
 export default handleActions({
+  // Create app
+  [App.CREATE_APP_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    ...payload.settings
+  }),
+
   // Fetch
   [Settings.FETCH_SETTINGS_REQUEST]: state => ({
     ...state,

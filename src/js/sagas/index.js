@@ -1,20 +1,20 @@
 import { fork } from "redux-saga/effects";
-import application from "./application";
 import auth from "./auth";
 import boards from "./boards";
 import items from "./items";
 import notifications from "./notifications";
 import settings from "./settings";
 import tags from "./tags";
+import application from "./application";
 
 export default function *rootSaga() {
   yield [
-    fork(application),
     fork(auth),
     fork(boards),
     fork(items),
     fork(notifications),
     fork(settings),
-    fork(tags)
+    fork(tags),
+    fork(application)
   ];
 }

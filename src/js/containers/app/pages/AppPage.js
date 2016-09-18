@@ -3,7 +3,6 @@ import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import * as AuthActions from "../../../actions/auth";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
@@ -54,10 +53,6 @@ export class AppPage extends Component {
     };
 
     autoBind(this);
-  }
-
-  componentDidMount() {
-    this.props.dispatch(AuthActions.fetchCurrentUserRequest());
   }
 
   // Dragging

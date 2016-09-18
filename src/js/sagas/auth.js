@@ -25,8 +25,12 @@ export function *handleSignInRequest() {
   }
 }
 
-export function *handleSignInSuccess() {
+export function *handleSignInSuccess({ payload: user }) {
   yield put(replace("/app/"));
+
+  if (user.installed) {
+    yield put(Auth.fetchCurrentUserRequest());
+  }
 }
 
 export function *handleSignInFailure() {
@@ -64,6 +68,7 @@ export function *handleFetchCurrentUserRequest() {
 
     try {
       const jwtToken = cookie.loadToken();
+      console.log(jwtToken);
       const { user, token } = yield call(fetchUser, jwtToken);
 
       cookie.saveToken(token);
