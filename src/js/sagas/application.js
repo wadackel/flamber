@@ -3,6 +3,7 @@ import { fork, take, put, call, select } from "redux-saga/effects";
 import * as App from "../actions/application";
 import * as Auth from "../actions/auth";
 import * as Settings from "../actions/settings";
+import * as Tags from "../actions/tags";
 import { createApp, deleteApp } from "../services/application";
 import { getUser } from "../selectors/auth";
 
@@ -40,6 +41,7 @@ export function *watchCreateInitializeApp() {
 export function *handleInitializeApp() {
   yield put(Auth.fetchCurrentUserRequest());
   yield put(Settings.fetchSettingsRequest());
+  yield put(Tags.fetchTagsRequest());
 }
 
 

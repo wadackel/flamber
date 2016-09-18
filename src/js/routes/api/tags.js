@@ -14,10 +14,7 @@ router.get("/", (req, res) => {
 
 
 router.post("/", (req, res) => {
-  const {
-    user,
-    body: { name }
-  } = req;
+  const { user, body: { name } } = req;
 
   Tag.appendByUserAndName(user.id, name)
     .then(tag => {
@@ -39,10 +36,7 @@ router.put("/", (req, res) => {
 
 
 router.delete("/", (req, res) => {
-  const {
-    user,
-    body: { id }
-  } = req;
+  const { user, body: { id } } = req;
 
   Tag.removeByUserAndId(user.id, id)
     .then(tag => {

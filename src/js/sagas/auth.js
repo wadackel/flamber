@@ -68,7 +68,6 @@ export function *handleFetchCurrentUserRequest() {
 
     try {
       const jwtToken = cookie.loadToken();
-      console.log(jwtToken);
       const { user, token } = yield call(fetchUser, jwtToken);
 
       cookie.saveToken(token);

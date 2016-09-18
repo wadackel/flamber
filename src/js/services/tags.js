@@ -1,21 +1,20 @@
-import fetch, { fetchJSON } from "../utils/fetch";
-import { API_ROOT } from "../constants/application";
+import ApiClient from "../utils/api-client";
 
-export const TAGS_ENDPOINT = `${API_ROOT}/tags`;
+const apiClient = new ApiClient("/tags");
 
 
 export function fetchTags() {
-  return fetch(TAGS_ENDPOINT);
+  return apiClient.get("/");
 }
 
 export function addTag(name) {
-  return fetchJSON(TAGS_ENDPOINT, { name });
+  return apiClient.post("/", { body: { name } });
 }
 
 export function updateTag(newProps) {
-  return fetchJSON(TAGS_ENDPOINT, newProps, "PUT");
+  return apiClient.put("/", { body: newProps });
 }
 
 export function deleteTag(id) {
-  return fetchJSON(TAGS_ENDPOINT, { id }, "DELETE");
+  return apiClient.delete("/", { body: { id } });
 }

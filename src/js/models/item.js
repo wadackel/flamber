@@ -117,25 +117,16 @@ ItemSchema.statics.updateImageByUserAndId = function(user, id, file) {
     })
     .then(entity => this.populateEntity(entity));
 };
-//
-//
-// ItemSchema.statics.findAllByUser = function(drive, user, query = {}) {
-//   const params = {
-//     ...query,
-//     user
-//   };
-//
-//   return this.find(params)
-//     .then(entities => this.updateEntitiesThumbnailIfNeeded(drive, entities))
-//     .then(entities => Promise.all(entities.map(entity =>
-//       this.populate(entity, [
-//         { path: "board" },
-//         { path: "tags" }
-//       ])
-//     )));
-// };
-//
-//
+
+
+ItemSchema.statics.findAllByUser = function(user, query = {}) {
+  return this.find({ ...query, user })
+    .then(entities => Promise.all(entities.map(
+      entity => this.populateEntity(entity))
+    ));
+};
+
+
 ItemSchema.statics.findByUserAndId = function(user, id) {
   return this.findOne({ user, _id: id })
     .populate("board tags");

@@ -16,18 +16,36 @@ TagSchema.set("toObject", { virtuals: true });
 
 
 // Static methods
+TagSchema.statics.findByUserAndId = function(user, id) {
+  return this.findOne({ user, _id: id });
+};
+
+TagSchema.statics.findByUserAndName = function(user, name) {
+  return this.findOne({ user, name });
+};
+
 TagSchema.statics.findAllByUser = function(user, query = {}) {
   const params = { ...query, user };
   return this.find(params);
 };
 
 TagSchema.statics.appendByUserAndName = function(user, name) {
-  const entity = new this({
-    user,
-    name
-  });
+  return this.findByUserAndName(user, name)
+    .then(entity => {
+      if (entity) {
+        throw new Error(`${name} is already exists`);
+      }
 
-  return entity.save();
+      return null;
+    })
+    .then(() => {
+      const entity = new this({
+        user,
+        name
+      });
+
+      return entity.save();
+    });
 };
 
 TagSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
