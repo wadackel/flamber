@@ -1,15 +1,13 @@
-import fetch, { fetchJSON } from "../utils/fetch";
-import { API_ROOT } from "../constants/application";
+import ApiClient from "../utils/api-client";
 
-export const SETTINGS_ENDPOINT = `${API_ROOT}/settings`;
+const apiClient = new ApiClient("/settings");
 
 
 export function fetchSettings() {
-  return fetch(SETTINGS_ENDPOINT)
-    .then(res => res.settings);
+  return apiClient.get("/");
 }
 
+
 export function updateSettings(settings) {
-  return fetchJSON(SETTINGS_ENDPOINT, settings, "PUT")
-    .then(res => res.settings);
+  return apiClient.put("/", { body: settings });
 }

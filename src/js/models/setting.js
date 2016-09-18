@@ -1,3 +1,4 @@
+import _ from "lodash";
 import mongoose, { Schema } from "mongoose";
 import * as Themes from "../constants/themes";
 import * as Layout from "../constants/layouts";
@@ -20,6 +21,27 @@ const SettingSchema = new Schema({
 
 SettingSchema.set("toJSON", { virtuals: true });
 SettingSchema.set("toObject", { virtuals: true });
+
+
+SettingSchema.statics.findByUser = function(user) {
+  return this.findOne({ user });
+};
+
+
+SettingSchema.statics.updateByUser = function(user, settings) {
+  return this.findByUser(user)
+    .then(entity => {
+      const fields = _.keys(this.schema.paths);
+
+      fields.forEach(key => {
+        if (settings.hasOwnProperty(key)) {
+          entity[key] = settings[key];
+        }
+      });
+
+      return entity.save();
+    });
+};
 
 
 export default mongoose.model("Setting", SettingSchema);

@@ -4,6 +4,8 @@ import { fetchSettings, updateSettings } from "../services/settings";
 import * as Settings from "../actions/settings";
 import { getSettings } from "../selectors/settings";
 
+
+// Fetch
 export function *handleFetchSettingsRequest() {
   while (true) {
     yield take(Settings.FETCH_SETTINGS_REQUEST);
@@ -17,56 +19,63 @@ export function *handleFetchSettingsRequest() {
   }
 }
 
-function *callUpdateSettings(key, value) {
+
+// Update
+function *callUpdateSettings(key, value, success, failure) {
   const settings = yield select(getSettings);
   const newSettings = {
     ...settings,
     [key]: value
   };
 
-  return yield call(updateSettings, newSettings);
+  try {
+    const response = yield call(updateSettings, newSettings);
+    yield put(success(response[key]));
+  } catch (error) {
+    yield put(failure(error));
+  }
 }
 
 export function *handleUpdateThemeRequest({ payload }) {
-  try {
-    const settings = yield callUpdateSettings("theme", payload);
-    yield put(Settings.updateThemeSuccess(settings.theme));
-  } catch (error) {
-    yield put(Settings.updateThemeFailure(error));
-  }
+  yield callUpdateSettings(
+    "theme",
+    payload,
+    Settings.updateThemeSuccess,
+    Settings.updateThemeFailure
+  );
 }
 
 export function *handleUpdateBoardsLayoutRequest({ payload }) {
-  try {
-    const settings = yield callUpdateSettings("boardsLayout", payload);
-    yield put(Settings.updateBoardsLayoutSuccess(settings.boardsLayout));
-  } catch (error) {
-    yield put(Settings.updateBoardsLayoutFailure(error));
-  }
+  yield callUpdateSettings(
+    "boardsLayout",
+    payload,
+    Settings.updateBoardsLayoutSuccess,
+    Settings.updateBoardsLayoutFailure
+  );
 }
 
 export function *handleUpdateItemsLayoutRequest({ payload }) {
-  try {
-    const settings = yield callUpdateSettings("itemsLayout", payload);
-    yield put(Settings.updateItemsLayoutSuccess(settings.itemsLayout));
-  } catch (error) {
-    yield put(Settings.updateItemsLayoutFailure(error));
-  }
+  yield callUpdateSettings(
+    "itemsLayout",
+    payload,
+    Settings.updateItemsLayoutSuccess,
+    Settings.updateItemsLayoutFailure
+  );
 }
 
 export function *handleUpdateItemsSizeRequest(size) {
   yield call(delay, 500);
   yield put(Settings.updateItemsSizeRequest(size));
 
-  try {
-    const settings = yield callUpdateSettings("itemsSize", size);
-    yield put(Settings.updateItemsSizeSuccess(settings.itemsSize));
-  } catch (error) {
-    yield put(Settings.updateItemsSizeFailure(error));
-  }
+  yield callUpdateSettings(
+    "itemsSize",
+    size,
+    Settings.updateItemsSizeSuccess,
+    Settings.updateItemsSizeFailure
+  );
 }
 
-export function *handleUpdateItemsSizeRequestDebounce() {
+export function *watchItemsSize() {
   let task = null;
   while (true) {
     const { payload } = yield take(Settings.UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCE);
@@ -78,39 +87,39 @@ export function *handleUpdateItemsSizeRequestDebounce() {
 }
 
 export function *handleUpdateItemsOrderByRequest({ payload }) {
-  try {
-    const settings = yield callUpdateSettings("itemsOrderBy", payload);
-    yield put(Settings.updateItemsOrderBySuccess(settings.itemsOrderBy));
-  } catch (error) {
-    yield put(Settings.updateItemsOrderByFailure(error));
-  }
+  yield callUpdateSettings(
+    "itemsOrderBy",
+    payload,
+    Settings.updateItemsOrderBySuccess,
+    Settings.updateItemsOrderByFailure
+  );
 }
 
 export function *handleUpdateItemsOrderRequest({ payload }) {
-  try {
-    const settings = yield callUpdateSettings("itemsOrder", payload);
-    yield put(Settings.updateItemsOrderSuccess(settings.itemsOrder));
-  } catch (error) {
-    yield put(Settings.updateItemsOrderFailure(error));
-  }
+  yield callUpdateSettings(
+    "itemsOrder",
+    payload,
+    Settings.updateItemsOrderSuccess,
+    Settings.updateItemsOrderFailure
+  );
 }
 
 export function *handleUpdateBoardsOrderByRequest({ payload }) {
-  try {
-    const settings = yield callUpdateSettings("boardsOrderBy", payload);
-    yield put(Settings.updateBoardsOrderBySuccess(settings.boardsOrderBy));
-  } catch (error) {
-    yield put(Settings.updateBoardsOrderByFailure(error));
-  }
+  yield callUpdateSettings(
+    "boardsOrderBy",
+    payload,
+    Settings.updateBoardsOrderBySuccess,
+    Settings.updateBoardsOrderByFailure
+  );
 }
 
 export function *handleUpdateBoardsOrderRequest({ payload }) {
-  try {
-    const settings = yield callUpdateSettings("boardsOrder", payload);
-    yield put(Settings.updateBoardsOrderSuccess(settings.boardsOrder));
-  } catch (error) {
-    yield put(Settings.updateBoardsOrderFailure(error));
-  }
+  yield callUpdateSettings(
+    "boardsOrder",
+    payload,
+    Settings.updateBoardsOrderSuccess,
+    Settings.updateBoardsOrderFailure
+  );
 }
 
 export function *watchUpdateSettingsRequest() {
@@ -118,7 +127,7 @@ export function *watchUpdateSettingsRequest() {
     takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest),
     takeLatest(Settings.UPDATE_BOARDS_LAYOUT_REQUEST, handleUpdateBoardsLayoutRequest),
     takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest),
-    fork(handleUpdateItemsSizeRequestDebounce),
+    fork(watchItemsSize),
     takeLatest(Settings.UPDATE_ITEMS_ORDER_BY_REQUEST, handleUpdateItemsOrderByRequest),
     takeLatest(Settings.UPDATE_ITEMS_ORDER_REQUEST, handleUpdateItemsOrderRequest),
     takeLatest(Settings.UPDATE_BOARDS_ORDER_BY_REQUEST, handleUpdateBoardsOrderByRequest),
@@ -126,7 +135,8 @@ export function *watchUpdateSettingsRequest() {
   ];
 }
 
-export default function *rootSaga() {
+
+export default function *settingsSaga() {
   yield [
     fork(handleFetchSettingsRequest),
     fork(watchUpdateSettingsRequest)
