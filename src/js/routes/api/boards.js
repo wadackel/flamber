@@ -1,5 +1,3 @@
-/* eslint-disable */
-import _ from "lodash";
 import { Router } from "express";
 import Board from "../../models/board";
 
@@ -40,9 +38,9 @@ router.put("/", (req, res) => {
 
 
 router.delete("/", (req, res) => {
-  const { drive, body, user } = req;
+  const { body, user } = req;
 
-  Promise.all(body.map(board => Board.removeByUserAndId(drive, user.id, board.id)))
+  Promise.all(body.map(board => Board.removeByUserAndId(user.id, board.id)))
     .then(boards => {
       res.json({ boards });
     })

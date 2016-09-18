@@ -28,14 +28,8 @@ BoardSchema.statics.findAllByUser = function(user, query = {}) {
 
 BoardSchema.statics.removeByUserAndId = function(user, id) {
   return this.findOne({ _id: id, user })
-    .then(entity =>
-      Promise.all(entity.items.map(itemId => Item.removeByUserAndId(user, itemId)))
-        .then(() => entity)
-    )
-    .then(entity =>
-      this.findByIdAndRemove(entity.id)
-        .then(() => entity)
-    );
+    .then(entity => entity.remove().then(() => entity))
+    .then(entity => this.populate(entity, { path: "items" }));
 };
 
 BoardSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
@@ -76,6 +70,18 @@ BoardSchema.methods.removeItem = function(itemId) {
   this.items = this.items.filter(id => id.toString() !== itemId);
   return this.save();
 };
+
+
+// Middleware
+BoardSchema.pre("remove", function(next) {
+  Promise.all(this.items.map(id => Item.removeByUserAndId(this.user, id)))
+    .then(() => {
+      next();
+    })
+    .catch(() => {
+      next();
+    });
+});
 
 
 export default mongoose.model("Board", BoardSchema);

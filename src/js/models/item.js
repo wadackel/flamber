@@ -179,7 +179,7 @@ ItemSchema.statics.updateByUserFromArray = function(user, entities) {
 
 ItemSchema.statics.removeByUserAndId = function(user, id) {
   return this.findOne({ _id: id, user })
-    .then(entity => this.findByIdAndRemove(entity.id).then(() => entity))
+    .then(entity => entity.remove().then(() => entity))
     .then(entity => this.populateEntity(entity));
 };
 
