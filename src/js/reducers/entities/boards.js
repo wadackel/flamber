@@ -112,6 +112,16 @@ export default handleActions({
 
 
   // Items
+  [Items.ADD_ITEM_URL_SUCCESS]: (state, { payload }) => (
+    _.mapValues(state, entity => {
+      const item = payload.entities.items[payload.result.item];
+      return item.board !== entity.id ? entity : {
+        ...entity,
+        items: [...entity.items, item.id]
+      };
+    })
+  ),
+
   [Items.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => (
     _.mapValues(state, entity => {
       const item = payload.entities.items[payload.result.item];
