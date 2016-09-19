@@ -9,8 +9,7 @@ import {
   DriveCapacity,
   RaisedButton,
   RadioGroup,
-  Radio,
-  Snackbar
+  Radio
 } from "../../../components/ui/";
 import { GithubIcon } from "../../../components/svg-icons";
 import { deleteAppRequest } from "../../../actions/application";
@@ -31,28 +30,11 @@ export class SettingsPage extends Component {
 
   constructor(props, context) {
     super(props, context);
-
-    this.state = {
-      snackbarOpen: false
-    };
-
     autoBind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { settings } = this.props;
-
-    if (settings.isThemeUpdating && !nextProps.settings.isThemeUpdating) {
-      this.setState({ snackbarOpen: true });
-    }
   }
 
   handleThemeChange(theme) {
     this.props.dispatch(updateThemeRequest(theme));
-  }
-
-  handleSnackbarClose() {
-    this.setState({ snackbarOpen: false });
   }
 
   handleDeleteClick() {
@@ -66,7 +48,6 @@ export class SettingsPage extends Component {
     } = this.props;
 
     const { theme } = this.context;
-    const { snackbarOpen } = this.state;
 
     const themes = [
       { label: "Dark", value: Themes.DARK },
@@ -122,12 +103,6 @@ export class SettingsPage extends Component {
             <div><RaisedButton icon={<GithubIcon />} href="https://github.com/tsuyoshiwada/flamber" target="_blank">GitHub</RaisedButton></div>
           </div>
         </section>
-
-        <Snackbar
-          open={snackbarOpen}
-          message="テーマを更新しました"
-          onRequestClose={this.handleSnackbarClose}
-        />
       </div>
     );
   }

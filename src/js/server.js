@@ -105,6 +105,8 @@ app.use((req, res) => {
   const history = syncHistoryWithStore(memoryHistory, store);
 
   match({ history, routes: getRoutes(store), location: req.url }, (error, redirectLocation, renderProps) => {
+    let props = renderProps;
+
     if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
       return;
@@ -113,6 +115,7 @@ app.use((req, res) => {
       res.status(500);
 
     } else if (!renderProps) {
+      props = {};
       res.status(404);
 
     } else {
@@ -121,7 +124,7 @@ app.use((req, res) => {
 
     const content = renderToString(
       <Provider store={store}>
-        <RouterContext {...renderProps} />
+        <RouterContext {...props} />
       </Provider>
     );
 

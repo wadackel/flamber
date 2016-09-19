@@ -1,6 +1,7 @@
-import { takeLatest, delay } from "redux-saga";
+import { takeEvery, takeLatest, delay } from "redux-saga";
 import { fork, take, put, call, select, cancel } from "redux-saga/effects";
 import { fetchSettings, updateSettings } from "../services/settings";
+import * as Notifications from "../actions/notifications";
 import * as Settings from "../actions/settings";
 import { getSettings } from "../selectors/settings";
 
@@ -43,6 +44,15 @@ export function *handleUpdateThemeRequest({ payload }) {
     Settings.updateThemeSuccess,
     Settings.updateThemeFailure
   );
+}
+
+function *handleUpdateThemeSuccess() {
+  yield put(Notifications.showNotify("テーマを更新しました"));
+}
+
+function *handleUpdateThemeFailure() {
+  // TODO: More error message
+  yield put(Notifications.showNotify("テーマの更新に失敗しました"));
 }
 
 export function *handleUpdateBoardsLayoutRequest({ payload }) {
@@ -125,6 +135,8 @@ export function *handleUpdateBoardsOrderRequest({ payload }) {
 export function *watchUpdateSettingsRequest() {
   yield [
     takeLatest(Settings.UPDATE_THEME_REQUEST, handleUpdateThemeRequest),
+    takeEvery(Settings.UPDATE_THEME_SUCCESS, handleUpdateThemeSuccess),
+    takeEvery(Settings.UPDATE_THEME_FAILURE, handleUpdateThemeFailure),
     takeLatest(Settings.UPDATE_BOARDS_LAYOUT_REQUEST, handleUpdateBoardsLayoutRequest),
     takeLatest(Settings.UPDATE_ITEMS_LAYOUT_REQUEST, handleUpdateItemsLayoutRequest),
     fork(watchItemsSize),

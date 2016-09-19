@@ -44,6 +44,10 @@ export class AppPage extends Component {
   static defaultProps = {
   };
 
+  static contextTypes = {
+    theme: PropTypes.string.isRequired
+  };
+
   constructor(props, context) {
     super(props, context);
 
