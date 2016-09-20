@@ -1,6 +1,7 @@
 import { handleActions } from "redux-actions";
 import * as App from "../actions/application";
 import * as Auth from "../actions/auth";
+import * as Items from "../actions/items";
 
 const initialState = {
   isFetching: false,
@@ -79,5 +80,17 @@ export default handleActions({
     authenticated: false,
     isFetching: false,
     error: payload
+  }),
+
+
+  // Add item
+  [Items.ADD_ITEM_FILE_SUCCESS]: state => ({
+    ...state,
+    user: { ...state.user, todayUpload: state.user.todayUpload + 1 }
+  }),
+
+  [Items.ADD_ITEM_URL_SUCCESS]: state => ({
+    ...state,
+    user: { ...state.user, todayUpload: state.user.todayUpload + 1 }
   })
 }, initialState);

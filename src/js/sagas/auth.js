@@ -5,6 +5,7 @@ import * as cookie from "../utils/cookie";
 import { authenticate, fetchUser } from "../services/auth";
 import * as Notifications from "../actions/notifications";
 import * as Auth from "../actions/auth";
+import * as Items from "../actions/items";
 
 
 // Sign in
@@ -86,6 +87,12 @@ export function *handleFetchCurrentUserFailure() {
 }
 
 
+// Add items
+export function *handleAddItemSuccess() {
+  yield put(Auth.fetchCurrentUserRequest());
+}
+
+
 export default function *rootSaga() {
   yield [
     // Sign in
@@ -100,6 +107,9 @@ export default function *rootSaga() {
 
     // Fetch
     fork(handleFetchCurrentUserRequest),
-    takeEvery(Auth.FETCH_CURRENT_USER_FAILURE, handleFetchCurrentUserFailure)
+    takeEvery(Auth.FETCH_CURRENT_USER_FAILURE, handleFetchCurrentUserFailure),
+
+    // Add items
+    takeEvery([Items.ADD_ITEM_FILE_SUCCESS, Items.ADD_ITEM_URL_SUCCESS], handleAddItemSuccess)
   ];
 }

@@ -180,13 +180,18 @@ ItemSchema.post("init", entity => {
   entity._original = entity.toObject();
 });
 
-ItemSchema.post("save", (entity, next) => {
+ItemSchema.post("save", function(entity, next) {
   // Create
   if (_.isUndefined(entity._original)) {
     Board.findById(entity.board)
       .then(board => {
         board.items.push(entity.id);
-        board.save(next);
+        return board.save();
+      })
+      .then(() => this.model("User").findById(entity.user))
+      .then(user => {
+        user.todayUpload++;
+        user.save(next);
       })
       .catch(next);
 
