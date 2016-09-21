@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import React from "react";
 
 export default function ArrowBottomIcon(props) {
   return (
-    <svg width="28" height="30" viewBox="0 0 28 30" {...props}><title>arrow-bottom</title><path d="M28 16.28l-3.6-3.558-7.86 7.72V0h-5.08v20.442l-7.86-7.72-3.6 3.56L14 30l14-13.72" /></svg>
+    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" {...props}><title>arrow-bottom</title><g fill-rule="evenodd"><path d="M0 0h30v30H0"/><path fill="#000" d="M27 16.098l-3.085-3.05-6.738 6.617V2.143h-4.354v17.522l-6.738-6.617L3 16.098l12 11.76 12-11.76"/></g></svg>
   );
 }

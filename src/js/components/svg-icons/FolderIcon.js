@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import React from "react";
 
 export default function FolderIcon(props) {
   return (
-    <svg width="30" height="25" viewBox="0 0 30 25" {...props}><title>folder</title><path d="M2.474 7.5L1.25 0h8.715c1.58 1.98 1.66 2.5 4.133 2.5H28.75l-1.2 5H25l.586-2.5H14.098C11.19 5 10.14 4.235 8.75 2.5H4.133L5 7.5H2.474zM30 10l-2.5 15h-25L0 10h7.848l2.885-3.75L15.607 10h2.463l-1.786-1.37 1.83-2.38L22.99 10H30zm-2.914 2.5H2.914l1.73 10h20.71l1.732-10z" /></svg>
+    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" {...props}><title>folder</title><g fill-rule="evenodd"><path d="M0 0h30v30H0"/><path d="M3.31 10.9L2.166 4H10.3c1.476 1.82 1.55 2.3 3.858 2.3h13.675l-1.12 4.6h-2.38l.548-2.3H14.16c-2.714 0-3.694-.704-4.99-2.3h-4.31l.81 4.6h-2.36zM29 13.2L26.667 27H3.333L1 13.2h7.324l2.693-3.45 4.55 3.45h2.298l-1.667-1.262 1.71-2.188 4.55 3.45H29zm-2.72 2.3H3.72l1.615 9.2h19.33l1.616-9.2z" fill="#000"/></g></svg>
   );
 }

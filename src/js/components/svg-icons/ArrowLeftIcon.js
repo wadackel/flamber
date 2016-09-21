@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import React from "react";
 
 export default function ArrowLeftIcon(props) {
   return (
-    <svg width="30" height="28" viewBox="0 0 30 28" {...props}><title>arrow-left</title><path d="M13.72 0l3.557 3.6-7.72 7.86H30v5.08H9.557l7.72 7.86L13.72 28 0 14 13.72 0" /></svg>
+    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" {...props}><title>arrow-left</title><g fill-rule="evenodd"><path d="M0 0h30v30H0"/><path fill="#000" d="M13.902 26.857l3.05-3.085-6.617-6.737h17.522V12.68H10.335l6.617-6.738-3.05-3.085-11.76 12 11.76 12"/></g></svg>
   );
 }

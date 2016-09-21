@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import React from "react";
 
 export default function CircleTopIcon(props) {
   return (
-    <svg width="30" height="30" viewBox="0 0 30 30" {...props}><title>circle-top</title><path d="M2.5 15C2.5 8.108 8.107 2.5 15 2.5c6.892 0 12.5 5.608 12.5 12.5 0 6.893-5.608 12.5-12.5 12.5-6.893 0-12.5-5.608-12.5-12.5zM0 15c0 8.284 6.716 15 15 15 8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15C6.716 0 0 6.716 0 15zm15-2.5l5.625 5.625 1.875-1.91L15 8.75l-7.5 7.466 1.875 1.91L15 12.5z" /></svg>
+    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" {...props}><title>circle-top</title><g fill-rule="evenodd"><path d="M0 0h30v30H0"/><path d="M4.167 15C4.167 9.027 9.027 4.167 15 4.167c5.974 0 10.833 4.86 10.833 10.833 0 5.974-4.86 10.833-10.833 10.833S4.167 20.973 4.167 15zM2 15c0 7.18 5.82 13 13 13s13-5.82 13-13S22.18 2 15 2 2 7.82 2 15zm13-2.167l4.875 4.875 1.625-1.654-6.5-6.47-6.5 6.47 1.625 1.654L15 12.833z" fill="#000"/></g></svg>
   );
 }

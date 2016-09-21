@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import React from "react";
 
 export default function ResizeIcon(props) {
   return (
-    <svg width="30" height="30" viewBox="0 0 30 30" {...props}><title>resize</title><path d="M30 0v13.75l-4.224-4.224L20.302 15 15 9.697l5.474-5.473L16.25 0H30zM15.156 20.172L9.854 14.87l-5.63 5.604L0 16.25V30h13.75l-4.224-4.224 5.63-5.604z" /></svg>
+    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" {...props}><title>resize</title><path d="M28 2v11.916l-3.66-3.66L19.595 15 15 10.405l4.744-4.744L16.084 2H28zM15.135 19.483l-4.595-4.596-4.88 4.857L2 16.084V28h11.917l-3.66-3.66 4.878-4.857z" fill-rule="evenodd"/></svg>
   );
 }

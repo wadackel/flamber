@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import React from "react";
 
 export default function TagIcon(props) {
   return (
-    <svg width="30" height="30" viewBox="0 0 30 30" {...props}><title>tag</title><path d="M12.22 2.5l14.244 14.244-9.725 9.72L2.5 12.227V2.5h9.72zM13.256 0H0v13.26L16.74 30 30 16.745 13.256 0zM9.267 9.268c-.976.977-2.557.977-3.536 0-.975-.978-.975-2.56 0-3.536.98-.977 2.56-.976 3.537 0 .978.978.977 2.558 0 3.535z" /></svg>
+    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" {...props}><title>tag</title><g fill-rule="evenodd"><path d="M0 0h30v30H0"/><path d="M12.59 4.167L24.936 16.51l-8.428 8.426-12.34-12.34v-8.43h8.424zM13.49 2H2v11.493L16.507 28 28 16.512 13.49 2zm-3.458 8.032c-.846.847-2.217.847-3.065 0-.846-.847-.846-2.218 0-3.064.847-.847 2.22-.846 3.065 0 .847.847.846 2.217 0 3.064z" fill="#000"/></g></svg>
   );
 }

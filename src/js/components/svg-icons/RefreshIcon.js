@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 import React from "react";
 
 export default function RefreshIcon(props) {
   return (
-    <svg width="30" height="30" viewBox="0 0 30 30" {...props}><title>refresh</title><path d="M26 4c-3.13-2.313-6.863-4-11-4C6.698 0 0 6.713 0 15c0 8.288 6.698 15 15 15 6.99 0 12.824-4.78 14-11h-3c-1.947 4.12-6.113 7.25-11 7-6.22.25-11.266-4.794-11-11C3.734 8.794 8.78 3.75 15 4c3.105-.25 5.882 1.044 8 3l-6 6h13V0l-4 4z" /></svg>
+    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" {...props}><title>refresh</title><g fill-rule="evenodd"><path d="M0 0h30v30H0"/><path d="M23.067 6.933C20.772 5.237 18.034 4 15 4 8.912 4 4 8.922 4 15s4.912 11 11 11c5.125 0 9.404-3.506 10.267-8.067h-2.2c-1.428 3.02-4.483 5.317-8.067 5.134-4.56.183-8.262-3.516-8.067-8.067C6.738 10.45 10.44 6.75 15 6.933c2.277-.183 4.313.766 5.867 2.2l-4.4 4.4H26V4l-2.933 2.933z" fill="#000"/></g></svg>
   );
 }
