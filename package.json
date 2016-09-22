@@ -17,6 +17,7 @@
     "build:sass:compile": "node-sass --output-style compressed -o public/css src/sass --importer node_modules/node-sass-json-importer/dist/node-sass-json-importer.js",
     "build:sass:autoprefixer": "postcss -u autoprefixer -r public/css/**/*.css",
     "build:icon-index": "node ./scripts/icon-index.js",
+    "build:ui-components-index": "node ./scripts/ui-components-index.js",
     "watch": "npm-run-all --parallel watch:*",
     "watch:js": "npm-run-all --parallel watch:js:*",
     "watch:js:client": "watchify -e src/js/client.js -o public/js/client.bundle.js -t [ babelify ] -v -d",
