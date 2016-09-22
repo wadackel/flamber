@@ -114,6 +114,7 @@ $button-icon-margin: 8px;
 
   svg {
     @include size(1rem);
+    vertical-align: top;
   }
 }
 
