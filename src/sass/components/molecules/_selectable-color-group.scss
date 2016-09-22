@@ -7,7 +7,7 @@
   > span {
     display: flex;
     flex-wrap: wrap;
-    align-items: space-between;
+    align-items: stretch;
     justify-content: space-between;
     margin-top: -$item-gutter;
     margin-right: -$item-gutter / 2;
@@ -16,6 +16,7 @@
 
   &__color {
     padding: $item-gutter ($item-gutter / 2) 0;
+    transform: translateY(0) scale(1);
     transition-property: all;
     transition-timing-function: $transition-easing;
     font-size: 0;
