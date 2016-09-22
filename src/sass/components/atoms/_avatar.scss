@@ -1,40 +1,29 @@
 .avatar {
   $size: 40px;
 
-  display: block;
-  position: relative;
-  text-align: right;
+  display: inline-flex;
+  align-items: center;
 
-  &__inner {
-    display: table;
-    table-layout: fixed;
+  &__body {
+    text-align: right;
+    letter-spacing: .04em;
   }
 
-  &__icon,
-  &__text {
-    display: table-cell;
-    vertical-align: middle;
+  &__primary {
+    margin: 0 0 .1em;
+    font-size: 1rem;
+  }
+
+  &__secondary {
+    font-size: .62rem;
   }
 
   &__icon {
     @include size($size);
-    margin-top: -$size / 2;
+    margin-left: 10px;
     border-radius: 50%;
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: center;
     background-size: 105%;
-  }
-
-  &__text {
-    padding-right: 10px;
-    letter-spacing: .05em;
-  }
-
-  &__name {
-    font-size: 1rem;
-  }
-
-  &__email {
-    font-size: .75rem;
   }
 }

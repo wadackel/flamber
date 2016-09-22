@@ -2,8 +2,8 @@ Basic:
 
 ```
 <Avatar
-  name="wadackel"
-  email="mail@example.com"
+  primary="wadackel"
+  secondary="Sign in from Google"
   icon="/images/avatar-sample.png"
 />
 ```
