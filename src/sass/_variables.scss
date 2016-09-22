@@ -1,12 +1,13 @@
 //=== Colors
-$gray-dark: #1a1a1a;
-$gray: #212121;
-$gray-light: #2d2d2d;
-$gray-lighter: #929292;
-$gray-lightest: #bfbfbf;
+$gray-darkest: #161819;
+$gray-dark: #25282a;
+$gray: #303436;
+$gray-light: #42494c;
+$gray-lighter: #565d62;
+$gray-lightest: #e0e0e0;
 
-$brand-primary: #00adb5;
-$brand-secondary: #000; //TODO
+$brand-primary: #50e3c2;
+$brand-secondary: #00ADB5;
 $brand-success: #00897a;
 $brand-info: #0180aa;
 $brand-warning: #f9a42b;
@@ -49,7 +50,7 @@ $transition-easing: cubic-bezier(0, 0, .2, 1);
 
 //=== Base
 $color-root: $gray-lightest;
-$background-root: $gray;
+$background-root: $gray-light;
 
 
 //=== Typography

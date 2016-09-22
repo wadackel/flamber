@@ -4,7 +4,7 @@
 .ReactStyleguidist-Props__heading,
 .ReactStyleguidist-Props__cellHeading,
 .ReactStyleguidist-Layout__heading {
-  color: #b9b9b9;
+  color: #e0e0e0;
 }
 
 .ReactStyleguidist-colors__border {
@@ -12,11 +12,11 @@
 }
 
 .ReactStyleguidist-colors__base-bg {
-  background: #1a1a1a;
+  background: #42494c;
 }
 
 .ReactStyleguidist-Layout__sidebar {
-  background: #1a1a1a;
+  background: #25282a;
 }
 
 .ReactStyleguidist-Playground__root {
