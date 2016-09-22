@@ -6,7 +6,7 @@ import MDSpinner from "react-md-spinner";
 import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import {
-  DriveCapacity,
+  UploadStatus,
   RaisedButton,
   RadioGroup,
   Radio
@@ -56,8 +56,8 @@ export class SettingsPage extends Component {
 
     return (
       <div className={b()}>
-        <DriveCapacity
-          className={b("drive-capacity")()}
+        <UploadStatus
+          className={b("status")()}
           limit={parseInt(user.limit, 10)}
           usage={parseInt(user.usage, 10)}
         />

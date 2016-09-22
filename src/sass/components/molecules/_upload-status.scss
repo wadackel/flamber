@@ -1,0 +1,24 @@
+.upload-status {
+  display: block;
+  font-size: 1rem;
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    margin: 0 0 10px;
+    line-height: 1;
+  }
+
+  &__logo {
+    svg {
+      @include size(1em);
+    }
+  }
+
+  &__usage {
+    flex: 1 0 auto;
+    font-size: .75em;
+    text-align: right;
+    letter-spacing: .05em;
+  }
+}

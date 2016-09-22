@@ -5,7 +5,7 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import {
   Popover,
-  DriveCapacity,
+  UploadStatus,
   FlatButton
 } from "../";
 
@@ -68,8 +68,8 @@ export default class UserDropDown extends React.Component {
         onRequestClose={this.handleRequestClose}
       >
         <div className={mergeClassNames(b(), className)}>
-          <DriveCapacity
-            className={b("capacity")()}
+          <UploadStatus
+            className={b("status")()}
             limit={limit}
             usage={usage}
           />
