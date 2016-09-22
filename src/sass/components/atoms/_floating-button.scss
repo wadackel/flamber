@@ -8,7 +8,7 @@ $button-colors: (
     ),
     hover: (
       color: $gray-dark,
-      background: darken(#fff, 8%)
+      background: darken(#fff, 20%)
     )
   ),
 
@@ -19,7 +19,7 @@ $button-colors: (
     ),
     hover: (
       color: #fff,
-      background: darken($button-color-primary, 8%)
+      background: darken($button-color-primary, 20%)
     )
   ),
 
@@ -70,12 +70,16 @@ $button-colors: (
 
   @each $type, $values in $button-colors {
     &--#{$type} {
-      @each $modifier, $values in $values {
+      &:focus {
+        background-color: map-deep-get($values, hover, background);
+      }
+
+      @each $modifier, $colors in $values {
         @if $modifier == default {
-          background-color: map-get($values, background);
+          background-color: map-get($colors, background);
         } @else {
           &:#{$modifier} {
-            background-color: map-get($values, background);
+            background-color: map-get($colors, background);
           }
         }
       }

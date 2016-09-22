@@ -30,7 +30,9 @@ export default class Button extends React.Component {
     onMouseLeave: PropTypes.func,
     onKeyDown: PropTypes.func,
     onKeyUp: PropTypes.func,
-    onKeyPress: PropTypes.func
+    onKeyPress: PropTypes.func,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func
   };
 
   static defaultProps = {
@@ -43,9 +45,9 @@ export default class Button extends React.Component {
     },
     tooltipPositions: {
       top: "90%",
-      right: "90%",
+      right: "10%",
       bottom: "90%",
-      left: "90%"
+      left: "10%"
     },
     onClick: () => {},
     onMouseDown: () => {},
@@ -53,7 +55,9 @@ export default class Button extends React.Component {
     onMouseLeave: () => {},
     onKeyDown: () => {},
     onKeyUp: () => {},
-    onKeyPress: () => {}
+    onKeyPress: () => {},
+    onFocus: () => {},
+    onBlur: () => {}
   };
 
   constructor(props, context) {
@@ -168,7 +172,9 @@ export default class Button extends React.Component {
       onMouseLeave, // eslint-disable-line no-unused-vars
       onKeyDown,
       onKeyUp,
-      onKeyPress
+      onKeyPress,
+      onFocus,
+      onBlur
     } = this.props;
 
     const {
@@ -183,8 +189,12 @@ export default class Button extends React.Component {
     const iconRightElement = this.createIcon(iconRight, b("icon", _.assign(modifier, { right: true }))());
     const bodyClass = b("body", modifier)();
     const bodyElement = !href
-      ? <button className={bodyClass}>{iconElement}{labelElement}{iconRightElement}</button>
-      : <a className={bodyClass} href={href} target={target}>{iconElement}{labelElement}{iconRightElement}</a>;
+      ? <button className={bodyClass} tabIndex="-1">
+          {iconElement}{labelElement}{iconRightElement}
+        </button>
+      : <a className={bodyClass} href={href} target={target} tabIndex="-1">
+          {iconElement}{labelElement}{iconRightElement}
+        </a>;
 
     const events = disable ? {} : {
       onMouseDown: this.handleMouseDown,
@@ -193,7 +203,9 @@ export default class Button extends React.Component {
       onClick,
       onKeyDown,
       onKeyUp,
-      onKeyPress
+      onKeyPress,
+      onFocus,
+      onBlur
     };
 
     return (
@@ -201,6 +213,7 @@ export default class Button extends React.Component {
         ref="element"
         className={mergeClassNames(b(modifier)(), className)}
         style={style}
+        tabIndex={disable ? null : 0}
         {...events}
       >
         <div className={b("ripple-container")()}>{ripples}</div>

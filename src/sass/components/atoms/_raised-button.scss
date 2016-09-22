@@ -6,7 +6,7 @@ $button-colors: (
     ),
     hover: (
       color: $gray-dark,
-      background: darken(#fff, 8%)
+      background: darken(#fff, 20%)
     )
   ),
 
@@ -17,7 +17,18 @@ $button-colors: (
     ),
     hover: (
       color: #fff,
-      background: darken($button-color-primary, 8%)
+      background: darken($button-color-primary, 20%)
+    )
+  ),
+
+  secondary: (
+    default: (
+      color: #fff,
+      background: $button-color-secondary
+    ),
+    hover: (
+      color: #fff,
+      background: darken($button-color-secondary, 8%)
     )
   ),
 
@@ -28,7 +39,7 @@ $button-colors: (
     ),
     hover: (
       color: #fff,
-      background: darken($button-color-danger, 8%)
+      background: darken($button-color-danger, 10%)
     )
   ),
 );
@@ -43,21 +54,21 @@ $button-colors: (
 
   @each $type, $values in $button-colors {
     &--#{$type} {
-      @each $modifier, $values in $values {
+      &:focus {
+        background-color: map-deep-get($values, hover, background);
+      }
+
+      @each $modifier, $colors in $values {
         @if $modifier == default {
-          background-color: map-get($values, background);
-          color: map-get($values, color);
+          background-color: map-get($colors, background);
+          color: map-get($colors, color);
         } @else {
           &:#{$modifier} {
-            background-color: map-get($values, background);
-            color: map-get($values, color);
+            background-color: map-get($colors, background);
+            color: map-get($colors, color);
           }
         }
       }
-    }
-
-    &__icon--#{$type} {
-      fill: map-deep-get($values, default, color);
     }
   }
 }

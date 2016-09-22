@@ -20,6 +20,10 @@ $button-sizes: (
     }
   }
 
+  &:focus {
+    background: rgba(#fff, .1);
+  }
+
   &__ripple-container {
     overflow: visible;
   }

@@ -7,6 +7,12 @@
   color: #e0e0e0;
 }
 
+.ReactStyleguidist-colors__link,
+.ReactStyleguidist-colors__link:link,
+.ReactStyleguidist-colors__link:visited {
+  color: #50e3c2;
+}
+
 .ReactStyleguidist-colors__border {
   border-color: #484848;
 }

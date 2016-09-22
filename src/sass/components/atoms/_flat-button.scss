@@ -12,10 +12,14 @@ $button-colors: (
   box-shadow: none !important;
 
   &:not(&--disable):hover {
-    background: rgba(lighten($background-root, 8%), .4);
+    background: rgba(#000, .12);
   }
 
   @each $modifier, $color in $button-colors {
+    &:focus {
+      background: rgba(#000, .12);
+    }
+
     &--#{$modifier} {
       color: $color;
     }
@@ -27,5 +31,6 @@ $button-colors: (
 
   &--disable {
     color: $gray-lightest;
+    opacity: .6;
   }
 }

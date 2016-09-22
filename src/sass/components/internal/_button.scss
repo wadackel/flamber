@@ -23,7 +23,7 @@ $button-icon-margin: 8px;
 
 
 %button-root {
-  $shadow-color: rgba(0, 0, 0, .11);
+  $shadow-color: rgba(#000, .11);
 
   @include transition(all);
   display: inline-block;
@@ -32,6 +32,7 @@ $button-icon-margin: 8px;
   font-size: 1rem;
   text-align: center;
   box-shadow: 0 2px 6px $shadow-color, 0 2px 4px $shadow-color;
+  line-height: 1;
   cursor: pointer;
   user-select: none;
 
@@ -42,6 +43,11 @@ $button-icon-margin: 8px;
 
 %button-root-disable {
   cursor: default;
+}
+
+%button-root-focus {
+  box-shadow: none;
+  outline: none;
 }
 
 
@@ -62,7 +68,9 @@ $button-icon-margin: 8px;
 
 
 %button-body {
-  display: block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   width: 100%;
   margin: 0;
@@ -72,7 +80,7 @@ $button-icon-margin: 8px;
   background: transparent;
   color: inherit;
   font-size: inherit;
-  line-height: 1;
+  line-height: inherit;
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
@@ -102,14 +110,10 @@ $button-icon-margin: 8px;
 
 
 %button-icon {
-  display: inline-block;
   margin: 0 $button-icon-margin 0 0;
-  vertical-align: middle;
 
   svg {
     @include size(1rem);
-    vertical-align: baseline;
-    fill: currentColor;
   }
 }
 
@@ -122,6 +126,10 @@ $button-icon-margin: 8px;
 
 @mixin button-extend-all() {
   @extend %button-root;
+
+  &:focus {
+    @extend %button-root-focus;
+  }
 
   &--disable {
     @extend %button-root-disable;
