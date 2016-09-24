@@ -5,7 +5,6 @@ import deepEqual from "deep-equal";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import MDSpinner from "react-md-spinner";
 import * as Layout from "../../../constants/layouts";
 import * as AuthActions from "../../../actions/auth";
 import * as SettingActions from "../../../actions/settings";
@@ -22,7 +21,8 @@ import {
   LayoutButtonGroup,
   LayoutButton,
   SearchField,
-  Slider
+  Slider,
+  Spinner
 } from "../../../components/ui/";
 import {
   TagsIcon,
@@ -210,7 +210,7 @@ export class HeaderContainer extends Component {
             value={boardName}
             onComplete={this.handleBoardNameComplete}
           />
-          <MDSpinner
+          <Spinner
             size={20}
             style={{
               visibility: currentBoard.isUpdating ? "visible" : "hidden",

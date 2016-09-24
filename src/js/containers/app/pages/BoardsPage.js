@@ -1,7 +1,6 @@
 /* eslint-disable */
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
-import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../../helpers/bem";
@@ -18,7 +17,8 @@ import {
   EmptyData,
   ToolBox,
   SortSwitcher,
-  RaisedButton
+  RaisedButton,
+  Spinner
 } from "../../../components/ui/";
 
 const b = bem("boards-page");
@@ -89,7 +89,7 @@ export class BoardsPage extends Component {
 
     if (!ExecutionEnvironment.canUseDOM || !boards.isFetching) return null;
 
-    return <MDSpinner className={b("fetching-spinner")()} />;
+    return <Spinner className={b("fetching-spinner")()} />;
   }
 
   render() {

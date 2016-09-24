@@ -1,10 +1,9 @@
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
-import MDSpinner from "react-md-spinner";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import Button from "../internal/Button";
-import { TextField, IconButton } from "../";
+import { TextField, IconButton, Spinner } from "../";
 import { PencilIcon, TrashIcon } from "../../svg-icons/";
 
 const b = bem("list-item");
@@ -178,7 +177,7 @@ export default class ListItem extends Component {
           />
         }
         {processing &&
-          <MDSpinner
+          <Spinner
             className={b("processing-spinner")()}
             size={16}
           />

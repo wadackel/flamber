@@ -2,7 +2,6 @@
 import _ from "lodash";
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
-import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as OrderBy from "../../../constants/order-by";
@@ -27,7 +26,8 @@ import {
   ToolBox,
   IconMenu,
   MenuItem,
-  SortSwitcher
+  SortSwitcher,
+  Spinner
 } from "../../../components/ui/";
 import {
   FolderIcon,
@@ -152,7 +152,7 @@ export class ItemsContainer extends Component {
       return null;
     }
 
-    return <MDSpinner className={b("fetching-spinner")()} />;
+    return <Spinner className={b("fetching-spinner")()} />;
   }
 
   render() {

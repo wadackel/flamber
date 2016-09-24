@@ -2,10 +2,10 @@ import _ from "lodash";
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import SizeMe from "react-sizeme";
-import MDSpinner from "react-md-spinner";
 import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import { Spinner } from "../";
 
 const IScroll = ExecutionEnvironment.canUseDOM ? require("iscroll") : null;
 const b = bem("image-viewer");
@@ -283,9 +283,7 @@ class ImageViewerInline extends Component {
           onClick={onBodyClick}
         >
           {status === Status.LOADING &&
-            <MDSpinner
-              className={b("spinner")()}
-            />
+            <Spinner className={b("spinner")()} />
           }
           {status === Status.LOADED &&
             <div

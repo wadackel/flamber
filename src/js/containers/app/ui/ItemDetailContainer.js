@@ -3,7 +3,6 @@ import _ from "lodash";
 import autoBind from "auto-bind";
 import moment from "moment";
 import React, { Component, PropTypes } from "react";
-import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as OrderBy from "../../../constants/order-by";
@@ -25,7 +24,8 @@ import {
   ItemDetailTagContainer
 } from "./";
 import {
-  Drawer
+  Drawer,
+  Spinner
 } from "../../../components/ui/";
 import {
   MoreVertIcon

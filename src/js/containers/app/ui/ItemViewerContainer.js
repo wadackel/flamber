@@ -4,7 +4,6 @@ import autoBind from "auto-bind";
 import uuid from "node-uuid";
 import React, { Component, PropTypes } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-import MDSpinner from "react-md-spinner";
 import { connect } from "react-redux";
 import ExecutionEnvironment from "../../../constants/execution-environment";
 const dataURLtoBlob = ExecutionEnvironment.canUseDOM ? require("blueimp-canvas-to-blob") : null;
@@ -29,7 +28,8 @@ import {
   IconMenu,
   StarButton,
   MenuItem,
-  CancelableEditText
+  CancelableEditText,
+  Spinner
 } from "../../../components/ui/";
 import {
   PencilIcon,
@@ -188,7 +188,7 @@ export class ItemViewerContainer extends Component {
               value={currentItem.name}
               onComplete={this.handleItemNameComplete}
             />
-            <MDSpinner
+            <Spinner
               size={14}
               style={{
                 visibility: currentItem.isNameUpdating ? "visible" : "hidden",

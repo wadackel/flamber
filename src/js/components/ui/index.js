@@ -51,6 +51,7 @@ export SelectColorPopover from "./SelectColorPopover/SelectColorPopover";
 export Slider from "./Slider/Slider";
 export Snackbar from "./Snackbar/Snackbar";
 export SortSwitcher from "./SortSwitcher/SortSwitcher";
+export Spinner from "./Spinner/Spinner";
 export StarButton from "./StarButton/StarButton";
 export Tag from "./Tag/Tag";
 export TagInput from "./TagInput/TagInput";

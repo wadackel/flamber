@@ -2,9 +2,9 @@ import _ from "lodash";
 import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component, PropTypes } from "react";
-import MDSpinner from "react-md-spinner";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import { Spinner } from "../";
 import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("chip");
@@ -102,7 +102,7 @@ export default class Chip extends Component {
       focused: (clickable && focused) || (deletable && focused)
     };
 
-    const spinnerIcon = processing && <MDSpinner
+    const spinnerIcon = processing && <Spinner
       className={b("spinner")()}
       size={18}
       style={{ position: "absolute", display: "block" }}

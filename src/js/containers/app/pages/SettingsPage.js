@@ -2,14 +2,14 @@
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import MDSpinner from "react-md-spinner";
 import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import {
   UploadStatus,
   RaisedButton,
   RadioGroup,
-  Radio
+  Radio,
+  Spinner
 } from "../../../components/ui/";
 import { GithubIcon } from "../../../components/svg-icons";
 import { deleteAppRequest } from "../../../actions/application";
@@ -64,7 +64,7 @@ export class SettingsPage extends Component {
 
         <section className={b("group")()}>
           <h3 className={b("group__title")()}>
-            {settings.isThemeUpdating && <MDSpinner
+            {settings.isThemeUpdating && <Spinner
               size={14}
               style={{ marginRight: 5 }}
             />}

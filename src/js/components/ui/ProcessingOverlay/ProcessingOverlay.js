@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import MDSpinner from "react-md-spinner";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import { Spinner } from "../";
 
 const b = bem("processing-overlay");
 
@@ -32,7 +32,7 @@ export default class ProcessingOverlay extends Component {
     return (
       <div className={mergeClassNames(b(modifier)(), className)} style={style}>
         {show &&
-          <MDSpinner
+          <Spinner
             className={b("spinner", modifier)()}
             size={spinnerSize}
             style={{ position: "absolute" }}
