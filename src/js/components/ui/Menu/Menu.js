@@ -96,7 +96,7 @@ export default class Menu extends React.Component {
         break;
 
       case "esc":
-        this.props.onEscKeyDown();
+        this.props.onEscKeyDown(e);
         break;
 
       case "tab":

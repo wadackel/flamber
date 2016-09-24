@@ -58,7 +58,10 @@ export default class AutoComplete extends React.Component {
     openOnFocus: false,
     searchText: "",
     maxSearchResults: -1,
-    filter: (searchText, key) => searchText === "" || key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1,
+    // filter: (searchText, key) => searchText === "" || key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1,
+    filter: (searchText, key) => {
+      return searchText === "" || (searchText !== key && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
+    },
     menuCloseDelay: 300,
     onNewRequest: () => {},
     onUpdateInput: () => {},
@@ -188,7 +191,6 @@ export default class AutoComplete extends React.Component {
 
   handleEscKeyDown() {
     this.close();
-    this.focus();
   }
 
   handleUpdateFocusIndex(index) {
