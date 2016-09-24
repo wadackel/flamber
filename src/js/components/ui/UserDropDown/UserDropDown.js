@@ -19,6 +19,7 @@ export default class UserDropDown extends React.Component {
     usage: PropTypes.number,
     triggerElement: PropTypes.object,
     triggerOrigin: OriginPropTypes.origin,
+    onRequestOptions: PropTypes.func,
     onRequestSignOut: PropTypes.func,
     onRequestClose: PropTypes.func
   };
@@ -29,6 +30,7 @@ export default class UserDropDown extends React.Component {
       vertical: "bottom",
       horizontal: "right"
     },
+    onRequestOptions: () => {},
     onRequestSignOut: () => {},
     onRequestClose: () => {}
   };
@@ -40,6 +42,10 @@ export default class UserDropDown extends React.Component {
 
   handleRequestClose() {
     this.props.onRequestClose();
+  }
+
+  handleOptionsClick() {
+    this.props.onRequestOptions();
   }
 
   handleSignOutClick() {
@@ -75,10 +81,16 @@ export default class UserDropDown extends React.Component {
           />
           <div className={b("footer")()}>
             <FlatButton
-              className={b("sign-out")()}
+              className={b("action")()}
+              onClick={this.handleOptionsClick}
+            >
+              オプション
+            </FlatButton>
+            <FlatButton
+              className={b("action")()}
               onClick={this.handleSignOutClick}
             >
-              SignOut
+              ログアウト
             </FlatButton>
           </div>
         </div>

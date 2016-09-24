@@ -1,14 +1,18 @@
 .user-drop-down {
   position: relative;
-  width: 300px;
+  width: 320px;
   padding: 20px 20px 10px;
   background: #fff;
   color: $gray;
   font-size: 1rem;
 
   &__status {
+    .upload-status__logo {
+      color: darken(#fff, 30%);
+    }
+
     .progress-bar {
-      background: #ccc;
+      background: rgba(#000, .2);
     }
   }
 
@@ -17,16 +21,16 @@
     text-align: right;
   }
 
-  &__sign-out {
+  &__action {
     color: inherit !important;
     font-size: .75em !important;
 
     .flat-button__ripple {
-      background: rgba(#000, .2);
+      background-color: rgba(#000, .1);
     }
 
-    &:hover {
-      background-color: darken(#fff, 15%) !important;
+    & + & {
+      margin-left: 10px;
     }
   }
 }

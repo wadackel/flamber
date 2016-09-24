@@ -10,7 +10,6 @@ class UserDropDownExample extends React.Component {
     };
     this.handleIconClick = this.handleIconClick.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   handleIconClick(e) {
@@ -24,26 +23,23 @@ class UserDropDownExample extends React.Component {
     this.setState({ open: false });
   }
 
-  handleSignOut() {
-    console.log("SIGN_OUT");
-  }
-
   render() {
     return (
       <div>
         <Avatar
-          name="wadackel"
-          email="mail@example.com"
+          primary="wadackel"
+          secondary="Sign in from Google"
           icon="/images/avatar-sample.png"
           onIconClick={this.handleIconClick}
         />
         <UserDropDown
           open={this.state.open}
           triggerElement={this.state.triggerElement}
-          limit={16106127360}
-          usage={2195751968}
+          limit={200}
+          usage={126}
           onRequestClose={this.handleRequestClose}
-          onRequestSignOut={this.handleSignOut}
+          onRequestOptions={() => console.log("OPTIONS")}
+          onRequestSignOut={() => console.log("SIGN_OUT")}
         />
       </div>
     );
