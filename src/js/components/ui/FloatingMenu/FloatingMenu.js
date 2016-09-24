@@ -13,40 +13,48 @@ const b = bem("floating-menu");
 export default class FloatingMenu extends Component {
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
+    open: PropTypes.bool,
+    onRequestOpen: PropTypes.func,
+    onRequestClose: PropTypes.func
   };
+
+  static defaultProps = {
+    open: false,
+    onRequestOpen: () => {},
+    onRequestClose: () => {}
+  }
 
   constructor(props, context) {
     super(props, context);
-
-    this.state = { open: false };
-
     autoBind(this);
   }
 
   handleToggleClick() {
-    this.setState({
-      open: !this.state.open
-    });
+    if (this.props.open) {
+      this.props.onRequestClose();
+    } else {
+      this.props.onRequestOpen();
+    }
   }
 
   render() {
     const {
       children,
-      className
+      className,
+      open
     } = this.props;
 
-    const { open } = this.state;
     const modifier = { open };
-
-    const translateY = 30;
-    const childrenCount = React.Children.count(children);
-    const cloneChildren = React.Children.map(children, (child, index) =>
+    const translateY = 70;
+    const childArray = React.Children.toArray(children);
+    const childrenCount = childArray.length;
+    const cloneChildren = childArray.map((child, index) =>
       React.cloneElement(child, {
         key: index,
         className: b("item", modifier)(),
         style: prefixer.prefix({
-          transform: `translateY(${translateY * (childrenCount - index - 1)}px)`
+          transform: `scale(.1) translateY(${translateY * (childrenCount - index)}px)`
         })
       })
     );

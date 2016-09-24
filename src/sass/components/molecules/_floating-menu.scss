@@ -14,10 +14,10 @@
 
     &--open {
       transform: scale(.95);
-      background: $gray-lightest !important;
+      background: darken($gray-lightest, 20%) !important;
 
       &:hover {
-        background: darken($gray-lightest, 20%) !important;
+        background: darken($gray-lightest, 40%) !important;
       }
 
       .floating-button__icon {
@@ -29,7 +29,8 @@
   &__list {
     @include absolute(auto, 0, 100%, 0, 5);
     @include transition(all, $transition-duration-fast);
-    transform: translateY(30px) scale(.7);
+    transform: translateY(70px) scale(.1);
+    transform-origin: 50% 100%;
     opacity: 0;
     visibility: hidden;
 
@@ -50,7 +51,7 @@
     visibility: hidden;
 
     &--open {
-      transform: translateY(0) !important;
+      transform: scale(1) translateY(0) !important;
       opacity: 1;
       visibility: visible;
     }
