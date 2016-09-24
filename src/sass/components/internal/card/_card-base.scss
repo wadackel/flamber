@@ -1,0 +1,157 @@
+@mixin card-base() {
+  @include transition(box-shadow, 120ms);
+  display: block;
+  position: relative;
+  border-radius: $card-border-radius;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(#000, .22), 0 2px 6px rgba(#000, .22);
+
+  &--selected {
+    box-shadow: 0 0 0 2px $brand-primary;
+  }
+
+
+  // Processing overlay
+  &__processing-overlay {
+    border-radius: $card-border-radius;
+    z-index: 20 !important;
+  }
+
+
+  // Media
+  &__media {
+    position: relative;
+    height: 0;
+    padding-bottom: 74%;
+    border-bottom: 1px solid $gray-lightest;
+    border-radius: $card-border-radius $card-border-radius 0 0;
+
+    &__overlay {
+      @include absolute(0, 0, 0, 0, 10);
+      backface-visibility: hidden;
+    }
+
+    &__item {
+      @include absolute(0, 0, 0, 0, 1);
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+
+      &--selected {
+        filter: blur(5px);
+      }
+    }
+
+    &__spinner {
+      position: absolute !important;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+    }
+  }
+
+
+  // More
+  &__more {
+    display: inline-block;
+
+    &__actions {
+      @include transition(all, $card-duration);
+      display: inline-block;
+      position: relative;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1;
+
+      &--show {
+        opacity: 1;
+        visibility: visible;
+        z-index: 2;
+      }
+    }
+
+    &__action {
+      @include transition(all, $card-duration);
+      display: inline-block;
+      transform: translateY(-15px);
+      opacity: 0;
+      visibility: hidden;
+
+      &--show {
+        display: inline-block;
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    &__trigger {
+      @include absolute(0, 0, auto, auto, 2);
+      @include transition(all, $card-duration);
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+
+      &--show {
+        transform: translateY(-15px);
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1;
+      }
+
+      &--selected {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  }
+
+
+  // Body
+  &__body {
+    position: relative;
+    padding: 20px;
+    color: $gray-light;
+    z-index: 2;
+
+    a {
+      color: $gray-light;
+
+      &:hover {
+        color: $brand-primary;
+      }
+    }
+  }
+
+
+  // Title
+  &__title {
+    @include ellipsis;
+    margin: 0;
+    font-size: 1rem;
+  }
+
+
+  // Text
+  &__text {
+    @include ellipsis;
+    margin: .4em 0 0;
+    font-size: .62rem;
+  }
+
+
+  // Action
+  &__action {
+    @include absolute(16px, 10px);
+    color: $card-action-color;
+
+    .icon-button__ripple {
+      background: $card-action-ripple-color;
+    }
+  }
+}

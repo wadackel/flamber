@@ -1,5 +1,5 @@
 .board-card {
-  @include card-extend-all;
+  @include card;
 
   &::before,
   &::after {

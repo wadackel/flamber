@@ -1,5 +1,5 @@
 .feed-card {
-  @include card-extend-all;
+  @include card;
 
   &__favicon,
   &--list__favicon {

@@ -178,7 +178,7 @@ export default class ItemCard extends React.Component {
           </CardAction>
         </CardBody>
         <ColorBar
-          selectable
+          itemClickable
           className={b("colors")()}
           palette={colors}
         />

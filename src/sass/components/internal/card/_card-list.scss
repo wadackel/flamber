@@ -1,0 +1,89 @@
+@mixin card-list() {
+  display: block;
+  color: darken($gray-lightest, 25%);
+
+
+  // Inner
+  &__inner {
+    display: flex;
+    align-items: center;
+  }
+
+
+  // Col
+  &__col {
+    flex: 0 1 auto;
+    padding: 0 10px;
+
+    &--media {
+      flex-basis: 120px;
+      padding: 0;
+    }
+
+    &--body {
+      flex-grow: 1;
+      padding-left: 20px;
+    }
+
+    &--meta {
+      color: $card-action-color;
+
+      .icon-button__ripple {
+        background: $card-action-ripple-color;
+      }
+    }
+
+    &--more {
+      text-align: right;
+    }
+  }
+
+
+  // Media
+  &__media {
+    position: relative;
+    height: 80px;
+    border: none;
+    border-radius: $card-border-radius 0 0 $card-border-radius;
+    overflow: hidden;
+  }
+
+
+  // Label
+  &__label {
+    font-size: .87rem;
+
+    svg {
+      @include size(.9em);
+    }
+  }
+
+
+  // Body
+  &__body {
+    padding: 0;
+    color: inherit;
+  }
+
+
+  // Title
+  &__title {
+    color: $gray-light;
+    font-size: 1.25rem;
+  }
+
+
+  // More
+  &__more {
+    position: relative;
+    color: $card-action-color;
+
+    &__action {
+      &--show {
+        .icon-button__ripple {
+          background: $card-action-ripple-color;
+        }
+      }
+    }
+  }
+}

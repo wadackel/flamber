@@ -1,0 +1,11 @@
+@mixin card-gallery() {
+  @include card-grid;
+
+  &__media {
+    min-height: 150px;
+
+    &__item {
+      background-size: contain;
+    }
+  }
+}
