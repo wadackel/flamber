@@ -5,11 +5,11 @@ import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("color-bar");
 
+
 class ColorBarItem extends Component {
   static propTypes = {
-    color: PropTypes.string,
-    selectable: PropTypes.bool,
-    selected: PropTypes.bool,
+    color: PropTypes.any,
+    clickable: PropTypes.bool,
     onClick: PropTypes.func
   };
 
@@ -18,104 +18,91 @@ class ColorBarItem extends Component {
     autoBind(this);
   }
 
-  handleClick(e) {
-    e.preventDefault();
-    this.props.onClick(e, this.props.color);
+  handleClick() {
+    this.props.onClick(this.props.color);
   }
 
   render() {
-    const { color, selectable, selected } = this.props;
+    const { color, clickable } = this.props;
+    const modifier = { clickable };
 
     return (
       <span
-        className={b("item", { selectable, selected })()}
-        style={{ backgroundColor: color }}
-        onClick={this.handleClick}
+        className={b("item", modifier)()}
+        style={{
+          backgroundColor: color
+        }}
+        onClick={clickable ? this.handleClick : null}
       />
     );
   }
 }
 
-export default class ColorBar extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    selectable: PropTypes.bool,
-    palette: PropTypes.array,
-    color: PropTypes.string,
-    onClick: PropTypes.func,
-    onItemClick: PropTypes.func,
-    onChange: PropTypes.func
-  };
 
-  static defaultProps = {
-    selectable: false,
-    palette: [
-      "#992220",
-      "#d2241e",
-      "#ec6598",
-      "#4b4fa8",
-      "#1da6d4",
-      "#78d2d2",
-      "#87cf3b",
-      "#4b7610",
-      "#787710",
-      "#fffc00",
-      "#ffa400",
-      "#ff780d",
-      "#784b1b",
-      "#222222",
-      "#808080",
-      "#ffffff"
-    ],
-    color: null,
-    onClick: () => {},
-    onItemClick: () => {},
-    onChange: () => {}
-  };
+export default function ColorBar({
+  className,
+  clickable,
+  itemClickable,
+  lineWidth,
+  palette,
+  onClick,
+  onItemClick
+}) {
+  const children = palette.map(color =>
+    <ColorBarItem
+      color={color}
+      clickable={itemClickable}
+      onClick={onItemClick}
+    />
+  );
 
-  constructor(props, context) {
-    super(props, context);
-    autoBind(this);
-  }
+  const modifier = { clickable };
 
-  handleItemClick(e, color) {
-    this.props.onItemClick(e, color);
-
-    if (this.props.selectable) {
-      this.props.onChange(this.props.color !== color ? color : null);
-    }
-  }
-
-  render() {
-    const {
-      className,
-      selectable,
-      palette,
-      color,
-      onClick
-    } = this.props;
-
-    const items = palette.map(value =>
-      <ColorBarItem
-        key={value}
-        color={value}
-        selectable={selectable}
-        selected={color === value}
-        onClick={this.handleItemClick}
-      />
-    );
-
-    const modifier = { selectable };
-
-    return (
-      <div
-        className={mergeClassNames(b(modifier)(), className)}
-        onClick={onClick}
-      >
-        <div className={b("list", modifier)()}>
-          {items}
-        </div>
+  return (
+    <div
+      className={mergeClassNames(b(modifier)(), className)}
+      onClick={clickable ? onClick : null}
+      style={{ height: lineWidth }}
+    >
+      <div className={b("inner")()}>
+        {children}
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+ColorBar.propTypes = {
+  className: PropTypes.string,
+  clickable: PropTypes.bool,
+  itemClickable: PropTypes.bool,
+  lineWidth: PropTypes.number,
+  palette: PropTypes.array,
+  onClick: PropTypes.func,
+  onItemClick: PropTypes.func
+};
+
+ColorBar.defaultProps = {
+  clickable: false,
+  itemClickable: false,
+  lineWidth: 8,
+  palette: [
+    "#992220",
+    "#d2241e",
+    "#ec6598",
+    "#4b4fa8",
+    "#1da6d4",
+    "#78d2d2",
+    "#87cf3b",
+    "#4b7610",
+    "#787710",
+    "#fffc00",
+    "#ffa400",
+    "#ff780d",
+    "#784b1b",
+    "#222222",
+    "#808080",
+    "#ffffff"
+  ],
+  onClick: () => {},
+  onItemClick: () => {}
+};

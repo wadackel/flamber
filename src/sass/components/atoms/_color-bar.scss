@@ -1,34 +1,39 @@
 .color-bar {
+  position: relative;
   display: block;
-  cursor: pointer;
 
-  &__list {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
+  &--clickable {
+    @include transition(all);
+    cursor: pointer;
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+  &__inner {
+    display: flex;
+    height: 100%;
   }
 
   &__item {
-    display: table-cell;
-    height: 8px;
+    flex: 1 1 auto;
+    height: 100%;
 
-    &--selectable {
-      @include transition(all, 120ms);
-      height: 20px;
-      transform: scaleY(.1);
-      transform-origin: top left;
+    &--clickable {
+      @include transition(all, $transition-duration-fast);
+      position: relative;
+      transform: scale(1, 1);
       cursor: pointer;
 
       &:hover {
-        transform: scaleY(.4);
+        box-shadow: 0 1px 3px rgba(#000, .16), 0 1px 5px rgba(#000, .16);
+        transform: scale(1.2, 2);
+        z-index: 10;
       }
-    }
 
-    &--selected {
-      transform: scaleY(.5);
-
-      &:hover {
-        transform: scaleY(.5);
+      &:active {
+        transform: scale(1.1, 1.8);
       }
     }
   }

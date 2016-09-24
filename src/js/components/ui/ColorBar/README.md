@@ -3,40 +3,35 @@ Basic:
 ```
 <div>
   <ColorBar
-    palette={["#1da6d4", "#fffc00", "#ffffff"]}
+    palette={["#1da6d4", "#fffc00", "#fff"]}
+    onClick={console.log}
+  />
+
+  <div style={{ marginBottom: 20 }} />
+
+  <ColorBar
+    clickable
+    palette={["#1da6d4", "#fffc00", "#fff"]}
+    onClick={console.log}
+  />
+
+  <div style={{ marginBottom: 20 }} />
+
+  <ColorBar
+    palette={["#1da6d4", "#fffc00", "#fff"]}
+    lineWidth={2}
+    onClick={console.log}
   />
 </div>
 ```
 
 
-Selectable:
+Clickable item:
 
 ```
-class ColorBarSelectableExample extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      color: ""
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(color) {
-    this.setState({ color });
-  }
-
-  render() {
-    return (
-      <div>
-        <ColorBar
-          selectable
-          color={this.state.color}
-          onChange={this.handleChange}
-        />
-      </div>
-    );
-  }
-}
-
-<ColorBarSelectableExample />
+<ColorBar
+  itemClickable
+  onClick={console.log}
+  onItemClick={console.log}
+/>
 ```
