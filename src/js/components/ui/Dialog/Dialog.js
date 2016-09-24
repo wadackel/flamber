@@ -25,6 +25,7 @@ class DialogInline extends Component {
     actions: PropTypes.node,
     open: PropTypes.bool.isRequired,
     escClose: PropTypes.bool,
+    onAfterOpen: PropTypes.func,
     onRequestClose: PropTypes.func.isRequired,
     onDragEnter: PropTypes.func,
     onDragOver: PropTypes.func,
@@ -55,15 +56,16 @@ class DialogInline extends Component {
     if (dialog && this.afterRenderFocus) {
       this.afterRenderFocus = false;
       dialog.focus();
+
+      this.props.onAfterOpen();
     }
   }
 
   handleKeyDown(e) {
     const { open } = this.props;
-    const { dialog } = this.refs;
     const key = keycode(e);
 
-    if (open && key === "esc" && e.target === dialog) {
+    if (open && key === "esc") {
       this.requestClose();
     }
   }
@@ -107,7 +109,8 @@ class DialogInline extends Component {
 
     return (
       <div className={b("header", { open })()}>
-        <h3 className={b("title")()}>{titleIconElement}{title}</h3>
+        {titleIconElement}
+        <h3 className={b("title")()}>{title}</h3>
         <IconButton
           className={b("close")()}
           icon={<CloseIcon />}
@@ -203,6 +206,7 @@ export default class Dialog extends React.Component {
     actions: PropTypes.node,
     open: PropTypes.bool.isRequired,
     escClose: PropTypes.bool,
+    onAfterOpen: PropTypes.func,
     onRequestClose: PropTypes.func.isRequired,
     onDragEnter: PropTypes.func,
     onDragOver: PropTypes.func,
@@ -214,6 +218,7 @@ export default class Dialog extends React.Component {
     width: 450,
     open: false,
     escClose: true,
+    onAfterOpen: () => {},
     onRequestClose: () => {},
     onDragEnter: () => {},
     onDragOver: () => {},

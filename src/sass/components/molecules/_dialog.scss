@@ -2,8 +2,8 @@
   @include relative(auto, auto, auto, auto, 1500);
   @include transition(all);
   display: block;
-  width: 400px;
-  border-radius: 3px;
+  width: 440px;
+  border-radius: 2px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
   opacity: 0;
@@ -163,9 +163,12 @@
   }
 
   &__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     padding: 40px 20px;
-    background: $brand-primary;
+    background: darken($brand-primary, 15%);
     color: #fff;
     text-align: center;
   }
@@ -178,26 +181,20 @@
   }
 
   &__icon {
-    vertical-align: middle;
+    margin-right: 10px;
+    color: rgba(#000, .2);
 
     svg {
       @include size(30px);
-      margin: 0 5px 0 0;
-      vertical-align: top;
-      fill: darken($brand-primary, 12%);
     }
   }
 
   &__close {
     @include absolute(10px, 10px);
-
-    svg {
-      opacity: .5;
-      fill: #fff !important;
-    }
+    color: rgba(#fff, .8);
 
     .icon-button__ripple {
-      background: lighten($brand-primary, 5%);
+      background: rgba(#fff, .4);
     }
   }
 

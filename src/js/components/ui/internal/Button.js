@@ -1,5 +1,6 @@
 import _ from "lodash";
 import autoBind from "auto-bind";
+import keycode from "keycode";
 import React, { PropTypes } from "react";
 import * as OriginalPropTypes from "../../../constants/prop-types";
 import Ripple from "./Ripple";
@@ -16,6 +17,7 @@ export default class Button extends React.Component {
     baseClassName: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     disable: PropTypes.bool,
+    enableKeyClick: PropTypes.bool,
     href: PropTypes.string,
     target: PropTypes.string,
     label: PropTypes.node,
@@ -38,6 +40,7 @@ export default class Button extends React.Component {
   static defaultProps = {
     type: "default",
     disable: false,
+    enableKeyClick: true,
     style: {},
     tooltipOrigin: {
       vertical: "top",
@@ -107,6 +110,16 @@ export default class Button extends React.Component {
     this.props.onMouseLeave(e);
   }
 
+  handleKeyDown(e) {
+    const key = keycode(e);
+
+    this.props.onKeyDown(e);
+
+    if (this.props.enableKeyClick && (key === "enter" || key === "space")) {
+      this.props.onClick(e);
+    }
+  }
+
   handleRippleHide() {
     const ripples = this.state.ripples.slice(1);
     this.setState({ ripples });
@@ -170,7 +183,7 @@ export default class Button extends React.Component {
       onClick,
       onMouseEnter, // eslint-disable-line no-unused-vars
       onMouseLeave, // eslint-disable-line no-unused-vars
-      onKeyDown,
+      onKeyDown, // eslint-disable-line no-unused-vars
       onKeyUp,
       onKeyPress,
       onFocus,
@@ -200,8 +213,8 @@ export default class Button extends React.Component {
       onMouseDown: this.handleMouseDown,
       onMouseEnter: this.handleMouseEnter,
       onMouseLeave: this.handleMouseLeave,
+      onKeyDown: this.handleKeyDown,
       onClick,
-      onKeyDown,
       onKeyUp,
       onKeyPress,
       onFocus,

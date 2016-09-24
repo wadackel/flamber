@@ -64,6 +64,10 @@ export default class AddBoardDialog extends Component {
     }
   }
 
+  handleAfterOpen() {
+    this.refs.boardName.focus();
+  }
+
   render() {
     const {
       className,
@@ -89,9 +93,11 @@ export default class AddBoardDialog extends Component {
             Add
           </FlatButton>
         ]}
+        onAfterOpen={this.handleAfterOpen}
         {...props}
       >
         <TextField
+          ref="boardName"
           label="Type board name"
           onChange={this.handleBoardNameChange}
           onEnter={this.handleAdd}
