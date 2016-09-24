@@ -60,7 +60,7 @@ export default class SortSwitcher extends Component {
     const isOrderAsc = order === Order.ASC;
 
     const children = types.map(({ value, name }) =>
-      <MenuItem key={value} value={value} text={name} />
+      <MenuItem key={value} value={value} primary={name} />
     );
 
     const orderIcon = isOrderAsc

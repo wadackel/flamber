@@ -9,7 +9,7 @@ export default class MenuItem extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
-    text: PropTypes.string,
+    primary: PropTypes.string,
     icon: PropTypes.element,
     index: PropTypes.number,
     value: PropTypes.any,

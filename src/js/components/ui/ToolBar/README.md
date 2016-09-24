@@ -15,9 +15,9 @@ Basic:
         origin={{ vertical: "top", horizontal: "right" }}
         triggerOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <MenuItem text="Menu1" />
-        <MenuItem text="Menu2" />
-        <MenuItem text="Menu3" />
+        <MenuItem primary="Menu1" />
+        <MenuItem primary="Menu2" />
+        <MenuItem primary="Menu3" />
       </IconMenu>
     </ToolBarItem>
   ]}

@@ -275,10 +275,10 @@ export class ItemsContainer extends Component {
               onItemClick={this.handleSelectMenuItemClick}
             >
               {itemEntities.length !== selectedItemEntities.length &&
-                <MenuItem text="すべて選択" value={ItemActions.selectAllItem} />
+                <MenuItem primary="すべて選択" value={ItemActions.selectAllItem} />
               }
-              <MenuItem text="スター付きを選択" value={ItemActions.selectStarItem} />
-              <MenuItem text="選択を解除" value={ItemActions.unselectAllItem} />
+              <MenuItem primary="スター付きを選択" value={ItemActions.selectStarItem} />
+              <MenuItem primary="選択を解除" value={ItemActions.unselectAllItem} />
             </IconMenu>
           ]}
         />

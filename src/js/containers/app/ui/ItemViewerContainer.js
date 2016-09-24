@@ -229,8 +229,8 @@ export class ItemViewerContainer extends Component {
               triggerOrigin={{ vertical: "top", horizontal: "right" }}
               onItemClick={this.handleMoreMenuClick}
             >
-              <MenuItem icon={<FolderIcon />} text="移動" value={this.handleMove} />
-              <MenuItem icon={<TrashIcon />} text="削除" value={this.handleDelete} />
+              <MenuItem icon={<FolderIcon />} primary="移動" value={this.handleMove} />
+              <MenuItem icon={<TrashIcon />} primary="削除" value={this.handleDelete} />
             </IconMenu>
           </ToolBarItem>
         ]}

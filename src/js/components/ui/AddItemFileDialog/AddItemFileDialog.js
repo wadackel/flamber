@@ -244,7 +244,7 @@ export default class AddItemFileDialog extends Component {
             <MenuItem
               key={obj.value}
               value={obj.value}
-              text={obj.name}
+              primary={obj.name}
             />
           )}
         </DropDownMenu>

@@ -3,7 +3,7 @@
   position: relative;
 
   & + & {
-    border-top: 1px solid darken(#fff, 8%);
+    border-top: 1px solid $gray-lighter;
   }
 
   &:not(&--processing):hover,
@@ -54,10 +54,12 @@
     pointer-events: none;
   }
 
-  &__control,
-  &__button {
-    height: 50px;
-    line-height: 50px;
+  &--editable {
+    .list-item__control,
+    .list-item__button {
+      height: 50px;
+      line-height: 50px;
+    }
   }
 
   &__control {
@@ -85,17 +87,16 @@
     @include button-extend-all;
     display: block;
     border-radius: 0;
-    background: #fff;
-    color: $gray-dark;
+    background-color: $gray;
     box-shadow: none;
 
     &:not(&--processing):hover {
-      background: darken(#fff, 8%);
+      background-color: lighten($gray, 2%);
       box-shadow: none;
     }
 
     &__ripple {
-      background: darken(#fff, 14%);
+      background: rgba(#fff, .05);
     }
 
     &__body {
@@ -106,10 +107,21 @@
       text-align: left;
 
       .list-item--editable & {
-        padding-right: 40px;
-        padding-left: 40px;
+        padding: 0 40px;
       }
     }
+  }
+
+  &__primary,
+  &__secondary {
+    display: block;
+  }
+
+  &__secondary {
+    display: block;
+    margin-top: .2em;
+    font-size: .85em;
+    opacity: .7;
   }
 
   &__processing-spinner {

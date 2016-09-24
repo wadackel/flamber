@@ -102,7 +102,7 @@ export default class SelectBoardDialog extends Component {
             <MenuItem
               key={board.value}
               value={board.value}
-              text={board.name}
+              primary={board.name}
             />
           )}
         </DropDownMenu>

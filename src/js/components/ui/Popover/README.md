@@ -28,11 +28,11 @@ class PopoverExample extends React.Component {
           onRequestClose={() => this.setState({ open: false })}
         >
           <Menu>
-            <MenuItem text="Item 1" />
-            <MenuItem text="Item 2" />
-            <MenuItem text="Item 3" />
-            <MenuItem text="Item 4" />
-            <MenuItem text="Item 5" />
+            <MenuItem primary="Item 1" />
+            <MenuItem primary="Item 2" />
+            <MenuItem primary="Item 3" />
+            <MenuItem primary="Item 4" />
+            <MenuItem primary="Item 5" />
           </Menu>
         </Popover>
       </div>
@@ -98,11 +98,11 @@ class PopoverCustomOriginExample extends React.Component {
           onRequestClose={() => this.setState({ open: false })}
         >
           <Menu>
-            <MenuItem text="Item 1" />
-            <MenuItem text="Item 2" />
-            <MenuItem text="Item 3" />
-            <MenuItem text="Item 4" />
-            <MenuItem text="Item 5" />
+            <MenuItem primary="Item 1" />
+            <MenuItem primary="Item 2" />
+            <MenuItem primary="Item 3" />
+            <MenuItem primary="Item 4" />
+            <MenuItem primary="Item 5" />
           </Menu>
         </Popover>
         <div>

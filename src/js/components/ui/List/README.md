@@ -26,9 +26,9 @@ class ListExample extends React.Component {
     return (
       <div>
         <List>
-          <ListItem text="List Item 1" />
-          <ListItem text="List Item 2" />
-          <ListItem text="List Item 3" />
+          <ListItem primary="List Item 1" />
+          <ListItem primary="List Item 2" />
+          <ListItem primary="List Item 3" />
         </List>
         <div style={{ marginBottom: 20 }} />
 
@@ -36,7 +36,7 @@ class ListExample extends React.Component {
           {this.state.values.map((value, index) =>
             <ListItem
               key={index}
-              text={value}
+              primary={value}
               editable
               placeolder="Type item name"
               onComplete={this.handleComplete}
@@ -48,9 +48,16 @@ class ListExample extends React.Component {
         <div style={{ marginBottom: 20 }} />
 
         <List>
-          <ListItem icon={<StarIcon />} text="List Item 1" />
-          <ListItem text="List Item 2" />
-          <ListItem icon={<FolderIcon />} text="List Item 3" />
+          <ListItem icon={<StarIcon />} primary="List Item 1" />
+          <ListItem primary="List Item 2" />
+          <ListItem icon={<FolderIcon />} primary="List Item 3" />
+        </List>
+        <div style={{ marginBottom: 20 }} />
+
+        <List>
+          <ListItem clickable={false} primary="List Item 1" secondary="secondary text" />
+          <ListItem clickable={false} primary="List Item 2" secondary="secondary text" />
+          <ListItem clickable={false} primary="List Item 3" secondary="secondary text" />
         </List>
       </div>
     );

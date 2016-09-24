@@ -258,7 +258,7 @@ export default class AutoComplete extends React.Component {
           text: itemText,
           value: (
             <MenuItem
-              text={itemText}
+              primary={itemText}
               value={itemValue}
               key={index}
             />
@@ -271,7 +271,7 @@ export default class AutoComplete extends React.Component {
           value: (
             <MenuItem
               value={item}
-              text={item}
+              primary={item}
               key={index}
             />
           )

@@ -108,7 +108,7 @@ export default class DropDownMenu extends React.Component {
 
     React.Children.forEach(children, item => {
       if (item.props.value === value) {
-        displayValue = item.props.text;
+        displayValue = item.props.primary;
       }
     });
 

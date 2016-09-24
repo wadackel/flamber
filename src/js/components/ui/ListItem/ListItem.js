@@ -14,10 +14,12 @@ export default class ListItem extends Component {
     className: PropTypes.string,
     style: PropTypes.object,
     processing: PropTypes.bool,
-    text: PropTypes.string,
+    primary: PropTypes.string,
+    secondary: PropTypes.string,
     icon: PropTypes.element,
     index: PropTypes.number,
     value: PropTypes.any,
+    clickable: PropTypes.bool,
     editable: PropTypes.bool,
     placeholder: PropTypes.string,
     onClick: PropTypes.func,
@@ -29,6 +31,7 @@ export default class ListItem extends Component {
 
   static defaultProps = {
     processing: false,
+    clickable: true,
     editable: false,
     onClick: () => {},
     onChange: () => {},
@@ -41,7 +44,7 @@ export default class ListItem extends Component {
     super(props, context);
 
     this.state = {
-      text: props.text,
+      primary: props.primary,
       isEditing: false
     };
 
@@ -66,13 +69,13 @@ export default class ListItem extends Component {
     this.props.onClick(this, this.props.value, this.props.index);
   }
 
-  handleChange(e, text) {
-    this.setState({ text });
-    this.props.onChange(this, text, this.props.index);
+  handleChange(e, primary) {
+    this.setState({ primary });
+    this.props.onChange(this, primary, this.props.index);
   }
 
-  handleEnter(e, text) {
-    this.props.onEnter(this, text, this.props.index);
+  handleEnter(e, primary) {
+    this.props.onEnter(this, primary, this.props.index);
     this.refs.control.blur();
   }
 
@@ -81,7 +84,7 @@ export default class ListItem extends Component {
   }
 
   handleComplete() {
-    this.props.onComplete(this, this.state.text, this.props.index);
+    this.props.onComplete(this, this.state.primary, this.props.index);
   }
 
   handleEditClick(e) {
@@ -116,8 +119,10 @@ export default class ListItem extends Component {
       className,
       style,
       processing,
-      text,
+      primary,
+      secondary,
       icon,
+      clickable,
       editable,
       placeholder
     } = this.props;
@@ -126,6 +131,7 @@ export default class ListItem extends Component {
 
     const modifier = {
       "is-editing": isEditing,
+      clickable,
       editable,
       processing
     };
@@ -146,7 +152,7 @@ export default class ListItem extends Component {
           ? <TextField
               ref="control"
               className={b("control")()}
-              defaultValue={text}
+              defaultValue={primary}
               placeholder={placeholder}
               onChange={this.handleChange}
               onBlur={this.handleBlur}
@@ -154,10 +160,13 @@ export default class ListItem extends Component {
             />
           : <Button
               ref="button"
-              disable={processing}
+              disable={!clickable || processing}
               baseClassName={b("button")()}
               className={processing ? `${b("button")()}--processing` : ""}
-              label={text}
+              label={<span>
+                <span className={b("primary")()}>{primary}</span>
+                {secondary ? <span className={b("secondary")()}>{secondary}</span> : null}
+              </span>}
               onClick={this.handleClick}
             />
         }

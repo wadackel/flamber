@@ -70,10 +70,10 @@ class ImageViewerExample extends React.Component {
                 triggerOrigin={{ vertical: "top", horizontal: "right" }}
                 onItemClick={this.handleItemClick}
               >
-                <MenuItem text="100%" value="100%" />
-                <MenuItem text="Zoom up" value="zoomup" />
-                <MenuItem text="Zoom down" value="zoomdown" />
-                <MenuItem text="Change image" value="change" />
+                <MenuItem primary="100%" value="100%" />
+                <MenuItem primary="Zoom up" value="zoomup" />
+                <MenuItem primary="Zoom down" value="zoomdown" />
+                <MenuItem primary="Change image" value="change" />
               </IconMenu>
             </ToolBarItem>
           ]}

@@ -208,7 +208,7 @@ export default class Menu extends React.Component {
       const isFocused = focusIndex === index;
 
       return React.cloneElement(item, {
-        key: item.props.text,
+        key: item.props.primary,
         onClick: this.handleItemClick,
         style: prefixer.prefix({
           transitionDelay: `${childDelayIncrement * index}ms`

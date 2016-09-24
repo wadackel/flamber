@@ -4,7 +4,7 @@ const docgen = require("react-docgen");
 const jsonImporter = require("node-sass-json-importer");
 
 module.exports = {
-  title: "dripup - Styleguide",
+  title: "FLAMBER - Styleguide",
 
   template: path.join(__dirname, "styleguide/index.html"),
 
