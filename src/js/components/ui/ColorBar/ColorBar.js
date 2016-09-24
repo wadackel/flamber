@@ -50,6 +50,7 @@ export default function ColorBar({
 }) {
   const children = palette.map(color =>
     <ColorBarItem
+      key={color}
       color={color}
       clickable={itemClickable}
       onClick={onItemClick}

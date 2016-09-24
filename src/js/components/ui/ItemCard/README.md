@@ -55,7 +55,7 @@ class ItemCardListExample extends React.Component {
 ```
 
 
-RandomGrid:
+Gallery:
 
 ```
 class ItemCardRandomGridExample extends React.Component {
@@ -67,7 +67,7 @@ class ItemCardRandomGridExample extends React.Component {
   render() {
     return (
       <ItemCard
-        layout="random-grid"
+        layout="gallery"
         style={{ width: 270 }}
         selected={this.state.selected}
         url="http://example.com/path/to/"

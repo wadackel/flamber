@@ -47,7 +47,7 @@ class SelectableColorGroupExample extends React.Component {
           onColorClick={this.handleColorClick}
         >
           {selectableColors.map(obj => 
-            <SelectableColor {...obj} />
+            <SelectableColor key={obj.color} {...obj} />
           )}
         </SelectableColorGroup>
       </div>
