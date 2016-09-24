@@ -8,8 +8,7 @@
   &--selected,
   &--focused {
     .list-item__button {
-      background: darken(#fff, 12%);
-      color: $brand-primary;
+      background-color: darken($brand-primary, 20%);
     }
   }
 

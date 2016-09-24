@@ -174,7 +174,7 @@ export default class AutoComplete extends React.Component {
     const { menuCloseDelay } = this.props;
 
     this.timerMenuItemClickClose = setTimeout(() => {
-      this.setState({ searchText: menuItem.props.text });
+      this.setState({ searchText: menuItem.props.primary });
       this.props.onNewRequest(value, index);
       this.close();
       this.focus();
