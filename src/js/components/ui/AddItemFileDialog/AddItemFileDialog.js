@@ -189,7 +189,7 @@ export default class AddItemFileDialog extends Component {
       <Dialog
         className={mergeClassNames(b(), className)}
         processing={processing}
-        title="Add item from file"
+        title="ファイルからアイテムを追加"
         titleIcon={<UploadIcon />}
         actions={[
           <FlatButton type="primary" onClick={this.handleClose} disable={processing}>Cancel</FlatButton>,
@@ -211,7 +211,7 @@ export default class AddItemFileDialog extends Component {
             accept="image/*"
             onChange={this.handleFileChange}
           />
-          <p className={b("browse__title")()}>Drag &amp; Drop or Browse</p>
+          <p className={b("browse__title")()}>ドラッグ&amp;ドロップ又はファイルを選択</p>
           {selectImage.src && <div className={b("preview")()}>
             <IconButton
               className={b("preview__close")()}

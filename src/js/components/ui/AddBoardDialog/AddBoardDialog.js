@@ -81,7 +81,7 @@ export default class AddBoardDialog extends Component {
       <Dialog
         className={mergeClassNames(b(), className)}
         processing={processing}
-        title="Add board"
+        title="ボードを追加"
         titleIcon={<BoardIcon />}
         actions={[
           <FlatButton type="primary" onClick={this.handleClose} disable={processing}>Cancel</FlatButton>,

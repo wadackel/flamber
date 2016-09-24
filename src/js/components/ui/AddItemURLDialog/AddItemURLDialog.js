@@ -120,7 +120,7 @@ export default class AddItemURLDialog extends Component {
       <Dialog
         className={mergeClassNames(b(), className)}
         processing={processing}
-        title="Add item from URL"
+        title="URLからアイテムを追加"
         titleIcon={<PictureLinkIcon />}
         actions={[
           <FlatButton type="primary" onClick={this.handleClose} disable={processing}>Cancel</FlatButton>,
@@ -136,6 +136,7 @@ export default class AddItemURLDialog extends Component {
       >
         <TextField
           className={b("url")()}
+          label="URL"
           placeholder="http://flamber.org/"
           value={url}
           error={!isValidURL && url !== "" ? "無効な形式です" : null}

@@ -201,6 +201,7 @@
   &__body {
     padding: 20px;
     text-align: left;
+    color: darken(#fff, 40%);
 
     .drop-down-menu__trigger--block {
       border-bottom-color: $gray-lightest;
