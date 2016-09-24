@@ -26,6 +26,7 @@ export default class Button extends React.Component {
     tooltip: PropTypes.string,
     tooltipOrigin: OriginalPropTypes.origin,
     tooltipPositions: TooltipPositions,
+    textAlign: PropTypes.oneOf(["center", "left", "right"]),
     onClick: PropTypes.func,
     onMouseDown: PropTypes.func,
     onMouseEnter: PropTypes.func,
@@ -52,6 +53,7 @@ export default class Button extends React.Component {
       bottom: "90%",
       left: "10%"
     },
+    textAlign: "center",
     onClick: () => {},
     onMouseDown: () => {},
     onMouseEnter: () => {},
@@ -180,6 +182,7 @@ export default class Button extends React.Component {
       tooltip,
       tooltipOrigin,
       tooltipPositions,
+      textAlign,
       onClick,
       onMouseEnter, // eslint-disable-line no-unused-vars
       onMouseLeave, // eslint-disable-line no-unused-vars
@@ -196,7 +199,7 @@ export default class Button extends React.Component {
     } = this.state;
 
     const b = bem(baseClassName);
-    const modifier = { [type]: true, disable };
+    const modifier = { [type]: true, "text-align": textAlign, disable };
     const labelElement = label ? <span className={b("label", modifier)()}>{label}</span> : null;
     const iconElement = this.createIcon(icon, b("icon", modifier)());
     const iconRightElement = this.createIcon(iconRight, b("icon", _.assign(modifier, { right: true }))());

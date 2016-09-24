@@ -1,0 +1,50 @@
+.local-nav-item {
+  @include transition(all, $transition-duration-fast);
+  position: relative;
+  color: $color-root;
+
+  &::before {
+    @include absolute(0, auto, 0, 0, 5);
+    @include transition(all, $transition-duration-fast);
+    display: block;
+    width: 1px;
+    transform: scaleY(0);
+    background: $brand-primary;
+    content: "";
+    opacity: 0;
+  }
+
+  &--active {
+    background-color: darken($background-root, 4%);
+    color: rgba($color-root, .4);
+
+    &::before {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  &__button {
+    @include button-extend-all;
+    width: 100%;
+    transition-duration: $transition-duration-fast;
+    border-radius: 0;
+    box-shadow: none !important;
+
+    &:not(&--active):hover {
+      background-color: darken($background-root, 2%);
+    }
+
+    &__ripple {
+      background-color: rgba(#000, .1);
+    }
+
+    &__body {
+      padding: 20px;
+    }
+
+    &__icon {
+      color: rgba($color-root, .4);
+    }
+  }
+}

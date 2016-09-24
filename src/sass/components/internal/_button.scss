@@ -69,7 +69,6 @@ $button-icon-margin: 8px;
 
 %button-body {
   display: inline-flex;
-  justify-content: center;
   align-items: center;
   position: relative;
   width: 100%;
@@ -81,7 +80,7 @@ $button-icon-margin: 8px;
   color: inherit;
   font-size: inherit;
   line-height: inherit;
-  text-align: center;
+  text-align: inherit;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
@@ -96,6 +95,18 @@ $button-icon-margin: 8px;
   &:active {
     color: inherit;
   }
+}
+
+%button-body-center {
+  justify-content: center;
+}
+
+%button-body-right {
+  justify-content: flex-end;
+}
+
+%button-body-left {
+  justify-content: flex-start;
 }
 
 %button-body-disable {
@@ -146,6 +157,20 @@ $button-icon-margin: 8px;
 
   &__body {
     @extend %button-body;
+
+    &--text-align {
+      &-center {
+        @extend %button-body-center;
+      }
+
+      &-right {
+        @extend %button-body-right;
+      }
+
+      &-left {
+        @extend %button-body-left;
+      }
+    }
 
     &--disable {
       @extend %button-body-disable;
