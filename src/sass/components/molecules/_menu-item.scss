@@ -1,5 +1,6 @@
 .menu-item {
   @include transition(all);
+  min-width: 140px;
 
   & + & {
     border-top-width: 0;
