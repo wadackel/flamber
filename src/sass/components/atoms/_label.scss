@@ -1,23 +1,20 @@
 .label {
-  display: inline-block;
-  padding: 4px 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
   border-radius: 3px;
-  background: $gray-light;
+  background: darken($background-root, 5%);
   color: #fff;
   font-size: 12px;
   line-height: 1;
 
   &__icon {
-    @include relative(-1px);
-    display: inline-block;
-    margin: 0 6px 0 0;
-    color: $gray-lighter;
-    line-height: 0;
-    vertical-align: middle;
+    margin: 0 .4em 0 0;
+    opacity: .5;
 
     svg {
-      @include size(1em);
-      fill: currentColor;
+      @include size(.9em);
+      vertical-align: top;
     }
   }
 }
