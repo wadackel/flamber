@@ -1,3 +1,5 @@
+import _ from "lodash";
+import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import ExecutionEnvironment from "../../../constants/execution-environment";
 const ReactCropper = ExecutionEnvironment.canUseDOM
@@ -13,13 +15,29 @@ export default class Cropper extends Component {
   static propTypes = {
     className: PropTypes.string,
     processing: PropTypes.bool,
+    zoomTo: PropTypes.number,
     onClick: PropTypes.func,
-    onDoubleClick: PropTypes.func
+    onDoubleClick: PropTypes.func,
+    ready: PropTypes.func
   };
 
   static defaultProps = {
+    zoomTo: 1,
     processing: false
   };
+
+  constructor(props, context) {
+    super(props, context);
+    autoBind(this);
+  }
+
+  handleReady() {
+    this.zoomTo(this.props.zoomTo);
+
+    if (_.isFunction(this.props.ready)) {
+      this.props.ready();
+    }
+  }
 
   // Methods by: https://github.com/fengyuanchen/cropperjs#methods
   crop() {
@@ -35,7 +53,7 @@ export default class Cropper extends Component {
   }
 
   replace(...args) {
-    return this.cropper.replace.apply(this, args);
+    return this.cropper.replace(...args);
   }
 
   enable() {
@@ -51,47 +69,47 @@ export default class Cropper extends Component {
   }
 
   move(...args) {
-    return this.cropper.move.apply(this, args);
+    return this.cropper.move(...args);
   }
 
   moveTo(...args) {
-    return this.cropper.moveTo.apply(this, args);
+    return this.cropper.moveTo(...args);
   }
 
   zoom(...args) {
-    return this.cropper.zoom.apply(this, args);
+    return this.cropper.zoom(...args);
   }
 
   zoomTo(...args) {
-    return this.cropper.zoomTo.apply(this, args);
+    return this.cropper.zoomTo(...args);
   }
 
   rotate(...args) {
-    return this.cropper.rotate.apply(this, args);
+    return this.cropper.rotate(...args);
   }
 
   rotateTo(...args) {
-    return this.cropper.rotateTo.apply(this, args);
+    return this.cropper.rotateTo(...args);
   }
 
   scale(...args) {
-    return this.cropper.scale.apply(this, args);
+    return this.cropper.scale(...args);
   }
 
   scaleX(...args) {
-    return this.cropper.scaleX.apply(this, args);
+    return this.cropper.scaleX(...args);
   }
 
   scaleY(...args) {
-    return this.cropper.scaleY.apply(this, args);
+    return this.cropper.scaleY(...args);
   }
 
   getData(...args) {
-    return this.cropper.getData.apply(this, args);
+    return this.cropper.getData(...args);
   }
 
   setData(...args) {
-    return this.cropper.setData.apply(this, args);
+    return this.cropper.setData(...args);
   }
 
   getContainerData() {
@@ -107,7 +125,7 @@ export default class Cropper extends Component {
   }
 
   setCanvasData(...args) {
-    return this.cropper.setCanvasData.apply(this, args);
+    return this.cropper.setCanvasData(...args);
   }
 
   getCropBoxData() {
@@ -115,19 +133,19 @@ export default class Cropper extends Component {
   }
 
   setCropBoxData(...args) {
-    return this.cropper.setCropBoxData.apply(this, args);
+    return this.cropper.setCropBoxData(...args);
   }
 
   getCroppedCanvas(...args) {
-    return this.cropper.getCroppedCanvas.apply(this, args);
+    return this.cropper.getCroppedCanvas(...args);
   }
 
   setAspectRatio(...args) {
-    return this.cropper.setAspectRatio.apply(this, args);
+    return this.cropper.setAspectRatio(...args);
   }
 
   setDragMode(...args) {
-    return this.cropper.setDragMode.apply(this, args);
+    return this.cropper.setDragMode(...args);
   }
 
   render() {
@@ -136,6 +154,7 @@ export default class Cropper extends Component {
       processing,
       onClick,
       onDoubleClick,
+      ready, // eslint-disable-line no-unused-vars
       ...props
     } = this.props;
 
@@ -156,6 +175,7 @@ export default class Cropper extends Component {
             this.cropper = cropper;
           }}
           className={b("cropper")()}
+          ready={this.handleReady}
           {...props}
         />
       </div>

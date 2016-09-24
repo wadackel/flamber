@@ -10,6 +10,15 @@ class CropperExample extends React.Component {
   }
 
   handleCropImage() {
+    this.cropImage();
+  }
+
+  handleDoubleClick(e) {
+    e.preventDefault();
+    this.cropImage();
+  }
+
+  cropImage() {
     const canvas = this.refs.cropper.getCroppedCanvas();
 
     if (typeof canvas === "undefined") {
@@ -19,11 +28,6 @@ class CropperExample extends React.Component {
     this.setState({
       src: canvas.toDataURL()
     });
-  }
-
-  handleDoubleClick(e) {
-    e.preventDefault();
-    this.refs.cropper.reset();
   }
 
   render() {
