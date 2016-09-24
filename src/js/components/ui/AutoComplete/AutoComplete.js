@@ -191,6 +191,16 @@ export default class AutoComplete extends React.Component {
     this.focus();
   }
 
+  handleUpdateFocusIndex(index) {
+    const maxIndex = this.refs.menu.props.children.length - 1;
+
+    if (index < 0 || index > maxIndex) {
+      this.close(() => {
+        this.focus();
+      });
+    }
+  }
+
   handleRequestClose(type) {
     if (!this.state.focusTextField || type === "scroll" || type === "resize") {
       this.close();
@@ -208,11 +218,11 @@ export default class AutoComplete extends React.Component {
     menu.style.width = `${searchTextField.offsetWidth}px`;
   }
 
-  close() {
+  close(callback = null) {
     this.setState({
       open: false,
       triggerElement: null
-    });
+    }, callback);
   }
 
   focus() {
@@ -290,6 +300,7 @@ export default class AutoComplete extends React.Component {
         onMouseDown={this.handleMenuMouseDown}
         onKeyDown={this.handleMenuKeyDown}
         onEscKeyDown={this.handleEscKeyDown}
+        onUpdateFocusIndex={this.handleUpdateFocusIndex}
       >
         {menuItems.map(i => i.value)}
       </Menu>

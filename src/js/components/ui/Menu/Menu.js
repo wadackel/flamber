@@ -21,7 +21,8 @@ export default class Menu extends React.Component {
     onChange: PropTypes.func,
     onMouseDown: PropTypes.func,
     onEscKeyDown: PropTypes.func,
-    onKeyDown: PropTypes.func
+    onKeyDown: PropTypes.func,
+    onUpdateFocusIndex: PropTypes.func
   };
 
   static defaultProps = {
@@ -31,7 +32,8 @@ export default class Menu extends React.Component {
     onChange: () => {},
     onMouseDown: () => {},
     onEscKeyDown: () => {},
-    onKeyDown: () => {}
+    onKeyDown: () => {},
+    onUpdateFocusIndex: () => {}
   }
 
   constructor(props, context) {
@@ -146,18 +148,16 @@ export default class Menu extends React.Component {
 
   incrementKeyboardFocusIndex() {
     const { focusIndex } = this.state;
-    const maxIndex = this.getMenuItems().length - 1;
     const index = focusIndex + 1;
 
-    this.setFocusIndex(index > maxIndex ? 0 : index, true);
+    this.setFocusIndex(index, true);
   }
 
   decrementKeyboardFocusIndex() {
     const { focusIndex } = this.state;
-    const maxIndex = this.getMenuItems().length - 1;
     const index = focusIndex - 1;
 
-    this.setFocusIndex(index < 0 ? maxIndex : index, true);
+    this.setFocusIndex(index, true);
   }
 
   getSelectedIndex(props) {
@@ -182,6 +182,8 @@ export default class Menu extends React.Component {
       focusIndex: newIndex,
       isKeyboardFocused
     });
+
+    this.props.onUpdateFocusIndex(newIndex, isKeyboardFocused);
   }
 
   focus() {
