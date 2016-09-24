@@ -9,7 +9,7 @@
     display: block;
     border-radius: 3px;
     background: #fff;
-    box-shadow: 0 2px 4px rgba(#000, .33);
+    box-shadow: 0 2px 4px rgba(#000, .22);
     content: "";
   }
 
@@ -56,20 +56,19 @@
     border-radius: 0 0 $card-border-radius $card-border-radius;
     background: #fff;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(#000, .33);
+    box-shadow: 0 2px 4px rgba(#000, .22);
   }
 
   &__title {
+    @include ellipsis;
     width: 100%;
     font-size: 1.25rem;
     font-weight: bold;
     line-height: 1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
   }
 
   &__text {
-    color: $gray-lighter;
+    margin-top: .6em;
+    color: darken($gray-lightest, 25%);
   }
 }

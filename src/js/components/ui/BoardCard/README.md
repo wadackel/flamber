@@ -4,6 +4,7 @@ Basic:
 class BoardCardExample extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { select: false };
   }
 
   render() {
@@ -11,12 +12,13 @@ class BoardCardExample extends React.Component {
 
     return (
       <BoardCard
-        style={{ width: 270 }}
-        selected={false}
+        style={{ width: 320 }}
+        selected={this.state.select}
         title="Web Application"
         image="/images/card-sample.png"
         itemCount={23}
         lastModified={modified}
+        onSelect={() => this.setState({ select: !this.state.select })}
       />
     );
   }
