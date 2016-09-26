@@ -18,6 +18,8 @@ export DropDownMenu from "./DropDownMenu/DropDownMenu";
 export EditableText from "./EditableText/EditableText";
 export EmptyData from "./EmptyData/EmptyData";
 export FeedCard from "./FeedCard/FeedCard";
+export FeedList from "./FeedList/FeedList";
+export FeedListItem from "./FeedListItem/FeedListItem";
 export FileDnD from "./FileDnD/FileDnD";
 export FlatButton from "./FlatButton/FlatButton";
 export FloatingButton from "./FloatingButton/FloatingButton";

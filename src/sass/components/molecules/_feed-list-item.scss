@@ -1,0 +1,25 @@
+.feed-list-item {
+
+  .list-item {
+    &__primary,
+    &__secondary {
+      padding-right: 100px;
+    }
+  }
+
+  &__meta {
+    @include absolute(50%, 15px, auto, auto, 50);
+    margin: -20px 0 0;
+    padding: 0;
+    list-style: none;
+
+    &__item {
+      display: inline-block;
+      opacity: .6;
+
+      & + & {
+        margin-left: 5px;
+      }
+    }
+  }
+}

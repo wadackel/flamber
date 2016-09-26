@@ -21,6 +21,7 @@ export default class ListItem extends Component {
     clickable: PropTypes.bool,
     editable: PropTypes.bool,
     placeholder: PropTypes.string,
+    meta: PropTypes.node,
     onClick: PropTypes.func,
     onChange: PropTypes.func,
     onEnter: PropTypes.func,
@@ -123,7 +124,8 @@ export default class ListItem extends Component {
       icon,
       clickable,
       editable,
-      placeholder
+      placeholder,
+      meta
     } = this.props;
 
     const { isEditing } = this.state;
@@ -182,6 +184,7 @@ export default class ListItem extends Component {
             size={16}
           />
         }
+        {meta}
       </div>
     );
   }
