@@ -1,0 +1,24 @@
+.text-field-group {
+  display: flex;
+  align-items: center;
+
+  &__control {
+    flex: 1 1 auto;
+  }
+
+  &__addon {
+    flex: 0 1 auto;
+
+    &--has-label {
+      padding-top: 1rem;
+    }
+
+    &--right {
+      margin-left: 10px;
+    }
+
+    &--left {
+      margin-right: 10px;
+    }
+  }
+}

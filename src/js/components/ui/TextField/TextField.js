@@ -12,7 +12,6 @@ const b = bem("text-field");
 
 export default class TextField extends React.Component {
   static propTypes = {
-    children: PropTypes.node,
     className: PropTypes.string,
     id: PropTypes.string,
     type: PropTypes.string,
