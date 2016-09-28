@@ -1,21 +1,32 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { TextField } from "../";
 
 const b = bem("text-field-group");
 
-export default function TextFieldGroup({
-  className,
-  label,
-  addonLeft,
-  addonRight,
-  ...props
-}) {
+
+type Props = {
+  className: ?string,
+  label: ?string,
+  addonLeft: ?React$Element<any>,
+  addonRight: ?React$Element<any>
+};
+
+export default function TextFieldGroup(props: Props) {
+  const {
+    className,
+    label,
+    addonLeft,
+    addonRight,
+    ...textFieldProps
+  } = props;
+
   const modifier = { "has-label": !!label };
 
   if (label) {
-    props.label = label;
+    textFieldProps.label = label;
   }
 
   return (
@@ -26,7 +37,7 @@ export default function TextFieldGroup({
         </div>
       }
       <div className={b("control", modifier)()}>
-        <TextField {...props} />
+        <TextField {...textFieldProps} />
       </div>
       {addonRight &&
         <div className={b("addon", { ...modifier, right: true })()}>
@@ -36,28 +47,3 @@ export default function TextFieldGroup({
     </div>
   );
 }
-
-TextFieldGroup.propTypes = {
-  className: PropTypes.string,
-  id: PropTypes.string,
-  type: PropTypes.string,
-  defaultValue: PropTypes.any,
-  value: PropTypes.any,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
-  error: PropTypes.string,
-  rows: PropTypes.number,
-  minRows: PropTypes.number,
-  maxRows: PropTypes.number,
-  multiLine: PropTypes.bool,
-  name: PropTypes.string,
-  addonLeft: PropTypes.node,
-  addonRight: PropTypes.node,
-  onChange: PropTypes.func,
-  onEnter: PropTypes.func,
-  onFocus: PropTypes.func,
-  onBlur: PropTypes.func,
-  onKeyDown: PropTypes.func,
-  onKeyPress: PropTypes.func,
-  onKeyUp: PropTypes.func
-};

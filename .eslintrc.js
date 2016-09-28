@@ -15,9 +15,15 @@ module.exports = {
     "mocha": true
   },
   "plugins": [
-    "react"
+    "react",
+    "flowtype",
+    "flowtype-errors"
   ],
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:flowtype/recommended"
+  ],
   "rules": {
     // Possible Errors
     "comma-dangle": "error",
@@ -165,6 +171,9 @@ module.exports = {
     "react/no-is-mounted": "error",
     "react/prop-types": "warn",
     "react/jsx-curly-spacing": "error",
-    "react/no-find-dom-node": "off"
+    "react/no-find-dom-node": "off",
+
+    // flow
+    "flowtype-errors/show-errors": 2
   }
 };
