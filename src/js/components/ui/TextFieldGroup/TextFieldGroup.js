@@ -6,15 +6,12 @@ import { TextField } from "../";
 
 const b = bem("text-field-group");
 
-
-type Props = {
+export default function TextFieldGroup(props: {
   className: ?string,
   label: ?string,
   addonLeft: ?React$Element<any>,
   addonRight: ?React$Element<any>
-};
-
-export default function TextFieldGroup(props: Props) {
+}) {
   const {
     className,
     label,
