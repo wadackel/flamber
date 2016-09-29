@@ -4,7 +4,7 @@
 [include]
 
 [libs]
-./src/js/declares/
+./src/js/declares
 node_modules/iflow-lodash/index.js.flow
 
 [options]
