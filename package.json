@@ -59,6 +59,7 @@
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-flowtype": "^2.19.0",
     "eslint-plugin-flowtype-errors": "^1.2.3",
+    "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-react": "^6.3.0",
     "flow-bin": "^0.32.0",
     "glob": "^7.1.0",

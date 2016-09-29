@@ -16,6 +16,7 @@ module.exports = {
   },
   "plugins": [
     "babel",
+    "import",
     "react",
     "flowtype",
     "flowtype-errors"
@@ -151,7 +152,7 @@ module.exports = {
     "no-confusing-arrow": "off",
     "no-const-assign": "error",
     "no-dupe-class-members": "error",
-    "no-duplicate-imports": "error",
+    "no-duplicate-imports": "off",
     "no-new-symbol": "error",
     "no-restricted-imports": "error",
     "no-this-before-super": "error",
@@ -176,6 +177,9 @@ module.exports = {
     "babel/no-await-in-loop": "error",
     "babel/flow-object-type": "error",
     "babel/func-params-comma-dangle": "error",
+
+    // Import
+    "import/no-duplicates": "error",
 
     // React
     "react/jsx-uses-vars": "error",
