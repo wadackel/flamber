@@ -15,6 +15,7 @@ module.exports = {
     "mocha": true
   },
   "plugins": [
+    "babel",
     "react",
     "flowtype",
     "flowtype-errors"
@@ -143,10 +144,9 @@ module.exports = {
 
     // ES2015
     "arrow-body-style": ["error", "as-needed"],
-    "arrow-parens": ["error", "as-needed"],
     "arrow-spacing": "error",
     "constructor-super": "error",
-    "generator-star-spacing": "error",
+    "generator-star-spacing": "off",
     "no-class-assign": "error",
     "no-confusing-arrow": "off",
     "no-const-assign": "error",
@@ -158,13 +158,24 @@ module.exports = {
     "no-useless-computed-key": "error",
     "no-useless-constructor": "error",
     "no-var": "error",
-    "object-shorthand": "error",
+    "object-shorthand": "off",
     "prefer-arrow-callback": "error",
     "prefer-const": "error",
     "prefer-rest-params": "error",
     "prefer-spread": "error",
     "prefer-template": "error",
     "template-curly-spacing": "error",
+
+    // Babel
+    "babel/generator-star-spacing": "error",
+    "babel/new-cap": "error",
+    "babel/array-bracket-spacing": "error",
+    "babel/object-curly-spacing": ["error", "always"],
+    "babel/object-shorthand": "error",
+    "babel/arrow-parens": ["error", "as-needed"],
+    "babel/no-await-in-loop": "error",
+    "babel/flow-object-type": "error",
+    "babel/func-params-comma-dangle": "error",
 
     // React
     "react/jsx-uses-vars": "error",
