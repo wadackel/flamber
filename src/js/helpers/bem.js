@@ -1,3 +1,4 @@
+// @flow
 import block from "bem-cn";
 
 block.setup({
@@ -6,6 +7,6 @@ block.setup({
   modValue: "-"
 });
 
-export default function bem(className) {
+export default function bem(className: string): Function {
   return block(className);
 }
