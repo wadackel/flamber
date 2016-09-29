@@ -1,18 +1,13 @@
-import React, { Component } from "react";
+// @flow
+import React from "react";
 import Button from "../internal/Button";
 import { LogoIcon } from "../../svg-icons/";
+import type { ButtonProps } from "../internal/Button";
 
-export default class LogoButton extends Component {
-  render() {
-    const {
-      icon, // eslint-disable-line no-unused-vars, react/prop-types
-      ...props
-    } = this.props;
-
-    return <Button
-      baseClassName="logo-button"
-      icon={<LogoIcon />}
-      {...props}
-    />;
-  }
+export default function LogoButton(props: ButtonProps) {
+  return <Button
+    {...props}
+    baseClassName="logo-button"
+    icon={<LogoIcon />}
+  />;
 }
