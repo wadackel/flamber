@@ -4,21 +4,14 @@ import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
-export const TooltipPositions = PropTypes.shape({
-  top: PropTypes.string,
-  right: PropTypes.string,
-  bottom: PropTypes.string,
-  left: PropTypes.string
-});
-
 export default class Tooltip extends React.Component {
   static propTypes = {
     baseClassName: PropTypes.string.isRequired,
     className: PropTypes.string,
     show: PropTypes.bool,
     label: PropTypes.string.isRequired,
-    origin: OriginalPropTypes.origin,
-    positions: TooltipPositions.isRequired
+    origin: OriginalPropTypes.origin
+    // positions: TooltipPositions.isRequired
   };
 
   static defaultPropTypes = {

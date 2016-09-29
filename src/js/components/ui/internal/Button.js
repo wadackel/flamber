@@ -1,42 +1,52 @@
+// @flow
 import _ from "lodash";
 import autoBind from "auto-bind";
 import keycode from "keycode";
-import React, { PropTypes } from "react";
-import * as OriginalPropTypes from "../../../constants/prop-types";
+import React, { Component } from "react";
 import Ripple from "./Ripple";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import randomId from "../../../helpers/random-id";
-import Tooltip, { TooltipPositions } from "./Tooltip";
+import Tooltip from "./Tooltip";
+import type { Origin, TooltipPositions } from "../../../types/prop-types";
 
-export default class Button extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    style: PropTypes.object,
-    baseClassName: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    disable: PropTypes.bool,
-    enableKeyClick: PropTypes.bool,
-    href: PropTypes.string,
-    target: PropTypes.string,
-    label: PropTypes.node,
-    icon: PropTypes.element,
-    iconRight: PropTypes.element,
-    tooltip: PropTypes.string,
-    tooltipOrigin: OriginalPropTypes.origin,
-    tooltipPositions: TooltipPositions,
-    textAlign: PropTypes.oneOf(["center", "left", "right"]),
-    onClick: PropTypes.func,
-    onMouseDown: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onKeyUp: PropTypes.func,
-    onKeyPress: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func
-  };
+export type ButtonProps = {
+  children: ?React$Element<any>;
+  className: ?string;
+  baseClassName: ?string;
+  style: ?Object;
+  type: string;
+  disable: boolean;
+  enableKeyClick: boolean;
+  href: ?string;
+  target: ?string;
+  label: ?React$Element<any>;
+  icon: ?React$Element<any>;
+  iconRight: ?React$Element<any>;
+  tooltip: ?string;
+  tooltipOrigin: Origin;
+  tooltipPositions: TooltipPositions;
+  textAlign: string;
+  onClick: Function;
+  onMouseDown: Function;
+  onMouseEnter: Function;
+  onMouseLeave: Function;
+  onMouseEnter: Function;
+  onKeyDown: Function;
+  onKeyUp: Function;
+  onKeyPress: Function;
+  onFocus: Function;
+  onBlur: Function;
+};
+
+type State = {
+  ripples: Array<React$Element<any>>;
+  showTooltip: boolean;
+};
+
+export default class Button extends Component {
+  props: ButtonProps;
+  state: State;
 
   static defaultProps = {
     type: "default",
@@ -65,7 +75,7 @@ export default class Button extends React.Component {
     onBlur: () => {}
   };
 
-  constructor(props, context) {
+  constructor(props: ButtonProps, context: Object) {
     super(props, context);
 
     this.state = {
@@ -76,11 +86,11 @@ export default class Button extends React.Component {
     autoBind(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: ButtonProps, nextState: State) {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
-  handleMouseDown(e) {
+  handleMouseDown(e: SyntheticMouseEvent) {
     const { top, left, width, height } = this.refs.element.getBoundingClientRect();
     const mouseX = e.pageX - (left + window.pageXOffset);
     const mouseY = e.pageY - (top + window.pageYOffset);
@@ -96,7 +106,7 @@ export default class Button extends React.Component {
     this.props.onMouseDown(e);
   }
 
-  handleMouseEnter(e) {
+  handleMouseEnter(e: SyntheticMouseEvent) {
     if (this.props.tooltip) {
       this.setState({ showTooltip: true });
     }
@@ -104,7 +114,7 @@ export default class Button extends React.Component {
     this.props.onMouseEnter(e);
   }
 
-  handleMouseLeave(e) {
+  handleMouseLeave(e: SyntheticMouseEvent) {
     if (this.props.tooltip) {
       this.setState({ showTooltip: false });
     }
@@ -112,13 +122,13 @@ export default class Button extends React.Component {
     this.props.onMouseLeave(e);
   }
 
-  handleKeyDown(e) {
+  handleKeyDown(e: SyntheticKeyboardEvent) {
     const key = keycode(e);
 
     this.props.onKeyDown(e);
 
     if (this.props.enableKeyClick && (key === "enter" || key === "space")) {
-      this.props.onClick(e);
+      this.props.onClick();
     }
   }
 
@@ -127,7 +137,7 @@ export default class Button extends React.Component {
     this.setState({ ripples });
   }
 
-  getRippleStyle(top, left, size) {
+  getRippleStyle(top: number, left: number, size: number) {
     return {
       width: size,
       height: size,
@@ -136,10 +146,10 @@ export default class Button extends React.Component {
     };
   }
 
-  addRippleElement(top, left, size) {
+  addRippleElement(top: number, left: number, size: number) {
     const { baseClassName, type } = this.props;
     const { ripples } = this.state;
-    const b = bem(baseClassName);
+    const b = bem(baseClassName || "");
     const style = this.getRippleStyle(top, left, size);
 
     this.setState({
@@ -154,7 +164,7 @@ export default class Button extends React.Component {
     });
   }
 
-  createIcon(icon, className) {
+  createIcon(icon: ?React$Element<any>, className: string) {
     return icon ? <span className={className}>{icon}</span> : null;
   }
 
@@ -193,12 +203,9 @@ export default class Button extends React.Component {
       onBlur
     } = this.props;
 
-    const {
-      ripples,
-      showTooltip
-    } = this.state;
+    const { ripples, showTooltip } = this.state;
 
-    const b = bem(baseClassName);
+    const b = bem(baseClassName || "");
     const modifier = { [type]: true, "text-align": textAlign, disable };
     const labelElement = label ? <span className={b("label", modifier)()}>{label}</span> : null;
     const iconElement = this.createIcon(icon, b("icon", modifier)());
