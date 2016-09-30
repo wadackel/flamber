@@ -1,17 +1,29 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("avatar");
 
-export default function Avatar({
-  className,
-  primary,
-  secondary,
-  icon,
-  onClick,
-  onIconClick
-}) {
+type Props = {
+  className: string;
+  primary: string;
+  secondary: string;
+  icon: string;
+  onClick: Function;
+  onIconClick: Function;
+};
+
+export default function Avatar(props: Props) {
+  const {
+    className,
+    primary,
+    secondary,
+    icon,
+    onClick,
+    onIconClick
+  } = props;
+
   const iconStyle = {
     backgroundImage: `url("${icon}")`
   };
@@ -33,12 +45,3 @@ export default function Avatar({
     </div>
   );
 }
-
-Avatar.propTypes = {
-  className: PropTypes.string,
-  primary: PropTypes.string,
-  secondary: PropTypes.string,
-  icon: PropTypes.string,
-  onClick: PropTypes.func,
-  onIconClick: PropTypes.func
-};
