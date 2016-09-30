@@ -1,6 +1,6 @@
-/* eslint-disable */
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
+import type { User } from "../../../types/user";
 import palette from "../../../constants/palette";
 import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
@@ -30,21 +30,21 @@ import {
 
 const b = bem("header");
 
+type Props = {
+  user: User;
+  colors: Array<string>;
+  navItems: PropTypes.node;
+  mainTitle: PropTypes.node;
+  subTitle: PropTypes.node;
+  subLeft: PropTypes.node;
+  subRight: PropTypes.node;
+  onLogoClick: (e: Event) => void;
+  onSettingsClick: (e: Event) => void;
+  onSignOutClick: (e: Event) => void;
+};
+
 export default class Header extends Component {
-  static propTypes = {
-    user: PropTypes.object,
-    showColorBar: PropTypes.bool,
-    color: PropTypes.string,
-    navItems: PropTypes.node,
-    mainTitle: PropTypes.node,
-    subTitle: PropTypes.node,
-    subLeft: PropTypes.node,
-    subRight: PropTypes.node,
-    onLogoClick: PropTypes.func,
-    onSettingsClick: PropTypes.func,
-    onColorChange: PropTypes.func,
-    onRequestSignOut: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     showColorBar: false,

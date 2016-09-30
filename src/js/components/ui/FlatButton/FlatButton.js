@@ -1,38 +1,18 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import Button from "../internal/Button";
+import type { ButtonProps } from "../internal/Button";
 
-export default class FlatButton extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    children: PropTypes.node,
-    href: PropTypes.string,
-    target: PropTypes.string,
-    icon: PropTypes.element,
-    iconRight: PropTypes.element,
-    onClick: PropTypes.func,
-    onMouseDown: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onKeyUp: PropTypes.func,
-    onKeyPress: PropTypes.func
-  };
+export default function FlatButton(props: ButtonProps) {
+  const { children, ..._props } = props;
 
-  static defaultProps = {
-    type: "default"
-  };
-
-  render() {
-    const {
-      children,
-      ...props
-    } = this.props;
-
-    return <Button
-      baseClassName="flat-button"
-      label={children}
-      {...props}
-      />;
-  }
+  return <Button
+    {..._props}
+    baseClassName="flat-button"
+    label={children}
+  />;
 }
+
+FlatButton.defaultProps = {
+  type: "default"
+};

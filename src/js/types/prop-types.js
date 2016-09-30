@@ -3,16 +3,11 @@ export type Origin = {
   horizontal: "left" | "center" | "right";
 };
 
-export type TooltipPositions = {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-};
-
 export type Positions = {
   top: number;
   left: number;
 };
 
 export type Order = "asc" | "desc";
+
+export type SizeString = "xl" | "lg" | "md" | "sm" | "xs";

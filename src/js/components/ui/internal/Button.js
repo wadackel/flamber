@@ -11,10 +11,10 @@ import Tooltip from "./Tooltip";
 import type { Origin, TooltipPositions } from "../../../types/prop-types";
 
 export type ButtonProps = {
-  children: ?React$Element<any>;
+  children?: ?React$Element<any>;
   className: ?string;
-  baseClassName: ?string;
-  style: ?Object;
+  baseClassName: string;
+  style?: ?Object;
   type: string;
   disable: boolean;
   enableKeyClick: boolean;
@@ -52,7 +52,6 @@ export default class Button extends Component {
     type: "default",
     disable: false,
     enableKeyClick: true,
-    style: {},
     tooltipOrigin: {
       vertical: "top",
       horizontal: "center"

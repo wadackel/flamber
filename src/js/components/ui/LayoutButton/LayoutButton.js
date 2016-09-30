@@ -1,35 +1,40 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
-import * as OriginalPropTypes from "../../../constants/prop-types";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { IconButton } from "../";
+import type { TooltipPositions } from "../internal/Tooltip";
 
 const b = bem("layout-button");
 
-export default class LayoutButton extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    icon: PropTypes.element,
-    tooltip: PropTypes.string,
-    tooltipOrigin: OriginalPropTypes.origin,
-    value: PropTypes.any,
-    selected: PropTypes.bool,
-    onClick: PropTypes.func
-  };
+type Props = {
+  className?: string;
+  icon: React$Element<any>;
+  tooltip?: string;
+  tooltipOrigin?: TooltipPositions;
+  value: any;
+  selected?: boolean;
+  onClick?: (value: any) => void;
+};
+
+export default class LayoutButton extends Component {
+  props: Props;
 
   static defaultProps = {
     selected: false,
     onClick: () => {}
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   handleClick() {
-    this.props.onClick(this.props.value);
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick(this.props.value);
+    }
   }
 
   render() {
