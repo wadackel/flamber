@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { IconButton } from "../";
-import type { TooltipPositions } from "../internal/Tooltip";
+import type { Positions } from "../../../types/prop-types";
 
 const b = bem("layout-button");
 
@@ -12,7 +12,7 @@ type Props = {
   className?: string;
   icon: React$Element<any>;
   tooltip?: string;
-  tooltipOrigin?: TooltipPositions;
+  tooltipOrigin?: Positions;
   value: any;
   selected?: boolean;
   onClick?: (value: any) => void;

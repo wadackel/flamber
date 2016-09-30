@@ -8,7 +8,7 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import randomId from "../../../helpers/random-id";
 import Tooltip from "./Tooltip";
-import type { Origin, TooltipPositions } from "../../../types/prop-types";
+import type { Origin, Positions } from "../../../types/prop-types";
 
 export type ButtonProps = {
   children?: ?React$Element<any>;
@@ -25,7 +25,7 @@ export type ButtonProps = {
   iconRight: ?React$Element<any>;
   tooltip: ?string;
   tooltipOrigin: Origin;
-  tooltipPositions: TooltipPositions;
+  tooltipPositions: Positions;
   textAlign: string;
   onClick: Function;
   onMouseDown: Function;

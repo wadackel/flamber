@@ -1,18 +1,27 @@
-import assign from "object-assign";
-import React, { PropTypes } from "react";
-import * as OriginalPropTypes from "../../../constants/prop-types";
+// @flow
+import _ from "lodash";
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import type { Origin, Positions } from "../../../types/prop-types";
+
+type Props = {
+  baseClassName: string;
+  className?: string;
+  show: boolean;
+  label: string;
+  origin: Origin;
+  positions: Positions;
+};
+
+type State = {
+  width: number;
+  height: number;
+};
 
 export default class Tooltip extends React.Component {
-  static propTypes = {
-    baseClassName: PropTypes.string.isRequired,
-    className: PropTypes.string,
-    show: PropTypes.bool,
-    label: PropTypes.string.isRequired,
-    origin: OriginalPropTypes.origin
-    // positions: TooltipPositions.isRequired
-  };
+  props: Props;
+  state: State;
 
   static defaultPropTypes = {
     show: false,
@@ -22,7 +31,7 @@ export default class Tooltip extends React.Component {
     }
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -54,9 +63,9 @@ export default class Tooltip extends React.Component {
   }
 
   setRippleSize() {
+    const { origin: { horizontal } } = this.props;
     const { tooltip, ripple } = this.refs;
-    const width = parseInt(tooltip.offsetWidth, 10) /
-      (this.props.origin.horizontal === "center" ? 2 : 1);
+    const width = parseInt(tooltip.offsetWidth, 10) / (horizontal === "center" ? 2 : 1);
     const height = parseInt(tooltip.offsetHeight, 10);
     const rippleSize = Math.ceil(
       (Math.sqrt(Math.pow(height, 2)) +
@@ -67,7 +76,7 @@ export default class Tooltip extends React.Component {
     ripple.style.height = `${rippleSize}px`;
   }
 
-  getStyles() {
+  getStyles(): Origin {
     const { origin, positions } = this.props;
     const { width, height } = this.state;
 
@@ -83,7 +92,7 @@ export default class Tooltip extends React.Component {
       right: { left: positions.right }
     };
 
-    return assign(
+    return _.assign(
       vertical[origin.vertical],
       horizontal[origin.horizontal]
     );
