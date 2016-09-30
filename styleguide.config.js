@@ -71,5 +71,9 @@ module.exports = {
     };
 
     return webpackConfig;
+  },
+
+  propsParser(filePath, source) {
+    return docgen.parse(source);
   }
 };
