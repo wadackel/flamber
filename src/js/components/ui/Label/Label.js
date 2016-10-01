@@ -1,14 +1,23 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("label");
 
-export default function Label({
-  children,
-  className,
-  icon
-}) {
+type Props = {
+  children: React$Element<any>;
+  className?: string;
+  icon?: React$Element<any>;
+};
+
+export default function Label(props: Props) {
+  const {
+    children,
+    className,
+    icon
+  } = props;
+
   return (
     <div className={mergeClassNames(b(), className)}>
       {icon && <span className={b("icon")()}>{icon}</span>}
@@ -16,9 +25,3 @@ export default function Label({
     </div>
   );
 }
-
-Label.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  icon: PropTypes.element
-};
