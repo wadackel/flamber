@@ -1,5 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { FlatButton, IconButton } from "../";
@@ -7,17 +8,17 @@ import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("snackbar");
 
-export default class Snackbar extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    open: PropTypes.bool,
-    hideDuration: PropTypes.number,
-    message: PropTypes.node.isRequired,
-    action: PropTypes.node,
-    onActionClick: PropTypes.func,
-    onRequestClose: PropTypes.func
-  };
+type Props = {
+  className?: string;
+  open: boolean;
+  hideDuration: number;
+  message: React$Element<any>;
+  action: React$Element<any>;
+  onActionClick?: Function;
+  onRequestClose?: Function;
+};
 
+export default class Snackbar extends Component {
   static defaultProps = {
     open: false,
     hideDuration: 6000,
@@ -25,12 +26,14 @@ export default class Snackbar extends React.Component {
     onRequestClose: () => {}
   };
 
-  constructor(props, context) {
+  timer: number = 0;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.open !== this.props.open && nextProps.open) {
       clearTimeout(this.timer);
       this.timer = setTimeout(this.handleTimeout,
@@ -43,19 +46,19 @@ export default class Snackbar extends React.Component {
     clearTimeout(this.timer);
   }
 
-  handleActionClick(e) {
+  handleActionClick(e: Event) {
     this.props.onActionClick(e);
   }
 
-  handleTimeout() {
+  handleTimeout(): void {
     this.requestClose();
   }
 
-  handleCloseClick() {
+  handleCloseClick(): void {
     this.requestClose();
   }
 
-  requestClose() {
+  requestClose(): void {
     this.props.onRequestClose();
   }
 
