@@ -1,7 +1,8 @@
+// @flow
 import _ from "lodash";
 import autoBind from "auto-bind";
 import keycode from "keycode";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { Spinner } from "../";
@@ -9,18 +10,25 @@ import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("chip");
 
+type Props = {
+  children: React$Element<any>;
+  className?: string;
+  value?: any;
+  processing: boolean;
+  onClick?: Function;
+  onFocus?: Function;
+  onBlur?: Function;
+  onKeyDown?: Function;
+  onDelete?: Function;
+};
+
+type State = {
+  focused: boolean;
+};
+
 export default class Chip extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    value: PropTypes.any,
-    processing: PropTypes.bool,
-    onClick: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onRequestDelete: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     processing: false,
@@ -29,7 +37,7 @@ export default class Chip extends Component {
     onBlur: () => {}
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = { focused: false };
@@ -37,54 +45,64 @@ export default class Chip extends Component {
     autoBind(this);
   }
 
-  handleClick(e) {
+  handleClick(e: SyntheticMouseEvent) {
     e.preventDefault();
-    this.props.onClick(e, this.props.value);
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick(e, this.props.value);
+    }
   }
 
-  handleFocus(e) {
-    this.props.onFocus(e, this.props.value);
+  handleFocus(e: SyntheticFocusEvent) {
+    if (typeof this.props.onFocus === "function") {
+      this.props.onFocus(e, this.props.value);
+    }
     this.setState({ focused: true });
   }
 
-  handleBlur(e) {
-    this.props.onBlur(e, this.props.value);
+  handleBlur(e: SyntheticFocusEvent) {
+    if (typeof this.props.onBlur === "function") {
+      this.props.onBlur(e, this.props.value);
+    }
     this.setState({ focused: false });
   }
 
-  handleDelete(e) {
+  handleDelete(e: SyntheticMouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onRequestDelete(this.props.value);
+    if (typeof this.props.onDelete === "function") {
+      this.props.onDelete(this.props.value);
+    }
   }
 
-  handleKeyDown(e) {
+  handleKeyDown(e: SyntheticKeyboardEvent) {
     const key = keycode(e);
 
     switch (key) {
       case "backspace":
-        if (this.isDeletable()) {
-          this.props.onRequestDelete(this.props.value);
+        if (this.isDeletable() && typeof this.props.onDelete === "function") {
+          this.props.onDelete(this.props.value);
         }
         break;
     }
 
-    this.props.onKeyDown(e);
+    if (typeof this.props.onKeyDown === "function") {
+      this.props.onKeyDown(e);
+    }
   }
 
-  isClickable() {
+  isClickable(): boolean {
     return _.isFunction(this.props.onClick);
   }
 
-  isDeletable() {
-    return _.isFunction(this.props.onRequestDelete);
+  isDeletable(): boolean {
+    return _.isFunction(this.props.onDelete);
   }
 
-  focus() {
+  focus(): void {
     this.refs.chip.focus();
   }
 
-  blur() {
+  blur(): void {
     this.refs.chip.blur();
   }
 

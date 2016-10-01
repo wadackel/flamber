@@ -9,7 +9,7 @@ Basic:
   <Chip
     value="deletable chip"
     onClick={(e, value) => console.log(`Click ${value}`)}
-    onRequestDelete={value => console.log(`Delete ${value}`)}
+    onDelete={value => console.log(`Delete ${value}`)}
   >
     Deletable chip
   </Chip>
@@ -17,7 +17,7 @@ Basic:
   <Chip
     processing
     onClick={console.log}
-    onRequestDelete={console.log}
+    onDelete={console.log}
   >
     Processing chip
   </Chip>
