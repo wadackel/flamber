@@ -1,33 +1,50 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import RcSlider from "rc-slider";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("slider");
 
-function Handle(props) {
-  const style = { left: `${props.offset}%` };
 
-  return <div className={b("handle", { dragging: props.dragging })} style={style} />;
-}
-
-Handle.propTypes = {
-  offset: PropTypes.number,
-  className: PropTypes.string,
-  dragging: PropTypes.bool
+type HandleProps = {
+  offset?: number;
+  dragging?: boolean;
 };
 
-export default function Slider({
-  className,
-  min,
-  max,
-  step,
-  vertical,
-  defaultValue,
-  value,
-  disabled,
-  onChange
-}) {
+function Handle(props: HandleProps) {
+  const { offset, dragging } = props;
+  const style = { left: `${offset ? offset : 0}%` };
+
+  return <div className={b("handle", { dragging })} style={style} />;
+}
+
+
+type Props = {
+  className?: string;
+  min: number;
+  max: number;
+  step: number;
+  vertical: boolean;
+  defaultValue?: number;
+  value?: number;
+  disabled: boolean;
+  onChange?: Function;
+};
+
+export default function Slider(props: Props) {
+  const {
+    className,
+    min,
+    max,
+    step,
+    vertical,
+    defaultValue,
+    value,
+    disabled,
+    onChange
+  } = props;
+
   return <RcSlider
     className={mergeClassNames(b(), className)}
     handle={<Handle />}
@@ -41,18 +58,6 @@ export default function Slider({
     onChange={onChange}
   />;
 }
-
-Slider.propTypes = {
-  className: PropTypes.string,
-  min: PropTypes.number,
-  max: PropTypes.number,
-  step: PropTypes.number,
-  vertical: PropTypes.bool,
-  defaultValue: PropTypes.number.isRequired,
-  value: PropTypes.number,
-  disabled: PropTypes.bool,
-  onChange: PropTypes.func
-};
 
 Slider.defaultProps = {
   min: 0,
