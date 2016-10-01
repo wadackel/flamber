@@ -1,19 +1,22 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import type { Palette } from "../../../types/palette";
 
 const b = bem("color-bar");
 
+type ItemProps = {
+  color: any;
+  clickable: boolean;
+  onClick: Function;
+};
 
-class ColorBarItem extends Component {
-  static propTypes = {
-    color: PropTypes.any,
-    clickable: PropTypes.bool,
-    onClick: PropTypes.func
-  };
+export class ColorBarItem extends Component {
+  props: ItemProps;
 
-  constructor(props, context) {
+  constructor(props: ItemProps, context: Object) {
     super(props, context);
     autoBind(this);
   }
@@ -39,15 +42,27 @@ class ColorBarItem extends Component {
 }
 
 
-export default function ColorBar({
-  className,
-  clickable,
-  itemClickable,
-  lineWidth,
-  palette,
-  onClick,
-  onItemClick
-}) {
+type Props = {
+  className?: string;
+  clickable: boolean;
+  itemClickable: boolean;
+  lineWidth: number;
+  palette: Palette;
+  onClick: Function;
+  onItemClick: Function;
+};
+
+export default function ColorBar(props: Props) {
+  const {
+    className,
+    clickable,
+    itemClickable,
+    lineWidth,
+    palette,
+    onClick,
+    onItemClick
+  } = props;
+
   const children = palette.map(color =>
     <ColorBarItem
       key={color}
@@ -71,16 +86,6 @@ export default function ColorBar({
     </div>
   );
 }
-
-ColorBar.propTypes = {
-  className: PropTypes.string,
-  clickable: PropTypes.bool,
-  itemClickable: PropTypes.bool,
-  lineWidth: PropTypes.number,
-  palette: PropTypes.array,
-  onClick: PropTypes.func,
-  onItemClick: PropTypes.func
-};
 
 ColorBar.defaultProps = {
   clickable: false,
