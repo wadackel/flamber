@@ -1,10 +1,11 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("tool-bar");
 
-function renderNodeAddKeyIfNeeded(node) {
+function renderNodeAddKeyIfNeeded(node: ?React$Element<any>): ?React$Element<any> {
   if (Array.isArray(node)) {
     return node.map((o, i) => React.cloneElement(o, { key: i }));
   }
@@ -12,13 +13,24 @@ function renderNodeAddKeyIfNeeded(node) {
   return node;
 }
 
-export default function ToolBar({
-  className,
-  style,
-  left,
-  title,
-  right
-}) {
+
+type Props = {
+  className?: string;
+  style?: Object;
+  left?: React$Element<any>;
+  title?: React$Element<any>;
+  right?: React$Element<any>;
+};
+
+export default function ToolBar(props: Props) {
+  const {
+    className,
+    style,
+    left,
+    title,
+    right
+  } = props;
+
   return (
     <div className={mergeClassNames(b(), className)} style={style}>
       <div className={b("col", { left: true })()}>
@@ -33,14 +45,6 @@ export default function ToolBar({
     </div>
   );
 }
-
-ToolBar.propTypes = {
-  className: PropTypes.string,
-  style: PropTypes.object,
-  left: PropTypes.node,
-  title: PropTypes.node,
-  right: PropTypes.node
-};
 
 ToolBar.defaultProps = {
   style: {}
