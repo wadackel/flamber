@@ -76,7 +76,7 @@ export default class TextField extends React.Component {
     }
   }
 
-  handleChange(e: Event) {
+  handleChange(e: SyntheticInputEvent) {
     const target = e.target;
 
     if (target instanceof HTMLInputElement) {
@@ -88,7 +88,7 @@ export default class TextField extends React.Component {
     }
   }
 
-  handleEnter(e: Event) {
+  handleEnter(e: SyntheticInputEvent) {
     const target = e.target;
 
     if (target instanceof HTMLInputElement) {
@@ -100,7 +100,7 @@ export default class TextField extends React.Component {
     }
   }
 
-  handleKeyUp(e: Event) {
+  handleKeyUp(e: SyntheticKeyboardEvent) {
     if (typeof this.props.onKeyUp === "function") {
       this.props.onKeyUp(e);
     }
@@ -110,14 +110,14 @@ export default class TextField extends React.Component {
     }
   }
 
-  handleFocus(e: Event) {
+  handleFocus(e: SyntheticFocusEvent) {
     this.setState({ isFocused: true });
     if (typeof this.props.onFocus === "function") {
       this.props.onFocus(e);
     }
   }
 
-  handleBlur(e: Event) {
+  handleBlur(e: SyntheticFocusEvent) {
     this.setState({ isFocused: false });
     if (typeof this.props.onBlur === "function") {
       this.props.onBlur(e);

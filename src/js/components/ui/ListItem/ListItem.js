@@ -1,5 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import Button from "../internal/Button";
@@ -8,26 +9,34 @@ import { PencilIcon, TrashIcon } from "../../svg-icons/";
 
 const b = bem("list-item");
 
+type Props = {
+  className?: string;
+  style?: Object;
+  processing: boolean;
+  primary: string;
+  secondary?: string;
+  icon?: React$Element<any>;
+  index: number;
+  value?: any;
+  placeholder?: string;
+  clickable: boolean;
+  editable: boolean;
+  meta?: React$Element<any>;
+  onClick?: Function;
+  onChange?: Function;
+  onEnter?: Function;
+  onComplete?: Function;
+  onDelete?: Function;
+};
+
+type State = {
+  primary: string;
+  isEditing: boolean;
+};
+
 export default class ListItem extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    processing: PropTypes.bool,
-    primary: PropTypes.string,
-    secondary: PropTypes.string,
-    icon: PropTypes.element,
-    index: PropTypes.number,
-    value: PropTypes.any,
-    clickable: PropTypes.bool,
-    editable: PropTypes.bool,
-    placeholder: PropTypes.string,
-    meta: PropTypes.node,
-    onClick: PropTypes.func,
-    onChange: PropTypes.func,
-    onEnter: PropTypes.func,
-    onComplete: PropTypes.func,
-    onRequestDelete: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     processing: false,
@@ -40,7 +49,7 @@ export default class ListItem extends Component {
     onRequestDelete: () => {}
   }
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -51,31 +60,37 @@ export default class ListItem extends Component {
     autoBind(this);
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: Props, nextState: State) {
     if (nextState.isEditing === false && this.state.isEditing === true) {
       this.handleComplete();
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevState.isEditing === false && this.state.isEditing === true) {
       this.refs.control.focus();
     }
   }
 
-  handleClick(e) {
+  handleClick(e: SyntheticMouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onClick(this, this.props.value, this.props.index);
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick(this, this.props.value, this.props.index);
+    }
   }
 
-  handleChange(e, primary) {
+  handleChange(e: SyntheticInputEvent, primary: string) {
     this.setState({ primary });
-    this.props.onChange(this, primary, this.props.index);
+    if (typeof this.props.onChange === "function") {
+      this.props.onChange(this, primary, this.props.index);
+    }
   }
 
-  handleEnter(e, primary) {
-    this.props.onEnter(this, primary, this.props.index);
+  handleEnter(e: SyntheticInputEvent, primary: string) {
+    if (typeof this.props.onEnter === "function") {
+      this.props.onEnter(this, primary, this.props.index);
+    }
     this.refs.control.blur();
   }
 
@@ -84,26 +99,23 @@ export default class ListItem extends Component {
   }
 
   handleComplete() {
-    this.props.onComplete(this, this.state.primary, this.props.index);
-  }
-
-  handleEditClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const { isEditing } = this.state;
-
-    if (isEditing) {
-      this.setState({ isEditing: false });
-    } else {
-      this.setState({ isEditing: true });
+    if (typeof this.props.onComplete === "function") {
+      this.props.onComplete(this, this.state.primary, this.props.index);
     }
   }
 
-  handleTrashClick(e) {
+  handleEditClick(e: SyntheticMouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onRequestDelete(this, this.props.index);
+    this.setState({ isEditing: !this.state.isEditing });
+  }
+
+  handleTrashClick(e: SyntheticMouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof this.props.onDelete === "function") {
+      this.props.onDelete(this, this.props.index);
+    }
   }
 
   applyFocus() {

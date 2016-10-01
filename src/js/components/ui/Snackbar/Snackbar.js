@@ -46,7 +46,7 @@ export default class Snackbar extends Component {
     clearTimeout(this.timer);
   }
 
-  handleActionClick(e: Event) {
+  handleActionClick(e: SyntheticMouseEvent) {
     this.props.onActionClick(e);
   }
 

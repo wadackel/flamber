@@ -1,27 +1,30 @@
-import React, { Component, PropTypes } from "react";
+// @flow
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("list");
 
+type Props = {
+  children: React$Element<any>;
+  className?: string;
+  onMouseDown?: Function;
+  onKeyDown?: Function;
+}
+
 export default class List extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    onMouseDown: PropTypes.func,
-    onKeyDown: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     onMouseDown: () => {},
     onKeyDown: () => {}
   };
 
-  focus() {
+  focus(): void {
     this.refs.list.focus();
   }
 
-  blur() {
+  blur(): void {
     this.refs.list.blur();
   }
 

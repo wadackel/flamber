@@ -18,25 +18,25 @@ export type ButtonProps = {
   type: string;
   disable: boolean;
   enableKeyClick: boolean;
-  href: ?string;
-  target: ?string;
+  href?: string;
+  target?: string;
   label: ?React$Element<any>;
-  icon: ?React$Element<any>;
-  iconRight: ?React$Element<any>;
-  tooltip: ?string;
+  icon?: React$Element<any>;
+  iconRight?: React$Element<any>;
+  tooltip?: string;
   tooltipOrigin: Origin;
   tooltipPositions: Positions;
   textAlign: string;
-  onClick: Function;
-  onMouseDown: Function;
-  onMouseEnter: Function;
-  onMouseLeave: Function;
-  onMouseEnter: Function;
-  onKeyDown: Function;
-  onKeyUp: Function;
-  onKeyPress: Function;
-  onFocus: Function;
-  onBlur: Function;
+  onClick?: Function;
+  onMouseDown?: Function;
+  onMouseEnter?: Function;
+  onMouseLeave?: Function;
+  onMouseEnter?: Function;
+  onKeyDown?: Function;
+  onKeyUp?: Function;
+  onKeyPress?: Function;
+  onFocus?: Function;
+  onBlur?: Function;
 };
 
 type State = {
@@ -62,16 +62,7 @@ export default class Button extends Component {
       bottom: "90%",
       left: "10%"
     },
-    textAlign: "center",
-    onClick: () => {},
-    onMouseDown: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
-    onKeyDown: () => {},
-    onKeyUp: () => {},
-    onKeyPress: () => {},
-    onFocus: () => {},
-    onBlur: () => {}
+    textAlign: "center"
   };
 
   constructor(props: ButtonProps, context: Object) {
@@ -102,7 +93,9 @@ export default class Button extends Component {
       (center + (center * (touch / center))) * 2
     );
 
-    this.props.onMouseDown(e);
+    if (typeof this.props.onMouseDown === "function") {
+      this.props.onMouseDown(e);
+    }
   }
 
   handleMouseEnter(e: SyntheticMouseEvent) {
@@ -110,7 +103,9 @@ export default class Button extends Component {
       this.setState({ showTooltip: true });
     }
 
-    this.props.onMouseEnter(e);
+    if (typeof this.props.onMouseEnter === "function") {
+      this.props.onMouseEnter(e);
+    }
   }
 
   handleMouseLeave(e: SyntheticMouseEvent) {
@@ -118,16 +113,22 @@ export default class Button extends Component {
       this.setState({ showTooltip: false });
     }
 
-    this.props.onMouseLeave(e);
+    if (typeof this.props.onMouseLeave === "function") {
+      this.props.onMouseLeave(e);
+    }
   }
 
   handleKeyDown(e: SyntheticKeyboardEvent) {
     const key = keycode(e);
 
-    this.props.onKeyDown(e);
+    if (typeof this.props.onKeyDown === "function") {
+      this.props.onKeyDown(e);
+    }
 
     if (this.props.enableKeyClick && (key === "enter" || key === "space")) {
-      this.props.onClick();
+      if (typeof this.props.onClick === "function") {
+        this.props.onClick(e);
+      }
     }
   }
 
