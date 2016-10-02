@@ -1,6 +1,7 @@
+// @flow
 import _ from "lodash";
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../share-config.json";
 import bem from "../../../helpers/bem";
@@ -10,13 +11,15 @@ import RenderToLayer from "../internal/RenderToLayer";
 
 const b = bem("tool-box");
 
+type Props = {
+  className?: string;
+  open: boolean;
+  text: React$Element<any>;
+  actions: Array<React$Element<any>>;
+};
+
 export default class ToolBox extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    open: PropTypes.bool,
-    text: PropTypes.node,
-    actions: PropTypes.array
-  };
+  props: Props;
 
   static defaultProps = {
     open: false,
@@ -24,13 +27,13 @@ export default class ToolBox extends Component {
     actions: []
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  shouldComponentUpdate(nextProps: Props) {
+    return !_.isEqual(this.props, nextProps);
   }
 
   renderBox() {
