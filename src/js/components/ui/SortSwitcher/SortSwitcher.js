@@ -1,52 +1,62 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
-import * as Order from "../../../constants/order";
-import * as OriginalPropTypes from "../../../constants/prop-types";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { DropDownMenu, MenuItem, IconButton } from "../";
 import { ArrowTopIcon, ArrowBottomIcon } from "../../svg-icons/";
+import type { OrderBy, Order } from "../../../types/prop-types";
 
 const b = bem("sort-switcher");
 
+type SortType = {
+  value: any;
+  name: string;
+};
+
+type Props = {
+  className?: string;
+  orderBy: OrderBy;
+  order: Order;
+  types: Array<SortType>;
+  onChange?: Function;
+  onOrderByChange?: Function;
+  onOrderChange?: Function;
+};
+
 export default class SortSwitcher extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    orderBy: PropTypes.any,
-    order: OriginalPropTypes.order,
-    types: PropTypes.arrayOf(PropTypes.shape({
-      value: PropTypes.any,
-      name: PropTypes.string
-    })),
-    onChange: PropTypes.func,
-    onOrderByChange: PropTypes.func,
-    onOrderChange: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
-    order: Order.ASC,
+    order: "asc",
     onChange: () => {},
     onOrderByChange: () => {},
     onOrderChange: () => {}
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleOrderByChange(orderBy) {
-    this.props.onOrderByChange(orderBy);
-    this.props.onChange(orderBy, this.props.order);
+  handleOrderByChange(orderBy: OrderBy) {
+    if (typeof this.props.onOrderByChange === "function") {
+      this.props.onOrderByChange(orderBy);
+    }
+
+    this.triggerChange(orderBy, this.props.order);
   }
 
   handleOrderChange() {
-    const nextOrder = this.props.order === Order.ASC
-      ? Order.DESC
-      : Order.ASC;
-
+    const nextOrder = this.props.order === "asc" ? "desc" : "asc";
     this.props.onOrderChange(nextOrder);
-    this.props.onChange(this.props.orderBy, nextOrder);
+    this.triggerChange(this.props.orderBy, nextOrder);
+  }
+
+  triggerChange(orderBy: OrderBy, order: Order): void {
+    if (typeof this.props.onChange === "function") {
+      this.props.onChange(orderBy, order);
+    }
   }
 
   render() {
@@ -57,7 +67,7 @@ export default class SortSwitcher extends Component {
       types
     } = this.props;
 
-    const isOrderAsc = order === Order.ASC;
+    const isOrderAsc = order === "asc";
 
     const children = types.map(({ value, name }) =>
       <MenuItem key={value} value={value} primary={name} />

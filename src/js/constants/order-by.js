@@ -1,4 +1,4 @@
-export const NAME = "NAME";
-export const CREATED = "CREATED";
-export const MODIFIED = "MODIFIED";
-export const LAST_VIEW = "LAST_VIEW";
+export const NAME = "name";
+export const CREATED = "created";
+export const MODIFIED = "modified";
+export const LAST_VIEW = "last_view";

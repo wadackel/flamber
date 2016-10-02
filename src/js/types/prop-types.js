@@ -17,4 +17,6 @@ export type Positions = {
 
 export type Order = "asc" | "desc";
 
+export type OrderBy = "name" | "created" | "modified" | "last_view";
+
 export type SizeString = "xl" | "lg" | "md" | "sm" | "xs";
