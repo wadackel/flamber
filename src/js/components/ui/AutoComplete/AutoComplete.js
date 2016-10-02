@@ -1,8 +1,8 @@
+// @flow
 import keycode from "keycode";
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import {
@@ -11,37 +11,49 @@ import {
   MenuItem,
   Popover
 } from "../";
+import type { Origin } from "../../../types/prop-types";
 
 const b = bem("auto-complete");
 
-export default class AutoComplete extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    origin: OriginalPropTypes.origin,
-    triggerOrigin: OriginalPropTypes.origin,
-    id: PropTypes.string,
-    openOnFocus: PropTypes.bool,
-    dataSource: PropTypes.array,
-    dataSourceConfig: PropTypes.shape({
-      text: PropTypes.string,
-      value: PropTypes.string
-    }),
-    searchText: PropTypes.string,
-    maxSearchResults: PropTypes.number,
-    filter: PropTypes.func,
-    label: PropTypes.string,
-    placeholder: PropTypes.string,
-    name: PropTypes.string,
-    menuCloseDelay: PropTypes.number,
-    onNewRequest: PropTypes.func,
-    onUpdateInput: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onKeyPress: PropTypes.func,
-    onKeyUp: PropTypes.func
-  };
+type DataSourceConfig = {
+  text: string;
+  value: any;
+};
 
+type Props = {
+  className?: string;
+  id?: string;
+  label?: string;
+  placeholder?: string;
+  name?: string;
+  origin: Origin;
+  triggerOrigin: Origin;
+  openOnFocus: boolean;
+  dataSource: Array<any>;
+  dataSourceConfig: DataSourceConfig;
+  searchText: string;
+  maxSearchResults: number;
+  filter: (searchText: string, key: string) => boolean;
+  menuCloseDelay: number;
+  onNewRequest?: Function;
+  onUpdateInput?: Function;
+  onFocus?: Function;
+  onBlur?: Function;
+  onKeyDown?: Function;
+  onKeyPress?: Function;
+  onKeyUp?: Function;
+};
+
+type State = {
+  searchText: string;
+  open: boolean;
+  triggerElement: ?HTMLElement;
+  focusTextField: boolean;
+};
+
+export default class AutoComplete extends React.Component {
+  props: Props;
+  state: State;
   static defaultProps = {
     origin: {
       vertical: "top",
@@ -58,25 +70,19 @@ export default class AutoComplete extends React.Component {
     openOnFocus: false,
     searchText: "",
     maxSearchResults: -1,
-    // filter: (searchText, key) => searchText === "" || key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1,
-    filter: (searchText, key) => {
-      return searchText === "" || (searchText !== key && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
-    },
-    menuCloseDelay: 300,
-    onNewRequest: () => {},
-    onUpdateInput: () => {},
-    onFocus: () => {},
-    onBlur: () => {},
-    onKeyDown: () => {},
-    onKeyUp: () => {},
-    onKeyPress: () => {}
+    filter: (searchText: string, key: string) =>
+      searchText === "" ||
+      (searchText !== key && key.toLowerCase().indexOf(searchText.toLowerCase()) !== -1),
+    menuCloseDelay: 300
   };
 
   static noFilter() {
     return true;
   }
 
-  constructor(props, context) {
+  timerMenuItemClickClose: number = 0;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -85,8 +91,6 @@ export default class AutoComplete extends React.Component {
       triggerElement: null,
       focusTextField: true
     };
-
-    this.timerMenuItemClickClose = null;
 
     autoBind(this);
   }
@@ -103,7 +107,7 @@ export default class AutoComplete extends React.Component {
     clearTimeout(this.timerMenuItemClickClose);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (this.state.searchText !== nextProps.searchText) {
       this.setState({
         searchText: nextProps.searchText
@@ -111,7 +115,7 @@ export default class AutoComplete extends React.Component {
     }
   }
 
-  handleChange(e, value) {
+  handleChange(e: SyntheticInputEvent, value: any) {
     if (value === this.state.searchText) {
       return;
     }
@@ -122,31 +126,40 @@ export default class AutoComplete extends React.Component {
       triggerElement: ReactDOM.findDOMNode(this.refs.searchTextField)
     }, () => {
       this.setMenuWidth();
-      this.props.onUpdateInput(value, this.props.dataSource);
+      if (typeof this.props.onUpdateInput === "function") {
+        this.props.onUpdateInput(value, this.props.dataSource);
+      }
     });
   }
 
-  handleFocus(e) {
+  handleFocus(e: SyntheticFocusEvent) {
     this.setState({
       focusTextField: true,
       open: this.props.openOnFocus,
       triggerElement: ReactDOM.findDOMNode(this.refs.searchTextField)
     });
 
-    this.props.onFocus(e);
+    if (typeof this.props.onFocus === "function") {
+      this.props.onFocus(e);
+    }
   }
 
-  handleBlur(e) {
-    if (this.state.focusTextField && this.timerMenuItemClickClose == null) {
+  handleBlur(e: SyntheticFocusEvent) {
+    if (this.state.focusTextField && !this.timerMenuItemClickClose) {
       this.close();
     }
 
-    this.props.onBlur(e);
+    if (typeof this.props.onBlur === "function") {
+      this.props.onBlur(e);
+    }
   }
 
-  handleKeyDown(e) {
+  handleKeyDown(e: SyntheticKeyboardEvent) {
     const key = keycode(e);
-    this.props.onKeyDown(e);
+
+    if (typeof this.props.onKeyDown === "function") {
+      this.props.onKeyDown(e);
+    }
 
     switch (key) {
       case "esc":
@@ -169,23 +182,23 @@ export default class AutoComplete extends React.Component {
     const finalSearchText = searchText.trim();
 
     if (finalSearchText !== "") {
-      this.props.onNewRequest(finalSearchText, -1);
+      this.triggerNewRequest(finalSearchText, -1);
     }
   }
 
-  handleMenuItemClick(menuItem, value, index) {
+  handleMenuItemClick(menuItem: MenuItem, value: any, index: number) {
     const { menuCloseDelay } = this.props;
 
     this.timerMenuItemClickClose = setTimeout(() => {
       this.setState({ searchText: menuItem.props.primary });
-      this.props.onNewRequest(value, index);
+      this.triggerNewRequest(value, index);
       this.close();
       this.focus();
-      this.timerMenuItemClickClose = null;
+      this.timerMenuItemClickClose = 0;
     }, menuCloseDelay);
   }
 
-  handleMenuMouseDown(e) {
+  handleMenuMouseDown(e: SyntheticMouseEvent) {
     e.preventDefault();
   }
 
@@ -193,7 +206,7 @@ export default class AutoComplete extends React.Component {
     this.close();
   }
 
-  handleUpdateFocusIndex(index) {
+  handleUpdateFocusIndex(index: number) {
     const maxIndex = this.refs.menu.props.children.length - 1;
 
     if (index < 0 || index > maxIndex) {
@@ -203,13 +216,19 @@ export default class AutoComplete extends React.Component {
     }
   }
 
-  handleRequestClose(type) {
+  handleRequestClose(type: string) {
     if (!this.state.focusTextField || type === "scroll" || type === "resize") {
       this.close();
     }
   }
 
-  setMenuWidth() {
+  triggerNewRequest(searchText: string, index: number): void {
+    if (typeof this.props.onNewRequest === "function") {
+      this.props.onNewRequest(searchText, index);
+    }
+  }
+
+  setMenuWidth(): void {
     if (!this.state.open) return;
 
     const searchTextField = ReactDOM.findDOMNode(this.refs.searchTextField);
@@ -220,11 +239,11 @@ export default class AutoComplete extends React.Component {
     menu.style.width = `${searchTextField.offsetWidth}px`;
   }
 
-  close(callback = null) {
+  close(callback: ?Function = null) {
     this.setState({
       open: false,
       triggerElement: null
-    }, callback);
+    }, callback == null ? () => {} : callback);
   }
 
   focus() {
@@ -300,7 +319,6 @@ export default class AutoComplete extends React.Component {
         initiallyKeyboardFocused={openOnFocus}
         onItemClick={this.handleMenuItemClick}
         onMouseDown={this.handleMenuMouseDown}
-        onKeyDown={this.handleMenuKeyDown}
         onEscKeyDown={this.handleEscKeyDown}
         onUpdateFocusIndex={this.handleUpdateFocusIndex}
       >
