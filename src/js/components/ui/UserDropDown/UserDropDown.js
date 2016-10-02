@@ -1,6 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
-import * as OriginPropTypes from "../../../constants/prop-types";
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import {
@@ -8,48 +8,54 @@ import {
   UploadStatus,
   FlatButton
 } from "../";
+import type { Origin } from "../../../types/prop-types";
 
 const b = bem("user-drop-down");
 
+type Props = {
+  className?: string;
+  open: boolean;
+  limit: number;
+  usage: number;
+  triggerElement: ?HTMLElement;
+  triggerOrigin: Origin;
+  onRequestOptions?: Function;
+  onRequestSignOut?: Function;
+  onRequestClose?: Function;
+};
+
 export default class UserDropDown extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    open: PropTypes.bool,
-    limit: PropTypes.number,
-    usage: PropTypes.number,
-    triggerElement: PropTypes.object,
-    triggerOrigin: OriginPropTypes.origin,
-    onRequestOptions: PropTypes.func,
-    onRequestSignOut: PropTypes.func,
-    onRequestClose: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     open: false,
     triggerOrigin: {
       vertical: "bottom",
       horizontal: "right"
-    },
-    onRequestOptions: () => {},
-    onRequestSignOut: () => {},
-    onRequestClose: () => {}
+    }
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   handleRequestClose() {
-    this.props.onRequestClose();
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose();
+    }
   }
 
   handleOptionsClick() {
-    this.props.onRequestOptions();
+    if (typeof this.props.onRequestOptions === "function") {
+      this.props.onRequestOptions();
+    }
   }
 
   handleSignOutClick() {
-    this.props.onRequestSignOut();
+    if (typeof this.props.onRequestSignOut === "function") {
+      this.props.onRequestSignOut();
+    }
   }
 
   render() {
