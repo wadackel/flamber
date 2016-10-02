@@ -1,48 +1,45 @@
+// @flow
 import autoBind from "auto-bind";
 import keycode from "keycode";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { TextField } from "../";
 
 const b = bem("editable-text");
 
+export type EditableTextProps = {
+  className?: string;
+  multiLine: boolean;
+  icon?: React$Element<any>;
+  placeholder?: string;
+  value?: string;
+  onEnter?: Function;
+  onKeyDown?: Function;
+  onMouseEnter?: Function;
+  onMouseLeave?: Function;
+  onFocus?: Function;
+  onBlur?: Function;
+};
+
+type State = {
+  isEditing: boolean;
+  isHover: boolean;
+};
+
 export default class EditableText extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    multiLine: PropTypes.bool,
-    icon: PropTypes.element,
-    placeholder: PropTypes.string,
-    value: PropTypes.string,
-    onEnter: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func
-  };
+  props: EditableTextProps;
+  state: State;
 
   static defaultProps = {
     multiLine: false,
-    placeholder: "",
-    onEnter: () => {},
-    onKeyDown: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
-    onFocus: () => {},
-    onBlur: () => {}
+    placeholder: ""
   };
 
-  constructor(props, context) {
+  _isEnter: boolean = false;
+
+  constructor(props: EditableTextProps, context: Object) {
     super(props, context);
-
-    this.state = {
-      isEditing: false,
-      isHover: false
-    };
-
-    this._isEnter = false;
-
     autoBind(this);
   }
 
@@ -53,51 +50,72 @@ export default class EditableText extends Component {
     });
   }
 
-  handleMouseEnter() {
+  handleMouseEnter(e: SyntheticMouseEvent) {
     this.setState({ isHover: true });
-    this.props.onMouseEnter();
+    if (typeof this.props.onMouseEnter === "function") {
+      this.props.onMouseEnter(e);
+    }
   }
 
-  handleMouseLeave() {
+  handleMouseLeave(e: SyntheticMouseEvent) {
     this.setState({ isHover: false });
-    this.props.onMouseLeave();
+    if (typeof this.props.onMouseLeave === "function") {
+      this.props.onMouseLeave(e);
+    }
   }
 
-  handleEnter(e, value) {
+  handleEnter(e: SyntheticKeyboardEvent, value: any) {
     this._isEnter = true;
-    this.props.onEnter(e, value);
+    this.triggerEnter(e, value);
     this.refs.textField.blur();
   }
 
-  handleKeyDown(e) {
-    this.props.onKeyDown(e);
+  handleKeyDown(e: SyntheticKeyboardEvent) {
+    if (typeof this.props.onKeyDown === "function") {
+      this.props.onKeyDown(e);
+    }
 
     if (this.props.multiLine && keycode(e) === "enter") {
       e.preventDefault();
       this._isEnter = true;
-      this.props.onEnter(e, e.currentTarget.value);
+
+      if (e.currentTarget instanceof HTMLInputElement) {
+        this.triggerEnter(e, e.currentTarget.value);
+      }
+
       this.refs.textField.blur();
     }
   }
 
-  handleElementFocus() {
+  handleElementFocus(e: SyntheticFocusEvent) {
     this.setState({ isEditing: true }, () => {
       this.refs.textField.focus();
-      this.refs.textField.select();
+      this.refs.textField.select(e);
     });
   }
 
-  handleBlur(e) {
+  handleBlur(e: SyntheticFocusEvent) {
     this.setState({ isEditing: false });
-    this.props.onBlur(e, this._isEnter);
+
+    if (typeof this.props.onBlur === "function") {
+      this.props.onBlur(e, this._isEnter);
+    }
+
     this._isEnter = false;
   }
 
-  renderValue() {
+  triggerEnter(e: SyntheticKeyboardEvent, value: any) {
+    if (typeof this.props.onEnter === "function") {
+      this.props.onEnter(e, value);
+    }
+  }
+
+  renderValue(): ?any {
     const { multiLine, value } = this.props;
     const regex = /(\n)/g;
 
     if (!multiLine) return value;
+    if (!value) return null;
 
     return value.split(regex).map(line =>
       !line.match(regex) ? line : React.createElement("br")
@@ -149,7 +167,6 @@ export default class EditableText extends Component {
             value={value}
             onEnter={this.handleEnter}
             onKeyDown={this.handleKeyDown}
-            onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             {...props}
           />

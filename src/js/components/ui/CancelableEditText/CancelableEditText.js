@@ -1,32 +1,30 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { EditableText } from "../";
+import type { EditableTextProps } from "../EditableText/EditableText";
 
 const b = bem("cancelable-edit-text");
 
+type Props = $All<EditableTextProps, {
+  onComplete?: Function;
+}>;
+
+type State = {
+  value: ?string;
+};
+
 export default class CancelableEditText extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    multiLine: PropTypes.bool,
-    icon: PropTypes.element,
-    placeholder: PropTypes.string,
-    value: PropTypes.string,
-    onKeyDown: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    onBlur: PropTypes.func,
-    onComplete: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
-    value: "",
-    onBlur: () => {},
-    onComplete: () => {}
+    value: ""
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = { value: props.value };
@@ -34,26 +32,30 @@ export default class CancelableEditText extends Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (this.props.value !== nextProps.value) {
       this.setState({ value: nextProps.value });
     }
   }
 
-  handleBlur(e, isEnter) {
+  handleBlur(e: SyntheticFocusEvent, isEnter: boolean) {
     if (!isEnter) {
       this.setState({ value: this.props.value });
     }
 
-    this.props.onBlur(e, isEnter);
+    if (typeof this.props.onBlur === "function") {
+      this.props.onBlur(e, isEnter);
+    }
   }
 
-  handleChange(e, value) {
+  handleChange(e: SyntheticInputEvent, value: any) {
     this.setState({ value });
   }
 
-  handleEnter(e, value) {
-    this.props.onComplete(value);
+  handleEnter(e: SyntheticKeyboardEvent, value: any) {
+    if (typeof this.props.onComplete === "function") {
+      this.props.onComplete(value);
+    }
   }
 
   render() {
@@ -69,7 +71,6 @@ export default class CancelableEditText extends Component {
     return <EditableText
       className={mergeClassNames(b(), className)}
       value={value}
-      onFocus={this.handleFocus}
       onBlur={this.handleBlur}
       onChange={this.handleChange}
       onEnter={this.handleEnter}
