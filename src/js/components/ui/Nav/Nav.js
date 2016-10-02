@@ -1,31 +1,30 @@
-import React, { Component, PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("nav");
 
-export default class Nav extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string
-  };
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+}
 
-  render() {
-    const {
-      children,
-      className
-    } = this.props;
+export default function Nav(props: Props) {
+  const {
+    children,
+    className
+  } = props;
 
-    const cloneChildren = React.Children.map(children, (item, index) =>
-      React.cloneElement(item, { key: index })
-    );
+  const cloneChildren = React.Children.map(children, (item, index) =>
+    React.cloneElement(item, { key: index })
+  );
 
-    return (
-      <nav className={mergeClassNames(b(), className)}>
-        <ul className={b("list")()}>
-          {cloneChildren}
-        </ul>
-      </nav>
-    );
-  }
+  return (
+    <nav className={mergeClassNames(b(), className)}>
+      <ul className={b("list")()}>
+        {cloneChildren}
+      </ul>
+    </nav>
+  );
 }
