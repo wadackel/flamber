@@ -6,39 +6,42 @@ import mergeClassNames from "../../../helpers/merge-class-names";
 import randomId from "../../../helpers/random-id";
 import Ripple from "../internal/Ripple";
 
-type Props = {
+export type RadioProps = {
   className?: string;
-  baseClassName: string;
   style?: Object;
-  type: "checkbox" | "radio";
   name?: string;
   label?: string;
   value?: any;
   checked: boolean;
-  indeterminate: boolean;
   inline: boolean;
   onCheck?: Function;
   onClick?: Function;
 };
+
+export type CheckboxProps = $All<RadioProps, {
+  indeterminate: boolean;
+}>;
+
+export type SwitchProps = $All<CheckboxProps, {
+  baseClassName: string;
+  type: "checkbox" | "radio";
+}>;
 
 type State = {
   ripples: Array<React$Element<any>>;
 };
 
 export default class Checkbox extends Component {
-  props: Props;
+  props: SwitchProps;
   state: State;
 
   static defaultProps = {
-    style: {},
     checked: false,
     indeterminate: false,
-    inline: false,
-    onCheck: () => {},
-    onClick: () => {}
+    inline: false
   };
 
-  constructor(props: Props, context: Object) {
+  constructor(props: SwitchProps, context: Object) {
     super(props, context);
 
     this.state = {
@@ -48,7 +51,7 @@ export default class Checkbox extends Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: SwitchProps) {
     if (nextProps.checked !== this.props.checked && nextProps.checked) {
       const b = bem(this.props.baseClassName);
       const { ripples } = this.state;

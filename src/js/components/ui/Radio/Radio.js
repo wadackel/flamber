@@ -1,26 +1,12 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import Switch from "../internal/Switch";
+import type { RadioProps } from "../internal/Switch";
 
-export default class Radio extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    label: PropTypes.string,
-    name: PropTypes.string,
-    value: PropTypes.any,
-    checked: PropTypes.bool,
-    onCheck: PropTypes.func
-  };
-
-  static defaultProps = {
-    checked: false,
-    onCheck: () => {}
-  };
-
-  render() {
-    return <Switch
-      baseClassName="radio"
-      type="radio"
-      {...this.props}
-    />;
-  }
+export default function Radio(props: RadioProps) {
+  return <Switch
+    baseClassName="radio"
+    type="radio"
+    {...props}
+  />;
 }
