@@ -1,29 +1,30 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("radio-group");
 
-export default class RadioGroup extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    name: PropTypes.string,
-    value: PropTypes.any,
-    onChange: PropTypes.func
-  };
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  name?: string;
+  value?: any;
+  onChange?: Function;
+};
 
+export default class RadioGroup extends Component {
   static defaultProps = {
     onChange: () => {}
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleCheck(value, checked) {
+  handleCheck(value: any, checked: boolean) {
     if (checked) {
       this.props.onChange(value);
     }
