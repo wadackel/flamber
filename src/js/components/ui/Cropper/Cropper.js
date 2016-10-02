@@ -1,25 +1,24 @@
 import _ from "lodash";
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
-import ExecutionEnvironment from "../../../constants/execution-environment";
-const ReactCropper = ExecutionEnvironment.canUseDOM
-  ? require("react-cropper").default
-  : function ReactCropper() { return null }; // eslint-disable-line
+import React, { Component } from "react";
+import ReactCropper from "../../../utils/react-cropper";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { ProcessingOverlay } from "../";
 
 const b = bem("cropper");
 
+type Props = {
+  className?: string;
+  processing: boolean;
+  zoomTo?: number;
+  onClick?: Function;
+  onDoubleClick?: Function;
+  ready?: Function;
+};
+
 export default class Cropper extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    processing: PropTypes.bool,
-    zoomTo: PropTypes.number,
-    onClick: PropTypes.func,
-    onDoubleClick: PropTypes.func,
-    ready: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     zoomTo: 1,
