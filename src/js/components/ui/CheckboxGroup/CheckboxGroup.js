@@ -1,30 +1,33 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("checkbox-group");
 
+type Props = {
+  children: React$Element<any>;
+  className?: string;
+  name?: string;
+  value: Array<any>;
+  onChange?: Function;
+};
+
 export default class CheckboxGroup extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    name: PropTypes.string,
-    value: PropTypes.array,
-    onChange: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     value: [],
     onChange: () => {}
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleCheck(value, checked) {
+  handleCheck(value: any, checked: boolean) {
     let newValue = [];
 
     if (checked) {
@@ -33,7 +36,9 @@ export default class CheckboxGroup extends React.Component {
       newValue = this.props.value.filter(val => val !== value);
     }
 
-    this.props.onChange(newValue);
+    if (typeof this.props.onChange === "function") {
+      this.props.onChange(newValue);
+    }
   }
 
   render() {
@@ -44,7 +49,7 @@ export default class CheckboxGroup extends React.Component {
       value
     } = this.props;
 
-    const cloneChildren = children.map(child =>
+    const cloneChildren = React.Children.map(children, child =>
       React.cloneElement(child, {
         key: child.props.value,
         checked: value.indexOf(child.props.value) >= 0,
