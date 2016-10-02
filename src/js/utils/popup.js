@@ -1,6 +1,24 @@
+// @flow
 import _ from "lodash";
+import type { Offset } from "../types/prop-types";
 
-const defaults = {
+type YesOrNo = "yes" | "no";
+
+type PopupSettings = {
+  width: number;
+  height: number;
+  top?: number;
+  left?: number;
+  scrollbars: YesOrNo;
+  toolbar: YesOrNo;
+  location: YesOrNo;
+  titlebar: YesOrNo;
+  directories: YesOrNo;
+  status: YesOrNo;
+  menubar: YesOrNo;
+};
+
+const defaults: PopupSettings = {
   width: 500,
   height: 500,
   scrollbars: "no",
@@ -13,7 +31,7 @@ const defaults = {
 };
 
 
-function getPopupOffset(width, height) {
+function getPopupOffset(width: number, height: number): Offset {
   const wLeft = window.screenLeft ? window.screenLeft : window.screenX;
   const wTop = window.screenTop ? window.screenTop : window.screenY;
   const left = wLeft + (window.innerWidth / 2) - (width / 2);
@@ -22,8 +40,8 @@ function getPopupOffset(width, height) {
   return { top, left };
 }
 
-export default function openPopup(url, name, settings = {}) {
-  const params = { ...defaults, ...settings };
+export default function openPopup(url: string, name: string, settings: PopupSettings = defaults) {
+  const params: PopupSettings = { ...defaults, ...settings };
   const { top, left } = getPopupOffset(params.width, params.height);
   params.top = top;
   params.left = left;

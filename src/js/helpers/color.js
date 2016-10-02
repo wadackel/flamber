@@ -1,7 +1,14 @@
+// @flow
 const HEX_SHORT = /^#([a-fA-F0-9]{3})$/;
 const HEX = /^#([a-fA-F0-9]{6})$/;
 
-function normalizeHex(hex) {
+type ColorRGB = {
+  r: number;
+  g: number;
+  b: number;
+};
+
+function normalizeHex(hex: string): ?string {
   if (HEX.test(hex)) {
     return hex;
 
@@ -15,7 +22,7 @@ function normalizeHex(hex) {
   return null;
 }
 
-export function hexToRgb(hex) {
+export function hexToRgb(hex: string): ?ColorRGB {
   const normalizedHex = normalizeHex(hex);
 
   if (normalizedHex == null) {
@@ -23,6 +30,8 @@ export function hexToRgb(hex) {
   }
 
   const m = normalizedHex.match(HEX);
+  if (!m) return null;
+
   const i = parseInt(m[1], 16);
   const r = (i >> 16) & 0xFF;
   const g = (i >> 8) & 0xFF;

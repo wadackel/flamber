@@ -1,3 +1,4 @@
+// @flow
 export default function measureScrollbarWidth() {
   if (typeof window === "undefined") {
     return 0;
