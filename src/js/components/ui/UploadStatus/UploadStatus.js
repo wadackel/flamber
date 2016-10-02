@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { ProgressBar } from "../";
@@ -6,11 +7,19 @@ import { LogoIcon } from "../../svg-icons/";
 
 const b = bem("upload-status");
 
-export default function UploadStatus({
-  className,
-  limit,
-  usage
-}) {
+type Props = {
+  className?: string;
+  limit: number;
+  usage: number;
+};
+
+export default function UploadStatus(props: Props) {
+  const {
+    className,
+    limit,
+    usage
+  } = props;
+
   return (
     <div className={mergeClassNames(b(), className)}>
       <div className={b("meta")()}>
@@ -26,9 +35,3 @@ export default function UploadStatus({
     </div>
   );
 }
-
-UploadStatus.propTypes = {
-  className: PropTypes.string,
-  limit: PropTypes.number,
-  usage: PropTypes.number
-};
