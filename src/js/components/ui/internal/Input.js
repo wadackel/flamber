@@ -1,14 +1,19 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 
 const ENTER_KEY = 13;
 
+type Props = {
+  onEnter: Function;
+  onKeyPress: Function;
+  onKeyUp: Function;
+};
+
 export default class Input extends Component {
-  static propTypes = {
-    onEnter: PropTypes.func,
-    onKeyPress: PropTypes.func,
-    onKeyUp: PropTypes.func
-  };
+  props: Props;
+
+  keyPressed: boolean = false;
 
   static propTypes = {
     onEnter: () => {},
@@ -16,15 +21,13 @@ export default class Input extends Component {
     onKeyUp: () => {}
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
-
-    this.keyPressed = false;
 
     autoBind(this);
   }
 
-  handleKeyPress(e) {
+  handleKeyPress(e: SyntheticKeyboardEvent) {
     this.props.onKeyPress(e);
 
     if (e.which === ENTER_KEY) {
@@ -32,7 +35,7 @@ export default class Input extends Component {
     }
   }
 
-  handleKeyUp(e) {
+  handleKeyUp(e: SyntheticKeyboardEvent) {
     this.props.onKeyUp(e);
 
     if (e.which === ENTER_KEY && this.keyPressed) {
@@ -42,15 +45,15 @@ export default class Input extends Component {
     this.keyPressed = false;
   }
 
-  focus() {
+  focus(): void {
     this.refs.input.focus();
   }
 
-  blur() {
+  blur(): void {
     this.refs.input.blur();
   }
 
-  select() {
+  select(): void {
     this.refs.input.select();
   }
 

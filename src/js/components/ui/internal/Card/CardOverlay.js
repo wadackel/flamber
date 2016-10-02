@@ -1,19 +1,27 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React from "react";
 import bem from "../../../../helpers/bem";
 import { Checkbox } from "../../";
 import { CardMore } from "./";
 
+type Props = {
+  baseClassName: string;
+  style?: Object;
+  actions: React$Element<any>;
+  moreActions: React$Element<any>;
+  selectable: boolean;
+  selected: boolean;
+  onSelect?: Function;
+};
+
+type State = {
+  show: boolean;
+};
+
 export default class CardOverlay extends React.Component {
-  static propTypes = {
-    baseClassName: PropTypes.string,
-    style: PropTypes.object,
-    actions: PropTypes.node,
-    moreActions: PropTypes.node,
-    selectable: PropTypes.bool,
-    selected: PropTypes.bool,
-    onSelect: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     style: {},
@@ -22,7 +30,7 @@ export default class CardOverlay extends React.Component {
     onSelect: () => {}
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = { show: false };
@@ -30,7 +38,7 @@ export default class CardOverlay extends React.Component {
     autoBind(this);
   }
 
-  handleSelectClick(e) {
+  handleSelectClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
   }
 

@@ -1,23 +1,32 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React from "react";
 
 const Status = {
   LOADING: "loading",
   LOADED: "loaded",
-  FAILED: "failed"
+  FAILED: "failed",
+  PENDING: "pending"
+};
+
+type Props = {
+  className?: string;
+  children?: React$Element<any>;
+  wrapper: Function;
+  src: string;
+  background: boolean;
+  preloader: React$Element<any>;
+  onError?: Function;
+  onLoad?: Function;
+};
+
+type State = {
+  status: "loading" | "loaded" | "failed" | "pending";
 };
 
 export default class ImageLoader extends React.Component {
-  static propTypes = {
-    wrapper: PropTypes.func,
-    children: PropTypes.node,
-    className: PropTypes.string,
-    src: PropTypes.string,
-    background: PropTypes.bool,
-    preloader: PropTypes.element,
-    onError: PropTypes.func,
-    onLoad: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     wrapper: React.DOM.span,
@@ -26,7 +35,9 @@ export default class ImageLoader extends React.Component {
     onLoad: () => {}
   };
 
-  constructor(props, context) {
+  img: ?Image = null;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = { status: props.src ? Status.LOADING : Status.PENDING };
@@ -40,7 +51,7 @@ export default class ImageLoader extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (this.props.src !== nextProps.src) {
       this.setState({
         status: nextProps.src ? Status.LOADING : Status.PENDING
@@ -58,16 +69,20 @@ export default class ImageLoader extends React.Component {
     this.destroyLoader();
   }
 
-  handleLoaded(e) {
+  handleLoaded(e: Event) {
     this.destroyLoader();
     this.setState({ status: Status.LOADED });
-    this.props.onLoad(e);
+    if (typeof this.props.onLoad === "function") {
+      this.props.onLoad(e);
+    }
   }
 
-  handleError(e) {
+  handleError(e: Event) {
     this.destroyLoader();
     this.setState({ status: Status.FAILED });
-    this.props.onError(e);
+    if (typeof this.props.onError === "function") {
+      this.props.onError(e);
+    }
   }
 
   createLoader() {

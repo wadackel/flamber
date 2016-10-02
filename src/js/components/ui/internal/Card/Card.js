@@ -1,18 +1,33 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../../helpers/bem";
 import mergeClassNames from "../../../../helpers/merge-class-names";
 import { ProcessingOverlay } from "../../";
 
-export default function Card({
-  children,
-  baseClassName,
-  className,
-  style,
-  processing,
-  onClick,
-  onMouseEnter,
-  onMouseLeave
-}) {
+type Props = {
+  children: React$Element<any>;
+  className?: string;
+  baseClassName: string;
+  style?: Object;
+  processing: boolean;
+  selected: boolean;
+  onClick?: Function;
+  onMouseEnter?: Function;
+  onMouseLeave?: Function;
+};
+
+export default function Card(props: Props) {
+  const {
+    children,
+    baseClassName,
+    className,
+    style,
+    processing,
+    onClick,
+    onMouseEnter,
+    onMouseLeave
+  } = props;
+
   const b = bem(baseClassName);
 
   return <div
@@ -32,18 +47,6 @@ export default function Card({
     </div>
   </div>;
 }
-
-Card.propTypes = {
-  children: PropTypes.node,
-  baseClassName: PropTypes.string,
-  className: PropTypes.string,
-  style: PropTypes.object,
-  processing: PropTypes.bool,
-  selected: PropTypes.bool,
-  onClick: PropTypes.func,
-  onMouseEnter: PropTypes.func,
-  onMouseLeave: PropTypes.func
-};
 
 Card.defaultProps = {
   style: {},

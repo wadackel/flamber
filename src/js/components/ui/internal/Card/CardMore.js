@@ -1,24 +1,32 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../../helpers/bem";
 import mergeClassNames from "../../../../helpers/merge-class-names";
 import prefixer from "../../../../helpers/prefixer";
 import { IconButton } from "../../";
 import { MoreVertIcon } from "../../../svg-icons";
 
+type Props = {
+  className?: string;
+  baseClassName: string;
+  actions: React$Element<any>;
+  selected: boolean;
+};
+
+type State = {
+  show: boolean;
+};
+
 export default class CardMore extends Component {
-  static propTypes = {
-    baseClassName: PropTypes.string,
-    className: PropTypes.string,
-    actions: PropTypes.node,
-    selected: PropTypes.bool
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     selected: false
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = { show: false };
@@ -30,7 +38,7 @@ export default class CardMore extends Component {
     this.setState({ show: false });
   }
 
-  handleMouseEnter(e) {
+  handleMouseEnter(e: SyntheticMouseEvent) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ show: true });

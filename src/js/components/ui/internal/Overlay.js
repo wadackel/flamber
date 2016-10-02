@@ -1,26 +1,30 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import measureScrollbarWidth from "../../../utils/measure-scrollbar-width";
 
 const b = bem("overlay");
 
-export default class Overlay extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    show: PropTypes.bool,
-    onClick: PropTypes.func
-  };
+type Props = {
+  className?: string;
+  style?: Object;
+  show: boolean;
+  onClick?: Function;
+};
+
+export default class Overlay extends Component {
+  props: Props;
 
   static defaultProps = {
-    style: {},
     show: false,
     onClick: () => {}
   };
 
-  constructor(props, context) {
+  scrollbarWidth: number = 0;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
@@ -33,7 +37,7 @@ export default class Overlay extends React.Component {
     this.updateScrollLock(this.props.show);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.show !== this.props.show) {
       this.updateScrollLock(nextProps.show);
     }
@@ -43,12 +47,14 @@ export default class Overlay extends React.Component {
     this.unScrollLock();
   }
 
-  handleClick(e) {
+  handleClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
-    this.props.onClick();
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick();
+    }
   }
 
-  updateScrollLock(isShow) {
+  updateScrollLock(isShow: boolean): void {
     if (isShow) {
       this.scrollLock();
     } else {
@@ -56,7 +62,7 @@ export default class Overlay extends React.Component {
     }
   }
 
-  scrollLock() {
+  scrollLock(): void {
     const { body, documentElement } = document;
 
     if (documentElement.clientWidth !== window.innerWidth) {
@@ -66,7 +72,7 @@ export default class Overlay extends React.Component {
     body.style.overflow = "hidden";
   }
 
-  unScrollLock() {
+  unScrollLock(): void {
     const { body } = document;
     body.style.paddingRight = "";
     body.style.overflow = "";

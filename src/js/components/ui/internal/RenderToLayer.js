@@ -1,24 +1,29 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import { Component } from "react";
 import { unstable_renderSubtreeIntoContainer, unmountComponentAtNode } from "react-dom"; // eslint-disable-line
 import elementClosest from "../../../utils/element-closest";
 
 
 // inspired by: https://github.com/callemall/material-ui/blob/master/src/internal/RenderToLayer.js
+type Props = {
+  componentClickAway?: Function;
+  open: boolean;
+  render: Function;
+  useLayerForClickAway: boolean;
+};
 
-export default class RenderToLayer extends React.Component {
-  static propTypes = {
-    componentClickAway: PropTypes.func,
-    open: PropTypes.bool.isRequired,
-    render: PropTypes.func.isRequired,
-    useLayerForClickAway: PropTypes.bool
-  };
+export default class RenderToLayer extends Component {
+  props: Props;
 
   static defaultProps = {
     useLayerForClickAway: true
   };
 
-  constructor(props, context) {
+  layer: ?HTMLElement = null;
+  layerElement: ?React$Component<*, *, *> = null;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
@@ -35,40 +40,53 @@ export default class RenderToLayer extends React.Component {
     this.unrenderLayer();
   }
 
-  onClickAway(event) {
-    if (event.defaultPrevented) return;
+  onClickAway(e: Event) {
+    if (e.defaultPrevented) return;
     if (!this.props.componentClickAway) return;
     if (!this.props.open) return;
+    if (this.layer == null) return;
 
     const el = this.layer;
-    if (event.target !== el && event.target === window ||
-      (document.documentElement.contains(event.target) && !elementClosest(el, event.target))) {
-      this.props.componentClickAway(event);
+
+    if (
+      e.target !== el &&
+      e.target === window ||
+      (
+        e.target instanceof HTMLElement &&
+        document.documentElement.contains(e.target) &&
+        !elementClosest(el, e.target)
+      )
+    ) {
+      this.props.componentClickAway(e);
     }
   }
 
-  getLayer() {
+  getLayer(): ?HTMLElement {
     return this.layer;
   }
 
-  unrenderLayer() {
+  unrenderLayer(): void {
     if (!this.layer) return;
 
     if (this.props.useLayerForClickAway) {
       this.layer.style.position = "relative";
-      this.layer.removeEventListener("touchstart", this.onClickAway);
-      this.layer.removeEventListener("click", this.onClickAway);
+      if (this.layer) this.layer.removeEventListener("touchstart", this.onClickAway, false);
+      if (this.layer) this.layer.removeEventListener("click", this.onClickAway, false);
     } else {
-      window.removeEventListener("touchstart", this.onClickAway);
-      window.removeEventListener("click", this.onClickAway);
+      window.removeEventListener("touchstart", this.onClickAway, false);
+      window.removeEventListener("click", this.onClickAway, false);
     }
 
     unmountComponentAtNode(this.layer);
-    document.body.removeChild(this.layer);
+
+    if (this.layer != null) {
+      document.body.removeChild(this.layer);
+    }
+
     this.layer = null;
   }
 
-  renderLayer() {
+  renderLayer(): void {
     const {
       open,
       render
@@ -78,27 +96,28 @@ export default class RenderToLayer extends React.Component {
       if (!this.layer) {
         this.layer = document.createElement("div");
         this.layer.style.position = "fixed";
-        this.layer.style.top = 0;
-        this.layer.style.left = 0;
-        this.layer.style.zIndex = 1520;
+        this.layer.style.top = "0";
+        this.layer.style.left = "0";
+        this.layer.style.zIndex = "1520";
 
         document.body.appendChild(this.layer);
 
         if (this.props.useLayerForClickAway) {
-          this.layer.addEventListener("touchstart", this.onClickAway);
-          this.layer.addEventListener("click", this.onClickAway);
-          this.layer.style.bottom = 0;
-          this.layer.style.right = 0;
+          if (this.layer) {
+            this.layer.style.bottom = "0";
+            this.layer.style.right = "0";
+          }
+          if (this.layer) this.layer.addEventListener("touchstart", this.onClickAway, false);
+          if (this.layer) this.layer.addEventListener("click", this.onClickAway, false);
         } else {
           setTimeout(() => {
-            window.addEventListener("touchstart", this.onClickAway);
-            window.addEventListener("click", this.onClickAway);
+            window.addEventListener("touchstart", this.onClickAway, false);
+            window.addEventListener("click", this.onClickAway, false);
           }, 0);
         }
       }
 
-      const layerElement = render();
-      this.layerElement = unstable_renderSubtreeIntoContainer(this, layerElement, this.layer);
+      this.layerElement = unstable_renderSubtreeIntoContainer(this, render(), this.layer);
 
     } else {
       this.unrenderLayer();

@@ -1,31 +1,41 @@
-const IScroll = typeof window !== "undefined" ? require("iscroll") : null;
-
+// @flow
 import _ from "lodash";
-import React, { PropTypes } from "react";
-import * as OriginalPropTypes from "../../../constants/prop-types";
+import React, { Component, PropTypes } from "react";
+import IScroll from "../../../utils/iscroll";
 import prefixer from "../../../helpers/prefixer";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import type { Origin } from "../../../types/prop-types";
 
-export default class PopoverAnimation extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    baseClassName: PropTypes.string,
-    open: PropTypes.bool,
-    origin: OriginalPropTypes.origin
-  };
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  baseClassName: string;
+  open: boolean;
+  origin: Origin;
+};
+
+type State = {
+  open: boolean;
+};
+
+export default class PopoverAnimation extends Component {
+  props: Props;
+  state: State;
 
   static contextTypes = {
     theme: PropTypes.string.isRequired
   };
 
-  constructor(props, context) {
+  iscroll: ?IScroll = null;
+  scrollable: boolean = false;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
     this.state = { open: false };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
@@ -54,7 +64,7 @@ export default class PopoverAnimation extends React.Component {
     this.updateScroll();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     this.setState({ open: nextProps.open });
   }
 
@@ -65,11 +75,11 @@ export default class PopoverAnimation extends React.Component {
     }
   }
 
-  updateScroll() {
+  updateScroll(): void {
     // FIXME: Directly specified DOM of the class name.
     const { scrollContainer } = this.refs;
 
-    if (!this.iscroll) {
+    if (this.iscroll) {
       if (this.scrollable) {
         this.iscroll = new IScroll(scrollContainer, {
           bounce: false,
@@ -79,12 +89,12 @@ export default class PopoverAnimation extends React.Component {
         });
 
         const selectedItem = scrollContainer.querySelector(".menu-item--selected");
-        if (selectedItem) {
+        if (selectedItem && this.iscroll) {
           this.iscroll.scrollToElement(selectedItem, 0);
         }
       }
 
-    } else {
+    } else if (this.iscroll) {
       this.iscroll.refresh();
     }
   }

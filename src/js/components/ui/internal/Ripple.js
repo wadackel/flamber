@@ -1,15 +1,23 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React, { Component } from "react";
 import shareConfig from "../../../share-config.json";
 
 const RIPPLE_DURATION = shareConfig["ripple-duration"];
 
-export default class Ripple extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    onRequestHide: PropTypes.func
-  };
+type Props = {
+  className: string;
+  style: Object;
+  onRequestHide: Function;
+};
+
+type State = {
+  show: boolean;
+};
+
+export default class Ripple extends Component {
+  props: Props;
+  state: State;
 
   static defaultProps = {
     className: "",
@@ -17,14 +25,14 @@ export default class Ripple extends React.Component {
     onRequestHide: () => {}
   };
 
-  constructor(props, context) {
+  timer: ?number = null;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
       show: true
     };
-
-    this.timer = null;
 
     autoBind(this);
   }
