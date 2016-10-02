@@ -1,17 +1,30 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import { SizeString } from "../../../types/prop-types";
 
 const b = bem("empty-data");
 
-export default function EmptyData({
-  className,
-  children,
-  size,
-  icon,
-  title,
-  action
-}) {
+type Props = {
+  className?: string;
+  children?: React$Element<any>;
+  size: SizeString;
+  icon: React$Element<any>;
+  title: React$Element<any>;
+  action?: React$Element<any>;
+};
+
+export default function EmptyData(props: Props) {
+  const {
+    className,
+    children,
+    size,
+    icon,
+    title,
+    action
+  } = props;
+
   const modifier = { [size]: true };
 
   return (
@@ -31,15 +44,6 @@ export default function EmptyData({
     </div>
   );
 }
-
-EmptyData.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node.isRequired,
-  size: PropTypes.oneOf(["xs", "sm", "md", "lg", "xl"]),
-  icon: PropTypes.node.isRequired,
-  title: PropTypes.node.isRequired,
-  action: PropTypes.node
-};
 
 EmptyData.defaultProps = {
   size: "md"
