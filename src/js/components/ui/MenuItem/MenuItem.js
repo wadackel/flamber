@@ -1,27 +1,29 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { ListItem } from "../";
 
 const b = bem("menu-item");
 
+type Props = {
+  className?: string;
+  style?: Object;
+  primary: string;
+  icon: React$Element<any>;
+  index?: number;
+  value?: any;
+  selected: boolean;
+  focused: boolean;
+  onClick?: Function;
+};
+
 export default class MenuItem extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    primary: PropTypes.string,
-    icon: PropTypes.element,
-    index: PropTypes.number,
-    value: PropTypes.any,
-    selected: PropTypes.bool,
-    focused: PropTypes.bool,
-    onClick: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     selected: false,
-    focused: false,
-    onClick: () => {}
+    focused: false
   }
 
   componentDidMount() {

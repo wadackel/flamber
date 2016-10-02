@@ -1,6 +1,7 @@
+// @flow
 import autoBind from "auto-bind";
 import keycode from "keycode";
-import React, { PropTypes, isValidElement } from "react";
+import React, { Component, isValidElement } from "react";
 import shareConfig from "../../../share-config.json";
 import prefixer from "../../../helpers/prefixer";
 import bem from "../../../helpers/bem";
@@ -10,20 +11,29 @@ import { List, MenuItem } from "../";
 
 const b = bem("menu");
 
-export default class Menu extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    value: PropTypes.any,
-    disableAutoFocus: PropTypes.bool,
-    initiallyKeyboardFocused: PropTypes.bool,
-    onItemClick: PropTypes.func,
-    onChange: PropTypes.func,
-    onMouseDown: PropTypes.func,
-    onEscKeyDown: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onUpdateFocusIndex: PropTypes.func
-  };
+type Props = {
+  className?: string;
+  children?: React$Element<any>;
+  value?: any;
+  disableAutoFocus: boolean;
+  initiallyKeyboardFocused: boolean;
+  onItemClick?: Function;
+  onMouseDown?: Function;
+  onChange?: Function;
+  onKeyDown?: Function;
+  onEscKeyDown?: Function;
+  onUpdateFocusIndex?: Function;
+};
+
+type State = {
+  value: any;
+  isKeyboardFocused: boolean;
+  focusIndex: number;
+};
+
+export default class Menu extends Component {
+  props: Props;
+  state: State;
 
   static defaultProps = {
     disableAutoFocus: true,
@@ -36,7 +46,7 @@ export default class Menu extends React.Component {
     onUpdateFocusIndex: () => {}
   }
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     const focusIndex = this.getInitialFocusIndex(props);
@@ -58,23 +68,25 @@ export default class Menu extends React.Component {
     this.applyFocus();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const focusIndex = this.getInitialFocusIndex(nextProps);
     this.setState({ focusIndex });
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.value !== this.state.value) {
+  componentWillUpdate(nextProps: Props, nextState: State) {
+    if (nextState.value !== this.state.value && typeof this.props.onChange === "function") {
       this.props.onChange(nextState.value);
     }
   }
 
-  handleItemClick(menuItem, value, index) {
+  handleItemClick(menuItem: MenuItem, value: any, index: number) {
     this.setState({ value });
-    this.props.onItemClick(menuItem, value, index);
+    if (typeof this.props.onItemClick === "function") {
+      this.props.onItemClick(menuItem, value, index);
+    }
   }
 
-  handleKeyDown(e) {
+  handleKeyDown(e: SyntheticKeyboardEvent) {
     const { focusedItem } = this.refs;
     const key = keycode(e);
 
@@ -96,7 +108,9 @@ export default class Menu extends React.Component {
         break;
 
       case "esc":
-        this.props.onEscKeyDown(e);
+        if (typeof this.props.onEscKeyDown === "function") {
+          this.props.onEscKeyDown(e);
+        }
         break;
 
       case "tab":
@@ -115,10 +129,12 @@ export default class Menu extends React.Component {
         break;
     }
 
-    this.props.onKeyDown(e);
+    if (typeof this.props.onKeyDown === "function") {
+      this.props.onKeyDown(e);
+    }
   }
 
-  getMenuItems() {
+  getMenuItems(): Array<React$Element<any>> {
     const children = [];
 
     React.Children.forEach(this.props.children, child => {
@@ -130,13 +146,13 @@ export default class Menu extends React.Component {
     return children;
   }
 
-  applyFocus() {
+  applyFocus(): void {
     if (this.state.focusIndex >= 0) {
       this.refs.menu.focus();
     }
   }
 
-  getInitialFocusIndex(props) {
+  getInitialFocusIndex(props: Props): number {
     if (props.disableAutoFocus) {
       return -1;
     }
@@ -146,21 +162,21 @@ export default class Menu extends React.Component {
     return selectedIndex >= 0 ? selectedIndex : 0;
   }
 
-  incrementKeyboardFocusIndex() {
+  incrementKeyboardFocusIndex(): void {
     const { focusIndex } = this.state;
     const index = focusIndex + 1;
 
     this.setFocusIndex(index, true);
   }
 
-  decrementKeyboardFocusIndex() {
+  decrementKeyboardFocusIndex(): void {
     const { focusIndex } = this.state;
     const index = focusIndex - 1;
 
     this.setFocusIndex(index, true);
   }
 
-  getSelectedIndex(props) {
+  getSelectedIndex(props: Props): number {
     const menuItems = this.getMenuItems();
     let selectedIndex = -1;
 
@@ -173,24 +189,26 @@ export default class Menu extends React.Component {
     return selectedIndex;
   }
 
-  isChildSelected(child, props) {
+  isChildSelected(child: React$Element<any>, props: Props): boolean {
     return child.props.hasOwnProperty("value") && props.value === child.props.value;
   }
 
-  setFocusIndex(newIndex, isKeyboardFocused) {
+  setFocusIndex(newIndex: number, isKeyboardFocused: boolean): void {
     this.setState({
       focusIndex: newIndex,
       isKeyboardFocused
     });
 
-    this.props.onUpdateFocusIndex(newIndex, isKeyboardFocused);
+    if (typeof this.props.onUpdateFocusIndex === "function") {
+      this.props.onUpdateFocusIndex(newIndex, isKeyboardFocused);
+    }
   }
 
-  focus() {
+  focus(): void {
     this.refs.menu.focus();
   }
 
-  blur() {
+  blur(): void {
     this.refs.menu.blur();
   }
 
