@@ -1,38 +1,46 @@
+// @flow
 import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
-import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import { Popover, Menu } from "../";
+import { Popover, Menu, MenuItem } from "../";
 import { CaretIcon } from "../../svg-icons/";
+import type { Origin } from "../../../types/prop-types";
 
 const b = bem("drop-down-menu");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  value?: any;
+  type: "block" | "inline";
+  origin: Origin;
+  triggerOrigin: Origin;
+  before?: React$Element<any>;
+  onChange?: Function;
+};
+
+type State = {
+  open: boolean;
+  triggerElement: ?HTMLElement;
+};
+
 export default class DropDownMenu extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    value: PropTypes.any,
-    type: PropTypes.oneOf(["block", "inline"]),
-    origin: OriginalPropTypes.origin,
-    triggerOrigin: OriginalPropTypes.origin,
-    before: PropTypes.node,
-    onChange: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     type: "inline",
     origin: { vertical: "top", horizontal: "left" },
-    triggerOrigin: { vertical: "top", horizontal: "left" },
-    onChange: () => {}
+    triggerOrigin: { vertical: "top", horizontal: "left" }
   };
 
   static contextTypes = {
     theme: PropTypes.string.isRequired
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -51,25 +59,27 @@ export default class DropDownMenu extends React.Component {
     this.setMenuWidth();
   }
 
-  handleTriggerClick(e) {
+  handleTriggerClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
 
     this.setState({
       open: true,
-      triggerElement: e.currentTarget
+      triggerElement: e.currentTarget instanceof HTMLElement ? e.currentTarget : null
     });
   }
 
-  handleItemClick(menuItem, value) {
+  handleItemClick(menuItem: MenuItem, value: any) {
     this.setState({ open: false });
-    this.props.onChange(value);
+    if (typeof this.props.onChange === "function") {
+      this.props.onChange(value);
+    }
   }
 
   handleRequestClose() {
     this.setState({ open: false });
   }
 
-  setMenuWidth() {
+  setMenuWidth(): void {
     if (!this.state.open) return;
 
     const triggerElement = ReactDOM.findDOMNode(this.refs.triggerElement); // eslint-disable-line react/no-find-dom-node
