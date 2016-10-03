@@ -1,13 +1,14 @@
+// @flow
 import _ from "lodash";
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
-import SizeMe from "react-sizeme";
-import ExecutionEnvironment from "../../../constants/execution-environment";
+import React, { Component } from "react";
+import sizeMe from "react-sizeMe";
+import IScroll from "../../../utils/iscroll";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { Spinner } from "../";
+import type { Size } from "../../../types/prop-types";
 
-const IScroll = ExecutionEnvironment.canUseDOM ? require("iscroll") : null;
 const b = bem("image-viewer");
 
 const Status = {
@@ -16,26 +17,36 @@ const Status = {
   FAILED: "failed"
 };
 
+type ImageSize = {
+  width: number;
+  height: number;
+  naturalWidth: number;
+  naturalHeight: number;
+};
+
+type Props = {
+  className?: string;
+  style?: Object;
+  size: Size;
+  zoom: number;
+  image: string;
+  forceFitViewport: boolean;
+  iScrollOptions: Object;
+  onZoomChange?: Function;
+  onBodyClick?: Function;
+  onClick?: Function;
+  onDoubleClick?: Function;
+};
+
+type State = $All<ImageSize, {
+  status: "loading" | "loaded" | "failed";
+}>;
+
 class ImageViewerInline extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    size: PropTypes.shape({
-      width: PropTypes.number,
-      height: PropTypes.number
-    }),
-    zoom: PropTypes.number,
-    image: PropTypes.string,
-    forceFitViewport: PropTypes.bool,
-    iScrollOptions: PropTypes.object,
-    onZoomChange: () => {},
-    onBodyClick: () => {},
-    onClick: () => {},
-    onDoubleClick: () => {}
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
-    style: {},
     zoom: 1,
     forceFitViewport: false,
     iScrollOptions: {
@@ -47,17 +58,15 @@ class ImageViewerInline extends Component {
       mouseWheel: true,
       scrollbars: "custom",
       fadeScrollbars: true
-    },
-    onZoomChange: () => {},
-    onBodyClick: () => {},
-    onClick: () => {},
-    onDoubleClick: () => {}
+    }
   };
 
-  constructor(props, context) {
+  _isMounted: boolean = false;
+  iScroll: ?IScroll = null;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
-    this._isMounted = false;
     this.state = {
       status: Status.LOADING,
       width: 0,
@@ -79,7 +88,7 @@ class ImageViewerInline extends Component {
     this._isMounted = true;
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const {
       image,
       forceFitViewport,
@@ -110,7 +119,7 @@ class ImageViewerInline extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (!_.isEqual(this.props.size, prevProps.size)) {
       this.refresh();
     }
@@ -125,19 +134,23 @@ class ImageViewerInline extends Component {
     }
   }
 
-  handleClick(e) {
+  handleClick(e: SyntheticMouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onClick(e);
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick(e);
+    }
   }
 
-  handleDoubleClick(e) {
+  handleDoubleClick(e: SyntheticMouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onDoubleClick(e);
+    if (typeof this.props.onDoubleClick === "function") {
+      this.props.onDoubleClick(e);
+    }
   }
 
-  loadImage(src) {
+  loadImage(src: string): Promise<Image> {
     return new Promise((resolve, reject) => {
       const img = new Image();
 
@@ -147,12 +160,12 @@ class ImageViewerInline extends Component {
     });
   }
 
-  getImageSize(img) {
+  getImageSize(img: Image): ImageSize {
     const { width, height, naturalWidth, naturalHeight } = img;
     return { width, height, naturalWidth, naturalHeight };
   }
 
-  updateImage(src) {
+  updateImage(src: string): void {
     this.setState({ status: Status.LOADING });
 
     this.loadImage(src)
@@ -164,13 +177,12 @@ class ImageViewerInline extends Component {
 
         this.setState({ status: Status.LOADED });
 
-        this.setImageSize(
-          size.width * zoom,
-          size.height * zoom,
-          size.naturalWidth,
-          size.naturalHeight,
-          false
-        );
+        this.setImageSize({
+          width: size.width * zoom,
+          height: size.height * zoom,
+          naturalWidth: size.naturalWidth,
+          naturalHeight: size.naturalHeight
+        }, false);
       })
       .catch(() => {
         if (!this._isMounted) return;
@@ -178,7 +190,7 @@ class ImageViewerInline extends Component {
       });
   }
 
-  updateImageSizeByZoom(zoom, adjustScrollPosition = true) {
+  updateImageSizeByZoom(zoom: number, adjustScrollPosition: boolean = true): void {
     const { status } = this.state;
 
     if (status !== Status.LOADED) {
@@ -188,20 +200,19 @@ class ImageViewerInline extends Component {
     const { zoom: prevZoom } = this.props;
     const { naturalWidth, naturalHeight } = this.state;
 
-    this.setImageSize(
-      naturalWidth * zoom,
-      naturalHeight * zoom,
+    this.setImageSize({
+      width: naturalWidth * zoom,
+      height: naturalHeight * zoom,
       naturalWidth,
-      naturalHeight,
-      adjustScrollPosition
-    );
+      naturalHeight
+    }, adjustScrollPosition);
 
-    if (zoom !== prevZoom) {
+    if (zoom !== prevZoom && typeof this.props.onZoomChange === "function") {
       this.props.onZoomChange(zoom);
     }
   }
 
-  normalizeImageSize(dw, dh) {
+  normalizeImageSize(dw: number, dh: number): Size {
     const { size } = this.props;
     const vRatio = size.width / size.height;
     const dRatio = dw / dh;
@@ -213,17 +224,26 @@ class ImageViewerInline extends Component {
     };
   }
 
-  setImageSize(width, height, naturalWidth, naturalHeight, adjustScrollPosition = true) {
+  setImageSize(imageSize: ImageSize, adjustScrollPosition: boolean = true): void {
     if (!this._isMounted) return;
+
+    const {
+      width,
+      height,
+      naturalWidth,
+      naturalHeight
+    } = imageSize;
 
     if (adjustScrollPosition) {
       const { width: w, height: h } = this.state;
 
-      this.iScroll.scrollBy(
-        (w - width) / 2,
-        (h - height) / 2,
-        0
-      );
+      if (this.iScroll) {
+        this.iScroll.scrollBy(
+          (w - width) / 2,
+          (h - height) / 2,
+          0
+        );
+      }
     }
 
     this.setState({
@@ -232,11 +252,12 @@ class ImageViewerInline extends Component {
       naturalWidth,
       naturalHeight
     }, () => {
+      if (!this.iScroll) return;
       this.iScroll.refresh();
     });
   }
 
-  refresh() {
+  refresh(): void {
     if (this.iScroll) {
       this.iScroll.refresh();
     }
@@ -304,8 +325,8 @@ class ImageViewerInline extends Component {
   }
 }
 
-const SizeAwareImageViewer = SizeMe({ monitorHeight: true })(ImageViewerInline);
+const SizeAwareImageViewer = sizeMe({ monitorHeight: true })(ImageViewerInline);
 
-export default function ImageViewer(props) {
+export default function ImageViewer(props: Props) {
   return <SizeAwareImageViewer {...props} />;
 }
