@@ -1,33 +1,37 @@
-const IScroll = typeof window !== "undefined" ? require("iscroll") : null;
-
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React from "react";
+import IScroll from "../../../utils/iscroll";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("drawer");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  direction: "right" | "left";
+  open: boolean;
+  footer?: React$Element<any>;
+};
+
 export default class Drawer extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    direction: PropTypes.oneOf(["left", "right"]),
-    open: PropTypes.bool,
-    footer: PropTypes.node
-  };
+  props: Props;
 
   static defaultProps = {
     direction: "left",
     open: false
   };
 
-  constructor(props, context) {
+  iScroll: ?IScroll = null;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   componentDidMount() {
-    this.iscroll = new IScroll(this.refs.scrollContainer, {
+    this.iScroll = new IScroll(this.refs.scrollContainer, {
       bounce: false,
       mouseWheel: true,
       scrollbars: "custom",
@@ -52,7 +56,7 @@ export default class Drawer extends React.Component {
     this.updateScrollHeight();
   }
 
-  updateScrollHeight() {
+  updateScrollHeight(): void {
     const {
       drawer,
       scrollContainer,
@@ -63,9 +67,10 @@ export default class Drawer extends React.Component {
     const maxHeight = Math.min(bottom, window.innerHeight) - Math.max(0, top);
     const footerHeight = footer ? footer.offsetHeight : 0;
 
-    scrollContainer.style.maxHeight = `${maxHeight - footerHeight}px`;
-
-    this.iscroll.refresh();
+    if (this.iScroll) {
+      scrollContainer.style.maxHeight = `${maxHeight - footerHeight}px`;
+      this.iScroll.refresh();
+    }
   }
 
   render() {
