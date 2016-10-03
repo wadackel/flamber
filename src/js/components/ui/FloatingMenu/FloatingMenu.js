@@ -1,5 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import prefixer from "../../../helpers/prefixer";
@@ -10,30 +11,33 @@ import { PlusIcon } from "../../svg-icons/";
 
 const b = bem("floating-menu");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  open: boolean;
+  onRequestOpen?: Function;
+  onRequestClose?: Function;
+};
+
 export default class FloatingMenu extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    open: PropTypes.bool,
-    onRequestOpen: PropTypes.func,
-    onRequestClose: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
-    open: false,
-    onRequestOpen: () => {},
-    onRequestClose: () => {}
+    open: false
   }
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   handleToggleClick() {
     if (this.props.open) {
-      this.props.onRequestClose();
-    } else {
+      if (typeof this.props.onRequestClose === "function") {
+        this.props.onRequestClose();
+      }
+
+    } else if (typeof this.props.onRequestOpen === "function") {
       this.props.onRequestOpen();
     }
   }
