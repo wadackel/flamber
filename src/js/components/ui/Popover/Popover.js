@@ -1,25 +1,48 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React from "react";
 import shareConfig from "../../../share-config.json";
-import * as OriginalPropTypes from "../../../constants/prop-types";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import RenderToLayer from "../internal/RenderToLayer";
 import PopoverAnimation from "../internal/PopoverAnimation";
+import type { Origin } from "../../../types/prop-types";
 
 const b = bem("popover");
 
+type OffsetDetail = {
+  top: number;
+  middle: number;
+  bottom: number;
+  right: number;
+  center: number;
+  left: number;
+};
+
+type TriggerPosition = $All<OffsetDetail, {
+  width: number;
+  height: number;
+}>;
+
+type Props = {
+  children: React$Element<any>;
+  className?: string;
+  open: boolean;
+  origin: Origin;
+  triggerElement: ?HTMLElement;
+  triggerOrigin: Origin;
+  useLayerForClickAway: boolean;
+  onRequestClose?: Function;
+};
+
+type State = {
+  open: boolean;
+  closing: boolean;
+};
+
 export default class Popover extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    open: PropTypes.bool,
-    origin: OriginalPropTypes.origin,
-    triggerElement: PropTypes.object,
-    triggerOrigin: OriginalPropTypes.origin,
-    useLayerForClickAway: PropTypes.bool,
-    onRequestClose: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     open: false,
@@ -35,7 +58,10 @@ export default class Popover extends React.Component {
     onRequestClose: () => {}
   };
 
-  constructor(props, context) {
+  timer: number = 0;
+  triggerElement: ?HTMLElement = null;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -46,7 +72,7 @@ export default class Popover extends React.Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.open !== this.state.open) {
       if (nextProps.open) {
         this.bindCloseEvents();
@@ -75,25 +101,29 @@ export default class Popover extends React.Component {
   }
 
   handleClickAway() {
-    this.props.onRequestClose("clickAway");
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose("clickAway");
+    }
   }
 
-  handleClose(e) {
+  handleClose(e: Event) {
     this.setPositions();
-    this.props.onRequestClose(e.type);
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose(e.type);
+    }
   }
 
-  bindCloseEvents() {
+  bindCloseEvents(): void {
     window.addEventListener("scroll", this.handleClose, false);
     window.addEventListener("resize", this.handleClose, false);
   }
 
-  unbindCloseEvents() {
+  unbindCloseEvents(): void {
     window.removeEventListener("scroll", this.handleClose, false);
     window.removeEventListener("resize", this.handleClose, false);
   }
 
-  setPositions() {
+  setPositions(): void {
     const { open, closing } = this.state;
 
     if (!open || !this.refs.layer) return;
@@ -106,7 +136,7 @@ export default class Popover extends React.Component {
 
     const popoverElement = layer.children[0];
 
-    if (!popoverElement) return;
+    if (!popoverElement || !triggerElement) return;
 
     const trigger = this.getTriggerPosition(triggerElement);
     const popover = this.getPopoverPosition(popoverElement);
@@ -118,24 +148,28 @@ export default class Popover extends React.Component {
     popoverElement.style.left = `${Math.max(closing ? popover.left : 0, popover.left)}px`;
   }
 
-  getTriggerPosition(el) {
+  getTriggerPosition(el: HTMLElement): TriggerPosition {
     const { top, left } = el.getBoundingClientRect();
-    const pos = {
-      width: el.offsetWidth,
-      height: el.offsetHeight,
+    const width = el.offsetWidth;
+    const height = el.offsetHeight;
+    const right = left + width;
+    const bottom = top + height;
+    const center = left + width / 2;
+    const middle = top + height / 2;
+
+    return {
+      width,
+      height,
       top,
-      left
+      right,
+      bottom,
+      left,
+      center,
+      middle
     };
-
-    pos.right = pos.right || pos.left + pos.width;
-    pos.bottom = pos.bottom || pos.top + pos.height;
-    pos.center = pos.left + pos.width / 2;
-    pos.middle = pos.top + pos.height / 2;
-
-    return pos;
   }
 
-  getPopoverPosition(el) {
+  getPopoverPosition(el: HTMLElement): OffsetDetail {
     const { offsetWidth, offsetHeight } = el;
 
     return {
@@ -148,7 +182,7 @@ export default class Popover extends React.Component {
     };
   }
 
-  renderLayer() {
+  renderLayer(): React$Element<any> {
     const {
       children,
       className,
