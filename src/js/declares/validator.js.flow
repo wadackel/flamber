@@ -1,0 +1,21 @@
+type isURLOptions = {
+  protocols?: "http" | "https" | "ftp";
+  require_tld?: boolean;
+  require_protocol?: boolean;
+  require_host?: boolean;
+  require_valid_protocol?: boolean;
+  allow_underscores?: boolean;
+  allow_trailing_dot?: boolean;
+  allow_protocol_relative_urls?: boolean;
+};
+
+type isURL = (url: string, options?: isURLOptions) => boolean;
+
+declare module "validator/lib/isURL" {
+  declare export default isURL;
+}
+
+
+declare module "validator" {
+  declare export var isURL: isURL;
+}

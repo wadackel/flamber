@@ -1,3 +1,4 @@
+// @flow
 import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import isURL from "validator/lib/isURL";
@@ -13,28 +14,33 @@ import {
   FlatButton
 } from "../";
 import { PictureLinkIcon } from "../../svg-icons/";
+import type { DropDownBoardValues } from "../../../types/prop-types";
 
 const b = bem("add-item-url-dialog");
 
+type Props = {
+  className?: string;
+  processing: boolean;
+  width?: number;
+  open: boolean;
+  selectBoards: DropDownBoardValues;
+  defaultBoard: any;
+  onRequestAdd?: Function;
+  onRequestClose?: Function;
+};
+
+type State = {
+  url: string;
+  selectBoard: any;
+};
+
 export default class AddItemURLDialog extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    processing: PropTypes.bool,
-    width: PropTypes.number,
-    open: PropTypes.bool,
-    selectBoards: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-      value: PropTypes.any
-    })),
-    defaultBoard: PropTypes.any,
-    onRequestAdd: PropTypes.func,
-    onRequestClose: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     processing: false,
-    selectBoards: [],
-    onRequestAdd: () => {}
+    selectBoards: []
   };
 
   static childContextTypes = {
@@ -47,7 +53,7 @@ export default class AddItemURLDialog extends Component {
     };
   }
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -58,11 +64,11 @@ export default class AddItemURLDialog extends Component {
     autoBind(this);
   }
 
-  getInitialBoard(props) {
+  getInitialBoard(props: Props): any {
     return props.defaultBoard || (props.selectBoards[0] && props.selectBoards[0].value);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
 
     if (
@@ -82,26 +88,27 @@ export default class AddItemURLDialog extends Component {
   }
 
   handleClose() {
-    const { onRequestClose } = this.props;
-    if (typeof onRequestClose === "function") {
-      onRequestClose();
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose();
     }
   }
 
   handleAdd() {
     const { url, selectBoard } = this.state;
 
-    this.props.onRequestAdd(
-      url,
-      selectBoard
-    );
+    if (typeof this.props.onRequestAdd === "function") {
+      this.props.onRequestAdd(
+        url,
+        selectBoard
+      );
+    }
   }
 
-  handleURLChange(e, value) {
+  handleURLChange(e: SyntheticInputEvent, value: string) {
     this.setState({ url: value });
   }
 
-  handleBoardChange(value) {
+  handleBoardChange(value: any) {
     this.setState({ selectBoard: value });
   }
 

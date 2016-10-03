@@ -1,6 +1,8 @@
+// @flow
 import deepEqual from "deep-equal";
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
+import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import {
@@ -12,25 +14,43 @@ import {
   MenuItem,
   FlatButton
 } from "../";
+import type { DropDownBoardValues } from "../../../types/prop-types";
 
 const b = bem("select-board-dialog");
 
+type Props = {
+  className?: string;
+  open: boolean;
+  processing: boolean;
+  boards: DropDownBoardValues;
+  onSelect?: Function;
+  onRequestClose?: Function;
+};
+
+type State = {
+  value?: any;
+};
+
 export default class SelectBoardDialog extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    open: PropTypes.bool,
-    processing: PropTypes.bool,
-    boards: PropTypes.array,
-    onSelect: PropTypes.func,
-    onRequestClose: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     processing: false,
     onSelect: () => {}
   };
 
-  constructor(props, context) {
+  static childContextTypes = {
+    theme: PropTypes.string.isRequired
+  };
+
+  getChildContext() {
+    return {
+      theme: Themes.LIGHT
+    };
+  }
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -40,7 +60,7 @@ export default class SelectBoardDialog extends Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
 
     if (!deepEqual(props.boards, nextProps.boards)) {
@@ -51,17 +71,18 @@ export default class SelectBoardDialog extends Component {
   }
 
   handleClose() {
-    const { onRequestClose } = this.props;
-    if (typeof onRequestClose === "function") {
-      onRequestClose();
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose();
     }
   }
 
   handleSelect() {
-    this.props.onSelect(this.state.value);
+    if (typeof this.props.onSelect === "function") {
+      this.props.onSelect(this.state.value);
+    }
   }
 
-  handleChange(value) {
+  handleChange(value: any) {
     this.setState({ value });
   }
 

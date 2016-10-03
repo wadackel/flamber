@@ -1,24 +1,38 @@
+// @flow
 import React, { Component, PropTypes } from "react";
+import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { Dialog } from "../";
 
 const b = bem("alert-dialog");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  processing: boolean;
+  title: React$Element<any>;
+  actions: React$Element<any>;
+  open: boolean;
+};
+
 export default class AlertDialog extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    processing: PropTypes.bool,
-    title: PropTypes.node,
-    actions: PropTypes.node,
-    open: PropTypes.bool
-  };
+  props: Props;
 
   static defaultProps = {
     processing: false,
     open: false
   };
+
+  static childContextTypes = {
+    theme: PropTypes.string.isRequired
+  };
+
+  getChildContext() {
+    return {
+      theme: Themes.LIGHT
+    };
+  }
 
   render() {
     const {

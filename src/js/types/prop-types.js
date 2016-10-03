@@ -25,3 +25,10 @@ export type Size = {
 };
 
 export type SizeString = "xl" | "lg" | "md" | "sm" | "xs";
+
+export type DropDownBoardValue = {
+  name: string;
+  value: any;
+};
+
+export type DropDownBoardValues = Array<DropDownBoardValue>;

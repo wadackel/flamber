@@ -1,3 +1,4 @@
+// @flow
 import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import React, { Component, PropTypes } from "react";
@@ -16,29 +17,41 @@ import {
   CloseIcon,
   UploadIcon
 } from "../../svg-icons/";
+import type { DropDownBoardValues } from "../../../types/prop-types";
+import type { Palette } from "../../../types/palette";
 
 const b = bem("add-item-file-dialog");
 
+type SelectImage = {
+  file: ?File;
+  src: ?string;
+  palette: Palette;
+};
+
+type Props = {
+  className?: string;
+  processing: boolean;
+  width?: number;
+  open: boolean;
+  selectBoards: DropDownBoardValues;
+  file: File;
+  defaultBoard?: any;
+  onRequestAdd?: Function;
+  onRequestClose?: Function;
+};
+
+type State = {
+  selectImage: SelectImage;
+  selectBoard: any;
+};
+
 export default class AddItemFileDialog extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    processing: PropTypes.bool,
-    width: PropTypes.number,
-    open: PropTypes.bool,
-    selectBoards: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-      value: PropTypes.any
-    })),
-    file: PropTypes.any,
-    defaultBoard: PropTypes.any,
-    onRequestAdd: PropTypes.func,
-    onRequestClose: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     processing: false,
-    selectBoards: [],
-    onRequestAdd: () => {}
+    selectBoards: []
   };
 
   static childContextTypes = {
@@ -51,7 +64,7 @@ export default class AddItemFileDialog extends Component {
     };
   }
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -66,7 +79,7 @@ export default class AddItemFileDialog extends Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
 
     if (props.file !== nextProps.file) {
@@ -94,20 +107,21 @@ export default class AddItemFileDialog extends Component {
   }
 
   handleClose() {
-    const { onRequestClose } = this.props;
-    if (typeof onRequestClose === "function") {
-      onRequestClose();
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose();
     }
   }
 
   handleAdd() {
     const { selectImage, selectBoard } = this.state;
 
-    this.props.onRequestAdd(
-      selectImage.file,
-      selectImage.palette,
-      selectBoard
-    );
+    if (typeof this.props.onRequestAdd === "function") {
+      this.props.onRequestAdd(
+        selectImage.file,
+        selectImage.palette,
+        selectBoard
+      );
+    }
   }
 
   handleFileChange() {
@@ -118,7 +132,7 @@ export default class AddItemFileDialog extends Component {
     }
   }
 
-  handlePreviewCloseClick(e) {
+  handlePreviewCloseClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
 
     this.setState({
@@ -130,15 +144,15 @@ export default class AddItemFileDialog extends Component {
     });
   }
 
-  handleBoardChange(value) {
+  handleBoardChange(value: any) {
     this.setState({ selectBoard: value });
   }
 
-  getInitialBoard(props) {
+  getInitialBoard(props: Props): any {
     return props.defaultBoard || (props.selectBoards[0] && props.selectBoards[0].value);
   }
 
-  setImageByFile(file) {
+  setImageByFile(file: File): void {
     if (!file) {
       this.setState({
         selectImage: {

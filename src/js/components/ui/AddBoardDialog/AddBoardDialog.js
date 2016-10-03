@@ -1,5 +1,7 @@
+// @flow
 import React, { Component, PropTypes } from "react";
 import autoBind from "auto-bind";
+import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import {
@@ -11,22 +13,38 @@ import { BoardIcon } from "../../svg-icons/";
 
 const b = bem("add-board-dialog");
 
+type Props = {
+  className?: string;
+  processing: boolean;
+  width?: number;
+  open: boolean;
+  onRequestAdd?: Function;
+  onRequestClose?: Function;
+};
+
+type State = {
+  value: string;
+};
+
 export default class AddBoardDialog extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    processing: PropTypes.bool,
-    width: PropTypes.number,
-    open: PropTypes.bool,
-    onRequestAdd: PropTypes.func,
-    onRequestClose: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
-    processing: false,
-    onRequestAdd: () => {}
+    processing: false
   };
 
-  constructor(props, context) {
+  static childContextTypes = {
+    theme: PropTypes.string.isRequired
+  };
+
+  getChildContext() {
+    return {
+      theme: Themes.LIGHT
+    };
+  }
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -36,7 +54,7 @@ export default class AddBoardDialog extends Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (this.props.open && !nextProps.open) {
       this.setState({ value: "" });
     }
@@ -53,12 +71,12 @@ export default class AddBoardDialog extends Component {
     const { value } = this.state;
     const trimmedBoardName = value.trim();
 
-    if (trimmedBoardName !== "") {
+    if (trimmedBoardName !== "" && typeof this.props.onRequestAdd === "function") {
       this.props.onRequestAdd(trimmedBoardName);
     }
   }
 
-  handleBoardNameChange(e, value) {
+  handleBoardNameChange(e: SyntheticInputEvent, value: string) {
     if (!this.props.processing) {
       this.setState({ value });
     }
