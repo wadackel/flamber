@@ -1,7 +1,8 @@
+// @flow
 import _ from "lodash";
 import autoBind from "auto-bind";
 import keycode from "keycode";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../share-config.json";
 import bem from "../../../helpers/bem";
@@ -14,37 +15,38 @@ import { CloseIcon } from "../../svg-icons/";
 
 const b = bem("dialog");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  processing: boolean;
+  width: number;
+  title?: string;
+  titleIcon?: React$Element<any>;
+  actions?: React$Element<any>;
+  open: boolean;
+  escClose: boolean;
+  onAfterOpen?: Function;
+  onRequestClose: Function;
+  onDragEnter?: Function;
+  onDragOver?: Function;
+  onDragLeave?: Function;
+};
+
 class DialogInline extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    processing: PropTypes.bool,
-    width: PropTypes.number.isRequired,
-    title: PropTypes.string,
-    titleIcon: PropTypes.element,
-    actions: PropTypes.node,
-    open: PropTypes.bool.isRequired,
-    escClose: PropTypes.bool,
-    onAfterOpen: PropTypes.func,
-    onRequestClose: PropTypes.func.isRequired,
-    onDragEnter: PropTypes.func,
-    onDragOver: PropTypes.func,
-    onDragLeave: PropTypes.func
-  };
+  props: Props;
 
-  constructor(props, context) {
+  afterRenderFocus: boolean = false;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
-
-    this.afterRendeFocus = false;
-
     autoBind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps: Props) {
     return !_.isEqual(this.props, nextProps);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (!this.props.open && nextProps.open) {
       this.afterRenderFocus = true;
     }
@@ -57,11 +59,13 @@ class DialogInline extends Component {
       this.afterRenderFocus = false;
       dialog.focus();
 
-      this.props.onAfterOpen();
+      if (typeof this.props.onAfterOpen === "function") {
+        this.props.onAfterOpen();
+      }
     }
   }
 
-  handleKeyDown(e) {
+  handleKeyDown(e: SyntheticKeyboardEvent) {
     const { open } = this.props;
     const key = keycode(e);
 
@@ -70,7 +74,7 @@ class DialogInline extends Component {
     }
   }
 
-  handleCloseClick(e) {
+  handleCloseClick(e: SyntheticKeyboardEvent) {
     e.preventDefault();
     e.stopPropagation();
     this.requestClose();
@@ -80,13 +84,13 @@ class DialogInline extends Component {
     this.requestClose();
   }
 
-  requestClose() {
+  requestClose(): void {
     if (!this.props.processing) {
       this.props.onRequestClose();
     }
   }
 
-  renderProcessOverlay() {
+  renderProcessOverlay(): React$Element<any> {
     const { processing } = this.props;
 
     return <ProcessingOverlay
@@ -96,7 +100,7 @@ class DialogInline extends Component {
     />;
   }
 
-  renderHeader() {
+  renderHeader(): ?React$Element<any> {
     const {
       open,
       title,
@@ -120,7 +124,7 @@ class DialogInline extends Component {
     );
   }
 
-  renderActions() {
+  renderActions(): ?React$Element<any> {
     const {
       open,
       actions
@@ -128,7 +132,7 @@ class DialogInline extends Component {
 
     if (!actions) return null;
 
-    const actionElements = actions.map((action, i) =>
+    const actionElements = React.Children.map(actions, (action, i) =>
       React.cloneElement(action, { key: i })
     );
 
@@ -196,41 +200,21 @@ class DialogInline extends Component {
 }
 
 export default class Dialog extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    processing: PropTypes.bool,
-    width: PropTypes.number.isRequired,
-    title: PropTypes.string,
-    titleIcon: PropTypes.element,
-    actions: PropTypes.node,
-    open: PropTypes.bool.isRequired,
-    escClose: PropTypes.bool,
-    onAfterOpen: PropTypes.func,
-    onRequestClose: PropTypes.func.isRequired,
-    onDragEnter: PropTypes.func,
-    onDragOver: PropTypes.func,
-    onDragLeave: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     processing: false,
     width: 450,
     open: false,
-    escClose: true,
-    onAfterOpen: () => {},
-    onRequestClose: () => {},
-    onDragEnter: () => {},
-    onDragOver: () => {},
-    onDragLeave: () => {}
+    escClose: true
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  renderLayer() {
+  renderLayer(): React$Element<any> {
     return <DialogInline {...this.props} />;
   }
 
