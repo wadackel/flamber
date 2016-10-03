@@ -1,6 +1,7 @@
+// @flow
 import _ from "lodash";
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../share-config.json";
 import FirstChild from "../internal/FirstChild";
@@ -9,32 +10,32 @@ import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("file-dnd");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  style: Object;
+  overlay: React$Element<any>;
+  onDragStart?: Function;
+  onDragEnd?: Function;
+  onDragEnter?: Function;
+  onDragLeave?: Function;
+  onDragOver?: Function;
+  onDrop?: Function;
+};
+
+type State = {
+  dragging: boolean;
+};
+
 export default class FileDnD extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    style: PropTypes.object,
-    overlay: PropTypes.node,
-    onDragStart: PropTypes.func,
-    onDragEnd: PropTypes.func,
-    onDragEnter: PropTypes.func,
-    onDragLeave: PropTypes.func,
-    onDragOver: PropTypes.func,
-    onDrop: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
-    style: {},
-    overlay: <span />,
-    onDragStart: () => {},
-    onDragEnd: () => {},
-    onDragEnter: () => {},
-    onDragLeave: () => {},
-    onDragOver: () => {},
-    onDrop: () => {}
+    overlay: <span />
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = { dragging: false };
@@ -42,7 +43,7 @@ export default class FileDnD extends Component {
     autoBind(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
@@ -64,54 +65,69 @@ export default class FileDnD extends Component {
     dnd.removeEventListener("drop", this.handleDrop, false);
   }
 
-  cancelEvent(e, bubbling = true) {
+  cancelEvent(e: Event, bubbling: boolean = true) {
     e.preventDefault();
     if (bubbling) {
       e.stopPropagation();
     }
   }
 
-  handleDragEnter(e) {
+  handleDragEnter(e: DragEvent) {
     this.cancelEvent(e);
-    this.props.onDragEnter(e);
+    if (typeof this.props.onDragEnter === "function") {
+      this.props.onDragEnter(e);
+    }
   }
 
-  handleDragLeave(e) {
+  handleDragLeave(e: DragEvent) {
     this.cancelEvent(e);
-    this.props.onDragLeave(e);
+
+    if (typeof this.props.onDragLeave === "function") {
+      this.props.onDragLeave(e);
+    }
 
     if (e.target === this.refs.dnd || e.target === this.refs.overlay) {
       this.dragEnd();
     }
   }
 
-  handleDragOver(e) {
+  handleDragOver(e: DragEvent) {
     this.cancelEvent(e);
     this.dragStart();
-    this.props.onDragOver(e);
+    if (typeof this.props.onDragOver === "function") {
+      this.props.onDragOver(e);
+    }
   }
 
-  handleDrop(e) {
+  handleDrop(e: DragEvent) {
     this.cancelEvent(e);
 
-    if (e.dataTransfer.files.length > 0) {
-      this.props.onDrop(e.dataTransfer);
+    const { dataTransfer } = e;
+
+    if (dataTransfer && dataTransfer.files.length > 0) {
+      if (typeof this.props.onDrop === "function") {
+        this.props.onDrop(e.dataTransfer);
+      }
     }
 
     this.dragEnd();
   }
 
-  dragStart() {
+  dragStart(): void {
     if (!this.state.dragging) {
       this.setState({ dragging: true });
-      this.props.onDragStart();
+      if (typeof this.props.onDragStart === "function") {
+        this.props.onDragStart();
+      }
     }
   }
 
-  dragEnd() {
+  dragEnd(): void {
     if (this.state.dragging) {
       this.setState({ dragging: false });
-      this.props.onDragEnd();
+      if (typeof this.props.onDragEnd === "function") {
+        this.props.onDragEnd();
+      }
     }
   }
 
