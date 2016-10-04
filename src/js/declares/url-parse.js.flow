@@ -1,0 +1,22 @@
+declare module "url-parse" {
+  declare class URLParse {
+    constructor(address: string, location?: boolean, parser?: any): this;
+    protocol: string;
+    slashes: string;
+    auth: string;
+    username: string;
+    password: string;
+    host: string;
+    hostname: string;
+    port: string;
+    pathname: string;
+    query: Object;
+    hash: string;
+    href: string;
+    origin: string;
+    set(part: string, value: any, fn: boolean | Function): this;
+    toString(stringify: any): string;
+  }
+
+  declare export default (address: string, location?: boolean, parser?: any) => URLParse;
+}

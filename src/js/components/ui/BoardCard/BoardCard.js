@@ -1,7 +1,7 @@
 // @flow
 import autoBind from "auto-bind";
 import moment from "moment";
-import React from "react";
+import React, { Component } from "react";
 import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -44,7 +44,7 @@ type Props = {
   onDelete?: Function;
 };
 
-export default class BoardCard extends React.Component {
+export default class BoardCard extends Component {
   props: Props;
 
   static defaultProps = {
@@ -95,7 +95,7 @@ export default class BoardCard extends React.Component {
     );
   }
 
-  renderList() {
+  renderList(): React$Element<any> {
     const {
       className,
       style,
@@ -144,7 +144,7 @@ export default class BoardCard extends React.Component {
     );
   }
 
-  renderGrid() {
+  renderGrid(): React$Element<any> {
     const {
       className,
       style,

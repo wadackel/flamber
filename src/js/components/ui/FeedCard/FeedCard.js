@@ -1,6 +1,7 @@
+// @flow
 import autoBind from "auto-bind";
 import urlParse from "url-parse";
-import React, { PropTypes } from "react";
+import React, { Component } from "react";
 import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -22,29 +23,30 @@ import {
   LinkIcon,
   PlusIcon
 } from "../../svg-icons/";
+import type { GridLayout, ListLayout } from "../../../types/prop-types";
 
-export default class FeedCard extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    layout: PropTypes.oneOf([Layout.GRID, Layout.LIST]),
-    url: PropTypes.string,
-    site: PropTypes.string,
-    favicon: PropTypes.string,
-    title: PropTypes.string,
-    image: PropTypes.string,
-    imageWidth: PropTypes.number,
-    imageHeight: PropTypes.number,
-    onAddItem: PropTypes.func
-  };
+type Props = {
+  className?: string;
+  style?: Object;
+  layout: GridLayout | ListLayout;
+  url: string;
+  site: string;
+  favicon: string;
+  title: string;
+  image: string;
+  imageWidth: number;
+  imageHeight: number;
+  onAddItem?: Function;
+};
+
+export default class FeedCard extends Component {
+  props: Props;
 
   static defaultProps = {
-    layout: Layout.GRID,
-    style: {},
-    onAddItem: () => {}
+    layout: Layout.GRID
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
@@ -53,7 +55,15 @@ export default class FeedCard extends React.Component {
     // TODO
   }
 
-  renderList() {
+  handleMouseLeave() {
+    // TODO
+  }
+
+  handleDetailClick() {
+    // TODO
+  }
+
+  renderList(): React$Element<any> {
     const {
       className,
       style,
@@ -104,7 +114,7 @@ export default class FeedCard extends React.Component {
     );
   }
 
-  renderGrid() {
+  renderGrid(): React$Element<any> {
     const {
       className,
       style,
