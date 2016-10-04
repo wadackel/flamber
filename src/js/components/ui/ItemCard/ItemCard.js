@@ -1,8 +1,9 @@
+// @flow
 import _ from "lodash";
 import autoBind from "auto-bind";
 import isURL from "validator/lib/isURL";
 import urlParse from "url-parse";
-import React, { PropTypes } from "react";
+import React from "react";
 import * as Layout from "../../../constants/layouts";
 import { hexToRgb } from "../../../helpers/color";
 import bem from "../../../helpers/bem";
@@ -28,82 +29,94 @@ import {
   FolderIcon,
   TrashIcon
 } from "../../svg-icons";
+import type { ItemId } from "../../../types/item";
+import type {
+  GalleryLayout,
+  GridLayout,
+  ListLayout,
+  Colors
+} from "../../../types/prop-types";
+
+type Props = {
+  className?: string;
+  style?: Object;
+  layout: GalleryLayout | GridLayout | ListLayout;
+  processing: boolean;
+  star: boolean;
+  selected: boolean;
+  id: ItemId;
+  url: string;
+  title: string;
+  image: string;
+  imageWidth: number;
+  imageHeight: number;
+  colors: Colors;
+  onSelect?: Function;
+  onStar?: Function;
+  onMove?: Function;
+  onDelete?: Function;
+  onDetailClick?: Function;
+  onColorClick?: Function;
+};
 
 export default class ItemCard extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    layout: PropTypes.oneOf([Layout.GALLERY, Layout.GRID, Layout.LIST]),
-    style: PropTypes.object,
-    processing: PropTypes.bool,
-    selected: PropTypes.bool,
-    star: PropTypes.bool,
-    id: PropTypes.any,
-    url: PropTypes.string,
-    title: PropTypes.string,
-    image: PropTypes.string,
-    imageWidth: PropTypes.number,
-    imageHeight: PropTypes.number,
-    colors: PropTypes.array,
-    onSelect: PropTypes.func,
-    onStar: PropTypes.func,
-    onMove: PropTypes.func,
-    onDelete: PropTypes.func,
-    onDetailClick: PropTypes.func,
-    onColorClick: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
     layout: Layout.GRID,
-    style: {},
     procssing: false,
     selected: false,
-    star: false,
-    onSelect: () => {},
-    onStar: () => {},
-    onMove: () => {},
-    onDelete: () => {},
-    onDetailClick: () => {},
-    onColorClick: () => {}
+    star: false
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
+  shouldComponentUpdate(nextProps: Props) {
+    return !_.isEqual(this.props, nextProps);
   }
 
-  handleUrlClick(e) {
+  handleUrlClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
   }
 
-  handleStarClick(e) {
+  handleStarClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
-    this.props.onStar(this.props.id);
+    if (typeof this.props.onStar === "function") {
+      this.props.onStar(this.props.id);
+    }
   }
 
-  handleDetailClick(e) {
+  handleDetailClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
-    this.props.onDetailClick(this.props.id);
+    if (typeof this.props.onDetailClick === "function") {
+      this.props.onDetailClick(this.props.id);
+    }
   }
 
-  handleSelect(value, checked) {
-    this.props.onSelect(this.props.id, checked);
+  handleSelect(value: any, checked: boolean) {
+    if (typeof this.props.onSelect === "function") {
+      this.props.onSelect(this.props.id, checked);
+    }
   }
 
-  handleMoveClick(e) {
+  handleMoveClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
-    this.props.onMove(this.props.id);
+    if (typeof this.props.onMove === "function") {
+      this.props.onMove(this.props.id);
+    }
   }
 
-  handleDeleteClick(e) {
+  handleDeleteClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
-    this.props.onDelete(this.props.id);
+    if (typeof this.props.onDelete === "function") {
+      this.props.onDelete(this.props.id);
+    }
   }
 
-  renderURL() {
+  renderURL(): React$Element<any> {
     const { url } = this.props;
 
     return isURL(url, { require_protocol: true }) // eslint-disable-line camelcase
@@ -111,14 +124,14 @@ export default class ItemCard extends React.Component {
       : <span>{url}</span>;
   }
 
-  renderMoreActions() {
+  renderMoreActions(): Array<React$Element<any>> {
     return [
       <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />,
       <IconButton icon={<FolderIcon />} tooltip="移動する" onClick={this.handleMoveClick} />
     ];
   }
 
-  renderGrid(isGallery) {
+  renderGrid(isGallery: boolean): React$Element<any> {
     const {
       className,
       style,
@@ -186,7 +199,7 @@ export default class ItemCard extends React.Component {
     );
   }
 
-  renderList() {
+  renderList(): React$Element<any> {
     const {
       className,
       processing,
