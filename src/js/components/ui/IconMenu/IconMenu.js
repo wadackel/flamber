@@ -1,24 +1,33 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
-import * as OriginalPropTypes from "../../../constants/prop-types";
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import { Popover, Menu } from "../";
+import { Popover, Menu, MenuItem } from "../";
+import type { Origin } from "../../../types/prop-types";
 
 const b = bem("icon-menu");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  icon: React$Element<any>;
+  origin: Origin;
+  triggerOrigin: Origin;
+  tooltip?: string;
+  tooltipOrigin: Origin;
+  onChange?: Function;
+  onItemClick?: Function;
+};
+
+type State = {
+  open: boolean;
+  triggerElement: ?HTMLElement;
+};
+
 export default class IconMenu extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    icon: PropTypes.element,
-    tooltip: PropTypes.string,
-    tooltipOrigin: OriginalPropTypes.origin,
-    origin: OriginalPropTypes.origin,
-    triggerOrigin: OriginalPropTypes.origin,
-    onChange: PropTypes.func,
-    onItemClick: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     origin: {
@@ -28,12 +37,10 @@ export default class IconMenu extends React.Component {
     triggerOrigin: {
       vertical: "top",
       horizontal: "left"
-    },
-    onChange: () => {},
-    onItemClick: () => {}
+    }
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -44,16 +51,18 @@ export default class IconMenu extends React.Component {
     autoBind(this);
   }
 
-  handleIconClick(e) {
+  handleIconClick(e: SyntheticMouseEvent) {
     this.setState({
       open: true,
-      triggerElement: e.currentTarget
+      triggerElement: e.currentTarget instanceof HTMLElement ? e.currentTarget : null
     });
   }
 
-  handleItemClick(menuItem, value, index) {
+  handleItemClick(menuItem: MenuItem, value: any, index: number) {
     this.setState({ open: false });
-    this.props.onItemClick(menuItem, value, index);
+    if (typeof this.props.onItemClick === "function") {
+      this.props.onItemClick(menuItem, value, index);
+    }
   }
 
   handleRequestClose() {
