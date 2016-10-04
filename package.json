@@ -64,6 +64,7 @@
     "flow-bin": "^0.33.0",
     "glob": "^7.1.0",
     "iflow-lodash": "^1.1.27",
+    "iflow-moment": "^1.1.13",
     "json-loader": "^0.5.4",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
