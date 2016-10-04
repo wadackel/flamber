@@ -1,5 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { TextField, IconButton } from "../";
@@ -7,19 +8,22 @@ import { SearchIcon } from "../../svg-icons/";
 
 const b = bem("search-field");
 
+type Props = {
+  className?: string;
+  value: string;
+  placeholder?: string;
+  onSearch?: Function;
+};
+
+type State = {
+  value: string;
+};
+
 export default class SearchField extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    value: PropTypes.any,
-    placeholder: PropTypes.string,
-    onSearch: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
-  static defaultProps = {
-    onSearch: () => {}
-  };
-
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = { value: props.value };
@@ -27,7 +31,7 @@ export default class SearchField extends Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (this.props.value !== nextProps.value) {
       this.setState({ value: nextProps.value });
     }
@@ -37,7 +41,7 @@ export default class SearchField extends Component {
     this.requestSearch();
   }
 
-  handleChange(e, value) {
+  handleChange(e: SyntheticInputEvent, value: string) {
     this.setState({ value });
   }
 
@@ -46,7 +50,9 @@ export default class SearchField extends Component {
   }
 
   requestSearch() {
-    this.props.onSearch(this.state.value);
+    if (typeof this.props.onSearch === "function") {
+      this.props.onSearch(this.state.value);
+    }
   }
 
   render() {
