@@ -1,10 +1,20 @@
-import _ from "lodash";
+// @flow
 import autoBind from "auto-bind";
 import React, { Component } from "react";
 import ReactCropper from "../../../utils/react-cropper";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { ProcessingOverlay } from "../";
+import type {
+  CropperData,
+  CropperContainerData,
+  CropperCanvasData,
+  CropperSetCanvasData,
+  CropperImageData,
+  CropperBoxData,
+  CropperCroppedCanvasOptions,
+  CropperDragMode
+} from "../../../utils/react-cropper";
 
 const b = bem("cropper");
 
@@ -25,126 +35,159 @@ export default class Cropper extends Component {
     processing: false
   };
 
-  constructor(props, context) {
+  cropper: ?ReactCropper = null;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   handleReady() {
-    this.zoomTo(this.props.zoomTo);
+    const { zoomTo } = this.props;
 
-    if (_.isFunction(this.props.ready)) {
+    if (typeof zoomTo === "number" && !isNaN(zoomTo)) {
+      this.zoomTo(zoomTo);
+    }
+
+    if (typeof this.props.ready === "function") {
       this.props.ready();
     }
   }
 
   // Methods by: https://github.com/fengyuanchen/cropperjs#methods
-  crop() {
-    return this.cropper.crop();
+  crop(): void {
+    if (!this.cropper) return;
+    this.cropper.crop();
   }
 
-  reset() {
-    return this.cropper.reset();
+  reset(): void {
+    if (!this.cropper) return;
+    this.cropper.reset();
   }
 
-  clear() {
-    return this.cropper.clear();
+  clear(): void {
+    if (!this.cropper) return;
+    this.cropper.clear();
   }
 
-  replace(...args) {
-    return this.cropper.replace(...args);
+  replace(url: string, onlyColorChanged?: boolean): void {
+    if (!this.cropper) return;
+    this.cropper.replace(url, onlyColorChanged);
   }
 
-  enable() {
-    return this.cropper.enable();
+  enable(): void {
+    if (!this.cropper) return;
+    this.cropper.enable();
   }
 
-  disable() {
-    return this.cropper.disable();
+  disable(): void {
+    if (!this.cropper) return;
+    this.cropper.disable();
   }
 
-  destroy() {
-    return this.cropper.destroy();
+  destroy(): void {
+    if (!this.cropper) return;
+    this.cropper.destroy();
   }
 
-  move(...args) {
-    return this.cropper.move(...args);
+  move(offsetX: number, offsetY?: number): void {
+    if (!this.cropper) return;
+    this.cropper.move(offsetX, offsetY);
   }
 
-  moveTo(...args) {
-    return this.cropper.moveTo(...args);
+  moveTo(x: number, y?: number): void {
+    if (!this.cropper) return;
+    this.cropper.moveTo(x, y);
   }
 
-  zoom(...args) {
-    return this.cropper.zoom(...args);
+  zoom(ratio: number): void {
+    if (!this.cropper) return;
+    this.cropper.zoom(ratio);
   }
 
-  zoomTo(...args) {
-    return this.cropper.zoomTo(...args);
+  zoomTo(ratio: number): void {
+    if (!this.cropper) return;
+    this.cropper.zoomTo(ratio);
   }
 
-  rotate(...args) {
-    return this.cropper.rotate(...args);
+  rotate(degree: number): void {
+    if (!this.cropper) return;
+    this.cropper.rotate(degree);
   }
 
-  rotateTo(...args) {
-    return this.cropper.rotateTo(...args);
+  rotateTo(degree: number): void {
+    if (!this.cropper) return;
+    this.cropper.rotateTo(degree);
   }
 
-  scale(...args) {
-    return this.cropper.scale(...args);
+  scale(scaleX: number, scaleY?: number): void {
+    if (!this.cropper) return;
+    this.cropper.scale(scaleX, scaleY);
   }
 
-  scaleX(...args) {
-    return this.cropper.scaleX(...args);
+  scaleX(scaleX: number): void {
+    if (!this.cropper) return;
+    this.cropper.scaleX(scaleX);
   }
 
-  scaleY(...args) {
-    return this.cropper.scaleY(...args);
+  scaleY(scaleY: number): void {
+    if (!this.cropper) return;
+    this.cropper.scaleY(scaleY);
   }
 
-  getData(...args) {
-    return this.cropper.getData(...args);
+  getData(rounded?: boolean): ?CropperData {
+    if (!this.cropper) return null;
+    return this.cropper.getData(rounded);
   }
 
-  setData(...args) {
-    return this.cropper.setData(...args);
+  setData(setData: CropperData): void {
+    if (!this.cropper) return;
+    this.cropper.setData(setData);
   }
 
-  getContainerData() {
+  getContainerData(): ?CropperContainerData {
+    if (!this.cropper) return null;
     return this.cropper.getContainerData();
   }
 
-  getImageData() {
+  getImageData(): ?CropperImageData {
+    if (!this.cropper) return null;
     return this.cropper.getImageData();
   }
 
-  getCanvasData() {
+  getCanvasData(): ?CropperCanvasData {
+    if (!this.cropper) return null;
     return this.cropper.getCanvasData();
   }
 
-  setCanvasData(...args) {
-    return this.cropper.setCanvasData(...args);
+  setCanvasData(data: CropperSetCanvasData): void {
+    if (!this.cropper) return;
+    return this.cropper.setCanvasData(data);
   }
 
-  getCropBoxData() {
+  getCropBoxData(): ?CropperBoxData {
+    if (!this.cropper) return null;
     return this.cropper.getCropBoxData();
   }
 
-  setCropBoxData(...args) {
-    return this.cropper.setCropBoxData(...args);
+  setCropBoxData(data: CropperBoxData): void {
+    if (!this.cropper) return;
+    this.cropper.setCropBoxData(data);
   }
 
-  getCroppedCanvas(...args) {
-    return this.cropper.getCroppedCanvas(...args);
+  getCroppedCanvas(options: CropperCroppedCanvasOptions): ?HTMLCanvasElement {
+    if (!this.cropper) return null;
+    return this.cropper.getCroppedCanvas(options);
   }
 
-  setAspectRatio(...args) {
-    return this.cropper.setAspectRatio(...args);
+  setAspectRatio(aspectRatio: number): void {
+    if (!this.cropper) return;
+    this.cropper.setAspectRatio(aspectRatio);
   }
 
-  setDragMode(...args) {
-    return this.cropper.setDragMode(...args);
+  setDragMode(mode: CropperDragMode): void {
+    if (!this.cropper) return;
+    return this.cropper.setDragMode(mode);
   }
 
   render() {
