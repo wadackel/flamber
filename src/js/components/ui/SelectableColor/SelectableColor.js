@@ -1,38 +1,42 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { CheckIcon } from "../../svg-icons/";
 
 const b = bem("selectable-color");
 
+type Props = {
+  className?: string;
+  style?: Object;
+  color: string;
+  selected: boolean;
+  borderColor: string;
+  checkMarkColor: string;
+  onClick?: Function;
+};
+
 export default class SelectableColor extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    color: PropTypes.string,
-    selected: PropTypes.bool,
-    borderColor: PropTypes.string,
-    checkMarkColor: PropTypes.string,
-    onClick: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
-    style: {},
     selected: false,
     borderColor: "transparent",
     checkMarkColor: "#fff"
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleClick(e) {
+  handleClick(e: SyntheticMouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    this.props.onClick(e, this.props.color);
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick(e, this.props.color);
+    }
   }
 
   render() {

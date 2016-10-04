@@ -19,6 +19,12 @@ export type Order = "asc" | "desc";
 
 export type OrderBy = "name" | "created" | "modified" | "last_view";
 
+export type Color = string;
+
+export type Colors = Array<string>;
+
+export type Palette = Colors;
+
 export type Size = {
   width: number;
   height: number;

@@ -2,7 +2,7 @@
 import uuid from "node-uuid";
 import { identity } from "lodash";
 import { createAction } from "redux-actions";
-import type { Palette } from "../types/palette";
+import type { Palette } from "../types/prop-types";
 import type { BoardId } from "../types/board";
 import type { ItemId, Item, Items } from "../types/item";
 import type { TagId } from "../types/tag";

@@ -1,5 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes, isValidElement } from "react";
+import React, { Component, isValidElement } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../share-config.json";
 import bem from "../../../helpers/bem";
@@ -7,29 +8,32 @@ import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("selectable-color-group");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  selectColors: Array<string>;
+  onColorClick?: Function;
+};
+
 export default class SelectableColorGroup extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    selectColors: PropTypes.arrayOf(PropTypes.string),
-    onColorClick: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
-    selectColors: [],
-    onColorClick: () => {}
+    selectColors: []
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleColorClick(e, color) {
-    this.props.onColorClick(color);
+  handleColorClick(e: SyntheticMouseEvent, color: string) {
+    if (typeof this.props.onColorClick === "function") {
+      this.props.onColorClick(color);
+    }
   }
 
-  renderColors() {
+  renderColors(): React$Element<any> {
     const { children, selectColors } = this.props;
     const childArray = React.Children.toArray(children);
     const validChildren = childArray.filter(child =>

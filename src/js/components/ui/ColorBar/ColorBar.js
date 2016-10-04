@@ -3,7 +3,7 @@ import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import type { Palette } from "../../../types/palette";
+import type { Palette } from "../../../types/prop-types";
 
 const b = bem("color-bar");
 

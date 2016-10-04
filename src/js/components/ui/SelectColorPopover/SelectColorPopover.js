@@ -1,6 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
-import * as OriginalPropTypes from "../../../constants/prop-types";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import {
@@ -9,27 +9,35 @@ import {
   SelectableColor,
   SelectableColorGroup
 } from "../";
+import type { Origin } from "../../../types/prop-types";
 
 const b = bem("select-color-popover");
 
+type SelectableColorValue = {
+  color: string;
+  borderColor: string;
+  checkMarkColor: string;
+};
+
+type Props = {
+  className?: string;
+  open: boolean;
+  origin: Origin;
+  triggerElement: ?HTMLElement;
+  triggerOrigin: Origin;
+  colors: Array<SelectableColorValue>;
+  selectColors: Array<string>;
+  onComplete?: Function;
+  onRequestClose?: Function;
+};
+
+type State = {
+  selectColors: Array<string>;
+};
+
 export default class SelectColorPopover extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    open: PropTypes.bool,
-    origin: OriginalPropTypes.origin,
-    triggerElement: PropTypes.object,
-    triggerOrigin: OriginalPropTypes.origin,
-    colors: PropTypes.arrayOf(
-      PropTypes.shape({
-        color: PropTypes.string,
-        borderColor: PropTypes.string,
-        checkMarkColor: PropTypes.string
-      })
-    ),
-    selectColors: PropTypes.arrayOf(PropTypes.string),
-    onComplete: PropTypes.func,
-    onRequestClose: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     open: false,
@@ -41,12 +49,10 @@ export default class SelectColorPopover extends Component {
       vertical: "bottom",
       horizontal: "center"
     },
-    selectColors: [],
-    onComplete: () => {},
-    onRequestClose: () => {}
+    selectColors: []
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -56,7 +62,7 @@ export default class SelectColorPopover extends Component {
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (!this.props.open && nextProps.open) {
       this.setState({
         selectColors: nextProps.selectColors
@@ -64,7 +70,7 @@ export default class SelectColorPopover extends Component {
     }
   }
 
-  handleColorClick(color) {
+  handleColorClick(color: string) {
     const { selectColors } = this.state;
     const newSelectColors = selectColors.indexOf(color) > -1
       ? selectColors.filter(o => o !== color)
@@ -74,11 +80,15 @@ export default class SelectColorPopover extends Component {
   }
 
   handleComplete() {
-    this.props.onComplete(this.state.selectColors);
+    if (typeof this.props.onComplete === "function") {
+      this.props.onComplete(this.state.selectColors);
+    }
   }
 
   handleRequestClose() {
-    this.props.onRequestClose();
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose();
+    }
   }
 
   render() {

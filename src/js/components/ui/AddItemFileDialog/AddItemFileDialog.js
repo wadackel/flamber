@@ -17,8 +17,7 @@ import {
   CloseIcon,
   UploadIcon
 } from "../../svg-icons/";
-import type { DropDownBoardValues } from "../../../types/prop-types";
-import type { Palette } from "../../../types/palette";
+import type { Palette, DropDownBoardValues } from "../../../types/prop-types";
 
 const b = bem("add-item-file-dialog");
 
