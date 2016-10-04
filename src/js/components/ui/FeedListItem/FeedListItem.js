@@ -1,5 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { ListItem, IconButton } from "../";
@@ -7,27 +8,27 @@ import { ExternalLinkIcon, CloseIcon } from "../../svg-icons/";
 
 const b = bem("feed-list-item");
 
+type Props = {
+  className?: string;
+  index: number;
+  value: any;
+  name: React$Element<any>;
+  url: React$Element<any>;
+  onDelete?: Function;
+};
+
 export default class FeedListItem extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    index: PropTypes.number,
-    value: PropTypes.any,
-    name: PropTypes.node,
-    url: PropTypes.node,
-    onDelete: PropTypes.func
-  };
+  props: Props;
 
-  static defaultProps = {
-    onDelete: () => {}
-  };
-
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   handleDeleteClick() {
-    this.props.onDelete(this, this.props.value, this.props.index);
+    if (typeof this.props.onDelete === "function") {
+      this.props.onDelete(this, this.props.value, this.props.index);
+    }
   }
 
   render() {

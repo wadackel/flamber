@@ -1,14 +1,22 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import { List } from "../";
 
 const b = bem("feed-list");
 
-export default function FeedList({
-  children,
-  className
-}) {
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+};
+
+export default function FeedList(props: Props) {
+  const {
+    children,
+    className
+  } = props;
+
   return (
     <List className={mergeClassNames(b(), className)}>
       {React.Children.map(children, item =>
@@ -20,8 +28,3 @@ export default function FeedList({
     </List>
   );
 }
-
-FeedList.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string
-};
