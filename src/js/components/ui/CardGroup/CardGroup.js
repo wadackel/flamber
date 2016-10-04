@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from "react";
+// @flow
+import React, { Component } from "react";
 import {
   CSSGrid,
-  layout as GridLayout,
+  layout as layouts,
   easings,
   measureItems,
   makeResponsive,
@@ -10,17 +11,25 @@ import {
 import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import type { GridLayout, GalleryLayout, ListLayout } from "../../../types/prop-types";
 
 const b = bem("card-group");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  layout: GridLayout | GalleryLayout | ListLayout;
+  columnWidth: number;
+  gutter: number;
+};
+
+type State = {
+  Grid: ?any;
+};
+
 export default class CardGroup extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    layout: PropTypes.oneOf([Layout.GALLERY, Layout.GRID, Layout.LIST]),
-    columnWidth: PropTypes.number,
-    gutter: PropTypes.number
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     layout: Layout.GRID,
@@ -28,9 +37,8 @@ export default class CardGroup extends Component {
     gutter: 20
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
-
     this.state = { Grid: null };
   }
 
@@ -38,7 +46,7 @@ export default class CardGroup extends Component {
     this.createGrid(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
 
     if (
@@ -49,7 +57,7 @@ export default class CardGroup extends Component {
     }
   }
 
-  createGrid(props) {
+  createGrid(props: Props): void {
     let Grid = null;
 
     if (props.layout !== Layout.LIST) {
@@ -84,8 +92,10 @@ export default class CardGroup extends Component {
       ? { width: "100%" }
       : { width: parseInt(columnWidth, 10) };
     const layoutType = isList
-      ? GridLayout.simple
-      : GridLayout.pinterest;
+      ? layouts.simple
+      : layouts.pinterest;
+
+    if (Grid == null) return null;
 
     return (
       <Grid

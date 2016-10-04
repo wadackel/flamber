@@ -1,0 +1,8 @@
+declare module "react-stonecutter" {
+  declare var CSSGrid: any;
+  declare var layout: any;
+  declare var easings: any;
+  declare var measureItems: any;
+  declare var makeResponsive: any;
+  declare var enterExitStyle: any;
+}
