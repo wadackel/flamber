@@ -17,7 +17,7 @@ class BoardCardExample extends React.Component {
         title="Web Application"
         image="/images/card-sample.png"
         itemCount={23}
-        lastModified={modified}
+        lastUpdatedAt={modified}
         onSelect={() => this.setState({ select: !this.state.select })}
       />
     );
@@ -46,7 +46,7 @@ class BoardCardListExample extends React.Component {
         title="Web Application"
         image="/images/card-sample.png"
         itemCount={23}
-        lastModified={modified}
+        lastUpdatedAt={modified}
       />
     );
   }

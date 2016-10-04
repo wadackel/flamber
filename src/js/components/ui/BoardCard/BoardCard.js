@@ -1,6 +1,7 @@
+// @flow
 import autoBind from "auto-bind";
 import moment from "moment";
-import React, { PropTypes } from "react";
+import React from "react";
 import * as Layout from "../../../constants/layouts";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -23,65 +24,72 @@ import {
   FilesIcon,
   TrashIcon
 } from "../../svg-icons";
+import type { BoardId } from "../../../types/board";
+import type { GridLayout, ListLayout } from "../../../types/prop-types";
+
+type Props = {
+  className?: string;
+  style?: Object;
+  id: BoardId;
+  processing: boolean;
+  selected: boolean;
+  title: string;
+  image: string;
+  layout: GridLayout | ListLayout;
+  itemCount: number;
+  lastUpdatedAt: Date;
+  onClick?: Function;
+  onSelect?: Function;
+  onEdit?: Function;
+  onDelete?: Function;
+};
 
 export default class BoardCard extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    id: PropTypes.string,
-    processing: PropTypes.bool,
-    selected: PropTypes.bool,
-    title: PropTypes.string,
-    image: PropTypes.string,
-    layout: PropTypes.oneOf([Layout.GRID, Layout.LIST]),
-    itemCount: PropTypes.number,
-    lastModified: PropTypes.instanceOf(Date),
-    onClick: PropTypes.func,
-    onSelect: PropTypes.func,
-    onEdit: PropTypes.func,
-    onDelete: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
-    style: {},
     layout: Layout.GRID,
     processing: false,
     selected: false,
-    itemCount: 0,
-    onClick: () => {},
-    onSelect: () => {},
-    onEdit: () => {},
-    onDelete: () => {}
+    itemCount: 0
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   handleClick() {
-    this.props.onClick(this.props.id);
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick(this.props.id);
+    }
   }
 
-  handleSelectClick(e) {
+  handleSelectClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
   }
 
   handleSelect() {
-    this.props.onSelect(this.props.id);
+    if (typeof this.props.onSelect === "function") {
+      this.props.onSelect(this.props.id);
+    }
   }
 
-  handleEditClick(e) {
+  handleEditClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
-    this.props.onEdit(this.props.id);
+    if (typeof this.props.onEdit === "function") {
+      this.props.onEdit(this.props.id);
+    }
   }
 
-  handleDeleteClick(e) {
+  handleDeleteClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
-    this.props.onDelete(this.props.id);
+    if (typeof this.props.onDelete === "function") {
+      this.props.onDelete(this.props.id);
+    }
   }
 
-  renderMoreActions() {
+  renderMoreActions(): React$Element<any> {
     return (
       <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />
     );
@@ -96,7 +104,7 @@ export default class BoardCard extends React.Component {
       title,
       image,
       itemCount,
-      lastModified
+      lastUpdatedAt
     } = this.props;
 
     const baseClassName = "board-card--list";
@@ -119,7 +127,7 @@ export default class BoardCard extends React.Component {
           <CardBody baseClassName={baseClassName}>
             <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
             <CardText baseClassName={baseClassName}>
-              Last updated {moment(lastModified).format("YYYY.MM.DD")}
+              Last updated {moment(lastUpdatedAt).format("YYYY.MM.DD")}
             </CardText>
           </CardBody>
         </CardCol>
@@ -145,7 +153,7 @@ export default class BoardCard extends React.Component {
       title,
       image,
       itemCount,
-      lastModified
+      lastUpdatedAt
     } = this.props;
 
     const baseClassName = "board-card";
@@ -177,7 +185,7 @@ export default class BoardCard extends React.Component {
         <CardBody baseClassName={baseClassName}>
           <CardTitle baseClassName={baseClassName}>{title}</CardTitle>
           <CardText baseClassName={baseClassName}>
-            Last updated {moment(lastModified).format("YYYY.MM.DD")}
+            Last updated {moment(lastUpdatedAt).format("YYYY.MM.DD")}
           </CardText>
         </CardBody>
       </Card>
