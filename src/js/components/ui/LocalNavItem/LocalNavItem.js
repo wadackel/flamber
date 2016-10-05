@@ -1,5 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import Button from "../internal/Button";
@@ -7,31 +8,32 @@ import { ExternalLinkIcon } from "../../svg-icons/";
 
 const b = bem("local-nav-item");
 
+type Props = {
+  className?: string;
+  children: React$Element<any>;
+  active: boolean;
+  href: string;
+  target?: string;
+  onClick?: Function;
+};
+
 export default class LocalNavItem extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    active: PropTypes.bool,
-    href: PropTypes.string,
-    target: PropTypes.string,
-    onClick: PropTypes.func
-  };
+  props: Props;
 
   static defaultProps = {
-    active: false,
-    onClick: () => {}
+    active: false
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleClick(e) {
+  handleClick(e: SyntheticMouseEvent) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!this.props.active) {
+    if (!this.props.active && typeof this.props.onClick === "function") {
       this.props.onClick(this.props.href, this.props.target);
     }
   }

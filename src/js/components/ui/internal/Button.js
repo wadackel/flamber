@@ -21,8 +21,8 @@ export type ButtonProps = {
   href?: string;
   target?: string;
   label: ?React$Element<any>;
-  icon?: React$Element<any>;
-  iconRight?: React$Element<any>;
+  icon?: ?React$Element<any>;
+  iconRight?: ?React$Element<any>;
   tooltip?: string;
   tooltipOrigin: Origin;
   tooltipPositions: Positions;

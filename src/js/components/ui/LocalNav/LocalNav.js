@@ -1,30 +1,31 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("local-nav");
 
+type Props = {
+  className?: string;
+  children?: React$Element<any>;
+  style?: Object;
+  href?: string;
+  onItemClick?: Function;
+};
+
 export default class LocalNav extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    style: PropTypes.object,
-    href: PropTypes.string,
-    onItemClick: PropTypes.func
-  };
+  props: Props;
 
-  static defaultProps = {
-    onItemClick: () => {}
-  };
-
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleItemClick(href, target) {
-    this.props.onItemClick(href, target);
+  handleItemClick(href: string, target: string) {
+    if (typeof this.props.onItemClick === "function") {
+      this.props.onItemClick(href, target);
+    }
   }
 
   render() {
@@ -41,7 +42,7 @@ export default class LocalNav extends Component {
         style={style}
       >
         <ul className={b("list")()}>
-          {children.map(item =>
+          {React.Children.map(children, item =>
             React.cloneElement(item, {
               key: item.props.href,
               active: item.props.href === href,
