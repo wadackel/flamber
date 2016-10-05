@@ -1,29 +1,28 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { PropTypes } from "react";
+import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
 const b = bem("layout-button-group");
 
+type Props = {
+  children?: React$Element<any>;
+  className?: string;
+  value: any;
+  onChange?: Function;
+};
+
 export default class LayoutButtonGroup extends React.Component {
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    value: PropTypes.any,
-    onChange: PropTypes.func
-  };
+  props: Props;
 
-  static defaultProps = {
-    onChange: () => {}
-  };
-
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleButtonClick(value) {
-    if (this.props.value !== value) {
+  handleButtonClick(value: any) {
+    if (this.props.value !== value && typeof this.props.onChange === "function") {
       this.props.onChange(value);
     }
   }
@@ -35,7 +34,7 @@ export default class LayoutButtonGroup extends React.Component {
       value
     } = this.props;
 
-    const cloneChildren = children.map(child =>
+    const cloneChildren = React.Children.map(children, child =>
       React.cloneElement(child, {
         key: child.props.value,
         selected: child.props.value === value,
