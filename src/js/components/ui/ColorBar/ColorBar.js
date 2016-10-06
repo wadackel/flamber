@@ -13,7 +13,7 @@ type ItemProps = {
   onClick: Function;
 };
 
-export class ColorBarItem extends Component {
+class ColorBarItem extends Component {
   props: ItemProps;
 
   constructor(props: ItemProps, context: Object) {

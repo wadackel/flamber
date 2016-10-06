@@ -2,9 +2,23 @@
 
 .ReactStyleguidist-colors__base,
 .ReactStyleguidist-Props__heading,
+.ReactStyleguidist-StyleGuide__heading,
+.ReactStyleguidist-ReactComponent__heading,
 .ReactStyleguidist-Props__cellHeading,
 .ReactStyleguidist-Layout__heading {
   color: #e0e0e0;
+}
+
+.ReactStyleguidist-colors__light {
+  color: #888;
+}
+
+.ReactStyleguidist-colors__name {
+  color: #28c7a5;
+}
+
+.ReactStyleguidist-colors__type {
+  color: #51d1da;
 }
 
 .ReactStyleguidist-colors__link,
@@ -21,7 +35,7 @@
   background: #42494c;
 }
 
-.ReactStyleguidist-Layout__sidebar {
+.ReactStyleguidist-colors__code-bg {
   background: #25282a;
 }
 
