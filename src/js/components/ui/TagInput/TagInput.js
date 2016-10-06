@@ -1,56 +1,66 @@
+// @flow
 import autoBind from "auto-bind";
 import keycode from "keycode";
-import React, { Component, PropTypes } from "react";
-import * as OriginalPropTypes from "../../../constants/prop-types";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import {
   AutoComplete,
   Chip
 } from "../";
+import type { Origin } from "../../../types/prop-types";
+import type { DataSource, DataSourceConfig, Filter } from "../AutoComplete/AutoComplete";
+
+type TagValue = {
+  label: string;
+  value: any;
+};
+
+type Props = {
+  className?: string;
+  id?: string;
+  name?: string;
+  label?: string;
+  placeholder?: string;
+  tags: Array<TagValue>;
+  origin: Origin;
+  triggerOrigin: Origin;
+  openOnFocus: boolean;
+  dataSource: DataSource;
+  dataSourceConfig?: DataSourceConfig;
+  filter?: Filter;
+  menuCloseDelay?: number;
+  onAddTag?: Function;
+  onNewTag?: Function;
+  onRemoveTag?: Function;
+  onFocus?: Function;
+  onBlur?: Function;
+  onKeyDown?: Function;
+  onKeyPress?: Function;
+  onKeyUp?: Function;
+};
+
+type State = {
+  searchText: string;
+  focused: boolean;
+};
 
 const b = bem("tag-input");
 
 export default class TagInput extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    tags: PropTypes.arrayOf(PropTypes.shape({
-      lable: PropTypes.string,
-      value: PropTypes.any
-    })),
-    origin: OriginalPropTypes.origin,
-    triggerOrigin: OriginalPropTypes.origin,
-    id: PropTypes.string,
-    openOnFocus: PropTypes.bool,
-    dataSource: PropTypes.array,
-    maxSearchResults: PropTypes.number,
-    filter: PropTypes.func,
-    label: PropTypes.string,
-    placeholder: PropTypes.string,
-    name: PropTypes.string,
-    menuCloseDelay: PropTypes.number,
-    onAddTag: PropTypes.func,
-    onRemoveTag: PropTypes.func,
-    onNewTag: PropTypes.func,
-    onFocus: PropTypes.func,
-    onBlur: PropTypes.func,
-    onKeyDown: PropTypes.func,
-    onKeyPress: PropTypes.func,
-    onKeyUp: PropTypes.func
-  };
+  props: Props;
+  state: State;
 
   static defaultProps = {
     tags: [],
-    openOnFocus: true,
-    onAddTag: () => {},
-    onRemoveTag: () => {},
-    onNewTag: () => {}
+    openOnFocus: true
   };
 
-  constructor(props, context) {
+  chipFocusIndex: number = -1;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
-    this.chipFocusIndex = -1;
     this.state = {
       searchText: "",
       focused: false
@@ -63,29 +73,29 @@ export default class TagInput extends Component {
     this.refs.control.focus();
   }
 
-  handleChange(value) {
+  handleChange(value: string) {
     this.setState({ searchText: value });
   }
 
-  handleInputFocus(e) {
+  handleInputFocus(e: SyntheticFocusEvent) {
     this.setState({ focused: true });
 
-    if (this.props.onFocus) {
+    if (typeof this.props.onFocus === "function") {
       this.props.onFocus(e);
     }
   }
 
-  handleInputBlur(e) {
+  handleInputBlur(e: SyntheticFocusEvent) {
     this.setState({ focused: false });
 
-    if (this.props.onBlur) {
+    if (typeof this.props.onBlur === "function") {
       this.props.onBlur(e);
     }
   }
 
-  handleInputKeyDown(e) {
+  handleInputKeyDown(e: SyntheticKeyboardEvent) {
     const { tags } = this.props;
-    const value = e.target.value;
+    const value = e.target instanceof HTMLInputElement ? e.target.value : "";
     const key = keycode(e);
 
     switch (key) {
@@ -105,7 +115,7 @@ export default class TagInput extends Component {
     }
   }
 
-  handleChipKeyDown(e) {
+  handleChipKeyDown(e: SyntheticKeyboardEvent) {
     const key = keycode(e);
 
     switch (key) {
@@ -123,7 +133,7 @@ export default class TagInput extends Component {
     }
   }
 
-  handleChipFocus(e, value) {
+  handleChipFocus(e: SyntheticFocusEvent, value: any) {
     let index = -1;
 
     this.props.tags.forEach((tag, i) => {
@@ -137,41 +147,41 @@ export default class TagInput extends Component {
     }
   }
 
-  handleNewRequest(value, index) {
+  handleNewRequest(value: any, index: number) {
     if (index > -1) {
       const tag = this.findTagByValue(value);
 
-      if (tag) {
+      if (tag && typeof this.props.onAddTag === "function") {
         this.props.onAddTag(tag);
       }
-    } else {
+    } else if (typeof this.props.onNewTag === "function") {
       this.props.onNewTag(value);
     }
 
     this.setState({ searchText: "" });
   }
 
-  handleRequestDelete(value) {
+  handleRequestDelete(value: any) {
     this.requestRemoveTag(value);
   }
 
-  findTagByValue(value) {
+  findTagByValue(value: any) {
     return this.props.dataSource.filter(o => o.value === value).shift();
   }
 
-  requestRemoveTag(value) {
+  requestRemoveTag(value: any) {
     const tag = this.findTagByValue(value);
 
-    if (tag) {
+    if (tag && typeof this.props.onRemoveTag === "function") {
       this.props.onRemoveTag(tag);
     }
   }
 
-  handleTagClick(e) {
+  handleTagClick(e: SyntheticMouseEvent) {
     e.stopPropagation();
   }
 
-  moveChipFocus(index) {
+  moveChipFocus(index: number): void {
     const maxIndex = this.props.tags.length - 1;
     let finalIndex = index;
 
@@ -191,11 +201,11 @@ export default class TagInput extends Component {
     this.chipFocusIndex = finalIndex;
   }
 
-  getChipByValue(value) {
+  getChipByValue(value: any): any {
     return this.refs[`chip-${value}`];
   }
 
-  renderTags() {
+  renderTags(): Array<React$Element<any>> {
     return this.props.tags.map(tag =>
       <Chip
         key={tag.value}

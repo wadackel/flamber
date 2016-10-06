@@ -15,10 +15,14 @@ import type { Origin } from "../../../types/prop-types";
 
 const b = bem("auto-complete");
 
-type DataSourceConfig = {
+export type DataSource = Array<any>;
+
+export type DataSourceConfig = {
   text: string;
   value: any;
 };
+
+export type Filter = (searchText: string, key: string) => boolean;
 
 type Props = {
   className?: string;
@@ -29,11 +33,11 @@ type Props = {
   origin: Origin;
   triggerOrigin: Origin;
   openOnFocus: boolean;
-  dataSource: Array<any>;
+  dataSource: DataSource;
   dataSourceConfig: DataSourceConfig;
   searchText: string;
   maxSearchResults: number;
-  filter: (searchText: string, key: string) => boolean;
+  filter: Filter;
   menuCloseDelay: number;
   onNewRequest?: Function;
   onUpdateInput?: Function;
