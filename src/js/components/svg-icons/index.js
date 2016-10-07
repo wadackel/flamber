@@ -11,6 +11,7 @@ export CircleRightIcon from "./CircleRightIcon";
 export CircleTopIcon from "./CircleTopIcon";
 export CloseIcon from "./CloseIcon";
 export CogIcon from "./CogIcon";
+export ColorMenuIcon from "./ColorMenuIcon";
 export CropIcon from "./CropIcon";
 export CropRotateIcon from "./CropRotateIcon";
 export DropIcon from "./DropIcon";
