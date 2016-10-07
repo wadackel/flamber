@@ -1,60 +1,46 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
-import type { User } from "../../../types/user";
-import palette from "../../../constants/palette";
-import * as Layout from "../../../constants/layouts";
+import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import {
   Avatar,
-  ColorBar,
   LogoButton,
-  EditableText,
   UserDropDown,
   Nav,
-  IconButton,
-  LayoutButtonGroup,
-  LayoutButton,
-  SearchField,
-  Slider
+  ColorBar
 } from "../";
-import {
-  TagsIcon,
-  StarIcon,
-  CogIcon,
-  LogoIcon,
-  PencilIcon,
-  GalleryIcon,
-  GridIcon,
-  ListIcon
-} from "../../svg-icons/";
+import { ITEM_UPLOAD_LIMIT } from "../../../constants/application";
+import type { User } from "../../../types/user";
 
 const b = bem("header");
 
 type Props = {
   user: User;
   colors: Array<string>;
-  navItems: PropTypes.node;
-  mainTitle: PropTypes.node;
-  subTitle: PropTypes.node;
-  subLeft: PropTypes.node;
-  subRight: PropTypes.node;
-  onLogoClick: (e: Event) => void;
-  onSettingsClick: (e: Event) => void;
-  onSignOutClick: (e: Event) => void;
+  navItems: React$Element<any>;
+  mainTitle: React$Element<any>;
+  subTitle: React$Element<any>;
+  subLeft: React$Element<any>;
+  subRight: React$Element<any>;
+  onLogoClick?: Function;
+  onOptionsClick?: Function;
+  onSignOutClick?: Function;
+};
+
+type State = {
+  userDropDownOpen: boolean;
+  userDropDownTrigger: ?HTMLElement;
 };
 
 export default class Header extends Component {
   props: Props;
+  state: State;
 
   static defaultProps = {
-    showColorBar: false,
-    onLogoClick: () => {},
-    onSettingsClick: () => {},
-    onColorChange: () => {},
-    onRequestSignOut: () => {}
+    colors: []
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -65,28 +51,38 @@ export default class Header extends Component {
     autoBind(this);
   }
 
-  handleUserDropDownClick(e) {
+  handleUserDropDownClick(e: SyntheticMouseEvent) {
     this.setState({
       userDropDownOpen: !this.state.userDropDownOpen,
-      userDropDownTrigger: e.currentTarget
+      userDropDownTrigger: e.currentTarget instanceof HTMLElement ? e.currentTarget : null
     });
   }
 
   handleUserDropDownRequestClose() {
-    this.setState({
-      userDropDownOpen: false
-    });
+    this.userDropDownClose();
   }
 
   handleSignOut() {
-    this.props.onRequestSignOut();
+    this.userDropDownClose(() => {
+      if (typeof this.props.onSignOutClick === "function") {
+        this.props.onSignOutClick();
+      }
+    });
   }
 
-  handleColorChange(color) {
-    this.props.onColorChange(color);
+  handleOptionsClick() {
+    this.userDropDownClose(() => {
+      if (typeof this.props.onOptionsClick === "function") {
+        this.props.onOptionsClick();
+      }
+    });
   }
 
-  renderSubHeader() {
+  userDropDownClose(callback?: Function): void {
+    this.setState({ userDropDownOpen: false }, callback);
+  }
+
+  renderSubHeader(): ?React$Element<any> {
     const {
       subTitle,
       subLeft,
@@ -113,12 +109,10 @@ export default class Header extends Component {
   render() {
     const {
       user,
-      showColorBar,
-      color,
+      colors,
       navItems,
       mainTitle,
-      onLogoClick,
-      onSettingsClick
+      onLogoClick
     } = this.props;
 
     const {
@@ -150,9 +144,9 @@ export default class Header extends Component {
                 {user &&
                   <Avatar
                     className={b("user__avatar")()}
-                    name={user.name}
-                    email={user.email}
-                    icon={user.icon}
+                    primary={user.name}
+                    secondary={`Sign in from ${user.provider}`}
+                    icon={user.photo}
                     onIconClick={this.handleUserDropDownClick}
                   />
                 }
@@ -161,15 +155,13 @@ export default class Header extends Component {
                     className={b("user__drop-down")()}
                     open={userDropDownOpen}
                     triggerElement={userDropDownTrigger}
-                    limit={parseInt(user.limit, 10)}
-                    usage={parseInt(user.usage, 10)}
+                    limit={ITEM_UPLOAD_LIMIT}
+                    usage={user.todayUpload}
                     onRequestClose={this.handleUserDropDownRequestClose}
                     onRequestSignOut={this.handleSignOut}
+                    onRequestOptions={this.handleOptionsClick}
                   />
                 }
-              </div>
-              <div className={b("setting")()}>
-                <IconButton icon={<CogIcon />} onClick={onSettingsClick} />
               </div>
             </div>
           </div>
@@ -178,11 +170,9 @@ export default class Header extends Component {
         </div>
 
         <ColorBar
-          selectable
-          className={b("colorbar", { show: showColorBar })()}
-          palette={palette}
-          color={color}
-          onChange={this.handleColorChange}
+          className={b("color-bar", { show: colors.length > 0 })()}
+          lineWidth={2}
+          palette={colors}
         />
       </header>
     );

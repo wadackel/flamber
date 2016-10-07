@@ -5,7 +5,8 @@ $header-main-height: 60px;
 
   &__body {
     position: relative;
-    background: $gray-light;
+    background: $gray;
+    // background: $gray-light;
     box-shadow: 0 0 8px rgba(0, 0, 0, .5);
     z-index: 10;
   }
@@ -163,11 +164,6 @@ $header-main-height: 60px;
     margin: 0 10px 0 0;
     text-align: right;
 
-    &__avatar {
-      display: inline-block !important;
-      vertical-align: middle;
-    }
-
     &__drop-down {
       z-index: 5001;
     }
@@ -184,7 +180,7 @@ $header-main-height: 60px;
     }
   }
 
-  &__colorbar {
+  &__color-bar {
     @include absolute(100%, 0, auto, 0, 5);
     @include transition(all, $transition-duration-fast);
     transform: translateY(-5px);
