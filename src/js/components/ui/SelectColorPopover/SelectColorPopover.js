@@ -13,7 +13,7 @@ import type { Origin } from "../../../types/prop-types";
 
 const b = bem("select-color-popover");
 
-type SelectableColorValue = {
+export type SelectableColorValue = {
   color: string;
   borderColor: string;
   checkMarkColor: string;

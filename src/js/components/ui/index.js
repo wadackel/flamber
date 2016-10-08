@@ -51,6 +51,7 @@ export SearchField from "./SearchField/SearchField";
 export SelectableColor from "./SelectableColor/SelectableColor";
 export SelectableColorGroup from "./SelectableColorGroup/SelectableColorGroup";
 export SelectBoardDialog from "./SelectBoardDialog/SelectBoardDialog";
+export SelectColorMenu from "./SelectColorMenu/SelectColorMenu";
 export SelectColorPopover from "./SelectColorPopover/SelectColorPopover";
 export Slider from "./Slider/Slider";
 export Snackbar from "./Snackbar/Snackbar";
