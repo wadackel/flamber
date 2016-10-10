@@ -87,6 +87,10 @@ export default class AddItemURLDialog extends Component {
     }
   }
 
+  handleAfterOpen() {
+    this.refs.url.focus();
+  }
+
   handleClose() {
     if (typeof this.props.onRequestClose === "function") {
       this.props.onRequestClose();
@@ -139,9 +143,11 @@ export default class AddItemURLDialog extends Component {
             Add
           </FlatButton>
         ]}
+        onAfterOpen={this.handleAfterOpen}
         {...props}
       >
         <TextField
+          ref="url"
           className={b("url")()}
           label="URL"
           placeholder="http://flamber.org/"
