@@ -1,8 +1,6 @@
-/* eslint-disable */
-import _ from "lodash";
 import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as Layout from "../../../constants/layouts";
@@ -40,10 +38,7 @@ const NavItemActive = {
 };
 
 export class HeaderContainer extends Component {
-  static propTypes = {
-  };
-
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -58,9 +53,9 @@ export class HeaderContainer extends Component {
     const { props } = this;
 
     if (
-      nextProps.currentBoard
-      && !nextProps.currentBoard.isUpdating
-      && !deepEqual(props.currentBoard, nextProps.currentBoard)
+      nextProps.currentBoard &&
+      !nextProps.currentBoard.isUpdating &&
+      !deepEqual(props.currentBoard, nextProps.currentBoard)
     ) {
       this.setState({ boardName: nextProps.currentBoard.name });
     }
@@ -83,7 +78,7 @@ export class HeaderContainer extends Component {
     this.push("/app/");
   }
 
-  handleSettingsClick() {
+  handleOptionsClick() {
     this.push("/app/settings");
   }
 
@@ -190,9 +185,7 @@ export class HeaderContainer extends Component {
 
   getHeaderBoardDetailProps(activeNavItem) {
     const {
-      boards,
       currentBoard,
-      items,
       selectedItemEntities,
       settings: { itemsLayout }
     } = this.props;
@@ -310,10 +303,7 @@ export class HeaderContainer extends Component {
 
   render() {
     const {
-      auth: {
-        hasJwtToken,
-        user
-      },
+      auth: { user },
       items
     } = this.props;
 
@@ -349,7 +339,7 @@ export class HeaderContainer extends Component {
           </NavItem>
         ]}
         onLogoClick={this.handleLogoClick}
-        onSettingsClick={this.handleSettingsClick}
+        onOptionsClick={this.handleOptionsClick}
         onColorChange={this.handleColorChange}
         onRequestSignOut={this.handleSignOut}
         {...headerProps}

@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
 
       return User.create({
         name: profile.displayName,
-        avatar: profile.photos[0].value,
+        photo: profile.photos[0].value,
         provider: AuthProviders.GOOGLE,
         providerId: profile.id
       });

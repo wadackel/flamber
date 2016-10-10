@@ -1,0 +1,6 @@
+declare module "react-router-redux" {
+  declare export var routerReducer: Function;
+  declare export var syncHistoryWithStore: Function;
+  declare export var push: Function;
+  declare export var replate: Function;
+}
