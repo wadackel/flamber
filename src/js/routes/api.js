@@ -1,5 +1,5 @@
 import { Router } from "express";
-import User from "../models/user";
+import models from "../models/";
 import application from "./api/application";
 import boards from "./api/boards";
 import items from "./api/items";
@@ -7,7 +7,8 @@ import settings from "./api/settings";
 import screenshot from "./api/screenshot";
 import tags from "./api/tags";
 
-const router = Router();
+const router = new Router();
+const { User } = models;
 
 router.use((req, res, next) => {
   const { authorization } = req.headers;

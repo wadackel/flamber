@@ -1,33 +1,31 @@
-import mongoose, { Schema } from "mongoose";
+// @flow
 import * as jwtUtils from "../utils/jwt";
 
-const UserSchema = new Schema({
-  name: String,
-  avatar: String,
-  provider: String,
-  providerId: String,
-  todayUpload: { type: Number, default: 0 },
-  installed: { type: Boolean, default: false },
-  created: { type: Date, default: Date.now },
-  modified: { type: Date, default: Date.now }
-}, {
-  versionKey: false
-});
+export default function(sequelize: any, DataTypes: any) {
+  const User = sequelize.define("User", {
+    name: DataTypes.STRING,
+    photo: DataTypes.STRING,
+    provider: DataTypes.STRING,
+    provider_id: DataTypes.STRING,
+    today_upload: DataTypes.INTEGER,
+    installed: DataTypes.INTEGER
+  }, {
+    timestamps: true,
+    underscored: true,
+    classMethods: {
+      // associate: function(models) {
+      //   User.hasMany(models.Task);
+      // }
+      findByJwtToken(token) {
+        try {
+          const { id } = jwtUtils.getVerifyToken(token);
+          return this.findById(id);
+        } catch (error) {
+          return Promise.reject(error);
+        }
+      }
+    }
+  });
 
-UserSchema.set("toJSON", { virtuals: true });
-UserSchema.set("toObject", { virtuals: true });
-
-
-// Static
-UserSchema.statics.findByJwtToken = function(token) {
-  try {
-    const { id } = jwtUtils.getVerifyToken(token);
-    return this.findById(id);
-
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-
-export default mongoose.model("User", UserSchema);
+  return User;
+}

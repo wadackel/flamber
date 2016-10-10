@@ -97,7 +97,7 @@ module.exports = {
     "array-bracket-spacing": "error",
     "block-spacing": "error",
     "brace-style": "error",
-    "camelcase": "error",
+    "camelcase": "off",
     "comma-spacing": "error",
     "comma-style": "error",
     "computed-property-spacing": "error",

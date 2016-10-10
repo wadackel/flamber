@@ -1,0 +1,3 @@
+declare module "sequelize" {
+  declare export default any;
+}

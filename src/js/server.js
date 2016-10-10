@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import path from "path";
-import mongoose from "mongoose";
 import imgur from "imgur";
 import express from "express";
 import favicon from "serve-favicon";
@@ -19,6 +18,7 @@ import { Provider } from "react-redux";
 import { match, RouterContext, createMemoryHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 import Helmet from "react-helmet";
+import debug from "./debug";
 import passport from "./passport";
 import configureStore from "./store/configure-store";
 import errorJSONMiddleware from "./middleware/error-json";
@@ -26,14 +26,10 @@ import authMiddleware from "./middleware/auth";
 import authRoutes from "./routes/auth";
 import apiRoutes from "./routes/api";
 import getRoutes from "./routes";
+import { sequelize } from "./models/";
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-
-
-// Mongoose
-mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/flamber");
 
 
 // Imgur
@@ -130,6 +126,8 @@ app.use((req, res) => {
 
 
 // Listen
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`); // eslint-disable-line no-console
+sequelize.sync().then(() => {
+  app.listen(PORT, () => {
+    debug(`Listening on port ${PORT}`);
+  });
 });

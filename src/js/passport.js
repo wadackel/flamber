@@ -4,7 +4,9 @@ dotenv.config();
 import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 import * as AuthProviders from "./constants/auth-providers";
-import User from "./models/user";
+import models from "./models/";
+
+const { User } = models;
 
 const {
   GOOGLE_CLIENT_ID,
@@ -20,16 +22,16 @@ passport.use(new GoogleStrategy({
   callbackURL: GOOGLE_CALLBACK
 }, (accessToken, refreshToken, profile, done) => {
 
-  User.findOne({ provider: "google", providerId: profile.id })
+  User.findOne({ where: { provider: "google", provider_id: profile.id } })
     .then(user => {
       if (user) return user;
 
-      return new User({
+      return User.create({
         name: profile.displayName,
         avatar: profile.photos[0].value,
         provider: AuthProviders.GOOGLE,
         providerId: profile.id
-      }).save();
+      });
     })
     .then(user => {
       done(null, user);

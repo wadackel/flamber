@@ -1,5 +1,7 @@
 import * as cookie from "../utils/cookie";
-import User from "../models/user";
+import models from "../models/";
+
+const { User } = models;
 
 export default function authMiddleware(req, res, next) {
   const token = cookie.loadToken();

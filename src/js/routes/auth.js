@@ -3,9 +3,10 @@ import { Router } from "express";
 import passport from "passport";
 import * as AuthProviders from "../constants/auth-providers";
 import * as jwtUtils from "../utils/jwt";
-import User from "../models/user";
+import models from "../models/";
 
-const router = Router();
+const router = new Router();
+const { User } = models;
 
 
 router.get("/me/", (req, res) => {

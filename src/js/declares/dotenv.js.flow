@@ -1,0 +1,3 @@
+declare module "dotenv" {
+  declare export default any;
+}
