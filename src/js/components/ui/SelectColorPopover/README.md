@@ -38,6 +38,7 @@ class SelectColorPopoverExample extends React.Component {
         <div>
           {selectColors.map(color =>
             <div
+              key={color}
               style={{
                 display: "inline-block",
                 width: 40,
