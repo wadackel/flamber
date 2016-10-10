@@ -10,9 +10,12 @@ import {
   AppPage,
   BoardsPage,
   BoardDetailPage,
-  SettingsPage,
   StarsPage,
-  TagsPage
+  TagsPage,
+  OptionsPage,
+  OptionsTopPage,
+  OptionsAccountPage,
+  OptionsFeedPage
 } from "./containers/app/pages";
 import ThemeProvider from "./components/ThemeProvider";
 
@@ -42,7 +45,11 @@ export default function getRoutes(store) {
       <Route onEnter={userOnly}>
         <Route path="/signout" component={SignOutPage} />
         <Route path="/app/" component={AppPage}>
-          <Route path="settings" component={SettingsPage} />
+          <Route path="options/" component={OptionsPage}>
+            <Route path="account" component={OptionsAccountPage} />
+            <Route path="feed" component={OptionsFeedPage} />
+            <IndexRoute component={OptionsTopPage} />
+          </Route>
           <Route path="items" component={AllItemsPage} />
           <Route path="boards" component={BoardsPage} />
           <Route path="board/:id" component={BoardDetailPage} />

@@ -79,7 +79,7 @@ export class HeaderContainer extends Component {
   }
 
   handleOptionsClick() {
-    this.push("/app/settings");
+    this.push("/app/options/");
   }
 
   handleTagDrawerToggle() {
@@ -257,9 +257,9 @@ export class HeaderContainer extends Component {
     };
   }
 
-  getHeaderSettingsProps() {
+  getHeaderOptionsProps() {
     return {
-      mainTitle: <span>Settings</span>,
+      mainTitle: <span>オプション</span>,
       showColorBar: false
     };
   }
@@ -289,8 +289,9 @@ export class HeaderContainer extends Component {
       case "TagsPage":
         return this.getHeaderBoardDetailProps();
 
-      case "SettingsPage":
-        return this.getHeaderSettingsProps();
+      // TODO
+      case "OPTIIONS_PAGE_TODO":
+        return this.getHeaderOptionsProps();
 
       default:
         return this.getHeader404Props();
