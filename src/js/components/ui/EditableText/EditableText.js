@@ -40,6 +40,12 @@ export default class EditableText extends Component {
 
   constructor(props: EditableTextProps, context: Object) {
     super(props, context);
+
+    this.state = {
+      isEditing: false,
+      isHover: false
+    };
+
     autoBind(this);
   }
 
