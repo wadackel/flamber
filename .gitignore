@@ -2,6 +2,8 @@
 npm-debug.log*
 node_modules
 .env
+db.*.sqlite
 public
 lib
 tmp
+src/js/db.config.json
