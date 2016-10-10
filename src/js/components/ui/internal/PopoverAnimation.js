@@ -79,7 +79,7 @@ export default class PopoverAnimation extends Component {
     // FIXME: Directly specified DOM of the class name.
     const { scrollContainer } = this.refs;
 
-    if (this.iscroll) {
+    if (!this.iscroll) {
       if (this.scrollable) {
         this.iscroll = new IScroll(scrollContainer, {
           bounce: false,
@@ -94,7 +94,7 @@ export default class PopoverAnimation extends Component {
         }
       }
 
-    } else if (this.iscroll) {
+    } else {
       this.iscroll.refresh();
     }
   }

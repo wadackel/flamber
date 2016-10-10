@@ -1,6 +1,7 @@
 // @flow
 import autoBind from "auto-bind";
 import React from "react";
+import EventListener from "react-event-listener";
 import IScroll from "../../../utils/iscroll";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -41,15 +42,10 @@ export default class Drawer extends React.Component {
     });
 
     this.updateScrollHeight();
-    window.addEventListener("resize", this.handleResize, false);
   }
 
   componentDidUpdate() {
     this.updateScrollHeight();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.handleResize, false);
   }
 
   handleResize() {
@@ -91,6 +87,10 @@ export default class Drawer extends React.Component {
 
     return (
       <div ref="drawer" className={mergeClassNames(b(modifier)(), className)}>
+        <EventListener
+          target="window"
+          onResize={this.handleResize}
+        />
         <div ref="scrollContainer" className={b("scroll-container")()}>
           <div className={b("container")()}>
             {children}

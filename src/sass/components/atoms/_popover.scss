@@ -47,13 +47,13 @@
     [class*="iScrollVerticalScrollbar"] {
       @include absolute(0, 0, 0, auto, 100);
       width: 4px;
-      background: #ccc;
+      background: darken($gray, 5%);
     }
 
     [class*="iScrollIndicator"] {
       position: absolute;
       width: 100%;
-      background: rgba(#000, .3);
+      background: rgba(#fff, .15);
     }
   }
 }

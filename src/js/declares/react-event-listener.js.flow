@@ -1,0 +1,5 @@
+declare module "react-event-listener" {
+  declare export function withOptions(handler: Function, options: { passive?: boolean, capture?: boolean }):
+    { handler: Function, options: { passive: boolean, capture: boolean} };
+  declare export default any;
+}

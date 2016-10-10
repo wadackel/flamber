@@ -1,6 +1,7 @@
 // @flow
 import autoBind from "auto-bind";
 import React from "react";
+import EventListener, { withOptions } from "react-event-listener";
 import shareConfig from "../../../share-config.json";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -75,14 +76,12 @@ export default class Popover extends React.Component {
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.open !== this.state.open) {
       if (nextProps.open) {
-        this.bindCloseEvents();
         this.triggerElement = nextProps.triggerElement || this.props.triggerElement;
         this.setState({ open: true });
 
       } else {
         this.setState({ closing: true });
         this.timer = setTimeout(() => {
-          this.unbindCloseEvents();
           this.setState({
             open: false,
             closing: false
@@ -111,16 +110,6 @@ export default class Popover extends React.Component {
     if (typeof this.props.onRequestClose === "function") {
       this.props.onRequestClose(e.type);
     }
-  }
-
-  bindCloseEvents(): void {
-    window.addEventListener("scroll", this.handleClose, false);
-    window.addEventListener("resize", this.handleClose, false);
-  }
-
-  unbindCloseEvents(): void {
-    window.removeEventListener("scroll", this.handleClose, false);
-    window.removeEventListener("resize", this.handleClose, false);
   }
 
   setPositions(): void {
@@ -201,6 +190,13 @@ export default class Popover extends React.Component {
         open={open && !closing}
         origin={origin}
       >
+        {open &&
+          <EventListener
+            target="window"
+            onScroll={withOptions(this.handleClose, { passive: true })}
+            onResize={this.handleClose}
+          />
+        }
         {children}
       </PopoverAnimation>
     );
