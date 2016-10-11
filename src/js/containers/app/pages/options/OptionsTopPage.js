@@ -5,11 +5,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import bem from "../../../../helpers/bem";
 import { RaisedButton, TextField } from "../../../../components/ui/";
+import * as OptionActions from "../../../../actions/options";
 
 const b = bem("options-top-page");
 
 // TODO: type definition
 type Props = {
+  dispatch: Function;
   auth: any;
   settings: any;
 };
@@ -103,18 +105,23 @@ export class OptionsTopPage extends Component {
   }
 
   handleSave() {
+    const { auth: { user } } = this.props;
+
     const {
       userPhoto,
       userName
     } = this.state;
 
-    if (!userPhoto.error != null || !userName.error != null) {
+    if (userPhoto.error != null || userName.error != null) {
       // TODO: Error message
       return;
     }
 
-    // TODO:
-    // this.props.dispatch(/* save action */);
+    this.props.dispatch(OptionActions.updateProfileRequest(
+      user.id,
+      userPhoto.file,
+      userName.value
+    ));
   }
 
   // TODO: type definition
