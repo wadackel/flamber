@@ -25,7 +25,9 @@ export class OptionsTopPage extends Component {
 
   render() {
     return (
-      <div className={b()}>TOP</div>
+      <div className={b()}>
+        <h2>TOP</h2>
+      </div>
     );
   }
 }
