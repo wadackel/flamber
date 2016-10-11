@@ -52,9 +52,9 @@ export class OptionsPage extends Component {
             <LocalNavItem href="/app/options/">プロフィール</LocalNavItem>
             <LocalNavItem href="/app/options/account/">アカウント</LocalNavItem>
             <LocalNavItem href="/app/options/feed/">フィード設定</LocalNavItem>
-            <LocalNavItem href="/help" target="_blank">ヘルプ</LocalNavItem>
-            <LocalNavItem href="/privacy" target="_blank">プライバシーポリシー</LocalNavItem>
-            <LocalNavItem href="/terms" target="_blank">利用規約</LocalNavItem>
+            <LocalNavItem href="/help/" target="_blank">ヘルプ</LocalNavItem>
+            <LocalNavItem href="/privacy/" target="_blank">プライバシーポリシー</LocalNavItem>
+            <LocalNavItem href="/terms/" target="_blank">利用規約</LocalNavItem>
           </LocalNav>
         </div>
         <div className={b("content")()}>

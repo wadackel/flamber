@@ -71,4 +71,14 @@ $button-colors: (
       }
     }
   }
+
+  &--disable {
+    box-shadow: none !important;
+
+    &,
+    &:hover {
+      background: darken(#fff, 40%);
+      color: darken(#fff, 25%);
+    }
+  }
 }
