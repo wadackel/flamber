@@ -1,12 +1,15 @@
+// @flow
 import path from "path";
 import url from "url";
 
-export function makeThumbnailURL(link, size) {
+type ThumbnailSize = "s" | "b" | "t" | "m" | "l" | "h";
+
+export function makeThumbnailURL(link: string, size: ThumbnailSize) {
   const parsedURL = url.parse(link);
-  const parsedPath = path.parse(parsedURL.pathname);
+  const parsedPath = path.parse(parsedURL.pathname || "");
 
   return [
-    parsedURL.slashes ? `${parsedURL.protocol}//` : "",
+    parsedURL.slashes ? `${parsedURL.protocol || "http:"}//` : "",
     parsedURL.hostname,
     parsedURL.port != null ? `:${parsedURL.port}` : "",
     `${parsedPath.dir}/${parsedPath.name}${size}${parsedPath.ext}`,

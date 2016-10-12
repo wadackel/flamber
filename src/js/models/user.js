@@ -1,4 +1,6 @@
 // @flow
+import imgur from "imgur";
+import { makeThumbnailURL } from "../utils/imgur";
 import * as jwtUtils from "../utils/jwt";
 
 export default function(sequelize: any, DataTypes: any) {
@@ -23,6 +25,19 @@ export default function(sequelize: any, DataTypes: any) {
         } catch (error) {
           return Promise.reject(error);
         }
+      }
+    },
+    instanceMethods: {
+      updatePhoto(photo: MulterMemoryFile) {
+        return imgur.uploadBase64(photo.buffer.toString("base64"))
+          .then((json: ImgurResponse) => {
+            const { data } = json;
+            const thumbnail = makeThumbnailURL(data.link, "b"); // big square
+
+            return this.update({
+              photo: thumbnail
+            });
+          });
       }
     }
   });

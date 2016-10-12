@@ -30,7 +30,7 @@ module.exports = {
     // Possible Errors
     "comma-dangle": "error",
     "no-cond-assign": "error",
-    "no-console": "error",
+    "no-console": "off",
     "no-constant-condition": "off",
     "no-control-regex": "error",
     "no-debugger": "error",

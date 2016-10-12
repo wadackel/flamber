@@ -1,0 +1,29 @@
+type MulterBaseFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+};
+
+declare type MulterMemoryFile = $All<MulterBaseFile, {
+  buffer: Buffer;
+}>;
+
+
+type MulterOptions = {
+  dest?: string;
+  storage?: Function;
+};
+
+declare module "multer" {
+  declare class Multer {
+    single(fieldname: string): Function;
+    array(fildname: string, maxCount?: number): Function;
+    fields(fields: Array<string>): Function;
+    none(): Function;
+    any(): Function;
+  }
+
+  declare export default (opts: MulterOptions) => Multer;
+}

@@ -1,0 +1,13 @@
+declare type ImgurResponse = {
+  data: Object;
+  success: boolean;
+  status: number;
+}
+
+declare module "imgur" {
+  declare class Imgur {
+    uploadBase64(base64: string, albumId?: string): Promise<ImgurResponse>;
+  }
+
+  declare export default Imgur;
+}
