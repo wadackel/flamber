@@ -2,6 +2,7 @@ import { handleActions } from "redux-actions";
 import * as App from "../actions/application";
 import * as Auth from "../actions/auth";
 import * as Items from "../actions/items";
+import * as Options from "../actions/options";
 
 const initialState = {
   isFetching: false,
@@ -80,6 +81,13 @@ export default handleActions({
     authenticated: false,
     isFetching: false,
     error: payload
+  }),
+
+
+  // Profile
+  [Options.UPDATE_PROFILE_SUCCESS]: (state, { payload }) => ({
+    ...state,
+    user: { ...state, ...payload }
   }),
 
 

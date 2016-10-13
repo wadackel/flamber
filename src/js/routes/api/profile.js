@@ -8,11 +8,11 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 router.put("/", upload.single("photo"), (req, res) => {
-  const { photo, body: { id, name } } = req;
+  const { file, body: { id, name } } = req;
 
   User.findById(id)
     .then(user => {
-      if (photo != null) return user.updatePhoto(photo);
+      if (file != null) return user.updatePhoto(file);
       return Promise.resolve(user);
     })
     .then(user => user.update({ name }))

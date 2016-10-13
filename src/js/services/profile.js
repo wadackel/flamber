@@ -6,7 +6,10 @@ const apiClient = new ApiClient("/profile");
 
 
 export function updateProfile(id: UserId, photo: ?File, name: string): Promise<{ user: User }> {
-  return apiClient.put("/", {
-    body: { id, photo, name }
-  });
+  const data = new FormData();
+  data.append("id", id);
+  data.append("photo", photo);
+  data.append("name", name);
+
+  return apiClient.put("/", { body: data });
 }

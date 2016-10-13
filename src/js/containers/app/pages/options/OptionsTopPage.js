@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import bem from "../../../../helpers/bem";
 import { RaisedButton, TextField } from "../../../../components/ui/";
 import * as OptionActions from "../../../../actions/options";
+import type { OptionsState } from "../../../../types/options";
 
 const b = bem("options-top-page");
 
@@ -13,7 +14,7 @@ const b = bem("options-top-page");
 type Props = {
   dispatch: Function;
   auth: any;
-  settings: any;
+  options: OptionsState;
 };
 
 type FormField<T> = {
@@ -30,7 +31,7 @@ type State = {
 
 type ConnectProps = {
   auth: any;
-  settings: any;
+  options: OptionsState;
 };
 
 export class OptionsTopPage extends Component {
@@ -137,13 +138,22 @@ export class OptionsTopPage extends Component {
 
   render() {
     const {
+      auth: { user },
+      options
+    } = this.props;
+
+    const {
       userPhoto,
       userName
     } = this.state;
 
-    if (userPhoto.value == null || userName.value == null) return null;
+    if (!user || userPhoto.value == null || userName.value == null) return null;
 
-    const saveDisabled = !!userName.error;
+    const saveDisabled = !!userName.error ||
+      (
+        user.name === userName.value &&
+        user.photo === userPhoto.value
+      );
 
     return (
       <div className={b()}>
@@ -184,6 +194,7 @@ export class OptionsTopPage extends Component {
         <div className="_options-footer">
           <RaisedButton
             type="primary"
+            processing={options.isProfileUpdating}
             disable={saveDisabled}
             onClick={this.handleSave}
           >
@@ -198,7 +209,7 @@ export class OptionsTopPage extends Component {
 export default connect(
   (state: ConnectProps) => ({
     auth: state.auth,
-    settings: state.settings
+    options: state.options
   }),
   null,
   null,

@@ -8,3 +8,8 @@ export type UpdateProfileRequestPayload = {
 };
 
 export type UpdateProfileRequestAction = Action<UpdateProfileRequestPayload>;
+
+
+export type OptionsState = {
+  isProfileUpdating: boolean;
+};
