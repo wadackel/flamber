@@ -1,6 +1,11 @@
 // @flow
-import { createAction } from "redux-actions";
-import type { UserId } from "../types/user";
+import type {
+  UpdateProfileRequestPayload,
+  UpdateProfileRequestAction,
+  UpdateProfileSuccessPayload,
+  UpdateProfileSuccessAction,
+  UpdateProfileFailureAction
+} from "../types/options";
 
 
 // Profile
@@ -8,13 +13,14 @@ export const UPDATE_PROFILE_REQUEST = "UPDATE_PROFILE_REQUEST";
 export const UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS";
 export const UPDATE_PROFILE_FAILURE = "UPDATE_PROFILE_FAILURE";
 
+export function updateProfileRequest(payload: UpdateProfileRequestPayload): UpdateProfileRequestAction {
+  return { type: UPDATE_PROFILE_REQUEST, payload };
+}
 
-export const updateProfileRequest = createAction(UPDATE_PROFILE_REQUEST,
-  (id: UserId, photo: ?File, name: ?string) => ({ id, photo, name })
-);
+export function updateProfileSuccess(payload: UpdateProfileSuccessPayload): UpdateProfileSuccessAction {
+  return { type: UPDATE_PROFILE_SUCCESS, payload };
+}
 
-export type UpdateProfileSuccessPayload = any;
-export const updateProfileSuccess = createAction(UPDATE_PROFILE_SUCCESS);
-
-export type UpdateProfileFailurePayload = any;
-export const updateProfileFailure = createAction(UPDATE_PROFILE_FAILURE);
+export function updateProfileFailure(payload: Error): UpdateProfileFailureAction {
+  return { type: UPDATE_PROFILE_FAILURE, error: true, payload };
+}

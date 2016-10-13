@@ -1,11 +1,10 @@
-type DefaultAction<T> = {
+// @flow
+export type Action = {
   type: string;
-  payload: T;
-  error: ?Error;
+  meta?: any;
+  error?: boolean;
 };
 
-type MetaAction<T, M> = $All<DefaultAction<T>, {
-  meta: M;
+export type PayloadAction<T> = $All<Action, {
+  payload: T;
 }>;
-
-export type Action = DefaultAction | MetaAction;

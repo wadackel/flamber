@@ -15,17 +15,13 @@ type Props = {
 };
 
 export default class RadioGroup extends Component {
-  static defaultProps = {
-    onChange: () => {}
-  };
-
   constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   handleCheck(value: any, checked: boolean) {
-    if (checked) {
+    if (checked && typeof this.props.onChange === "function") {
       this.props.onChange(value);
     }
   }
