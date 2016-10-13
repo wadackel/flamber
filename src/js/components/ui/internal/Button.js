@@ -8,6 +8,7 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import randomId from "../../../helpers/random-id";
 import Tooltip from "./Tooltip";
+
 import type { Origin, Positions } from "../../../types/prop-types";
 
 export type ButtonProps = {

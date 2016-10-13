@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import Button from "../internal/Button";
+
 import type { ButtonProps } from "../internal/Button";
 
 export default function FloatingButton(props: ButtonProps) {

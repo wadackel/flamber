@@ -1,3 +1,4 @@
+// @flow
 export type Origin = {
   vertical: "top" | "middle" | "bottom";
   horizontal: "left" | "center" | "right";
@@ -9,10 +10,10 @@ export type Offset = {
 };
 
 export type Positions = {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
+  top: any;
+  right: any;
+  bottom: any;
+  left: any;
 };
 
 export type Order = "asc" | "desc";
@@ -42,3 +43,5 @@ export type DropDownBoardValue = {
 };
 
 export type DropDownBoardValues = Array<DropDownBoardValue>;
+
+export type Theme = "dark" | "light";

@@ -24,7 +24,7 @@ const b = bem("add-item-file-dialog");
 type SelectImage = {
   file: ?File;
   src: ?string;
-  palette: Palette;
+  palette: ?Palette;
 };
 
 type Props = {
@@ -234,7 +234,7 @@ export default class AddItemFileDialog extends Component {
             />
             <img className={b("preview__image")()} src={selectImage.src} />
             <ul className={b("preview__palette")()}>
-              {selectImage.palette.map((hex, index) =>
+              {selectImage.palette && selectImage.palette.map((hex, index) =>
                 <li
                   key={index}
                   className={b("preview__color")()}

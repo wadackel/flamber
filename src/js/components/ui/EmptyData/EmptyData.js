@@ -2,7 +2,8 @@
 import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import { SizeString } from "../../../types/prop-types";
+
+import type { SizeString } from "../../../types/prop-types";
 
 const b = bem("empty-data");
 

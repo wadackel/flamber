@@ -49,7 +49,11 @@ export default class SortSwitcher extends Component {
 
   handleOrderChange() {
     const nextOrder = this.props.order === "asc" ? "desc" : "asc";
-    this.props.onOrderChange(nextOrder);
+
+    if (typeof this.props.onOrderChange === "function") {
+      this.props.onOrderChange(nextOrder);
+    }
+
     this.triggerChange(this.props.orderBy, nextOrder);
   }
 
