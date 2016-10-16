@@ -14,10 +14,10 @@ export function *handleUpdateProfileRequest(): Generator<any, void, any> {
       const action: ?UpdateProfileRequestAction = yield take(Options.UPDATE_PROFILE_REQUEST);
       if (!action) throw new Error("TODO");
 
-      const { id, photo, name } = action.payload;
+      const { photo, name } = action.payload;
 
       if (!name) throw new Error("TODO");
-      const response = yield call((): Promise<{ user: User }> => Services.updateProfile(id, photo, name));
+      const response = yield call((): Promise<{ user: User }> => Services.updateProfile(photo, name));
 
       if (!response || !response.user) throw new Error("TODO");
       yield put(Options.updateProfileSuccess(response.user));

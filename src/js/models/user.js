@@ -12,12 +12,13 @@ export default function(sequelize: any, DataTypes: any) {
     today_upload: DataTypes.INTEGER,
     installed: DataTypes.INTEGER
   }, {
+    tableName: "users",
     timestamps: true,
     underscored: true,
     classMethods: {
-      // associate: function(models) {
-      //   User.hasMany(models.Task);
-      // }
+      associate(models) {
+        User.hasOne(models.Option);
+      },
       findByJwtToken(token) {
         try {
           const { id } = jwtUtils.getVerifyToken(token);
