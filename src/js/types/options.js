@@ -1,9 +1,12 @@
 // @flow
 import type { PayloadAction } from "./action";
 import type { UserId, User } from "./user";
+import type { Theme } from "./prop-types";
 
 export type OptionsState = {
   isProfileUpdating: boolean;
+  theme: "dark" | "light";
+  isThemeUpdating: boolean;
 };
 
 
@@ -26,3 +29,7 @@ export type UpdateProfileAction =
   UpdateProfileRequestAction &
   UpdateProfileSuccessAction &
   UpdateProfileFailureAction;
+
+
+// Update theme
+export type UpdateThemeRequestPayload = Theme;

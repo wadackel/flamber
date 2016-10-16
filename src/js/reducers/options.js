@@ -4,6 +4,8 @@ import * as Options from "../actions/options";
 import type { OptionsState } from "../types/options";
 
 const initialState: OptionsState = {
+  theme: "dark",
+  isThemeUpdating: false,
   isProfileUpdating: false
 };
 

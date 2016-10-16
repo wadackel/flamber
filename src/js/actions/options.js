@@ -1,8 +1,7 @@
 // @flow
+import type { UserId, User } from "../types/user";
 import type {
-  UpdateProfileRequestPayload,
   UpdateProfileRequestAction,
-  UpdateProfileSuccessPayload,
   UpdateProfileSuccessAction,
   UpdateProfileFailureAction
 } from "../types/options";
@@ -13,14 +12,14 @@ export const UPDATE_PROFILE_REQUEST = "UPDATE_PROFILE_REQUEST";
 export const UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS";
 export const UPDATE_PROFILE_FAILURE = "UPDATE_PROFILE_FAILURE";
 
-export function updateProfileRequest(payload: UpdateProfileRequestPayload): UpdateProfileRequestAction {
-  return { type: UPDATE_PROFILE_REQUEST, payload };
+export function updateProfileRequest(id: UserId, photo: ?File, name: ?string): UpdateProfileRequestAction {
+  return { type: UPDATE_PROFILE_REQUEST, payload: { id, photo, name } };
 }
 
-export function updateProfileSuccess(payload: UpdateProfileSuccessPayload): UpdateProfileSuccessAction {
-  return { type: UPDATE_PROFILE_SUCCESS, payload };
+export function updateProfileSuccess(user: User): UpdateProfileSuccessAction {
+  return { type: UPDATE_PROFILE_SUCCESS, payload: user };
 }
 
-export function updateProfileFailure(payload: Error): UpdateProfileFailureAction {
-  return { type: UPDATE_PROFILE_FAILURE, error: true, payload };
+export function updateProfileFailure(error: Error): UpdateProfileFailureAction {
+  return { type: UPDATE_PROFILE_FAILURE, error: true, payload: error };
 }

@@ -6,13 +6,15 @@ import { connect } from "react-redux";
 import bem from "../../../../helpers/bem";
 import { RaisedButton, TextField } from "../../../../components/ui/";
 import * as OptionActions from "../../../../actions/options";
+
+import type { Dispatch } from "redux";
 import type { OptionsState } from "../../../../types/options";
 
 const b = bem("options-top-page");
 
 // TODO: type definition
 type Props = {
-  dispatch: Function;
+  dispatch: Dispatch;
   auth: any;
   options: OptionsState;
 };
@@ -149,7 +151,7 @@ export class OptionsTopPage extends Component {
 
     if (!user || userPhoto.value == null || userName.value == null) return null;
 
-    const saveDisabled = !!userName.error ||
+    const saveDisabled = !!userName.error || options.isProfileUpdating ||
       (
         user.name === userName.value &&
         user.photo === userPhoto.value
@@ -194,7 +196,6 @@ export class OptionsTopPage extends Component {
         <div className="_options-footer">
           <RaisedButton
             type="primary"
-            processing={options.isProfileUpdating}
             disable={saveDisabled}
             onClick={this.handleSave}
           >
