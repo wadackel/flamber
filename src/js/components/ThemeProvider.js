@@ -1,22 +1,27 @@
+// @flow
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import * as Themes from "../constants/themes";
 
+import type { OptionsState } from "../types/options";
+
+type Props = {
+  children: React$Element<any>;
+  options: OptionsState;
+};
+
 export class ThemeProvider extends Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    settings: PropTypes.object
-  };
+  props: Props;
 
   static childContextTypes = {
     theme: PropTypes.string.isRequired
   };
 
   getChildContext() {
-    const { settings } = this.props;
+    const { options } = this.props;
 
     return {
-      theme: settings ? settings.theme : Themes.DEFAULT
+      theme: options ? options.theme : Themes.DEFAULT
     };
   }
 
@@ -26,7 +31,7 @@ export class ThemeProvider extends Component {
 }
 
 export default connect(
-  state => ({ settings: state.settings }),
+  (state: any) => ({ options: state.options }),
   null,
   null,
   { pure: false }

@@ -1,23 +1,22 @@
-import Setting from "../models/setting";
+import models from "../models/";
 
-export default function setUpMiddleware(req, res, next) {
-  const { user } = req;
+const { Option } = models;
 
-  if (!user) {
+export default function setupDataMiddleware(req, res, next) {
+  const { preUser } = req;
+
+  if (!preUser) {
+    req.options = null;
     return next();
   }
 
-  Setting.findOne({ user: user.id })
+  Option.findOne({ where: { user_id: preUser.id } })
     .then(entity => {
-      if (entity) return Promise.resolve(entity);
-
-      const settings = new Setting();
-      settings.user = user.id;
-      return settings.save();
-    })
-    .then(entity => {
-      req.settings = entity;
+      req.options = entity;
       next();
     })
-    .catch(() => next());
+    .catch(() => {
+      req.options = null;
+      next();
+    });
 }

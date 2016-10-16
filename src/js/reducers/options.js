@@ -1,12 +1,15 @@
 // @flow
 import { handleActions } from "redux-actions";
 import * as Options from "../actions/options";
-import type { OptionsState } from "../types/options";
+import type {
+  OptionsState,
+  UpdateThemeSuccessAction
+} from "../types/options";
 
 const initialState: OptionsState = {
+  isProfileUpdating: false,
   theme: "dark",
-  isThemeUpdating: false,
-  isProfileUpdating: false
+  isThemeUpdating: false
 };
 
 export default handleActions({
@@ -24,5 +27,23 @@ export default handleActions({
   [Options.UPDATE_PROFILE_FAILURE]: (state: OptionsState) => ({
     ...state,
     isProfileUpdating: false
+  }),
+
+
+  // Theme
+  [Options.UPDATE_THEME_REQUEST]: (state: OptionsState) => ({
+    ...state,
+    isThemeUpdating: true
+  }),
+
+  [Options.UPDATE_THEME_SUCCESS]: (state: OptionsState, action: UpdateThemeSuccessAction) => ({
+    ...state,
+    theme: action.payload,
+    isThemeUpdating: false
+  }),
+
+  [Options.UPDATE_THEME_FAILURE]: (state: OptionsState) => ({
+    ...state,
+    isThemeUpdating: false
   })
 }, initialState);

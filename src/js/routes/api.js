@@ -5,6 +5,7 @@ import boards from "./api/boards";
 import items from "./api/items";
 import settings from "./api/settings";
 import profile from "./api/profile";
+import account from "./api/account";
 import screenshot from "./api/screenshot";
 import tags from "./api/tags";
 
@@ -34,6 +35,7 @@ router.use("/boards", boards);
 router.use("/items", items);
 router.use("/settings", settings);
 router.use("/profile", profile);
+router.use("/account", account);
 router.use("/screenshot", screenshot);
 router.use("/tags", tags);
 

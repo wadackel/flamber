@@ -6,7 +6,7 @@ import GoogleStrategy from "passport-google-oauth20";
 import * as AuthProviders from "./constants/auth-providers";
 import models from "./models/";
 
-const { User } = models;
+const { User, Option } = models;
 
 const {
   GOOGLE_CLIENT_ID,
@@ -29,8 +29,15 @@ passport.use(new GoogleStrategy({
       return User.create({
         name: profile.displayName,
         photo: profile.photos[0].value,
+        today_upload: 0,
+        installed: false,
         provider: AuthProviders.GOOGLE,
-        providerId: profile.id
+        provider_id: profile.id,
+        Option: {
+          theme: "dark"
+        }
+      }, {
+        include: [Option]
       });
     })
     .then(user => {

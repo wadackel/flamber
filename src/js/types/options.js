@@ -5,7 +5,7 @@ import type { Theme } from "./prop-types";
 
 export type OptionsState = {
   isProfileUpdating: boolean;
-  theme: "dark" | "light";
+  theme: Theme;
   isThemeUpdating: boolean;
 };
 
@@ -16,15 +16,9 @@ export type UpdateProfileRequestPayload = {
   photo: ?File;
   name: ?string;
 };
-
 export type UpdateProfileRequestAction = PayloadAction<UpdateProfileRequestPayload>;
-
-export type UpdateProfileSuccessPayload = User;
-
-export type UpdateProfileSuccessAction = PayloadAction<UpdateProfileSuccessPayload>;
-
+export type UpdateProfileSuccessAction = PayloadAction<User>;
 export type UpdateProfileFailureAction = PayloadAction<Error>;
-
 export type UpdateProfileAction =
   UpdateProfileRequestAction &
   UpdateProfileSuccessAction &
@@ -32,4 +26,6 @@ export type UpdateProfileAction =
 
 
 // Update theme
-export type UpdateThemeRequestPayload = Theme;
+export type UpdateThemeRequestAction = PayloadAction<Theme>;
+export type UpdateThemeSuccessAction = PayloadAction<Theme>;
+export type UpdateThemeFailureAction = PayloadAction<Error>;

@@ -8,10 +8,12 @@ export default function authMiddleware(req, res, next) {
 
   User.findByJwtToken(token)
     .then(user => {
+      req.preUser = user;
       req.hasJwtToken = !!user;
       next();
     })
     .catch(() => {
+      req.preUser = null;
       req.hasJwtToken = false;
       next();
     });

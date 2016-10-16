@@ -23,6 +23,7 @@ import passport from "./passport";
 import configureStore from "./store/configure-store";
 import errorJSONMiddleware from "./middleware/error-json";
 import authMiddleware from "./middleware/auth";
+import setupDataMiddleware from "./middleware/setup-data";
 import authRoutes from "./routes/auth";
 import apiRoutes from "./routes/api";
 import getRoutes from "./routes";
@@ -83,6 +84,7 @@ app.use((req, res, next) => {
 
 app.use(errorJSONMiddleware);
 app.use(authMiddleware);
+app.use(setupDataMiddleware);
 app.use("/auth", authRoutes);
 app.use("/api", apiRoutes);
 
@@ -93,8 +95,10 @@ app.use((req, res) => {
     auth: {
       authenticated: false,
       hasJwtToken: req.hasJwtToken
-    }
+    },
+    options: req.options || {}
   };
+  console.log(req.options);
 
   const memoryHistory = createMemoryHistory(req.url);
   const store = configureStore(memoryHistory, initialState);
