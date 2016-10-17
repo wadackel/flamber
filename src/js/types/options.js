@@ -1,6 +1,6 @@
 // @flow
 import type { PayloadAction } from "./action";
-import type { UserId, User } from "./user";
+import type { User } from "./user";
 import type { Theme } from "./prop-types";
 
 export type OptionsState = {
@@ -12,7 +12,6 @@ export type OptionsState = {
 
 // Update profile
 export type UpdateProfileRequestPayload = {
-  id: UserId;
   photo: ?File;
   name: ?string;
 };

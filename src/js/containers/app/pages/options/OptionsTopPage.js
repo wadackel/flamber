@@ -116,10 +116,7 @@ export class OptionsTopPage extends Component {
       return;
     }
 
-    // TODO
-    if (!user) return;
     this.props.dispatch(OptionActions.updateProfileRequest(
-      user.id,
       userPhoto.file,
       userName.value
     ));

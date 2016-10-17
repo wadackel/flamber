@@ -1,6 +1,6 @@
 // @flow
 import type { Theme } from "../types/prop-types";
-import type { UserId, User } from "../types/user";
+import type { User } from "../types/user";
 import type {
   UpdateProfileRequestAction,
   UpdateProfileSuccessAction,
@@ -17,8 +17,8 @@ export const UPDATE_PROFILE_REQUEST = "UPDATE_PROFILE_REQUEST";
 export const UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS";
 export const UPDATE_PROFILE_FAILURE = "UPDATE_PROFILE_FAILURE";
 
-export function updateProfileRequest(id: UserId, photo: ?File, name: ?string): UpdateProfileRequestAction {
-  return { type: UPDATE_PROFILE_REQUEST, payload: { id, photo, name } };
+export function updateProfileRequest(photo: ?File, name: ?string): UpdateProfileRequestAction {
+  return { type: UPDATE_PROFILE_REQUEST, payload: { photo, name } };
 }
 
 export function updateProfileSuccess(user: User): UpdateProfileSuccessAction {
