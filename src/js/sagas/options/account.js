@@ -15,7 +15,6 @@ export function *handleUpdateThemeRequest(): Generator<any, void, any> {
       if (!action) throw new Error("TODO");
 
       const response = yield call((): Promise<{ theme: Theme }> => Services.updateTheme(action.payload));
-      console.log(response);
       if (!response || !response.theme) throw new Error("TODO");
 
       yield put(Options.updateThemeSuccess(response.theme));

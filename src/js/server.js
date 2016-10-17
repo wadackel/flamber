@@ -98,7 +98,6 @@ app.use((req, res) => {
     },
     options: req.options || {}
   };
-  console.log(req.options);
 
   const memoryHistory = createMemoryHistory(req.url);
   const store = configureStore(memoryHistory, initialState);

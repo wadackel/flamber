@@ -1,10 +1,12 @@
 // @flow
 import autoBind from "auto-bind";
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../../../helpers/bem";
 import { LocalNav, LocalNavItem } from "../../../../components/ui/";
+
+import type { OptionsState } from "../../../../types/options";
 
 const b = bem("options-page");
 
@@ -19,11 +21,15 @@ type Props = {
 
 type State = {
   auth: any;
-  settings: any;
+  options: OptionsState;
 };
 
 export class OptionsPage extends Component {
   props: Props;
+
+  static contextTypes = {
+    theme: PropTypes.string.isRequired
+  };
 
   constructor(props: Props, context: Object) {
     super(props, context);
@@ -40,6 +46,8 @@ export class OptionsPage extends Component {
 
   render() {
     const { children, location } = this.props;
+
+    console.log("OPTIONSPAGE", this.context);
 
     return (
       <div className={`container ${b()}`}>
@@ -68,9 +76,6 @@ export class OptionsPage extends Component {
 export default connect(
   (state: State) => ({
     auth: state.auth,
-    settings: state.settings
-  }),
-  null,
-  null,
-  { pure: false }
+    options: state.options
+  })
 )(OptionsPage);

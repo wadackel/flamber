@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, PropTypes } from "react";
+import { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import * as Themes from "../constants/themes";
 
@@ -26,13 +26,10 @@ export class ThemeProvider extends Component {
   }
 
   render() {
-    return React.Children.only(this.props.children);
+    return this.props.children;
   }
 }
 
 export default connect(
-  (state: any) => ({ options: state.options }),
-  null,
-  null,
-  { pure: false }
+  (state: any) => ({ options: state.options })
 )(ThemeProvider);

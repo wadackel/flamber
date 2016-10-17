@@ -286,8 +286,5 @@ export default connect(
     selectedBoardEntities: getSelectedBoardEntities(state),
     items: state.items,
     selectedItemEntities: getSelectedItemEntities(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(AppPage);

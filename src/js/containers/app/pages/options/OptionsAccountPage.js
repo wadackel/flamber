@@ -31,7 +31,7 @@ export class OptionsAccountPage extends Component {
   props: Props;
 
   static contextTypes = {
-    theme: PropTypes.string
+    theme: PropTypes.string.isRequired
   };
 
   constructor(props: Props, context: Object) {
@@ -49,6 +49,7 @@ export class OptionsAccountPage extends Component {
     const {
       options
     } = this.props;
+    console.log("OPTIONSACCOUNTPAGE", this.context);
 
     return (
       <div className={b()}>
@@ -85,8 +86,5 @@ export default connect(
   (state: ConnectProps) => ({
     auth: state.auth,
     options: state.options
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(OptionsAccountPage);
