@@ -6,9 +6,14 @@ import bem from "../../../../helpers/bem";
 import {
   RadioGroup,
   Radio,
-  Spinner
+  Spinner,
+  UploadStatus,
+  FlatButton,
+  RaisedButton,
+  AlertDialog
 } from "../../../../components/ui/";
 import * as OptionActions from "../../../../actions/options";
+import { ITEM_UPLOAD_LIMIT } from "../../../../constants/application";
 
 import type { Dispatch } from "redux";
 import type { Theme } from "../../../../types/prop-types";
@@ -19,7 +24,12 @@ const b = bem("options-account-page");
 // TODO: type definition
 type Props = {
   dispatch: Dispatch;
+  auth: any;
   options: OptionsState;
+};
+
+type State = {
+  accountDeletePopupOpen: boolean;
 };
 
 type ConnectProps = {
@@ -29,6 +39,7 @@ type ConnectProps = {
 
 export class OptionsAccountPage extends Component {
   props: Props;
+  state: State;
 
   static contextTypes = {
     theme: PropTypes.string.isRequired
@@ -36,6 +47,11 @@ export class OptionsAccountPage extends Component {
 
   constructor(props: Props, context: Object) {
     super(props, context);
+
+    this.state = {
+      accountDeletePopupOpen: false
+    };
+
     autoBind(this);
   }
 
@@ -43,13 +59,38 @@ export class OptionsAccountPage extends Component {
     this.props.dispatch(OptionActions.updateThemeRequest(value));
   }
 
+  handleDeleteAccountPopupOpen() {
+    this.setState({
+      accountDeletePopupOpen: true
+    });
+  }
+
+  handleDeleteAccountPopupClose() {
+    this.setState({
+      accountDeletePopupOpen: false
+    });
+  }
+
+  handleDeleteAccount() {
+    // TODO: Delete account
+    this.setState({
+      accountDeletePopupOpen: false
+    });
+  }
+
   render() {
     const { theme } = this.context;
 
     const {
+      accountDeletePopupOpen
+    } = this.state;
+
+    const {
+      auth: { user },
       options
     } = this.props;
-    console.log("OPTIONSACCOUNTPAGE", this.context);
+
+    if (!user) return null;
 
     return (
       <div className={b()}>
@@ -77,6 +118,35 @@ export class OptionsAccountPage extends Component {
             value="light"
           />
         </RadioGroup>
+
+        <h3>使用状況</h3>
+        <UploadStatus
+          limit={ITEM_UPLOAD_LIMIT}
+          usage={user.today_upload}
+        />
+        <p>1日に200個までのアイテムを作成することが出来ます。作成数のカウントは毎日4時に行われます。システムの状態によっては多少遅延することがありますのでご了承ください。</p>
+
+        <h3>アカウントの削除</h3>
+        <p>全てのボード、アイテム、設定などのデータを削除します。一度削除したデータは復旧できないためご注意ください。</p>
+        <div style={{ textAlign: "right" }}>
+          <RaisedButton
+            type="danger"
+            onClick={this.handleDeleteAccountPopupOpen}
+          >
+            アカウント削除
+          </RaisedButton>
+        </div>
+        <AlertDialog
+          open={accountDeletePopupOpen}
+          title="アカウントの削除確認"
+          actions={[
+            <FlatButton onClick={this.handleDeleteAccountPopupClose}>Cancel</FlatButton>,
+            <FlatButton type="primary" onClick={this.handleDeleteAccount}>Delete</FlatButton>
+          ]}
+        >
+          このアカウントを本当に削除してよろしいでしょうか？<br />
+          削除を実行する場合は「Delete」ボタン、キャンセルする場合は「Cancel」ボタンを選択してください。
+        </AlertDialog>
       </div>
     );
   }
