@@ -8,3 +8,10 @@ export type Action = {
 export type PayloadAction<T> = $All<Action, {
   payload: T;
 }>;
+
+export type ErrorAction<T> = {
+  type: string;
+  payload: T;
+  meta?: any;
+  error: true;
+};
