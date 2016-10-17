@@ -17,24 +17,20 @@ import { ITEM_UPLOAD_LIMIT } from "../../../../constants/application";
 
 import type { Dispatch } from "redux";
 import type { Theme } from "../../../../types/prop-types";
+import type { ConnectState } from "../../../../types/redux";
+import type { AuthState } from "../../../../types/auth";
 import type { OptionsState } from "../../../../types/options";
 
 const b = bem("options-account-page");
 
-// TODO: type definition
 type Props = {
   dispatch: Dispatch;
-  auth: any;
+  auth: AuthState;
   options: OptionsState;
 };
 
 type State = {
   accountDeletePopupOpen: boolean;
-};
-
-type ConnectProps = {
-  auth: any;
-  options: OptionsState;
 };
 
 export class OptionsAccountPage extends Component {
@@ -153,7 +149,7 @@ export class OptionsAccountPage extends Component {
 }
 
 export default connect(
-  (state: ConnectProps) => ({
+  (state: ConnectState) => ({
     auth: state.auth,
     options: state.options
   })

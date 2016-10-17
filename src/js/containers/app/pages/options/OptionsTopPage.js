@@ -8,14 +8,15 @@ import { RaisedButton, TextField } from "../../../../components/ui/";
 import * as OptionActions from "../../../../actions/options";
 
 import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../../types/redux";
+import type { AuthState } from "../../../../types/auth";
 import type { OptionsState } from "../../../../types/options";
 
 const b = bem("options-top-page");
 
-// TODO: type definition
 type Props = {
   dispatch: Dispatch;
-  auth: any;
+  auth: AuthState;
   options: OptionsState;
 };
 
@@ -29,11 +30,6 @@ type State = {
     file: ?File
   }>;
   userName: FormField<string>;
-};
-
-type ConnectProps = {
-  auth: any;
-  options: OptionsState;
 };
 
 export class OptionsTopPage extends Component {
@@ -120,6 +116,8 @@ export class OptionsTopPage extends Component {
       return;
     }
 
+    // TODO
+    if (!user) return;
     this.props.dispatch(OptionActions.updateProfileRequest(
       user.id,
       userPhoto.file,
@@ -208,11 +206,8 @@ export class OptionsTopPage extends Component {
 }
 
 export default connect(
-  (state: ConnectProps) => ({
+  (state: ConnectState) => ({
     auth: state.auth,
     options: state.options
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(OptionsTopPage);

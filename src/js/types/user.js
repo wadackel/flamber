@@ -7,7 +7,7 @@ export type User = {
   provider: string;
   providerId: string;
   photo: string;
-  todayUpload: number;
+  today_upload: number;
   installed: boolean;
   created_at: Date;
   updated_at: Date;

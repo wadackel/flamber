@@ -156,7 +156,7 @@ export default class Header extends Component {
                     open={userDropDownOpen}
                     triggerElement={userDropDownTrigger}
                     limit={ITEM_UPLOAD_LIMIT}
-                    usage={user.todayUpload}
+                    usage={user.today_upload}
                     onRequestClose={this.handleUserDropDownRequestClose}
                     onRequestSignOut={this.handleSignOut}
                     onRequestOptions={this.handleOptionsClick}

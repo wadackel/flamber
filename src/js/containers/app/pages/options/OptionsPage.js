@@ -6,22 +6,17 @@ import { push } from "react-router-redux";
 import bem from "../../../../helpers/bem";
 import { LocalNav, LocalNavItem } from "../../../../components/ui/";
 
-import type { OptionsState } from "../../../../types/options";
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../../types/redux";
 
 const b = bem("options-page");
 
-// TODO: type definition
 type Props = {
   children: React$Element<any>;
-  dispatch: Function;
+  dispatch: Dispatch;
   location: {
     pathname: string;
   }
-};
-
-type State = {
-  auth: any;
-  options: OptionsState;
 };
 
 export class OptionsPage extends Component {
@@ -74,7 +69,7 @@ export class OptionsPage extends Component {
 }
 
 export default connect(
-  (state: State) => ({
+  (state: ConnectState) => ({
     auth: state.auth,
     options: state.options
   })

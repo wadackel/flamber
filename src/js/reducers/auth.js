@@ -1,10 +1,13 @@
+// @flow
 import { handleActions } from "redux-actions";
 import * as App from "../actions/application";
 import * as Auth from "../actions/auth";
 import * as Items from "../actions/items";
 import * as Options from "../actions/options";
 
-const initialState = {
+import type { AuthState } from "../types/auth";
+
+const initialState: AuthState = {
   isFetching: false,
   authenticated: false,
   hasJwtToken: false,
@@ -13,19 +16,19 @@ const initialState = {
 
 export default handleActions({
   // Create app
-  [App.CREATE_APP_SUCCESS]: (state, { payload }) => ({
+  [App.CREATE_APP_SUCCESS]: (state: AuthState, { payload }) => ({
     ...state,
     authenticated: true,
     user: payload.user
   }),
 
   // Sign in
-  [Auth.SIGN_IN_REQUEST]: state => ({
+  [Auth.SIGN_IN_REQUEST]: (state: AuthState) => ({
     ...state,
     isFetching: true
   }),
 
-  [Auth.SIGN_IN_SUCCESS]: (state, { payload }) => ({
+  [Auth.SIGN_IN_SUCCESS]: (state: AuthState, { payload }) => ({
     ...state,
     isFetching: false,
     authenticated: true,
@@ -33,7 +36,7 @@ export default handleActions({
     user: payload
   }),
 
-  [Auth.SIGN_IN_FAILURE]: (state, { payload }) => ({
+  [Auth.SIGN_IN_FAILURE]: (state: AuthState, { payload }) => ({
     ...state,
     isFetching: false,
     authenticated: false,
@@ -42,12 +45,12 @@ export default handleActions({
 
 
   // Sign out
-  [Auth.SIGN_OUT_REQUEST]: state => ({
+  [Auth.SIGN_OUT_REQUEST]: (state: AuthState) => ({
     ...state,
     isFetching: true
   }),
 
-  [Auth.SIGN_OUT_SUCCESS]: state => ({
+  [Auth.SIGN_OUT_SUCCESS]: (state: AuthState) => ({
     ...state,
     isFetching: false,
     authenticated: false,
@@ -55,7 +58,7 @@ export default handleActions({
     user: null
   }),
 
-  [Auth.SIGN_OUT_FAILURE]: (state, { payload }) => ({
+  [Auth.SIGN_OUT_FAILURE]: (state: AuthState, { payload }) => ({
     ...state,
     isFetching: false,
     error: payload
@@ -63,12 +66,12 @@ export default handleActions({
 
 
   // Fetch
-  [Auth.FETCH_CURRENT_USER_REQUEST]: state => ({
+  [Auth.FETCH_CURRENT_USER_REQUEST]: (state: AuthState) => ({
     ...state,
     isFetching: true
   }),
 
-  [Auth.FETCH_CURRENT_USER_SUCCESS]: (state, { payload }) => ({
+  [Auth.FETCH_CURRENT_USER_SUCCESS]: (state: AuthState, { payload }) => ({
     ...state,
     user: payload,
     authenticated: true,
@@ -76,7 +79,7 @@ export default handleActions({
     isFetching: false
   }),
 
-  [Auth.FETCH_CURRENT_USER_FAILURE]: (state, { payload }) => ({
+  [Auth.FETCH_CURRENT_USER_FAILURE]: (state: AuthState, { payload }) => ({
     ...state,
     authenticated: false,
     isFetching: false,
@@ -85,20 +88,26 @@ export default handleActions({
 
 
   // Profile
-  [Options.UPDATE_PROFILE_SUCCESS]: (state, { payload }) => ({
+  [Options.UPDATE_PROFILE_SUCCESS]: (state: AuthState, { payload }) => ({
     ...state,
     user: { ...state, ...payload }
   }),
 
 
   // Add item
-  [Items.ADD_ITEM_FILE_SUCCESS]: state => ({
+  [Items.ADD_ITEM_FILE_SUCCESS]: (state: AuthState) => ({
     ...state,
-    user: { ...state.user, todayUpload: state.user.todayUpload + 1 }
+    user: !state.user ? null : {
+      ...state.user,
+      today_upload: state.user.today_upload + 1
+    }
   }),
 
-  [Items.ADD_ITEM_URL_SUCCESS]: state => ({
+  [Items.ADD_ITEM_URL_SUCCESS]: (state: AuthState) => ({
     ...state,
-    user: { ...state.user, todayUpload: state.user.todayUpload + 1 }
+    user: !state.user ? null : {
+      ...state.user,
+      today_upload: state.user.today_upload + 1
+    }
   })
 }, initialState);
