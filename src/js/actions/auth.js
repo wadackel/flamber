@@ -63,7 +63,7 @@ export function fetchCurrentUserRequest(): FetchCurrentUserRequestAction {
 }
 
 export function fetchCurrentUserSuccess(user: User): FetchCurrentUserSuccessAction {
-  return { type: FETCH_CURRENT_USER_REQUEST, payload: user };
+  return { type: FETCH_CURRENT_USER_SUCCESS, payload: user };
 }
 
 export function fetchCurrentUserFailure(error: Error): FetchCurrentUserFailureAction {

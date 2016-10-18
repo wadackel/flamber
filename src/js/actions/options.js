@@ -44,5 +44,5 @@ export function updateThemeSuccess(theme: Theme): UpdateThemeSuccessAction {
 }
 
 export function updateThemeFailure(error: Error): UpdateThemeFailureAction {
-  return { type: UPDATE_THEME_FAILURE, payload: error };
+  return { type: UPDATE_THEME_FAILURE, payload: error, error: true };
 }

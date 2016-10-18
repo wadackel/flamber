@@ -1,17 +1,17 @@
 // @flow
-export type Action = {
-  type: string;
+export type Action<T> = {
+  type: T;
   meta?: any;
   error?: boolean;
 };
 
-export type PayloadAction<T> = $All<Action, {
-  payload: T;
+export type PayloadAction<T, P> = $All<Action<T>, {
+  payload: P;
 }>;
 
-export type ErrorAction<T> = {
-  type: string;
-  payload: T;
+export type ErrorAction<T, P> = {
+  type: T;
+  payload: P;
   meta?: any;
   error: true;
 };
