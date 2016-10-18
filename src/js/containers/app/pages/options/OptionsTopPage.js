@@ -11,6 +11,7 @@ import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../../types/redux";
 import type { AuthState } from "../../../../types/auth";
 import type { OptionsState } from "../../../../types/options";
+import type { FormField } from "../../../../types/form";
 
 const b = bem("options-top-page");
 
@@ -18,11 +19,6 @@ type Props = {
   dispatch: Dispatch;
   auth: AuthState;
   options: OptionsState;
-};
-
-type FormField<T> = {
-  value: ?T;
-  error: ?string;
 };
 
 type State = {
@@ -111,7 +107,7 @@ export class OptionsTopPage extends Component {
       userName
     } = this.state;
 
-    if (userPhoto.error != null || userName.error != null) {
+    if (user == null || userPhoto.error != null || userName.error != null) {
       // TODO: Error message
       return;
     }

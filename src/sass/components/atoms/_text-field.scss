@@ -62,7 +62,7 @@ $text-field-duration: 180ms;
 
   &__placeholder {
     @include absolute(.6em, auto, auto, auto, 2);
-    color: $gray-light;
+    color: rgba($color-root, .3);
     opacity: 1;
 
     .text-field--has-label & {
