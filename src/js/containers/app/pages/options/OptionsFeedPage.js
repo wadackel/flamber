@@ -10,7 +10,9 @@ import {
   FeedList,
   FeedListItem
 } from "../../../../components/ui/";
+import * as FeedActions from "../../../../actions/feeds";
 
+import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../../types/redux";
 import type { AuthState } from "../../../../types/auth";
 import type { OptionsState } from "../../../../types/options";
@@ -19,6 +21,7 @@ import type { FormField } from "../../../../types/form";
 const b = bem("options-feed-page");
 
 type Props = {
+  dispatch: Dispatch;
   auth: AuthState;
   options: OptionsState;
 };
@@ -68,8 +71,7 @@ export class OptionsFeedPage extends Component {
       return;
     }
 
-    // TODO: Send to action
-    console.log(value);
+    this.props.dispatch(FeedActions.addFeedRequest(value));
   }
 
   render() {
