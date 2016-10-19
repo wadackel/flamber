@@ -7,6 +7,7 @@ import boards from "./boards/";
 import items from "./items/";
 import options from "./options/";
 import tags from "./tags/";
+import feeds from "./feeds/";
 
 export default function *rootSaga() {
   yield [
@@ -17,6 +18,7 @@ export default function *rootSaga() {
     fork(settings),
     fork(options),
     fork(tags),
+    fork(feeds),
     fork(application)
   ];
 }

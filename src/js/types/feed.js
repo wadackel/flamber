@@ -10,6 +10,10 @@ export type Feed = {
   created_at: Date;
   updated_at: Date;
 };
+export type FeedClient = $All<Feed, {
+  isUpdating: boolean;
+  isDeleting: boolean;
+}>;
 export type Feeds = Array<Feed>;
 
 export type FeedState = {

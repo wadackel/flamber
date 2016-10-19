@@ -9,6 +9,7 @@ import notifications from "./notifications";
 import settings from "./settings";
 import options from "./options";
 import tags from "./tags";
+import feeds from "./feeds";
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   notifications,
   settings,
   options,
-  tags
+  tags,
+  feeds
 });
 
 export default rootReducer;

@@ -1,6 +1,8 @@
 // @flow
 import ApiClient from "../utils/api-client";
+
 import type { User } from "../types/user";
+
 
 const apiClient = new ApiClient("/profile");
 
