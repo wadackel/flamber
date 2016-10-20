@@ -1,6 +1,6 @@
 // @flow
-import type { PayloadAction, ErrorAction } from "./action";
-import type { SingleNormalized } from "./normalize";
+import type { Action, PayloadAction, ErrorAction } from "./action";
+import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
 export type FeedId = string;
 export type Feed = {
@@ -25,7 +25,11 @@ export type FeedState = {
 };
 
 
-// TODO: Fetch
+// Fetch
+export type FetchFeedsSuccessPayload = ArrayNormalized<"feeds", FeedClient, FeedId>;
+export type FetchFeedsRequestAction = Action<"FETCH_FEEDS_REQUEST">;
+export type FetchFeedsSuccessAction = PayloadAction<"FETCH_FEEDS_SUCCESS", FetchFeedsSuccessPayload>;
+export type FetchFeedsFailureAction = ErrorAction<"FETCH_FEEDS_FAILURE", Error>;
 
 
 // Add

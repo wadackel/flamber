@@ -1,10 +1,33 @@
 // @flow
 import type {
+  FetchFeedsSuccessPayload,
+  FetchFeedsRequestAction,
+  FetchFeedsSuccessAction,
+  FetchFeedsFailureAction,
+
   AddFeedSuccessPayload,
   AddFeedRequestAction,
   AddFeedSuccessAction,
   AddFeedFailureAction
 } from "../types/feed";
+
+
+// Fetch
+export const FETCH_FEEDS_REQUEST = "FETCH_FEEDS_REQUEST";
+export const FETCH_FEEDS_SUCCESS = "FETCH_FEEDS_SUCCESS";
+export const FETCH_FEEDS_FAILURE = "FETCH_FEEDS_FAILURE";
+
+export function fetchFeedsRequest(): FetchFeedsRequestAction {
+  return { type: FETCH_FEEDS_REQUEST };
+}
+
+export function fetchFeedsSuccess(payload: FetchFeedsSuccessPayload): FetchFeedsSuccessAction {
+  return { type: FETCH_FEEDS_SUCCESS, payload };
+}
+
+export function fetchFeedsFailure(error: Error): FetchFeedsFailureAction {
+  return { type: FETCH_FEEDS_FAILURE, payload: error, error: true };
+}
 
 
 // Add
