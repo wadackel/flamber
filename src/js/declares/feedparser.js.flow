@@ -1,0 +1,3 @@
+declare module "feedparser" {
+  declare export default any;
+}

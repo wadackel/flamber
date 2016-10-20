@@ -1,0 +1,3 @@
+declare module "request" {
+  declare export default any;
+}
