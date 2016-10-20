@@ -8,6 +8,7 @@ import profile from "./api/profile";
 import account from "./api/account";
 import screenshot from "./api/screenshot";
 import tags from "./api/tags";
+import feeds from "./api/feeds";
 
 const router = new Router();
 const { User } = models;
@@ -38,5 +39,6 @@ router.use("/profile", profile);
 router.use("/account", account);
 router.use("/screenshot", screenshot);
 router.use("/tags", tags);
+router.use("/feeds", feeds);
 
 export default router;

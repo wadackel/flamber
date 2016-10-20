@@ -18,19 +18,19 @@ const initialState: FeedState = {
 
 export default handleActions({
   // Add
-  [F.ADD_FEED_REQUEST]: (state: FeedState) => ({
+  [F.ADD_FEED_REQUEST]: (state: FeedState): FeedState => ({
     ...state,
     isAdding: true
   }),
 
-  // TODO
-  [F.ADD_FEED_SUCCESS]: (state: FeedState, action: AddFeedSuccessAction) => ({
+  [F.ADD_FEED_SUCCESS]: (state: FeedState, action: AddFeedSuccessAction): FeedState => ({
     ...state,
     isAdding: false,
-    error: null
+    error: null,
+    results: [...state.results, action.payload.result.feed]
   }),
 
-  [F.ADD_FEED_FAILURE]: (state: FeedState, action: AddFeedFailureAction) => ({
+  [F.ADD_FEED_FAILURE]: (state: FeedState, action: AddFeedFailureAction): FeedState => ({
     ...state,
     isAdding: false,
     error: action.payload

@@ -18,6 +18,7 @@ export default function(sequelize: any, DataTypes: any) {
     classMethods: {
       associate(models) {
         User.hasOne(models.Option);
+        User.hasMany(models.Feed);
       },
       findByJwtToken(token) {
         try {

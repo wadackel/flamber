@@ -1,12 +1,13 @@
 // @flow
 import type { PayloadAction, ErrorAction } from "./action";
+import type { SingleNormalized } from "./normalize";
 
 export type FeedId = string;
 export type Feed = {
   id: FeedId;
   url: string;
   name: string;
-  favicon: string;
+  favicon: ?string;
   created_at: Date;
   updated_at: Date;
 };
@@ -28,8 +29,9 @@ export type FeedState = {
 
 
 // Add
+export type AddFeedSuccessPayload = SingleNormalized<"feeds", "feed", FeedClient, FeedId>;
 export type AddFeedRequestAction = PayloadAction<"ADD_FEED_REQUEST", string>;
-export type AddFeedSuccessAction = PayloadAction<"ADD_FEED_SUCCESS", Feed>;
+export type AddFeedSuccessAction = PayloadAction<"ADD_FEED_SUCCESS", AddFeedSuccessPayload>;
 export type AddFeedFailureAction = ErrorAction<"ADD_FEED_FAILURE", Error>;
 
 

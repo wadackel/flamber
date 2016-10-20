@@ -1,7 +1,6 @@
 // @flow
 import type {
-  Feed,
-
+  AddFeedSuccessPayload,
   AddFeedRequestAction,
   AddFeedSuccessAction,
   AddFeedFailureAction
@@ -17,8 +16,8 @@ export function addFeedRequest(url: string): AddFeedRequestAction {
   return { type: ADD_FEED_REQUEST, payload: url };
 }
 
-export function addFeedSuccess(feed: Feed): AddFeedSuccessAction {
-  return { type: ADD_FEED_SUCCESS, payload: feed };
+export function addFeedSuccess(payload: AddFeedSuccessPayload): AddFeedSuccessAction {
+  return { type: ADD_FEED_SUCCESS, payload };
 }
 
 export function addFeedFailure(error: Error): AddFeedFailureAction {

@@ -1,11 +1,19 @@
 import { Router } from "express";
-// import Feed from "../../models/feed";
+import models from "../../models/";
 
+const { Feed } = models;
 const router = new Router();
 
 
-router.get("/", (req, res) => {
-  res.json({ test: "key" });
+router.post("/", (req, res) => {
+  const { user, body: { url } } = req;
+
+  Feed.createByURL(url)
+    .then(feed => user.addFeed(feed).then(() => feed))
+    .then(feed => {
+      res.json({ feed: feed.get({ plain: true }) });
+    })
+    .catch(res.errorJSON);
 });
 
 
