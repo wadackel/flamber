@@ -5,6 +5,17 @@ const { Feed } = models;
 const router = new Router();
 
 
+router.get("/", (req, res) => {
+  const { user } = req;
+
+  user.getFeeds()
+    .then(feeds => {
+      res.json({ feeds: feeds.map(entity => entity.get({ plain: true })) });
+    })
+    .catch(res.errorJSON);
+});
+
+
 router.post("/", (req, res) => {
   const { user, body: { url } } = req;
 
