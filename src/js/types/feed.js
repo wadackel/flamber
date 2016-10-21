@@ -2,7 +2,7 @@
 import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
-export type FeedId = string;
+export type FeedId = number;
 export type Feed = {
   id: FeedId;
   url: string;

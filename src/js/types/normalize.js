@@ -1,5 +1,5 @@
 // @flow
-type NumberMap<T> = { [key: number]: T };
+import type { NumberMap } from "./map";
 
 // P - Plural
 // S - Singular

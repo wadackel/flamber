@@ -8,13 +8,16 @@ import {
   TextFieldGroup,
   RaisedButton,
   FeedList,
-  FeedListItem
+  FeedListItem,
+  Spinner
 } from "../../../../components/ui/";
 import * as FeedActions from "../../../../actions/feeds";
+import { getFeedEntities } from "../../../../selectors/feeds";
 
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../../types/redux";
 import type { AuthState } from "../../../../types/auth";
+import type { FeedState, FeedId, FeedClient } from "../../../../types/feed";
 import type { OptionsState } from "../../../../types/options";
 import type { FormField } from "../../../../types/form";
 
@@ -24,6 +27,8 @@ type Props = {
   dispatch: Dispatch;
   auth: AuthState;
   options: OptionsState;
+  feeds: FeedState;
+  feedEntities: Array<FeedClient>;
 };
 
 type State = {
@@ -51,6 +56,10 @@ export class OptionsFeedPage extends Component {
     autoBind(this);
   }
 
+  componentDidMount() {
+    this.props.dispatch(FeedActions.fetchFeedsRequest());
+  }
+
   handleFeedURLChange(e: SyntheticInputEvent, value: string) {
     this.setState({
       feedURL: {
@@ -74,7 +83,39 @@ export class OptionsFeedPage extends Component {
     this.props.dispatch(FeedActions.addFeedRequest(value));
   }
 
+  handleFeedListItemDelete(listItem: FeedListItem, id: FeedId) {
+    // TODO: Delete feed
+    console.log(id);
+  }
+
+  renderFeedList() {
+    const { feeds, feedEntities } = this.props;
+
+    if (feeds.isFetching) {
+      return <div style={{ textAlign: "center" }}>
+        <Spinner />
+      </div>;
+    }
+
+    return (
+      <FeedList
+        className={b("feed-list")()}
+      >
+        {feedEntities.map(entity =>
+          <FeedListItem
+            key={entity.id}
+            value={entity.id}
+            name={entity.name}
+            url={entity.url}
+            onDelete={this.handleFeedListItemDelete}
+          />
+        )}
+      </FeedList>
+    );
+  }
+
   render() {
+    const { feeds } = this.props;
     const { feedURL } = this.state;
     const isFeedURLEmpty = (feedURL.value || "").trim() === "";
 
@@ -93,7 +134,7 @@ export class OptionsFeedPage extends Component {
           addonRight={
             <RaisedButton
               type="primary"
-              disable={isFeedURLEmpty}
+              disable={isFeedURLEmpty || feeds.isAdding}
               onClick={this.handleFeedURLSubmit}
             >
               追加
@@ -101,31 +142,7 @@ export class OptionsFeedPage extends Component {
           }
         />
 
-        <FeedList
-          className={b("feed-list")()}
-        >
-          <FeedListItem
-            name="Title 1"
-            url="http://example.com"
-            value={1}
-            onClick={console.log}
-            onDelete={console.log}
-          />
-          <FeedListItem
-            name="Title 2"
-            url="http://example.com"
-            value={2}
-            onClick={console.log}
-            onDelete={console.log}
-          />
-          <FeedListItem
-            name="Title 3"
-            url="http://example.com"
-            value={3}
-            onClick={console.log}
-            onDelete={console.log}
-          />
-        </FeedList>
+        {this.renderFeedList()}
       </div>
     );
   }
@@ -134,6 +151,8 @@ export class OptionsFeedPage extends Component {
 export default connect(
   (state: ConnectState) => ({
     auth: state.auth,
-    options: state.options
+    options: state.options,
+    feeds: state.feeds,
+    feedEntities: getFeedEntities(state)
   })
 )(OptionsFeedPage);
