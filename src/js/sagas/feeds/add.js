@@ -10,7 +10,8 @@ import * as F from "../../actions/feeds";
 import type {
   Feed,
 
-  AddFeedRequestAction
+  AddFeedRequestAction,
+  AddFeedFailureAction
 } from "../../types/feed";
 
 
@@ -18,14 +19,12 @@ export function *handleAddFeedRequest(): Generator<any, void, any> {
   while (true) {
     try {
       const action: ?AddFeedRequestAction = yield take(F.ADD_FEED_REQUEST);
-      if (!action) throw new Error("TODO");
+      if (!action) throw new Error("フィードの追加に失敗しました");
 
-      const response = yield call((): Promise<Feed> => Services.addFeed(action.payload));
-      if (!response) throw new Error("TODO");
+      const response = yield call((): Promise<{ feed: Feed }> => Services.addFeed(action.payload));
+      if (!response) throw new Error("フィードの追加に失敗しました");
 
-      const normalized = normalize(response, {
-        feed: FeedSchema
-      });
+      const normalized = normalize(response, { feed: FeedSchema });
       yield put(F.addFeedSuccess(normalized));
 
     } catch (error) {
@@ -38,9 +37,8 @@ function *handleAddFeedSuccess(): Generator<any, *, *> {
   yield put(showNotify("フィードを追加しました"));
 }
 
-// TODO: More error message
-function *handleAddFeedFailure(): Generator<any, *, *> {
-  yield put(showNotify("フィードの追加に失敗しました"));
+function *handleAddFeedFailure(action: AddFeedFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
 }
 
 

@@ -1,5 +1,8 @@
 // @flow
 import type {
+  FeedId,
+  FeedEntity,
+
   FetchFeedsSuccessPayload,
   FetchFeedsRequestAction,
   FetchFeedsSuccessAction,
@@ -8,7 +11,12 @@ import type {
   AddFeedSuccessPayload,
   AddFeedRequestAction,
   AddFeedSuccessAction,
-  AddFeedFailureAction
+  AddFeedFailureAction,
+
+  DeleteFeedSuccessPayload,
+  DeleteFeedRequestAction,
+  DeleteFeedSuccessAction,
+  DeleteFeedFailureAction
 } from "../types/feed";
 
 
@@ -45,4 +53,22 @@ export function addFeedSuccess(payload: AddFeedSuccessPayload): AddFeedSuccessAc
 
 export function addFeedFailure(error: Error): AddFeedFailureAction {
   return { type: ADD_FEED_FAILURE, payload: error, error: true };
+}
+
+
+// Delete
+export const DELETE_FEED_REQUEST = "DELETE_FEED_REQUEST";
+export const DELETE_FEED_SUCCESS = "DELETE_FEED_SUCCESS";
+export const DELETE_FEED_FAILURE = "DELETE_FEED_FAILURE";
+
+export function deleteFeedRequest(id: FeedId): DeleteFeedRequestAction {
+  return { type: DELETE_FEED_REQUEST, payload: id };
+}
+
+export function deleteFeedSuccess(payload: DeleteFeedSuccessPayload): DeleteFeedSuccessAction {
+  return { type: DELETE_FEED_SUCCESS, payload };
+}
+
+export function deleteFeedFailure(error: Error, entity: FeedEntity): DeleteFeedFailureAction {
+  return { type: DELETE_FEED_FAILURE, payload: error, error: true, meta: entity };
 }

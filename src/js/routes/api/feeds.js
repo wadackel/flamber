@@ -28,4 +28,17 @@ router.post("/", (req, res) => {
 });
 
 
+router.delete("/", (req, res) => {
+  const { user, body: { id } } = req;
+
+  user.getFeeds({ where: { id } })
+    .then(feeds => feeds[0])
+    .then(feed => user.removeFeed(feed).then(() => feed))
+    .then(feed => {
+      res.json({ feed: feed.get({ plain: true }) });
+    })
+    .catch(res.errorJSON);
+});
+
+
 export default router;

@@ -17,7 +17,7 @@ import { getFeedEntities } from "../../../../selectors/feeds";
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../../types/redux";
 import type { AuthState } from "../../../../types/auth";
-import type { FeedState, FeedId, FeedClient } from "../../../../types/feed";
+import type { FeedState, FeedId, FeedEntity } from "../../../../types/feed";
 import type { OptionsState } from "../../../../types/options";
 import type { FormField } from "../../../../types/form";
 
@@ -28,7 +28,7 @@ type Props = {
   auth: AuthState;
   options: OptionsState;
   feeds: FeedState;
-  feedEntities: Array<FeedClient>;
+  feedEntities: Array<FeedEntity>;
 };
 
 type State = {
@@ -60,6 +60,14 @@ export class OptionsFeedPage extends Component {
     this.props.dispatch(FeedActions.fetchFeedsRequest());
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if ((this.props.feeds.isAdding || !nextProps.feeds.isAdding) && !nextProps.feeds.error) {
+      this.setState({
+        feedURL: { value: "", error: null }
+      });
+    }
+  }
+
   handleFeedURLChange(e: SyntheticInputEvent, value: string) {
     this.setState({
       feedURL: {
@@ -84,8 +92,7 @@ export class OptionsFeedPage extends Component {
   }
 
   handleFeedListItemDelete(listItem: FeedListItem, id: FeedId) {
-    // TODO: Delete feed
-    console.log(id);
+    this.props.dispatch(FeedActions.deleteFeedRequest(id));
   }
 
   renderFeedList() {
@@ -105,6 +112,7 @@ export class OptionsFeedPage extends Component {
           <FeedListItem
             key={entity.id}
             value={entity.id}
+            processin={entity.isUpdating || entity.isDeleting}
             name={entity.name}
             url={entity.url}
             onDelete={this.handleFeedListItemDelete}
@@ -134,7 +142,8 @@ export class OptionsFeedPage extends Component {
           addonRight={
             <RaisedButton
               type="primary"
-              disable={isFeedURLEmpty || feeds.isAdding}
+              processing={feeds.isAdding}
+              disable={isFeedURLEmpty}
               onClick={this.handleFeedURLSubmit}
             >
               追加

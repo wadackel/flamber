@@ -1,25 +1,67 @@
 // @flow
-import { assign } from "lodash";
+import { assign, mapValues, pickBy } from "lodash";
 import { handleActions } from "redux-actions";
 import * as F from "../../actions/feeds";
 
 import type {
-  FeedState,
+  FeedId,
+  FeedEntity,
+  FeedEntitiesState,
 
   FetchFeedsSuccessAction,
-  AddFeedSuccessAction
+  AddFeedSuccessAction,
+  DeleteFeedRequestAction,
+  DeleteFeedSuccessAction,
+  DeleteFeedFailureAction
 } from "../../types/feed";
 
-function mergeEntities(state, entities) {
+
+function mergeEntities(state: FeedEntitiesState, entities: ?FeedEntitiesState): FeedEntitiesState {
   return assign(state, entities || {});
 }
 
+function mapEntities(state: FeedEntitiesState, ids: Array<FeedId>, iteratee: Function): FeedEntitiesState {
+  return mapValues(state, (entity: FeedEntity) =>
+    ids.indexOf(entity.id) > -1 ? iteratee(entity) : entity
+  );
+}
+
+function removeEntities(state: FeedEntitiesState, ids: Array<FeedId>): FeedEntitiesState {
+  return pickBy(state, (entity: FeedEntity, id: FeedId) =>
+    ids.indexOf(id) === -1
+  );
+}
+
+
 export default handleActions({
-  [F.FETCH_FEEDS_SUCCESS]: (state: FeedState, action: FetchFeedsSuccessAction): FeedState => (
+  // Fetch
+  [F.FETCH_FEEDS_SUCCESS]: (state: FeedEntitiesState, action: FetchFeedsSuccessAction): FeedEntitiesState => (
     mergeEntities(state, action.payload.entities.feeds)
   ),
 
-  [F.ADD_FEED_SUCCESS]: (state: FeedState, action: AddFeedSuccessAction): FeedState => (
+
+  // Add
+  [F.ADD_FEED_SUCCESS]: (state: FeedEntitiesState, action: AddFeedSuccessAction): FeedEntitiesState => (
     mergeEntities(state, action.payload.entities.feeds)
+  ),
+
+
+  // Delete
+  [F.DELETE_FEED_REQUEST]: (state: FeedEntitiesState, action: DeleteFeedRequestAction): FeedEntitiesState => (
+    mapEntities(state, [action.payload], (entity: FeedEntity) => ({
+      ...entity,
+      isDeleting: true
+    }))
+  ),
+
+  [F.DELETE_FEED_SUCCESS]: (state: FeedEntitiesState, action: DeleteFeedSuccessAction): FeedEntitiesState => (
+    removeEntities(state, [action.payload.result.feed])
+  ),
+
+  [F.DELETE_FEED_FAILURE]: (state: FeedEntitiesState, action: DeleteFeedFailureAction): FeedEntitiesState => (
+    mapEntities(state, [action.meta ? action.meta.id : -1], (entity: FeedEntity) => ({
+      ...entity,
+      isDeleting: false
+    }))
   )
 }, {});

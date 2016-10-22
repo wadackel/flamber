@@ -9,7 +9,10 @@ import type {
   FetchFeedsFailureAction,
 
   AddFeedSuccessAction,
-  AddFeedFailureAction
+  AddFeedFailureAction,
+
+  DeleteFeedSuccessAction,
+  DeleteFeedFailureAction
 } from "../types/feed";
 
 const initialState: FeedState = {
@@ -39,6 +42,7 @@ export default handleActions({
     error: action.payload
   }),
 
+
   // Add
   [F.ADD_FEED_REQUEST]: (state: FeedState): FeedState => ({
     ...state,
@@ -55,6 +59,19 @@ export default handleActions({
   [F.ADD_FEED_FAILURE]: (state: FeedState, action: AddFeedFailureAction): FeedState => ({
     ...state,
     isAdding: false,
+    error: action.payload
+  }),
+
+
+  // Delete
+  [F.DELETE_FEED_SUCCESS]: (state: FeedState, action: DeleteFeedSuccessAction): FeedState => ({
+    ...state,
+    error: null,
+    results: state.results.filter(id => id !== action.payload.result.feed)
+  }),
+
+  [F.DELETE_FEED_FAILURE]: (state: FeedState, action: DeleteFeedFailureAction): FeedState => ({
+    ...state,
     error: action.payload
   })
 }, initialState);

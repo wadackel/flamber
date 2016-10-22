@@ -1,11 +1,11 @@
 // @flow
 import type { AuthState } from "./auth";
 import type { OptionsState } from "./options";
-import type { FeedState, FeedId, FeedClient } from "./feed";
+import type { FeedState, FeedEntitiesState } from "./feed";
 
 export type ConnectState = {
   entities: {
-    feeds: { [key: FeedId]: FeedClient };
+    feeds: FeedEntitiesState;
   };
   auth: AuthState;
   options: OptionsState;
