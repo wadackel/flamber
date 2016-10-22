@@ -46,7 +46,7 @@ $button-colors: (
 
 
 .raised-button {
-  @include button-extend-all;
+  @include button-styles;
 
   &__ripple {
     background: rgba(#000, .2);
@@ -72,7 +72,8 @@ $button-colors: (
     }
   }
 
-  &--disable {
+  &--disable,
+  &--processing {
     box-shadow: none !important;
 
     &,

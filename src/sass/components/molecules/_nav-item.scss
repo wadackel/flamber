@@ -4,7 +4,7 @@ $nav-item-height: 60px;
   display: inline-block;
 
   &__button {
-    @include button-extend-all;
+    @include button-styles;
     color: lighten($gray-light, 20%);
     box-shadow: none !important;
 

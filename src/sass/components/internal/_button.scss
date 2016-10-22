@@ -1,28 +1,10 @@
 $button-color-primary: $brand-primary;
 $button-color-secondary: $brand-secondary;
 $button-color-danger: $brand-danger;
-
 $button-icon-margin: 8px;
 
 
-@keyframes ripple-effect {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: .5;
-  }
-
-  60% {
-    opacity: .8;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0;
-  }
-}
-
-
-%button-root {
+@mixin button-styles() {
   $shadow-color: rgba(#000, .11);
 
   @include transition(all);
@@ -39,153 +21,103 @@ $button-icon-margin: 8px;
   &:hover {
     box-shadow: 0 1px 4px $shadow-color, 0 1px 2px $shadow-color;
   }
-}
-
-%button-root-disable {
-  cursor: default;
-}
-
-%button-root-focus {
-  box-shadow: none;
-  outline: none;
-}
-
-
-%button-ripple-container {
-  @include absolute(0, 0, 0, 0, 0);
-  overflow: hidden;
-}
-
-
-%button-ripple {
-  position: absolute;
-  transform: translate(-50%, -50%) scale(0);
-  border-radius: 50%;
-  background: rgba(#fff, .2);
-  opacity: 0;
-  animation: ripple-effect #{$ripple-duration}ms $transition-easing;
-}
-
-
-%button-body {
-  display: inline-flex;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  margin: 0;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  color: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  text-align: inherit;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  z-index: 1;
-  user-select: none;
 
   &:focus {
+    box-shadow: none;
     outline: none;
   }
 
-  &:hover,
-  &:active {
-    color: inherit;
-  }
-}
-
-%button-body-center {
-  justify-content: center;
-}
-
-%button-body-right {
-  justify-content: flex-end;
-}
-
-%button-body-left {
-  justify-content: flex-start;
-}
-
-%button-body-disable {
-  cursor: default;
-}
-
-
-%button-label {
-  position: relative;
-  z-index: 1;
-}
-
-
-%button-icon {
-  margin: 0 $button-icon-margin 0 0;
-
-  svg {
-    @include size(1rem);
-    vertical-align: top;
-  }
-}
-
-
-%button-icon-right {
-  margin-right: 0;
-  margin-left: $button-icon-margin;
-}
-
-
-@mixin button-extend-all() {
-  @extend %button-root;
-
-  &:focus {
-    @extend %button-root-focus;
-  }
-
-  &--disable {
-    @extend %button-root-disable;
+  &--disable,
+  &--processing {
+    cursor: default;
   }
 
   &__ripple-container {
-    @extend %button-ripple-container;
+    @include absolute(0, 0, 0, 0, 0);
+    overflow: hidden;
   }
 
   &__ripple {
-    @extend %button-ripple;
+    @extend %ripple;
   }
 
   &__body {
-    @extend %button-body;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    z-index: 1;
+    user-select: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover,
+    &:active {
+      color: inherit;
+    }
 
     &--text-align {
       &-center {
-        @extend %button-body-center;
+        justify-content: center;
       }
 
       &-right {
-        @extend %button-body-right;
+        justify-content: flex-end;
       }
 
       &-left {
-        @extend %button-body-left;
+        justify-content: flex-start;
       }
     }
 
-    &--disable {
-      @extend %button-body-disable;
+    &--disable,
+    &--processing {
+      cursor: default;
     }
   }
 
   &__label {
-    @extend %button-label;
+    position: relative;
+    z-index: 1;
+
+    &--processing {
+      opacity: 0;
+    }
   }
 
   &__icon {
-    @extend %button-icon;
+    margin: 0 $button-icon-margin 0 0;
+
+    svg {
+      @include size(1rem);
+      vertical-align: top;
+    }
 
     &--right {
-      @extend %button-icon-right;
+      margin-right: 0;
+      margin-left: $button-icon-margin;
     }
+  }
+
+  &__spinner {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px;
+    margin-left: -10px;
   }
 }

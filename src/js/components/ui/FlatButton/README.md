@@ -32,3 +32,16 @@ Icons:
   <FlatButton iconRight={<GithubIcon />} type="danger">GitHub</FlatButton>
 </div>
 ```
+
+
+Processing:
+
+```
+<div>
+  <FlatButton type="default" processing>Saving...</FlatButton>
+  {" "}
+  <FlatButton type="primary" processing>Saving...</FlatButton>
+  {" "}
+  <FlatButton type="danger" processing>Saving...</FlatButton>
+</div>
+```

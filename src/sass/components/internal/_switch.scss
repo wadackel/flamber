@@ -1,72 +1,42 @@
 $switch-size: 20px;
 
 
-%switch-root {
+@mixin switch-extend-all($type) {
   display: block;
   position: relative;
-}
-
-
-%switch-root-inline {
-  display: inline-block;
-}
-
-
-%switch-input {
-  @include absolute(0, 0, 0, 0, 5);
-  @include size(100%);
-  cursor: pointer;
-  opacity: 0;
-}
-
-
-%switch-element {
-  @include size($switch-size);
-  display: inline-block;
-  position: relative;
-  border: 2px solid $gray-lighter;
-  vertical-align: middle;
-}
-
-
-%switch-label {
-  display: inline-block;
-  margin: 0 0 0 10px;
-  font-size: 1rem;
-  line-height: $switch-size;
-  vertical-align: middle;
-}
-
-
-%switch-ripple {
-  @extend %button-ripple;
-  @include size($switch-size * 1.8);
-  top: 50%;
-  left: 50%;
-  background-color: rgba(#fff, .1);
-}
-
-
-@mixin switch-extend-all($type) {
-  @extend %switch-root;
 
   &--inline {
-    @extend %switch-root-inline;
+    display: inline-block;
   }
 
   &__input {
-    @extend %switch-input;
+    @include absolute(0, 0, 0, 0, 5);
+    @include size(100%);
+    cursor: pointer;
+    opacity: 0;
   }
 
   &__#{$type} {
-    @extend %switch-element;
+    @include size($switch-size);
+    display: inline-block;
+    position: relative;
+    border: 2px solid $gray-lighter;
+    vertical-align: middle;
   }
 
   &__label {
-    @extend %switch-label;
+    display: inline-block;
+    margin: 0 0 0 10px;
+    font-size: 1rem;
+    line-height: $switch-size;
+    vertical-align: middle;
   }
 
   &__ripple {
-    @extend %switch-ripple;
+    @extend %ripple;
+    @include size($switch-size * 1.8);
+    top: 50%;
+    left: 50%;
+    background-color: rgba(#fff, .1);
   }
 }

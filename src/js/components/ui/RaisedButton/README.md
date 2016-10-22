@@ -43,3 +43,16 @@ Icons:
   <RaisedButton iconRight={<GithubIcon />} type="danger">GitHub</RaisedButton>
 </div>
 ```
+
+
+Processing:
+
+```
+<div>
+  <RaisedButton type="default" processing>Saving...</RaisedButton>
+  {" "}
+  <RaisedButton type="primary" processing>Saving...</RaisedButton>
+  {" "}
+  <RaisedButton type="danger" processing>Saving...</RaisedButton>
+</div>
+```

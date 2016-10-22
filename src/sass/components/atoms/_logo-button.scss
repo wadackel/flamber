@@ -1,5 +1,5 @@
 .logo-button {
-  @include button-extend-all;
+  @include button-styles;
   border-radius: 0;
   background: $brand-primary;
   color: #fff;

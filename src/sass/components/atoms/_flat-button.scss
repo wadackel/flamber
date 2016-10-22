@@ -7,11 +7,15 @@ $button-colors: (
 
 
 .flat-button {
-  @include button-extend-all;
+  @include button-styles;
 
   box-shadow: none !important;
 
   &:not(&--disable):hover {
+    background: rgba(#000, .12);
+  }
+
+  &--processing {
     background: rgba(#000, .12);
   }
 
@@ -29,7 +33,8 @@ $button-colors: (
     }
   }
 
-  &--disable {
+  &--disable,
+  &--processing {
     color: $gray-lightest;
     opacity: .6;
   }

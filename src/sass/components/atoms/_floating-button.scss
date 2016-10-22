@@ -37,7 +37,7 @@ $button-colors: (
 
 
 .floating-button {
-  @include button-extend-all;
+  @include button-styles;
   @include size($button-size);
 
   border-radius: 50%;

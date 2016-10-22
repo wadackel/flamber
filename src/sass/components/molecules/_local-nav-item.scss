@@ -25,7 +25,7 @@
   }
 
   &__button {
-    @include button-extend-all;
+    @include button-styles;
     width: 100%;
     transition-duration: $transition-duration-fast;
     border-radius: 0;

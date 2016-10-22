@@ -8,6 +8,7 @@ import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 import randomId from "../../../helpers/random-id";
 import Tooltip from "./Tooltip";
+import { Spinner } from "../";
 
 import type { Origin, Positions } from "../../../types/prop-types";
 
@@ -19,6 +20,8 @@ export type ButtonProps = {
   type: string;
   disable: boolean;
   enableKeyClick: boolean;
+  processing: boolean;
+  spinnerSize: number;
   href?: string;
   target?: string;
   label: ?React$Element<any>;
@@ -52,7 +55,9 @@ export default class Button extends Component {
   static defaultProps = {
     type: "default",
     disable: false,
+    processing: false,
     enableKeyClick: true,
+    spinnerSize: 20,
     tooltipOrigin: {
       vertical: "top",
       horizontal: "center"
@@ -185,6 +190,8 @@ export default class Button extends Component {
       style,
       type,
       disable,
+      processing,
+      spinnerSize,
       href,
       target,
       label,
@@ -207,7 +214,7 @@ export default class Button extends Component {
     const { ripples, showTooltip } = this.state;
 
     const b = bem(baseClassName || "");
-    const modifier = { [type]: true, "text-align": textAlign, disable };
+    const modifier = { [type]: true, "text-align": textAlign, disable, processing };
     const labelElement = label ? <span className={b("label", modifier)()}>{label}</span> : null;
     const iconElement = this.createIcon(icon, b("icon", modifier)());
     const iconRightElement = this.createIcon(iconRight, b("icon", _.assign(modifier, { right: true }))());
@@ -220,7 +227,7 @@ export default class Button extends Component {
           {iconElement}{labelElement}{iconRightElement}
         </a>;
 
-    const events = disable ? {} : {
+    const events = (disable || processing) ? {} : {
       onMouseDown: this.handleMouseDown,
       onMouseEnter: this.handleMouseEnter,
       onMouseLeave: this.handleMouseLeave,
@@ -237,7 +244,7 @@ export default class Button extends Component {
         ref="element"
         className={mergeClassNames(b(modifier)(), className)}
         style={style}
-        tabIndex={disable ? null : 0}
+        tabIndex={(disable || processing) ? null : 0}
         {...events}
       >
         <div className={b("ripple-container")()}>{ripples}</div>
@@ -250,6 +257,12 @@ export default class Button extends Component {
             label={tooltip}
             origin={tooltipOrigin}
             positions={tooltipPositions}
+          />
+        }
+        {processing &&
+          <Spinner
+            className={b("spinner")()}
+            size={spinnerSize}
           />
         }
       </div>

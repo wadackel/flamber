@@ -7,7 +7,7 @@ $button-sizes: (
 );
 
 .icon-button {
-  @include button-extend-all;
+  @include button-styles;
 
   border-radius: 50%;
   box-shadow: none;
@@ -20,7 +20,8 @@ $button-sizes: (
     }
   }
 
-  &:focus {
+  &:focus,
+  &--processing {
     background: rgba(#fff, .1);
   }
 

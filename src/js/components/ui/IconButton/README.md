@@ -45,3 +45,12 @@ Tooltip:
   <IconButton icon={<StarIcon />} tooltip="Favorite" tooltipOrigin={{ vertical: "bottom", horizontal: "right" }} />
 </div>
 ```
+
+
+Processing:
+
+```
+<div>
+  <IconButton processing />
+</div>
+```
