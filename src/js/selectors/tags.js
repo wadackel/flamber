@@ -1,4 +1,5 @@
 // @flow
+import { find } from "lodash";
 import { getItemEntityById } from "./items";
 
 import type { ConnectState } from "../types/redux";
@@ -8,6 +9,9 @@ import type { ItemId, ItemEntity } from "../types/item";
 
 export const getTagEntityById = (state: ConnectState, id: TagId): ?TagEntity =>
   state.entities.tags[id];
+
+export const getTagEntityByName = (state: ConnectState, name: string): ?TagEntity =>
+  find(state.entities.tags, (o: TagEntity): boolean => o.name === name);
 
 export const getTagEntities = (state: ConnectState): TagEntities =>
   state.tags.results.map((id: TagId): TagEntity => state.entities.tags[id]);

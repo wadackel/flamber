@@ -6,9 +6,9 @@ const router = new Router();
 
 
 router.get("/", (req, res) => {
-  Tag.findAllByUser(req.user.id)
+  req.user.getTags()
     .then(tags => {
-      res.json({ tags });
+      res.json({ tags: tags.map(entity => entity.get({ plain: true })) });
     })
     .catch(res.errorJSON);
 });

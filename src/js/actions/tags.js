@@ -6,6 +6,11 @@ import type {
   TagId,
   Tag,
 
+  FetchTagsSuccessPayload,
+  FetchTagsRequestAction,
+  FetchTagsSuccessAction,
+  FetchTagsFailureAction,
+
   AddTagSuccessPayload,
   AddTagRequestAction,
   AddTagSuccessAction,
@@ -29,13 +34,21 @@ export const tagDrawerToggle = createAction(TAG_DRAWER_TOGGLE);
 
 
 // Fetch
-export const FETCH_TAGS_REQUEST: string = "FETCH_TAGS_REQUEST";
-export const FETCH_TAGS_SUCCESS: string = "FETCH_TAGS_SUCCESS";
-export const FETCH_TAGS_FAILURE: string = "FETCH_TAGS_FAILURE";
+export const FETCH_TAGS_REQUEST = "FETCH_TAGS_REQUEST";
+export const FETCH_TAGS_SUCCESS = "FETCH_TAGS_SUCCESS";
+export const FETCH_TAGS_FAILURE = "FETCH_TAGS_FAILURE";
 
-export const fetchTagsRequest = createAction(FETCH_TAGS_REQUEST);
-export const fetchTagsSuccess = createAction(FETCH_TAGS_SUCCESS);
-export const fetchTagsFailure = createAction(FETCH_TAGS_FAILURE);
+export const fetchTagsRequest = (): FetchTagsRequestAction => (
+  { type: FETCH_TAGS_REQUEST }
+);
+
+export const fetchTagsSuccess = (payload: FetchTagsSuccessPayload): FetchTagsSuccessAction => (
+  { type: FETCH_TAGS_SUCCESS, payload }
+);
+
+export const fetchTagsFailure = (error: Error): FetchTagsFailureAction => (
+  { type: FETCH_TAGS_FAILURE, payload: error, error: true }
+);
 
 
 // Add

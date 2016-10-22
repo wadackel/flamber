@@ -5,6 +5,9 @@ import * as T from "../actions/tags";
 import type {
   TagState,
 
+  FetchTagsSuccessAction,
+  FetchTagsFailureAction,
+
   AddTagSuccessAction,
   AddTagFailureAction
 } from "../types/tag";
@@ -43,21 +46,21 @@ export default handleActions({
 
 
   // Fetch
-  [T.FETCH_TAGS_REQUEST]: state => ({
+  [T.FETCH_TAGS_REQUEST]: (state: TagState): TagState => ({
     ...state,
     isFetching: true
   }),
 
-  [T.FETCH_TAGS_SUCCESS]: (state, { payload }) => ({
+  [T.FETCH_TAGS_SUCCESS]: (state: TagState, action: FetchTagsSuccessAction): TagState => ({
     ...state,
     isFetching: false,
-    results: payload.result.tags
+    results: action.payload.result.tags
   }),
 
-  [T.FETCH_TAGS_FAILURE]: (state, { payload }) => ({
+  [T.FETCH_TAGS_FAILURE]: (state: TagState, action: FetchTagsFailureAction): TagState => ({
     ...state,
     isFetching: false,
-    error: payload
+    error: action.payload
   }),
 
 

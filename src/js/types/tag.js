@@ -1,12 +1,14 @@
 // @flow
-import type { PayloadAction, ErrorAction } from "./action";
-import type { SingleNormalized } from "./normalize";
+import type { Action, PayloadAction, ErrorAction } from "./action";
+import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
 export type TagId = number;
 
 export type Tag = {
   id: TagId;
   name: string;
+  updated_at: Date;
+  created_at: Date;
 };
 
 export type Tags = Array<Tag>;
@@ -28,6 +30,13 @@ export type TagState = {
 };
 
 export type TagEntitiesState = { [key: TagId]: TagEntity };
+
+
+// Fetch
+export type FetchTagsSuccessPayload = ArrayNormalized<"tags", TagEntity, TagId>;
+export type FetchTagsRequestAction = Action<"FETCH_TAGS_REQUEST">;
+export type FetchTagsSuccessAction = PayloadAction<"FETCH_TAGS_SUCCESS", FetchTagsSuccessPayload>;
+export type FetchTagsFailureAction = ErrorAction<"FETCH_TAGS_FAILURE", Error>;
 
 
 // Add
