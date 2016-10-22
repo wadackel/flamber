@@ -1,5 +1,6 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { push } from "react-router-redux";
 import { connect } from "react-redux";
 import * as TagActions from "../../../actions/tags";
@@ -15,16 +16,31 @@ import {
 } from "../../../components/ui/";
 import { TagsIcon } from "../../../components/svg-icons";
 
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
+import type {
+  TagId,
+  TagState,
+  TagEntities
+} from "../../../types/tag";
+
 const b = bem("tag-drawer-container");
 
-export class TagDrawerContainer extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func,
-    tags: PropTypes.object,
-    tagEntities: PropTypes.array
-  };
+type Props = {
+  dispatch: Dispatch;
+  tags: TagState;
+  tagEntities: TagEntities;
+};
 
-  constructor(props, context) {
+type State = {
+  addTagName: string;
+};
+
+export class TagDrawerContainer extends Component {
+  props: Props;
+  state: State;
+
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = { addTagName: "" };
@@ -32,7 +48,7 @@ export class TagDrawerContainer extends Component {
     autoBind(this);
   }
 
-  handleAddTagChange(e, value) {
+  handleAddTagChange(e: SyntheticInputEvent, value: string) {
     this.setState({ addTagName: value });
   }
 
@@ -48,18 +64,18 @@ export class TagDrawerContainer extends Component {
     }
   }
 
-  handleTagUpdate(item, text) {
+  handleTagUpdate(item: ListItem, text: string) {
     this.props.dispatch(TagActions.updateTagRequest({
       id: item.props.value,
       name: text
     }));
   }
 
-  handleTagDelete(item) {
+  handleTagDelete(item: ListItem) {
     this.props.dispatch(TagActions.deleteTagRequest(item.props.value));
   }
 
-  handleTagClick(item, id) {
+  handleTagClick(item: ListItem, id: TagId) {
     this.props.dispatch(push(`/app/tag/${id}`));
   }
 
@@ -138,7 +154,7 @@ export class TagDrawerContainer extends Component {
 }
 
 export default connect(
-  state => ({
+  (state: ConnectState) => ({
     tags: state.tags,
     tagEntities: getTagEntities(state)
   }),

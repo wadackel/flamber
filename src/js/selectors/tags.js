@@ -1,19 +1,21 @@
+// @flow
 import { getItemEntityById } from "./items";
 
-export function getTagEntityById(state, id) {
-  return state.entities.tags[id];
-}
+import type { ConnectState } from "../types/redux";
+import type { TagId, TagEntity, TagEntities } from "../types/tag";
+import type { ItemId, ItemEntity } from "../types/item";
 
-export function getTagEntities(state) {
-  return state.tags.results.map(id => getTagEntityById(state, id));
-}
 
-export function getTagEntitiesByItemId(state, itemId) {
-  const item = getItemEntityById(state, itemId);
+export const getTagEntityById = (state: ConnectState, id: TagId): ?TagEntity =>
+  state.entities.tags[id];
 
-  return !item ? [] : item.tags.map(id => getTagEntityById(state, id));
-}
+export const getTagEntities = (state: ConnectState): TagEntities =>
+  state.tags.results.map((id: TagId): TagEntity => state.entities.tags[id]);
 
-export function getCurrentTag(state) {
-  return getTagEntityById(state, state.tags.currentTag);
-}
+export const getTagEntitiesByItemId = (state: ConnectState, itemId: ItemId): TagEntities => {
+  const item: ?ItemEntity = getItemEntityById(state, itemId);
+  return !item ? [] : item.tags.map((id: TagId): TagEntity => state.entities.tags[id]);
+};
+
+export const getCurrentTag = (state: ConnectState): ?TagEntity =>
+  state.tags.currentTag == null ? null : state.entities.tags[state.tags.currentTag];

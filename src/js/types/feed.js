@@ -3,6 +3,7 @@ import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
 export type FeedId = number;
+
 export type Feed = {
   id: FeedId;
   url: string;
@@ -11,10 +12,12 @@ export type Feed = {
   created_at: Date;
   updated_at: Date;
 };
+
 export type FeedEntity = $All<Feed, {
   isUpdating: boolean;
   isDeleting: boolean;
 }>;
+
 export type Feeds = Array<Feed>;
 
 export type FeedState = {

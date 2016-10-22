@@ -1,8 +1,15 @@
-/* eslint-disable */
+// @flow
 import { handleActions } from "redux-actions";
-import * as Tags from "../actions/tags";
+import * as T from "../actions/tags";
 
-const initialState = {
+import type {
+  TagState,
+
+  AddTagSuccessAction,
+  AddTagFailureAction
+} from "../types/tag";
+
+const initialState: TagState = {
   isFetching: false,
   isAdding: false,
   results: [],
@@ -13,41 +20,41 @@ const initialState = {
 
 export default handleActions({
   // Set current tag
-  [Tags.SET_CURRENT_TAG]: (state, { payload }) => ({
+  [T.SET_CURRENT_TAG]: (state, { payload }) => ({
     ...state,
     currentTag: payload
   }),
 
   // Drawer
-  [Tags.TAG_DRAWER_OPEN]: state => ({
+  [T.TAG_DRAWER_OPEN]: state => ({
     ...state,
     drawerOpen: true
   }),
 
-  [Tags.TAG_DRAWER_CLOSE]: state => ({
+  [T.TAG_DRAWER_CLOSE]: state => ({
     ...state,
     drawerOpen: false
   }),
 
-  [Tags.TAG_DRAWER_TOGGLE]: state => ({
+  [T.TAG_DRAWER_TOGGLE]: state => ({
     ...state,
     drawerOpen: !state.drawerOpen
   }),
 
 
   // Fetch
-  [Tags.FETCH_TAGS_REQUEST]: state => ({
+  [T.FETCH_TAGS_REQUEST]: state => ({
     ...state,
     isFetching: true
   }),
 
-  [Tags.FETCH_TAGS_SUCCESS]: (state, { payload }) => ({
+  [T.FETCH_TAGS_SUCCESS]: (state, { payload }) => ({
     ...state,
     isFetching: false,
     results: payload.result.tags
   }),
 
-  [Tags.FETCH_TAGS_FAILURE]: (state, { payload }) => ({
+  [T.FETCH_TAGS_FAILURE]: (state, { payload }) => ({
     ...state,
     isFetching: false,
     error: payload
@@ -55,38 +62,38 @@ export default handleActions({
 
 
   // Add
-  [Tags.ADD_TAG_REQUEST]: state => ({
+  [T.ADD_TAG_REQUEST]: (state: TagState): TagState => ({
     ...state,
     isAdding: true
   }),
 
-  [Tags.ADD_TAG_SUCCESS]: (state, { payload }) => ({
+  [T.ADD_TAG_SUCCESS]: (state: TagState, action: AddTagSuccessAction): TagState => ({
     ...state,
     isAdding: false,
-    results: [...state.results, payload.result.tag]
+    results: [...state.results, action.payload.result.tag]
   }),
 
-  [Tags.ADD_TAG_FAILURE]: (state, { payload }) => ({
+  [T.ADD_TAG_FAILURE]: (state: TagState, action: AddTagFailureAction): TagState => ({
     ...state,
     isAdding: false,
-    error: payload
+    error: action.payload
   }),
 
 
   // Update
-  [Tags.UPDATE_TAG_FAILURE]: (state, { payload }) => ({
+  [T.UPDATE_TAG_FAILURE]: (state, { payload }) => ({
     ...state,
     error: payload
   }),
 
 
   // Delete
-  [Tags.DELETE_TAG_SUCCESS]: (state, { payload }) => ({
+  [T.DELETE_TAG_SUCCESS]: (state, { payload }) => ({
     ...state,
     results: state.results.filter(id => id !== payload)
   }),
 
-  [Tags.DELETE_TAG_FAILURE]: (state, { payload }) => ({
+  [T.DELETE_TAG_FAILURE]: (state, { payload }) => ({
     ...state,
     error: payload
   })

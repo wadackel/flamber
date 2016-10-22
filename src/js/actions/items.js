@@ -99,7 +99,7 @@ export const starItemToggleRequest = createAction(STAR_ITEM_TOGGLE_REQUEST);
 export const starItemToggleSuccess = createAction(STAR_ITEM_TOGGLE_SUCCESS);
 export const starItemToggleFailure = createAction(STAR_ITEM_TOGGLE_FAILURE,
   identity,
-  (payload: Object, id: ItemId): Object => id
+  (payload: Object, id: ItemId): Object => ({ id })
 );
 
 

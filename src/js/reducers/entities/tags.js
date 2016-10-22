@@ -6,9 +6,11 @@ import TagSchema from "../../schemas/tag";
 import * as Items from "../../actions/items";
 import * as Tags from "../../actions/tags";
 
+
 function mergeEntities(state, entities) {
   return _.assign(state, entities || {});
 }
+
 
 export default handleActions({
   // Fetch

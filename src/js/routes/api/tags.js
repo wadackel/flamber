@@ -1,7 +1,8 @@
 import { Router } from "express";
-import Tag from "../../models/tag";
+import models from "../../models/";
 
-const router = Router();
+const { Tag } = models;
+const router = new Router();
 
 
 router.get("/", (req, res) => {
@@ -16,9 +17,15 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const { user, body: { name } } = req;
 
-  Tag.appendByUserAndName(user.id, name)
+  user.getTags({ where: { name }, attributes: ["id"] })
+    .then(ids => {
+      if (ids.length > 0) throw new Error(`"${name}" is already exists`);
+      return Promise.resolve();
+    })
+    .then(() => Tag.create({ name }))
+    .then(tag => user.addTag(tag).then(() => tag))
     .then(tag => {
-      res.json({ tag });
+      res.json({ tag: tag.get({ plain: true }) });
     })
     .catch(res.errorJSON);
 });

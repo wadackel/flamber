@@ -1,7 +1,16 @@
 // @flow
 import { identity } from "lodash";
 import { createAction } from "redux-actions";
-import type { TagId, Tag } from "../types/tag";
+
+import type {
+  TagId,
+  Tag,
+
+  AddTagSuccessPayload,
+  AddTagRequestAction,
+  AddTagSuccessAction,
+  AddTagFailureAction
+} from "../types/tag";
 
 
 // Current
@@ -30,13 +39,21 @@ export const fetchTagsFailure = createAction(FETCH_TAGS_FAILURE);
 
 
 // Add
-export const ADD_TAG_REQUEST: string = "ADD_TAG_REQUEST";
-export const ADD_TAG_SUCCESS: string = "ADD_TAG_SUCCESS";
-export const ADD_TAG_FAILURE: string = "ADD_TAG_FAILURE";
+export const ADD_TAG_REQUEST = "ADD_TAG_REQUEST";
+export const ADD_TAG_SUCCESS = "ADD_TAG_SUCCESS";
+export const ADD_TAG_FAILURE = "ADD_TAG_FAILURE";
 
-export const addTagRequest = createAction(ADD_TAG_REQUEST);
-export const addTagSuccess = createAction(ADD_TAG_SUCCESS);
-export const addTagFailure = createAction(ADD_TAG_FAILURE);
+export function addTagRequest(name: string): AddTagRequestAction {
+  return { type: ADD_TAG_REQUEST, payload: name };
+}
+
+export function addTagSuccess(payload: AddTagSuccessPayload): AddTagSuccessAction {
+  return { type: ADD_TAG_SUCCESS, payload };
+}
+
+export function addTagFailure(error: Error): AddTagFailureAction {
+  return { type: ADD_TAG_FAILURE, payload: error, error: true };
+}
 
 
 // Update
