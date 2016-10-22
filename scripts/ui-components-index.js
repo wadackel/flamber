@@ -1,8 +1,6 @@
-"use strict";
-
-const fs = require("fs");
-const path = require("path");
-const glob = require("glob");
+import * as fs from "fs";
+import * as path from "path";
+import glob from "glob";
 
 const globPath = "./src/js/components/ui/**/*.js";
 const globIgnorePath = [
@@ -21,5 +19,5 @@ glob(globPath, { ignore: globIgnorePath }, (err, files) => {
 
   const result = fs.readFileSync(writePath, { encoding: "utf8" });
 
-  console.log(result); // eslint-disable-line no-console
+  console.log(result);
 });

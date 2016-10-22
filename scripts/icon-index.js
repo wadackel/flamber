@@ -1,8 +1,6 @@
-"use strict";
-
-const fs = require("fs");
-const path = require("path");
-const glob = require("glob");
+import * as fs from "fs";
+import * as path from "path";
+import glob from "glob";
 
 const globPath = "./src/js/components/svg-icons/*Icon.js";
 const writePath = "./src/js/components/svg-icons/index.js";
