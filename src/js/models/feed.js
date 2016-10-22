@@ -6,7 +6,12 @@ import type { XMLData } from "../utils/request-xml";
 
 export default function(sequelize: any, DataTypes: any) {
   const Feed = sequelize.define("Feed", {
-    url: DataTypes.STRING,
+    url: {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: true
+      }
+    },
     name: DataTypes.STRING,
     favicon: DataTypes.STRING
   }, {

@@ -19,7 +19,12 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const { user, body: { url } } = req;
 
-  Feed.createByURL(url)
+  user.getFeeds({ where: { url }, attributes: ["id"] })
+    .then(ids => {
+      if (ids.length > 0) throw new Error(`"${url}" is already exists`);
+      return Promise.resolve();
+    })
+    .then(() => Feed.createByURL(url))
     .then(feed => user.addFeed(feed).then(() => feed))
     .then(feed => {
       res.json({ feed: feed.get({ plain: true }) });
