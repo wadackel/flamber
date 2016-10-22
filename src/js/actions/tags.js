@@ -56,17 +56,17 @@ export const ADD_TAG_REQUEST = "ADD_TAG_REQUEST";
 export const ADD_TAG_SUCCESS = "ADD_TAG_SUCCESS";
 export const ADD_TAG_FAILURE = "ADD_TAG_FAILURE";
 
-export function addTagRequest(name: string): AddTagRequestAction {
-  return { type: ADD_TAG_REQUEST, payload: name };
-}
+export const addTagRequest = (name: string): AddTagRequestAction => (
+  { type: ADD_TAG_REQUEST, payload: name }
+);
 
-export function addTagSuccess(payload: AddTagSuccessPayload): AddTagSuccessAction {
-  return { type: ADD_TAG_SUCCESS, payload };
-}
+export const addTagSuccess = (payload: AddTagSuccessPayload): AddTagSuccessAction => (
+  { type: ADD_TAG_SUCCESS, payload }
+);
 
-export function addTagFailure(error: Error): AddTagFailureAction {
-  return { type: ADD_TAG_FAILURE, payload: error, error: true };
-}
+export const addTagFailure = (error: Error): AddTagFailureAction => (
+  { type: ADD_TAG_FAILURE, payload: error, error: true }
+);
 
 
 // Update
