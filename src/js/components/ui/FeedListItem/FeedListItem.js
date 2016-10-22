@@ -10,6 +10,7 @@ const b = bem("feed-list-item");
 
 type Props = {
   className?: string;
+  processing?: boolean;
   index: number;
   value: any;
   name: React$Element<any>;
@@ -36,18 +37,20 @@ export default class FeedListItem extends Component {
       className,
       name,
       url,
+      processing, // eslint-disable-line no-unused-vars
       onDelete, // eslint-disable-line no-unused-vars
       ...props
     } = this.props;
 
     return <ListItem
       {...props}
+      processing={processing}
       className={mergeClassNames(b(), className)}
       primary={name}
       secondary={<a href={url} target="_blank">{url}</a>}
       clickable={false}
       meta={
-        <ul className={b("meta")()}>
+        <ul className={b("meta", { processing })()}>
           <li className={b("meta__item")()}>
             <IconButton
               icon={<ExternalLinkIcon />}
@@ -55,12 +58,12 @@ export default class FeedListItem extends Component {
               target="_blank"
             />
           </li>
-          <li className={b("meta__item")()}>
+          {!processing && <li className={b("meta__item")()}>
             <IconButton
               icon={<CloseIcon />}
               onClick={this.handleDeleteClick}
             />
-          </li>
+          </li>}
         </ul>
       }
     />;

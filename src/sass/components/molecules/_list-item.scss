@@ -84,7 +84,7 @@
   }
 
   &__button {
-    @include button-extend-all;
+    @include button-styles;
     display: block;
     border-radius: 0;
     background-color: $gray;

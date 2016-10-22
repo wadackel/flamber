@@ -7,11 +7,19 @@
     }
   }
 
+  .spinner {
+    right: 25px;
+  }
+
   &__meta {
     @include absolute(50%, 15px, auto, auto, 50);
     margin: -20px 0 0;
     padding: 0;
     list-style: none;
+
+    &--processing {
+      padding-right: 45px;
+    }
 
     &__item {
       display: inline-block;

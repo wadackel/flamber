@@ -23,5 +23,13 @@ Basic:
     onClick={console.log}
     onDelete={console.log}
   />
+  <FeedListItem
+    processing
+    name="Title 4"
+    url="http://example.com"
+    value={4}
+    onClick={console.log}
+    onDelete={console.log}
+  />
 </FeedList>
 ```
