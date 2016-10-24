@@ -6,6 +6,12 @@ import type {
   TagId,
   Tag,
 
+  SetCurrentTagAction,
+
+  TagDrawerOpenAction,
+  TagDrawerCloseAction,
+  TagDrawerToggleAction,
+
   FetchTagsSuccessPayload,
   FetchTagsRequestAction,
   FetchTagsSuccessAction,
@@ -19,18 +25,20 @@ import type {
 
 
 // Current
-export const SET_CURRENT_TAG: string = "SET_CURRENT_TAG";
-export const setCurrentTag = createAction(SET_CURRENT_TAG);
+export const SET_CURRENT_TAG = "SET_CURRENT_TAG";
+export const setCurrentTag = (id: ?TagId): SetCurrentTagAction => (
+  { type: SET_CURRENT_TAG, payload: id }
+);
 
 
 // Drawer
-export const TAG_DRAWER_OPEN: string = "TAG_DRAWER_OPEN";
-export const TAG_DRAWER_CLOSE: string = "TAG_DRAWER_CLOSE";
-export const TAG_DRAWER_TOGGLE: string = "TAG_DRAWER_TOGGLE";
+export const TAG_DRAWER_OPEN = "TAG_DRAWER_OPEN";
+export const TAG_DRAWER_CLOSE = "TAG_DRAWER_CLOSE";
+export const TAG_DRAWER_TOGGLE = "TAG_DRAWER_TOGGLE";
 
-export const tagDrawerOpen = createAction(TAG_DRAWER_OPEN);
-export const tagDrawerClose = createAction(TAG_DRAWER_CLOSE);
-export const tagDrawerToggle = createAction(TAG_DRAWER_TOGGLE);
+export const tagDrawerOpen = (): TagDrawerOpenAction => ({ type: TAG_DRAWER_OPEN });
+export const tagDrawerClose = (): TagDrawerCloseAction => ({ type: TAG_DRAWER_CLOSE });
+export const tagDrawerToggle = (): TagDrawerToggleAction => ({ type: TAG_DRAWER_TOGGLE });
 
 
 // Fetch

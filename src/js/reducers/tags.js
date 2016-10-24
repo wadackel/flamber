@@ -5,6 +5,8 @@ import * as T from "../actions/tags";
 import type {
   TagState,
 
+  SetCurrentTagAction,
+
   FetchTagsSuccessAction,
   FetchTagsFailureAction,
 
@@ -22,24 +24,25 @@ const initialState: TagState = {
 };
 
 export default handleActions({
-  // Set current tag
-  [T.SET_CURRENT_TAG]: (state, { payload }) => ({
+  // Current
+  [T.SET_CURRENT_TAG]: (state: TagState, action: SetCurrentTagAction) => ({
     ...state,
-    currentTag: payload
+    currentTag: action.payload
   }),
 
+
   // Drawer
-  [T.TAG_DRAWER_OPEN]: state => ({
+  [T.TAG_DRAWER_OPEN]: (state: TagState): TagState => ({
     ...state,
     drawerOpen: true
   }),
 
-  [T.TAG_DRAWER_CLOSE]: state => ({
+  [T.TAG_DRAWER_CLOSE]: (state: TagState): TagState => ({
     ...state,
     drawerOpen: false
   }),
 
-  [T.TAG_DRAWER_TOGGLE]: state => ({
+  [T.TAG_DRAWER_TOGGLE]: (state: TagState): TagState => ({
     ...state,
     drawerOpen: !state.drawerOpen
   }),

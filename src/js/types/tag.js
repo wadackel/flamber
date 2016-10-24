@@ -32,6 +32,16 @@ export type TagState = {
 export type TagEntitiesState = { [key: TagId]: TagEntity };
 
 
+// Current
+export type SetCurrentTagAction = PayloadAction<"SET_CURRENT_TAG", ?TagId>;
+
+
+// Drawer
+export type TagDrawerOpenAction = Action<"TAG_DRAWER_OPEN">;
+export type TagDrawerCloseAction = Action<"TAG_DRAWER_CLOSE">;
+export type TagDrawerToggleAction = Action<"TAG_DRAWER_TOGGLE">;
+
+
 // Fetch
 export type FetchTagsSuccessPayload = ArrayNormalized<"tags", TagEntity, TagId>;
 export type FetchTagsRequestAction = Action<"FETCH_TAGS_REQUEST">;
