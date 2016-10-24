@@ -54,3 +54,12 @@ export type AddTagSuccessPayload = SingleNormalized<"tags", "tag", TagEntity, Ta
 export type AddTagRequestAction = PayloadAction<"ADD_TAG_REQUEST", string>;
 export type AddTagSuccessAction = PayloadAction<"ADD_TAG_SUCCESS", AddTagSuccessPayload>;
 export type AddTagFailureAction = ErrorAction<"ADD_TAG_FAILURE", Error>;
+
+
+// Update
+export type UpdateTagRequestPayload = { id: TagId; name: string; };
+export type UpdateTagSuccessPayload = SingleNormalized<"tags", "tag", TagEntity, TagId>;
+export type UpdateTagIfNeededAction = PayloadAction<"UPDATE_TAG_IF_NEEDED", UpdateTagRequestPayload>;
+export type UpdateTagRequestAction = PayloadAction<"UPDATE_TAG_REQUEST", UpdateTagRequestPayload>;
+export type UpdateTagSuccessAction = PayloadAction<"UPDATE_TAG_SUCCESS", UpdateTagSuccessPayload>;
+export type UpdateTagFailureAction = ErrorAction<"UPDATE_TAG_FAILURE", Error>;

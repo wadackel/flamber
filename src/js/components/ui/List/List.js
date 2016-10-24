@@ -41,7 +41,7 @@ export default class List extends Component {
     const hasIcon = childArray.filter(item => React.isValidElement(item.props.icon)).length > 0;
     const cloneChildren = childArray.map((item, index) =>
       React.cloneElement(item, {
-        key: item.props.primary,
+        key: item.props.value || item.props.primary,
         index
       })
     );

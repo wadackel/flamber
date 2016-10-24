@@ -65,10 +65,7 @@ export class TagDrawerContainer extends Component {
   }
 
   handleTagUpdate(item: ListItem, text: string) {
-    this.props.dispatch(TagActions.updateTagRequest({
-      id: item.props.value,
-      name: text
-    }));
+    this.props.dispatch(TagActions.updateTagIfNeeded(item.props.value, text));
   }
 
   handleTagDelete(item: ListItem) {

@@ -6,12 +6,11 @@ import type {
   TagState,
 
   SetCurrentTagAction,
-
   FetchTagsSuccessAction,
   FetchTagsFailureAction,
-
   AddTagSuccessAction,
-  AddTagFailureAction
+  AddTagFailureAction,
+  UpdateTagFailureAction
 } from "../types/tag";
 
 const initialState: TagState = {
@@ -87,9 +86,9 @@ export default handleActions({
 
 
   // Update
-  [T.UPDATE_TAG_FAILURE]: (state, { payload }) => ({
+  [T.UPDATE_TAG_FAILURE]: (state: TagState, action: UpdateTagFailureAction): TagState => ({
     ...state,
-    error: payload
+    error: action.payload
   }),
 
 

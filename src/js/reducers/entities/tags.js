@@ -12,7 +12,10 @@ import type {
   TagEntitiesState,
 
   FetchTagsSuccessAction,
-  AddTagSuccessAction
+  AddTagSuccessAction,
+  UpdateTagRequestAction,
+  UpdateTagSuccessAction,
+  UpdateTagFailureAction
 } from "../../types/tag";
 
 
@@ -20,11 +23,11 @@ function mergeEntities(state: TagEntitiesState, entities: ?TagEntitiesState): Ta
   return assign(state, entities || {});
 }
 
-// function mapEntities(state: TagEntitiesState, ids: Array<TagId>, iteratee: Function): TagEntitiesState {
-//   return mapValues(state, (entity: TagEntity) =>
-//     ids.indexOf(entity.id) > -1 ? iteratee(entity) : entity
-//   );
-// }
+function mapEntities(state: TagEntitiesState, ids: Array<TagId>, iteratee: Function): TagEntitiesState {
+  return mapValues(state, (entity: TagEntity) =>
+    ids.indexOf(entity.id) > -1 ? iteratee(entity) : entity
+  );
+}
 
 function removeEntities(state: TagEntitiesState, ids: Array<TagId>): TagEntitiesState {
   return pickBy(state, (entity: TagEntity, id: TagId) =>
@@ -35,40 +38,38 @@ function removeEntities(state: TagEntitiesState, ids: Array<TagId>): TagEntities
 
 export default handleActions({
   // Fetch
-  [Tags.FETCH_TAGS_SUCCESS]: (state: TagEntitiesState, action: FetchTagsSuccessAction) => (
+  [Tags.FETCH_TAGS_SUCCESS]: (state: TagEntitiesState, action: FetchTagsSuccessAction): TagEntitiesState => (
     mergeEntities(state, action.payload.entities.tags)
   ),
 
 
   // Add
-  [Tags.ADD_TAG_SUCCESS]: (state: TagEntitiesState, action: AddTagSuccessAction) => (
+  [Tags.ADD_TAG_SUCCESS]: (state: TagEntitiesState, action: AddTagSuccessAction): TagEntitiesState => (
     mergeEntities(state, action.payload.entities.tags)
   ),
 
 
   // Update
-  [Tags.UPDATE_TAG_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        ...payload,
-        isUpdaing: false
-      }
-    )
+  [Tags.UPDATE_TAG_REQUEST]: (state: TagEntitiesState, action: UpdateTagRequestAction): TagEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: TagEntity): TagEntity => ({
+      ...entity,
+      ...action.payload,
+      isUpdating: false
+    }))
   ),
 
-  [Tags.UPDATE_TAG_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.tags)
+  [Tags.UPDATE_TAG_SUCCESS]: (state: TagEntitiesState, action: UpdateTagSuccessAction): TagEntitiesState => (
+    mergeEntities(state, action.payload.entities.tags)
   ),
 
-  [Tags.UPDATE_TAG_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.entity.id ? entity : {
+  [Tags.UPDATE_TAG_FAILURE]: (state: TagEntitiesState, action: UpdateTagFailureAction): TagEntitiesState => (
+    action.meta
+      ? mapEntities(state, [action.meta.id], (entity: TagEntity): TagEntity => ({
         ...entity,
-        ...meta.entity,
+        ...action.meta,
         isUpdating: false
-      }
-    )
+      }))
+      : state
   ),
 
 

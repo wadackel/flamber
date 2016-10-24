@@ -32,11 +32,20 @@ router.post("/", (req, res) => {
 
 
 router.put("/", (req, res) => {
-  const { user, body } = req;
+  const { user, body: { id, ...props } } = req;
 
-  Tag.updateByUserAndIdFromObject(user.id, body.id, body)
+  user.countTags({ where: { name: props.name } })
+    .then(count => {
+      if (count > 0) throw new Error("Invalid parameter");
+      return user.getTags({ where: { id } });
+    })
+    .then(tags => {
+      if (tags.length === 0) throw new Error("Invalid parameter");
+      return tags[0];
+    })
+    .then(tag => tag.update(props))
     .then(tag => {
-      res.json({ tag });
+      res.json({ tag: tag.get({ plain: true }) });
     })
     .catch(res.errorJSON);
 });
