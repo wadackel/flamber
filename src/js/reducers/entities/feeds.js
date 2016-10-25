@@ -27,8 +27,8 @@ function mapEntities(state: FeedEntitiesState, ids: Array<FeedId>, iteratee: Fun
 }
 
 function removeEntities(state: FeedEntitiesState, ids: Array<FeedId>): FeedEntitiesState {
-  return pickBy(state, (entity: FeedEntity, id: FeedId) =>
-    ids.indexOf(id) === -1
+  return pickBy(state, (entity: FeedEntity): boolean =>
+    ids.indexOf(entity.id) === -1
   );
 }
 
@@ -59,7 +59,7 @@ export default handleActions({
   ),
 
   [F.DELETE_FEED_FAILURE]: (state: FeedEntitiesState, action: DeleteFeedFailureAction): FeedEntitiesState => (
-    mapEntities(state, [action.meta ? action.meta.id : -1], (entity: FeedEntity) => ({
+    mapEntities(state, [action.meta ? action.meta.id : ""], (entity: FeedEntity) => ({
       ...entity,
       isDeleting: false
     }))

@@ -2,7 +2,7 @@
 import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
-export type TagId = number;
+export type TagId = string; // UUID
 
 export type Tag = {
   id: TagId;

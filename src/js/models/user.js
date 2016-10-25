@@ -5,6 +5,11 @@ import * as jwtUtils from "../utils/jwt";
 
 export default function(sequelize: any, DataTypes: any) {
   const User = sequelize.define("User", {
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
+    },
     name: DataTypes.STRING,
     photo: DataTypes.STRING,
     provider: DataTypes.STRING,

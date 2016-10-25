@@ -6,6 +6,11 @@ import type { XMLData } from "../utils/request-xml";
 
 export default function(sequelize: any, DataTypes: any) {
   const Feed = sequelize.define("Feed", {
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
+    },
     url: {
       type: DataTypes.STRING,
       validate: {

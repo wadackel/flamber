@@ -27,14 +27,14 @@ function mergeEntities(state: TagEntitiesState, entities: ?TagEntitiesState): Ta
 }
 
 function mapEntities(state: TagEntitiesState, ids: Array<TagId>, iteratee: Function): TagEntitiesState {
-  return mapValues(state, (entity: TagEntity) =>
+  return mapValues(state, (entity: TagEntity): TagEntity =>
     ids.indexOf(entity.id) > -1 ? iteratee(entity) : entity
   );
 }
 
 function removeEntities(state: TagEntitiesState, ids: Array<TagId>): TagEntitiesState {
-  return pickBy(state, (entity: TagEntity, id: TagId) =>
-    ids.indexOf(id) === -1
+  return pickBy(state, (entity: TagEntity): boolean =>
+    ids.indexOf(entity.id) === -1
   );
 }
 
