@@ -15,7 +15,10 @@ import type {
   AddTagSuccessAction,
   UpdateTagRequestAction,
   UpdateTagSuccessAction,
-  UpdateTagFailureAction
+  UpdateTagFailureAction,
+  DeleteTagRequestAction,
+  DeleteTagSuccessAction,
+  DeleteTagFailureAction
 } from "../../types/tag";
 
 
@@ -74,26 +77,24 @@ export default handleActions({
 
 
   // Delete
-  [Tags.DELETE_TAG_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload ? entity : {
-        ...entity,
-        isDeleting: true
-      }
-    )
+  [Tags.DELETE_TAG_REQUEST]: (state: TagEntitiesState, action: DeleteTagRequestAction): TagEntitiesState => (
+    mapEntities(state, [action.payload], (entity: TagEntity) => ({
+      ...entity,
+      isDeleting: true
+    }))
   ),
 
-  [Tags.DELETE_TAG_SUCCESS]: (state, { payload }) => (
-    removeEntities(state, [payload])
+  [Tags.DELETE_TAG_SUCCESS]: (state: TagEntitiesState, action: DeleteTagSuccessAction): TagEntitiesState => (
+    removeEntities(state, [action.payload.result.tag])
   ),
 
-  [Tags.DELETE_TAG_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
+  [Tags.DELETE_TAG_FAILURE]: (state: TagEntitiesState, action: DeleteTagFailureAction): TagEntitiesState => (
+    action.meta
+      ? mapEntities(state, [action.meta], (entity: TagEntity) => ({
         ...entity,
         isDeleting: false
-      }
-    )
+      }))
+      : state
   ),
 
 

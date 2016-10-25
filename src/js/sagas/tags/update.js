@@ -6,7 +6,7 @@ import TagSchema from "../../schemas/tag";
 import * as Services from "../../services/tags";
 import { showNotify } from "../../actions/notifications";
 import * as T from "../../actions/tags";
-import { getTagEntityByName } from "../../selectors/tags";
+import { getTagEntityById, getTagEntityByName } from "../../selectors/tags";
 
 import type {
   Tag,
@@ -18,9 +18,13 @@ import type {
 
 
 export function *handleUpdateTagIfNeeded(action: UpdateTagIfNeededAction): Generator<any, *, *> {
-  const entity: ?TagEntity = yield select(getTagEntityByName, action.payload.name);
+  const entity: ?TagEntity = yield select(getTagEntityById, action.payload.id);
 
-  if (entity) {
+  if (entity && entity.name === action.payload.name) return;
+
+  const entityFromName: ?TagEntity = yield select(getTagEntityByName, action.payload.name);
+
+  if (entityFromName) {
     yield put(T.updateTagFailure(new Error(`${action.payload.name} は既に登録済みです`)));
 
   } else {

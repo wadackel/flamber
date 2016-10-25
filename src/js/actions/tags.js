@@ -1,7 +1,4 @@
 // @flow
-import { identity } from "lodash";
-import { createAction } from "redux-actions";
-
 import type {
   TagId,
 
@@ -25,7 +22,12 @@ import type {
   UpdateTagIfNeededAction,
   UpdateTagRequestAction,
   UpdateTagSuccessAction,
-  UpdateTagFailureAction
+  UpdateTagFailureAction,
+
+  DeleteTagSuccessPayload,
+  DeleteTagRequestAction,
+  DeleteTagSuccessAction,
+  DeleteTagFailureAction
 } from "../types/tag";
 
 
@@ -106,13 +108,18 @@ export const updateTagFailure = (error: Error, props: ?{ id: TagId; name: string
 
 
 // Delete
-export const DELETE_TAG_REQUEST: string = "DELETE_TAG_REQUEST";
-export const DELETE_TAG_SUCCESS: string = "DELETE_TAG_SUCCESS";
-export const DELETE_TAG_FAILURE: string = "DELETE_TAG_FAILURE";
+export const DELETE_TAG_REQUEST = "DELETE_TAG_REQUEST";
+export const DELETE_TAG_SUCCESS = "DELETE_TAG_SUCCESS";
+export const DELETE_TAG_FAILURE = "DELETE_TAG_FAILURE";
 
-export const deleteTagRequest = createAction(DELETE_TAG_REQUEST);
-export const deleteTagSuccess = createAction(DELETE_TAG_SUCCESS);
-export const deleteTagFailure = createAction(DELETE_TAG_FAILURE,
-  identity,
-  (payload: Object, id: TagId): Object => ({ id })
+export const deleteTagRequest = (id: TagId): DeleteTagRequestAction => (
+  { type: DELETE_TAG_REQUEST, payload: id }
+);
+
+export const deleteTagSuccess = (payload: DeleteTagSuccessPayload): DeleteTagSuccessAction => (
+  { type: DELETE_TAG_SUCCESS, payload }
+);
+
+export const deleteTagFailure = (error: Error, id: ?TagId): DeleteTagFailureAction => (
+  { type: DELETE_TAG_FAILURE, payload: error, error: true, meta: id }
 );

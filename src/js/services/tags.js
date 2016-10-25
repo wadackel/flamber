@@ -17,6 +17,6 @@ export function updateTag(payload: UpdateTagRequestPayload): Promise<{ tag: Tag 
   return apiClient.put("/", { body: payload });
 }
 
-export function deleteTag(id: TagId) {
+export function deleteTag(id: TagId): Promise<{ tag: Tag }> {
   return apiClient.delete("/", { body: { id } });
 }

@@ -63,3 +63,10 @@ export type UpdateTagIfNeededAction = PayloadAction<"UPDATE_TAG_IF_NEEDED", Upda
 export type UpdateTagRequestAction = PayloadAction<"UPDATE_TAG_REQUEST", UpdateTagRequestPayload>;
 export type UpdateTagSuccessAction = PayloadAction<"UPDATE_TAG_SUCCESS", UpdateTagSuccessPayload>;
 export type UpdateTagFailureAction = ErrorAction<"UPDATE_TAG_FAILURE", Error>;
+
+
+// Delete
+export type DeleteTagSuccessPayload = SingleNormalized<"tags", "tag", TagEntity, TagId>;
+export type DeleteTagRequestAction = PayloadAction<"DELETE_TAG_REQUEST", TagId>;
+export type DeleteTagSuccessAction = PayloadAction<"DELETE_TAG_SUCCESS", DeleteTagSuccessPayload>;
+export type DeleteTagFailureAction = ErrorAction<"DELETE_TAG_FAILURE", Error>;

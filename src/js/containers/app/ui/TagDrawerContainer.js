@@ -126,9 +126,9 @@ export class TagDrawerContainer extends Component {
             processing={entity.isDeleting || entity.isUpdating}
             primary={entity.name}
             editable={true}
-            onComplete={this.handleTagUpdate}
             onClick={this.handleTagClick}
-            onRequestDelete={this.handleTagDelete}
+            onComplete={this.handleTagUpdate}
+            onDelete={this.handleTagDelete}
           />
         )}
       </List>

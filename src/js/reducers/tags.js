@@ -10,7 +10,9 @@ import type {
   FetchTagsFailureAction,
   AddTagSuccessAction,
   AddTagFailureAction,
-  UpdateTagFailureAction
+  UpdateTagFailureAction,
+  DeleteTagSuccessAction,
+  DeleteTagFailureAction
 } from "../types/tag";
 
 const initialState: TagState = {
@@ -93,13 +95,13 @@ export default handleActions({
 
 
   // Delete
-  [T.DELETE_TAG_SUCCESS]: (state, { payload }) => ({
+  [T.DELETE_TAG_SUCCESS]: (state: TagState, action: DeleteTagSuccessAction): TagState => ({
     ...state,
-    results: state.results.filter(id => id !== payload)
+    results: state.results.filter(id => id !== action.payload.result.tag)
   }),
 
-  [T.DELETE_TAG_FAILURE]: (state, { payload }) => ({
+  [T.DELETE_TAG_FAILURE]: (state: TagState, action: DeleteTagFailureAction): TagState => ({
     ...state,
-    error: payload
+    error: action.payload
   })
 }, initialState);

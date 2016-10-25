@@ -54,9 +54,14 @@ router.put("/", (req, res) => {
 router.delete("/", (req, res) => {
   const { user, body: { id } } = req;
 
-  Tag.removeByUserAndId(user.id, id)
+  user.getTags({ where: { id } })
+    .then(tags => {
+      if (tags.length === 0) throw new Error("Invalid parameter");
+      return tags[0];
+    })
+    .then(tag => tag.destroy().then(() => tag))
     .then(tag => {
-      res.json({ tag });
+      res.json({ tag: tag.get({ plain: true }) });
     })
     .catch(res.errorJSON);
 });
