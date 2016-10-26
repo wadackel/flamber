@@ -1,12 +1,19 @@
 // @flow
-import { identity } from "lodash";
-import { createAction } from "redux-actions";
+import type {
+  ShowNotifyPayload,
+  ShowNotifyAction,
+  HideNotifyAction,
+  NotifyAction
+} from "../types/notification";
 
-export const SHOW_NOTIFY: string = "SHOW_NOTIFY";
-export const showNotify = createAction(SHOW_NOTIFY, identity, (payload: Object, action: any) => action);
 
-export const HIDE_NOTIFY: string = "HIDE_NOTIFY";
-export const hideNotify = createAction(HIDE_NOTIFY);
+export const SHOW_NOTIFY = "SHOW_NOTIFY";
+export const showNotify = (text: string, action?: ShowNotifyPayload): ShowNotifyAction => (
+  { type: SHOW_NOTIFY, payload: text, meta: action }
+);
 
-export const NOTIFY_ACTION: string = "NOTIFY_ACTION";
-export const notifyAction = createAction(NOTIFY_ACTION);
+export const HIDE_NOTIFY = "HIDE_NOTIFY";
+export const hideNotify = (): HideNotifyAction => ({ type: HIDE_NOTIFY });
+
+export const NOTIFY_ACTION = "NOTIFY_ACTION";
+export const notifyAction = (): NotifyAction => ({ type: NOTIFY_ACTION });

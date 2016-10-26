@@ -1,16 +1,21 @@
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as NotificationActions from "../../../actions/notifications";
 import { Snackbar } from "../../../components/ui/";
 
-export class NotificationsContainer extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func,
-    notifications: PropTypes.object
-  };
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
+import type { NotificationState } from "../../../types/notification";
 
-  constructor(props, context) {
+type Props = {
+  dispatch: Dispatch;
+  notifications: NotificationState;
+};
+
+export class NotificationsContainer extends Component {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
@@ -28,11 +33,13 @@ export class NotificationsContainer extends Component {
     const props = {
       open: !!message,
       onRequestClose: this.handleClose,
-      message: message || ""
+      message: message || "",
+      action: null,
+      onActionClick: () => {}
     };
 
     if (action) {
-      props.action = action.text;
+      props.action = action.payload;
       props.onActionClick = this.handleActionClick;
     }
 
@@ -45,10 +52,7 @@ export class NotificationsContainer extends Component {
 }
 
 export default connect(
-  state => ({
+  (state: ConnectState) => ({
     notifications: state.notifications
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(NotificationsContainer);

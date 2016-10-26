@@ -1,4 +1,5 @@
 // @flow
+import type { TypeMap } from "./map";
 import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
@@ -27,7 +28,7 @@ export type FeedState = {
   error: ?Error;
 };
 
-export type FeedEntitiesState = { [key: FeedId]: FeedEntity };
+export type FeedEntitiesState = TypeMap<FeedId, FeedEntity>;
 
 
 // Fetch
