@@ -1,8 +1,9 @@
 import { Router } from "express";
-import Board from "../../models/board";
+import models from "../../models/";
 
 
-const router = Router();
+const { Board } = models;
+const router = new Router();
 
 
 router.get("/", (req, res) => {
@@ -15,14 +16,12 @@ router.get("/", (req, res) => {
 
 
 router.post("/", (req, res) => {
-  const board = new Board({
-    user: req.user.id,
-    name: req.body.name
-  });
+  const { user, body: { name, secret } } = req;
 
-  board.save()
-    .then(savedBoard => {
-      res.json({ board: savedBoard });
+  Board.create({ name, secret })
+    .then(board => user.addBoard(board).then(() => board))
+    .then(board => {
+      res.json({ board: board.get({ plain: true }) });
     })
     .catch(res.errorJSON);
 });

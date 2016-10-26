@@ -1,6 +1,6 @@
-/* eslint-disable */
+// TODO: flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../../helpers/bem";
@@ -21,29 +21,39 @@ import {
   Spinner
 } from "../../../components/ui/";
 
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
+import type {
+  BoardId,
+  BoardEntities,
+  BoardState
+} from "../../../types/board";
+
 const b = bem("boards-page");
 
+type Props = {
+  dispatch: Dispatch;
+  boards: BoardState;
+  boardEntities: BoardEntities;
+  selectedBoardEntities: any; // TODO
+  itemEntities: any; // TODO
+};
+
 export class BoardsPage extends Component {
-  static propTypes = {
-  };
-
-  static defaultProps = {
-  };
-
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
-  handleEdit(id) {
+  handleEdit(id: BoardId) {
     this.props.dispatch(push(`/app/board/${id}`));
   }
 
-  handleSelect(id) {
+  handleSelect(id: BoardId) {
     this.props.dispatch(BoardActions.selectBoardToggle(id));
   }
 
-  handleDelete(id) {
+  handleDelete(id: BoardId) {
     this.props.dispatch(BoardActions.deleteBoardRequest(id));
   }
 
@@ -51,11 +61,13 @@ export class BoardsPage extends Component {
     this.props.dispatch(BoardActions.selectedBoardsDeleteRequest());
   }
 
-  handleOrderByChange(orderBy) {
+  // TODO
+  handleOrderByChange(orderBy: string) {
     this.props.dispatch(SettingActions.updateBoardsOrderByRequest(orderBy));
   }
 
-  handleOrderChange(order) {
+  // TODO
+  handleOrderChange(order: string) {
     this.props.dispatch(SettingActions.updateBoardsOrderRequest(order));
   }
 
@@ -94,16 +106,20 @@ export class BoardsPage extends Component {
 
   render() {
     const {
-      settings: {
-        boardsLayout,
-        boardsOrderBy,
-        boardsOrder
-      },
-      boards,
+      // settings: {
+      //   boardsLayout,
+      //   boardsOrderBy,
+      //   boardsOrder
+      // },
       boardEntities,
       selectedBoardEntities,
       itemEntities
     } = this.props;
+
+    // TODO
+    const boardsLayout = "grid";
+    const boardsOrder = "created_at";
+    const boardsOrderBy = "asc";
 
     const hasSelectedBoard = selectedBoardEntities.length > 0;
 
@@ -149,7 +165,7 @@ export class BoardsPage extends Component {
               onEdit={this.handleEdit}
               onSelect={this.handleSelect}
               onDelete={this.handleDelete}
-            />
+            />;
           })}
         </CardGroup>
 
@@ -170,19 +186,12 @@ export class BoardsPage extends Component {
   }
 }
 
+// TODO
 export default connect(
-  state => {
-    const { boardsOrder, boardsOrderBy } = state.settings;
-
-    return {
-      settings: state.settings,
-      boards: state.boards,
-      boardEntities: getBoardEntities(state, boardsOrderBy, boardsOrder),
-      selectedBoardEntities: getSelectedBoardEntities(state),
-      itemEntities: state.entities.items
-    };
-  },
-  null,
-  null,
-  { pure: false }
+  (state: ConnectState) => ({
+    boards: state.boards,
+    boardEntities: getBoardEntities(state, "created_at", "asc"),
+    selectedBoardEntities: getSelectedBoardEntities(state),
+    itemEntities: state.entities.items
+  })
 )(BoardsPage);

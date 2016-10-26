@@ -1,13 +1,28 @@
 // @flow
 import { identity } from "lodash";
 import { createAction } from "redux-actions";
-import type { Board, Boards } from "../types/board";
+
+import type {
+  BoardId,
+  Board,
+  Boards,
+
+  AddBoardDialogOpenAction,
+  AddBoardDialogCloseAction,
+
+  AddBoardSuccessPayload,
+  AddBoardRequestAction,
+  AddBoardSuccessAction,
+  AddBoardFailureAction,
+
+  GotoAddedBoardAction
+} from "../types/board";
 
 
 // Fetch
-export const FETCH_BOARDS_REQUEST: string = "FETCH_BOARDS_REQUEST";
-export const FETCH_BOARDS_SUCCESS: string = "FETCH_BOARDS_SUCCESS";
-export const FETCH_BOARDS_FAILURE: string = "FETCH_BOARDS_FAILURE";
+export const FETCH_BOARDS_REQUEST = "FETCH_BOARDS_REQUEST";
+export const FETCH_BOARDS_SUCCESS = "FETCH_BOARDS_SUCCESS";
+export const FETCH_BOARDS_FAILURE = "FETCH_BOARDS_FAILURE";
 
 export const fetchBoardsRequest = createAction(FETCH_BOARDS_REQUEST);
 export const fetchBoardsSuccess = createAction(FETCH_BOARDS_SUCCESS);
@@ -15,28 +30,41 @@ export const fetchBoardsFailure = createAction(FETCH_BOARDS_FAILURE);
 
 
 // Add (UI)
-export const ADD_BOARD_DIALOG_OPEN: string = "ADD_BOARD_DIALOG_OPEN";
-export const ADD_BOARD_DIALOG_CLOSE: string = "ADD_BOARD_DIALOG_CLOSE";
-export const ADD_BOARD_SNACKBAR_CLOSE: string = "ADD_BOARD_SNACKBAR_CLOSE";
+export const ADD_BOARD_DIALOG_OPEN = "ADD_BOARD_DIALOG_OPEN";
+export const ADD_BOARD_DIALOG_CLOSE = "ADD_BOARD_DIALOG_CLOSE";
 
-export const addBoardDialogOpen = createAction(ADD_BOARD_DIALOG_OPEN);
-export const addBoardDialogClose = createAction(ADD_BOARD_DIALOG_CLOSE);
-export const addBoardSnackbarClose = createAction(ADD_BOARD_SNACKBAR_CLOSE);
+export const addBoardDialogOpen = (): AddBoardDialogOpenAction => (
+  { type: ADD_BOARD_DIALOG_OPEN }
+);
+
+export const addBoardDialogClose = (): AddBoardDialogCloseAction => (
+  { type: ADD_BOARD_DIALOG_CLOSE }
+);
 
 
 // Add
-export const ADD_BOARD_REQUEST: string = "ADD_BOARD_REQUEST";
-export const ADD_BOARD_SUCCESS: string = "ADD_BOARD_SUCCESS";
-export const ADD_BOARD_FAILURE: string = "ADD_BOARD_FAILURE";
+export const ADD_BOARD_REQUEST = "ADD_BOARD_REQUEST";
+export const ADD_BOARD_SUCCESS = "ADD_BOARD_SUCCESS";
+export const ADD_BOARD_FAILURE = "ADD_BOARD_FAILURE";
 
-export const addBoardRequest = createAction(ADD_BOARD_REQUEST);
-export const addBoardSuccess = createAction(ADD_BOARD_SUCCESS);
-export const addBoardFailure = createAction(ADD_BOARD_FAILURE);
+export const addBoardRequest = (name: string, secret: boolean): AddBoardRequestAction => (
+  { type: ADD_BOARD_REQUEST, payload: { name, secret } }
+);
+
+export const addBoardSuccess = (payload: AddBoardSuccessPayload): AddBoardSuccessAction => (
+  { type: ADD_BOARD_SUCCESS, payload }
+);
+
+export const addBoardFailure = (error: Error): AddBoardFailureAction => (
+  { type: ADD_BOARD_FAILURE, payload: error, error: true }
+);
 
 
 // Goto added board
-export const GOTO_ADDED_BOARD: string = "GOTO_ADDED_BOARD";
-export const gotoAddedBoard = createAction(GOTO_ADDED_BOARD);
+export const GOTO_ADDED_BOARD = "GOTO_ADDED_BOARD";
+export const gotoAddedBoard = (id: BoardId): GotoAddedBoardAction => (
+  { type: GOTO_ADDED_BOARD, payload: id }
+);
 
 
 // Update
@@ -50,7 +78,7 @@ export const updateBoardRequest = createAction(UPDATE_BOARD_REQUEST);
 export const updateBoardSuccess = createAction(UPDATE_BOARD_SUCCESS);
 export const updateBoardFailure = createAction(UPDATE_BOARD_FAILURE,
   identity,
-  (payload: Object, entity: Boards): Object => entity
+  (payload: Object, entity: Boards): Array<any> => entity
 );
 
 

@@ -1,4 +1,5 @@
 // @flow
+import type { TypeMap } from "./map";
 import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
@@ -29,7 +30,11 @@ export type TagState = {
   drawerOpen: boolean;
 };
 
-export type TagEntitiesState = { [key: TagId]: TagEntity };
+export type TagEntitiesState = TypeMap<TagId, TagEntity>;
+
+
+type SingleTag = SingleNormalized<"tags", "tag", TagEntity, TagId>;
+type ArrayTag = ArrayNormalized<"tags", TagEntity, TagId>;
 
 
 // Current
@@ -43,14 +48,14 @@ export type TagDrawerToggleAction = Action<"TAG_DRAWER_TOGGLE">;
 
 
 // Fetch
-export type FetchTagsSuccessPayload = ArrayNormalized<"tags", TagEntity, TagId>;
+export type FetchTagsSuccessPayload = ArrayTag;
 export type FetchTagsRequestAction = Action<"FETCH_TAGS_REQUEST">;
 export type FetchTagsSuccessAction = PayloadAction<"FETCH_TAGS_SUCCESS", FetchTagsSuccessPayload>;
 export type FetchTagsFailureAction = ErrorAction<"FETCH_TAGS_FAILURE", Error>;
 
 
 // Add
-export type AddTagSuccessPayload = SingleNormalized<"tags", "tag", TagEntity, TagId>;
+export type AddTagSuccessPayload = SingleTag;
 export type AddTagRequestAction = PayloadAction<"ADD_TAG_REQUEST", string>;
 export type AddTagSuccessAction = PayloadAction<"ADD_TAG_SUCCESS", AddTagSuccessPayload>;
 export type AddTagFailureAction = ErrorAction<"ADD_TAG_FAILURE", Error>;
@@ -58,7 +63,7 @@ export type AddTagFailureAction = ErrorAction<"ADD_TAG_FAILURE", Error>;
 
 // Update
 export type UpdateTagRequestPayload = { id: TagId; name: string; };
-export type UpdateTagSuccessPayload = SingleNormalized<"tags", "tag", TagEntity, TagId>;
+export type UpdateTagSuccessPayload = SingleTag;
 export type UpdateTagIfNeededAction = PayloadAction<"UPDATE_TAG_IF_NEEDED", UpdateTagRequestPayload>;
 export type UpdateTagRequestAction = PayloadAction<"UPDATE_TAG_REQUEST", UpdateTagRequestPayload>;
 export type UpdateTagSuccessAction = PayloadAction<"UPDATE_TAG_SUCCESS", UpdateTagSuccessPayload>;
@@ -66,7 +71,7 @@ export type UpdateTagFailureAction = ErrorAction<"UPDATE_TAG_FAILURE", Error>;
 
 
 // Delete
-export type DeleteTagSuccessPayload = SingleNormalized<"tags", "tag", TagEntity, TagId>;
+export type DeleteTagSuccessPayload = SingleTag;
 export type DeleteTagRequestAction = PayloadAction<"DELETE_TAG_REQUEST", TagId>;
 export type DeleteTagSuccessAction = PayloadAction<"DELETE_TAG_SUCCESS", DeleteTagSuccessPayload>;
 export type DeleteTagFailureAction = ErrorAction<"DELETE_TAG_FAILURE", Error>;

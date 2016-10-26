@@ -23,6 +23,7 @@ export default function(sequelize: any, DataTypes: any) {
     classMethods: {
       associate(models) {
         User.hasOne(models.Option);
+        User.hasMany(models.Board);
         User.hasMany(models.Tag);
         User.hasMany(models.Feed);
       },

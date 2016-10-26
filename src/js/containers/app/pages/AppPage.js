@@ -1,15 +1,12 @@
-/* eslint-disable */
+// TODO: flow
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { push } from "react-router-redux";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
-import * as TagActions from "../../../actions/tags";
 import bem from "../../../helpers/bem";
 import {
   getBoardEntities,
-  getBoardByIdFromBoards,
   getSelectedBoardEntities
 } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
@@ -34,21 +31,36 @@ import {
   UploadIcon
 } from "../../../components/svg-icons/";
 
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
+import type { AuthState } from "../../../types/auth";
+import type { BoardState, BoardId } from "../../../types/board";
+import type { Palette } from "../../../types/prop-types";
+
+
 const b = bem("app-page");
 
-export class AppPage extends Component {
-  static propTypes = {
-    children: PropTypes.node
-  };
+type Props = {
+  dispatch: Dispatch;
+  children: React$Element<any>;
+  auth: AuthState;
+  boards: BoardState;
+};
 
-  static defaultProps = {
-  };
+type State = {
+  dropFile: ?File;
+  dragging: boolean;
+};
+
+export class AppPage extends Component {
+  props: Props;
+  state: State;
 
   static contextTypes = {
     theme: PropTypes.string.isRequired
   };
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -72,7 +84,7 @@ export class AppPage extends Component {
     }
   }
 
-  handleDrop(dataTransfer) {
+  handleDrop(dataTransfer: DataTransfer) {
     const { files } = dataTransfer;
 
     if (files.length > 0) {
@@ -90,12 +102,9 @@ export class AppPage extends Component {
     this.props.dispatch(BoardActions.addBoardDialogClose());
   }
 
-  handleAddBoard(boardName) {
-    this.props.dispatch(BoardActions.addBoardRequest(boardName));
-  }
-
-  handleAddBoardActionClick() {
-    // TODO
+  handleAddBoard(boardName: string) {
+    // TODO: Secret
+    this.props.dispatch(BoardActions.addBoardRequest(boardName, true));
   }
 
   // Add item (link)
@@ -107,7 +116,7 @@ export class AppPage extends Component {
     this.props.dispatch(ItemActions.addItemURLDialogClose());
   }
 
-  handleAddItemURL(url, board) {
+  handleAddItemURL(url: string, board: BoardId) {
     this.props.dispatch(ItemActions.addItemURLRequest(url, board));
   }
 
@@ -120,12 +129,8 @@ export class AppPage extends Component {
     this.props.dispatch(ItemActions.addItemFileDialogClose());
   }
 
-  handleAddItemFile(file, palette, board) {
+  handleAddItemFile(file: File, palette: Palette, board: BoardId) {
     this.props.dispatch(ItemActions.addItemFileRequest(board, file, palette));
-  }
-
-  handleAddItemActionClick() {
-    // TODO
   }
 
   // Render
@@ -154,9 +159,7 @@ export class AppPage extends Component {
       horizontal: "left"
     };
 
-    const hasSelectedEntity =
-      selectedItemEntities.length > 0
-      || selectedBoardEntities.length > 0;
+    const hasSelectedEntity = selectedItemEntities.length > 0 || selectedBoardEntities.length > 0;
 
     const selectBoards = boardEntities.map(board => ({
       name: board.name,
@@ -232,10 +235,10 @@ export class AppPage extends Component {
       settings, // eslint-disable-line no-unused-vars
       dispatch, // eslint-disable-line no-unused-vars
       children, // eslint-disable-line no-unused-vars
-      boards,
-      boardEntities,
-      selectedBoardEntities,
-      items,
+      boards, // eslint-disable-line no-unused-vars
+      boardEntities, // eslint-disable-line no-unused-vars
+      selectedBoardEntities, // eslint-disable-line no-unused-vars
+      items, // eslint-disable-line no-unused-vars
       selectedItemEntities, // eslint-disable-line no-unused-vars
       ...routerParams
     } = this.props;
@@ -278,9 +281,8 @@ export class AppPage extends Component {
 }
 
 export default connect(
-  state => ({
+  (state: ConnectState) => ({
     auth: state.auth,
-    settings: state.settings,
     boards: state.boards,
     boardEntities: getBoardEntities(state),
     selectedBoardEntities: getSelectedBoardEntities(state),

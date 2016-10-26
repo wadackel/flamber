@@ -1,29 +1,38 @@
-import _ from "lodash";
+// @flow
+import { assign, mapValues, pickBy, without } from "lodash";
 import { handleActions } from "redux-actions";
-import * as Boards from "../../actions/boards";
-import * as Items from "../../actions/items";
+import * as B from "../../actions/boards";
+import * as I from "../../actions/items";
+
+import type {
+  BoardId,
+  BoardEntity,
+  BoardEntitiesState,
+  AddBoardSuccessAction
+} from "../../types/board";
 
 
-function mergeEntities(state, entities) {
-  return _.assign(state, entities || {});
+function mergeEntities(state: BoardEntitiesState, entities: BoardEntitiesState) {
+  return assign(state, entities || {});
 }
+
 
 export default handleActions({
   // Fetch
-  [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
+  [B.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.boards)
   ),
 
 
   // Add
-  [Boards.ADD_BOARD_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.boards)
+  [B.ADD_BOARD_SUCCESS]: (state: BoardEntitiesState, action: AddBoardSuccessAction): AddBoardSuccessAction => (
+    mergeEntities(state, action.payload.entities.boards)
   ),
 
 
   // Update
-  [Boards.UPDATE_BOARD_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [B.UPDATE_BOARD_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         ...payload,
@@ -32,10 +41,10 @@ export default handleActions({
     )
   ),
 
-  [Boards.UPDATE_BOARD_SUCCESS]: (state, { payload }) => {
+  [B.UPDATE_BOARD_SUCCESS]: (state, { payload }) => {
     const board = payload.entities.boards[payload.result.boards[0]];
 
-    return _.mapValues(state, entity =>
+    return mapValues(state, entity =>
       entity.id !== board.id ? entity : {
         ...entity,
         ...board,
@@ -44,8 +53,8 @@ export default handleActions({
     );
   },
 
-  [Boards.UPDATE_BOARD_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [B.UPDATE_BOARD_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
         isUpdating: false
@@ -55,8 +64,8 @@ export default handleActions({
 
 
   // Delete
-  [Boards.DELETE_BOARD_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [B.DELETE_BOARD_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload ? entity : {
         ...entity,
         isDeleting: true
@@ -64,14 +73,14 @@ export default handleActions({
     )
   ),
 
-  [Boards.DELETE_BOARD_SUCCESS]: (state, { payload }) => (
-    _.pickBy(state, (entity, id) =>
+  [B.DELETE_BOARD_SUCCESS]: (state, { payload }) => (
+    pickBy(state, (entity: BoardEntity, id: BoardId): boolean =>
       id !== payload.id
     )
   ),
 
-  [Boards.DELETE_BOARD_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [B.DELETE_BOARD_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
         isDeleting: false
@@ -81,8 +90,8 @@ export default handleActions({
 
 
   // Select
-  [Boards.SELECT_BOARD_TOGGLE]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [B.SELECT_BOARD_TOGGLE]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload ? entity : {
         ...entity,
         select: !entity.select
@@ -92,8 +101,8 @@ export default handleActions({
 
 
   // Select delete
-  [Boards.SELECTED_BOARDS_DELETE_REQUEST]: state => (
-    _.mapValues(state, entity =>
+  [B.SELECTED_BOARDS_DELETE_REQUEST]: state => (
+    mapValues(state, entity =>
       !entity.select ? entity : {
         ...entity,
         isDeleting: true
@@ -101,8 +110,8 @@ export default handleActions({
     )
   ),
 
-  [Boards.SELECTED_BOARDS_DELETE_FAILURE]: state => (
-    _.mapValues(state, entity =>
+  [B.SELECTED_BOARDS_DELETE_FAILURE]: state => (
+    mapValues(state, entity =>
       !entity.select ? entity : {
         ...entity,
         isDeleting: false
@@ -111,9 +120,9 @@ export default handleActions({
   ),
 
 
-  // Items
-  [Items.ADD_ITEM_URL_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity => {
+  // I
+  [I.ADD_ITEM_URL_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity => {
       const item = payload.entities.items[payload.result.item];
       return item.board !== entity.id ? entity : {
         ...entity,
@@ -122,8 +131,8 @@ export default handleActions({
     })
   ),
 
-  [Items.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity => {
+  [I.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity => {
       const item = payload.entities.items[payload.result.item];
       return item.board !== entity.id ? entity : {
         ...entity,
@@ -132,34 +141,34 @@ export default handleActions({
     })
   ),
 
-  [Items.DELETE_ITEM_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity => ({
+  [I.DELETE_ITEM_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity => ({
       ...entity,
       items: entity.items.filter(id => id !== payload.id)
     }))
   ),
 
-  [Items.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity => ({
+  [I.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity => ({
       ...entity,
       items: entity.items.filter(id => !payload.some(o => o.id === id))
     }))
   ),
 
-  [Items.MOVE_ITEM_SUCCESS]: (state, { payload, meta }) => (
-    _.mapValues(mergeEntities(state, payload.entities.boards), entity =>
+  [I.MOVE_ITEM_SUCCESS]: (state, { payload, meta }) => (
+    mapValues(mergeEntities(state, payload.entities.boards), entity =>
       entity.id !== meta.prevBoard ? entity : {
         ...entity,
-        items: _.without(entity.items, ...payload.result.items)
+        items: without(entity.items, ...payload.result.items)
       }
     )
   ),
 
-  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload, meta }) => (
-    _.mapValues(mergeEntities(state, payload.entities.boards), entity =>
+  [I.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload, meta }) => (
+    mapValues(mergeEntities(state, payload.entities.boards), entity =>
       meta.prevBoards.indexOf(entity.id) < 0 ? entity : {
         ...entity,
-        items: _.without(entity.items, ...payload.result.items)
+        items: without(entity.items, ...payload.result.items)
       }
     )
   )
