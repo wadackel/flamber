@@ -1,3 +1,4 @@
+// TODO: flow
 import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import React, { Component } from "react";

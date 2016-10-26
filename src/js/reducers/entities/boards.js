@@ -8,24 +8,25 @@ import type {
   BoardId,
   BoardEntity,
   BoardEntitiesState,
+  FetchBoardsSuccessAction,
   AddBoardSuccessAction
 } from "../../types/board";
 
 
-function mergeEntities(state: BoardEntitiesState, entities: BoardEntitiesState) {
+function mergeEntities(state: BoardEntitiesState, entities: BoardEntitiesState): BoardEntitiesState {
   return assign(state, entities || {});
 }
 
 
 export default handleActions({
   // Fetch
-  [B.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.boards)
+  [B.FETCH_BOARDS_SUCCESS]: (state: BoardEntitiesState, action: FetchBoardsSuccessAction): BoardEntitiesState => (
+    mergeEntities(state, action.payload.entities.boards)
   ),
 
 
   // Add
-  [B.ADD_BOARD_SUCCESS]: (state: BoardEntitiesState, action: AddBoardSuccessAction): AddBoardSuccessAction => (
+  [B.ADD_BOARD_SUCCESS]: (state: BoardEntitiesState, action: AddBoardSuccessAction): BoardEntitiesState => (
     mergeEntities(state, action.payload.entities.boards)
   ),
 

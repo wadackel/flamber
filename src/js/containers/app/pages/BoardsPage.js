@@ -112,8 +112,8 @@ export class BoardsPage extends Component {
       //   boardsOrder
       // },
       boardEntities,
-      selectedBoardEntities,
-      itemEntities
+      selectedBoardEntities
+      // itemEntities
     } = this.props;
 
     // TODO
@@ -149,7 +149,9 @@ export class BoardsPage extends Component {
           layout={boardsLayout}
         >
           {boardEntities.map(board => {
-            const firstItem = board.items.length > 0 ? itemEntities[board.items[0]] : null;
+            // TODO
+            // const firstItem = board.items.length > 0 ? itemEntities[board.items[0]] : null;
+            const firstItem = null;
 
             return <BoardCard
               key={board.id}
@@ -159,8 +161,8 @@ export class BoardsPage extends Component {
               title={board.name}
               image={firstItem ? firstItem.thumbnail : "/images/default.png"}
               layout={boardsLayout}
-              itemCount={board.items.length}
-              lastModified={new Date(board.modified)}
+              itemCount={0}
+              lastModified={new Date(board.updated_at)}
               onClick={this.handleEdit}
               onEdit={this.handleEdit}
               onSelect={this.handleSelect}

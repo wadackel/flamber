@@ -5,6 +5,8 @@ import * as B from "../actions/boards";
 
 import type {
   BoardState,
+  FetchBoardsSuccessAction,
+  FetchBoardsFailureAction,
   AddBoardSuccessAction,
   AddBoardFailureAction
 } from "../types/board";
@@ -21,26 +23,26 @@ const initialState: BoardState = {
 
 export default handleActions({
   // Fetch list
-  [A.FETCH_CURRENT_USER_SUCCESS]: state => ({
+  [A.FETCH_CURRENT_USER_SUCCESS]: (state: BoardState): BoardState => ({
     ...state,
     isFetching: true
   }),
 
-  [B.FETCH_BOARDS_REQUEST]: state => ({
+  [B.FETCH_BOARDS_REQUEST]: (state: BoardState): BoardState => ({
     ...state,
     isFetching: true
   }),
 
-  [B.FETCH_BOARDS_SUCCESS]: (state, { payload }) => ({
+  [B.FETCH_BOARDS_SUCCESS]: (state: BoardState, action: FetchBoardsSuccessAction): BoardState => ({
     ...state,
     isFetching: false,
-    results: payload.result.boards
+    results: action.payload.result.boards
   }),
 
-  [B.FETCH_BOARDS_FAILURE]: (state, { payload }) => ({
+  [B.FETCH_BOARDS_FAILURE]: (state: BoardState, action: FetchBoardsFailureAction): BoardState => ({
     ...state,
     isFetching: false,
-    error: payload
+    error: action.payload
   }),
 
 

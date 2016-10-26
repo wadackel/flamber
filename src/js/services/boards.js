@@ -2,13 +2,14 @@
 import ApiClient from "../utils/api-client";
 import type {
   BoardId,
-  Board
+  Board,
+  Boards
 } from "../types/board";
 
 const apiClient = new ApiClient("/boards");
 
 
-export function fetchBoard(id: BoardId) {
+export function fetchBoard(id: BoardId): Promise<{ boards: Boards }> {
   return apiClient.get(`/${id}`);
 }
 

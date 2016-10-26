@@ -7,9 +7,11 @@ const router = new Router();
 
 
 router.get("/", (req, res) => {
-  Board.findAllByUser(req.user.id)
+  const { user } = req;
+
+  user.getBoards()
     .then(boards => {
-      res.json({ boards });
+      res.json({ boards: boards.map(entity => entity.get({ plain: true })) });
     })
     .catch(res.errorJSON);
 });
