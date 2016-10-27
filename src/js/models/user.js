@@ -24,6 +24,7 @@ export default function(sequelize: any, DataTypes: any) {
       associate(models) {
         User.hasOne(models.Option);
         User.hasMany(models.Board);
+        User.hasMany(models.Item);
         User.hasMany(models.Tag);
         User.hasMany(models.Feed);
       },

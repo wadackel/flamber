@@ -15,6 +15,7 @@ export default function(sequelize: any, DataTypes: any) {
     classMethods: {
       associate(models) {
         Board.belongsTo(models.User);
+        Board.hasMany(models.Item);
       }
     }
   });

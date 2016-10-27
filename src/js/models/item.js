@@ -1,23 +1,35 @@
 // @flow
+import Sequelize from "sequelize";
+
 export default function(sequelize: any, DataTypes: any) {
-  const Item = sequelize.define("items", {
-    name: DataTypes.STRING
+  const Item = sequelize.define("Item", {
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4
+    },
+    file_id: DataTypes.STRING,
+    name: DataTypes.STRING,
+    description: { type: DataTypes.STRING, defaultValue: "" },
+    url: { type: DataTypes.STRING, defaultValue: "" },
+    size: DataTypes.INTEGER,
+    type: DataTypes.STRING,
+    image: DataTypes.STRING,
+    width: DataTypes.INTEGER,
+    height: DataTypes.INTEGER,
+    thumbnail: DataTypes.STRING,
+    palette: { type: DataTypes.STRING, defaultValue: "" },
+    star: { type: DataTypes.BOOLEAN, defaultValue: false },
+    views: { type: DataTypes.INTEGER, defaultValue: 0 },
+    viewed_at: { type: DataTypes.DATE, defaultValue: Sequelize.NOW }
   }, {
+    tableName: "items",
     timestamps: true,
     underscored: true,
     classMethods: {
-      findAllByUser(user_id: number, query?: Object = {}, offset?: number = 0, limit?: ?number = null) {
-        const args = {
-          where: { ...query, user_id },
-          limit,
-          offset
-        };
-
-        if (limit == null) {
-          delete args.limit;
-        }
-
-        return this.findAll(args);
+      associate(models) {
+        Item.belongsTo(models.User);
+        Item.belongsTo(models.Board);
       }
     }
   });
@@ -31,43 +43,6 @@ export default function(sequelize: any, DataTypes: any) {
 // import mongoose, { Schema } from "mongoose";
 // import Board from "./board";
 // import { makeThumbnailURL } from "../utils/imgur";
-//
-// const ItemSchema = new Schema({
-//   user: { type: Schema.Types.ObjectId, ref: "User" },
-//   file: { type: String, required: true },
-//   board: { type: Schema.Types.ObjectId, ref: "Board" },
-//   name: { type: String, required: true },
-//   description: { type: String, default: "" },
-//   url: String,
-//   type: String,
-//   size: Number,
-//   image: String,
-//   width: Number,
-//   height: Number,
-//   thumbnail: String,
-//   tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
-//   palette: { type: Array, default: [] },
-//   star: { type: Boolean, default: false },
-//   views: { type: Number, default: 0 },
-//   created: { type: Date, default: Date.now },
-//   modified: { type: Date, default: Date.now },
-//   lastView: { type: Date, default: Date.now }
-// }, {
-//   versionKey: false
-// });
-//
-// ItemSchema.set("toJSON", { virtuals: true });
-// ItemSchema.set("toObject", { virtuals: true });
-//
-//
-// // TODO: Refactor
-// // Static methods
-// ItemSchema.statics.populateEntity = function(entity) {
-//   return this.populate(entity, [
-//     { path: "board" },
-//     { path: "tags" }
-//   ]);
-// };
 //
 // ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
 //   const base64 = file.buffer.toString("base64");
@@ -142,40 +117,6 @@ export default function(sequelize: any, DataTypes: any) {
 //       return entity.save();
 //     })
 //     .then(entity => this.populateEntity(entity));
-// };
-//
-//
-// ItemSchema.statics.findAllByUser = function(user, query = {}) {
-//   return this.find({ ...query, user })
-//     .then(entities => Promise.all(entities.map(
-//       entity => this.populateEntity(entity))
-//     ));
-// };
-//
-//
-// ItemSchema.statics.findByUserAndId = function(user, id) {
-//   return this.findOne({ user, _id: id })
-//     .populate("board tags");
-// };
-//
-//
-// ItemSchema.statics.updateByUserAndIdFromObject = function(user, id, newProps) {
-//   const fields = _.keys(this.schema.paths);
-//
-//   return this.findOne({ _id: id, user })
-//     .then(entity => {
-//       fields.forEach(key => {
-//         if (newProps.hasOwnProperty(key)) {
-//           entity[key] = newProps[key];
-//         }
-//       });
-//
-//       entity.modified = new Date();
-//
-//       return entity.save();
-//     })
-//     .then(entity => this.populateEntity(entity));
-// };
 //
 //
 // ItemSchema.statics.updateByUserFromArray = function(user, entities) {
@@ -192,66 +133,3 @@ export default function(sequelize: any, DataTypes: any) {
 //     Promise.all(entities.map(entity => this.findOne({ user, _id: entity.id }).populate("board tags")))
 //   );
 // };
-//
-//
-// ItemSchema.statics.removeByUserAndId = function(user, id) {
-//   return this.findOne({ _id: id, user })
-//     .then(entity => entity.remove().then(() => entity))
-//     .then(entity => this.populateEntity(entity));
-// };
-//
-//
-// // Middleware
-// ItemSchema.post("init", entity => {
-//   entity._original = entity.toObject();
-// });
-//
-// ItemSchema.post("save", function(entity, next) {
-//   // Create
-//   if (_.isUndefined(entity._original)) {
-//     Board.findById(entity.board)
-//       .then(board => {
-//         board.items.push(entity.id);
-//         return board.save();
-//       })
-//       .then(() => this.model("User").findById(entity.user))
-//       .then(user => {
-//         user.todayUpload++;
-//         user.save(next);
-//       })
-//       .catch(next);
-//
-//   // Update
-//   } else {
-//     const prevProps = { ...entity._original };
-//     const nextProps = entity.toObject();
-//     entity._original = nextProps;
-//
-//     if (prevProps.board.toString() === nextProps.board.toString()) {
-//       next();
-//     }
-//
-//     Promise.all([
-//       Board.removeItemByUserAndId(entity.user, prevProps.board.toString(), entity.id),
-//       Board.addItemByUserAndId(entity.user, nextProps.board.toString(), entity.id)
-//     ])
-//       .then(() => {
-//         next();
-//       })
-//       .catch(() => {
-//         next();
-//       });
-//   }
-// });
-//
-// ItemSchema.post("remove", (entity, next) => {
-//   Board.findById(entity.board)
-//     .then(board => {
-//       board.items = board.items.filter(id => id.toString() !== entity.id);
-//       board.save(next);
-//     })
-//     .catch(next);
-// });
-//
-//
-// export default mongoose.model("Item", ItemSchema);
