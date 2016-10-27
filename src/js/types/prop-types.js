@@ -18,7 +18,7 @@ export type Positions = {
 
 export type Order = "asc" | "desc";
 
-export type OrderBy = "name" | "created" | "modified" | "last_view";
+export type OrderBy = "name" | "created_at" | "updated_at" | "last_view";
 
 export type Color = string;
 

@@ -29,12 +29,17 @@ router.post("/", (req, res) => {
 });
 
 
+// TODO
 router.put("/", (req, res) => {
-  Promise.all(req.body.map(board => Board.updateByUserAndIdFromObject(req.user.id, board.id, board)))
-    .then(boards => {
-      res.json({ boards });
-    })
-    .catch(res.errorJSON);
+  // const { user, body } = req;
+  console.log(req.body);
+  res.erroJSON(new Error("TODO"));
+  // body.map(
+  // Promise.all(req.body.map(board => Board.updateByUserAndIdFromObject(req.user.id, board.id, board)))
+  //   .then(boards => {
+  //     res.json({ boards });
+  //   })
+  //   .catch(res.errorJSON);
 });
 
 

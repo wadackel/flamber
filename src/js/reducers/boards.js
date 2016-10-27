@@ -16,7 +16,7 @@ const initialState: BoardState = {
   isFetching: false,
   isAdding: false,
   results: [],
-  currentBoardId: null,
+  currentId: null,
   error: null,
   addDialogOpen: false
 };
@@ -100,7 +100,7 @@ export default handleActions({
   // Current
   [B.SET_CURRENT_BOARD]: (state, { payload }) => ({
     ...state,
-    currentBoardId: payload
+    currentId: payload
   }),
 
 

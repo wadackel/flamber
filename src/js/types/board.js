@@ -14,6 +14,7 @@ export type Board = {
 };
 
 export type BoardEntity = $All<Board, {
+  select: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
 }>;
@@ -26,6 +27,7 @@ export type BoardState = {
   isFetching: boolean;
   isAdding: boolean;
   results: Array<BoardId>;
+  currentId: ?BoardId;
   error: ?Error;
   addDialogOpen: boolean;
 };
@@ -48,7 +50,6 @@ export type FetchBoardsFailureAction = ErrorAction<"FETCH_BOARDS_FAILURE", Error
 export type AddBoardDialogOpenAction = Action<"ADD_BOARD_DIALOG_OPEN">;
 export type AddBoardDialogCloseAction = Action<"ADD_BOARD_DIALOG_CLOSE">;
 
-
 // Add
 export type AddBoardRequestPayload = { name: string; secret: boolean };
 export type AddBoardSuccessPayload = SingleBoard;
@@ -59,3 +60,11 @@ export type AddBoardFailureAction = ErrorAction<"ADD_BOARD_FAILURE", Error>;
 
 // Goto added board
 export type GotoAddedBoardAction = PayloadAction<"GOTO_ADDED_BOARD", BoardId>;
+
+
+// Update
+export type UpdateBoardSuccessPayload = ArrayBoard;
+export type UpdateBoardIfNeededAction = PayloadAction<"UPDATE_BOARD_IF_NEEDED", BoardEntity>;
+export type UpdateBoardRequestAction = PayloadAction<"UPDATE_BOARD_REQUEST", BoardEntity>;
+export type UpdateBoardSuccessAction = PayloadAction<"UPDATE_BOARD_SUCCESS", ArrayBoard>;
+export type UpdateBoardFailureAction = ErrorAction<"UPDATE_BOARD_FAILURE", Error>;

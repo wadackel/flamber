@@ -5,6 +5,7 @@ import { createAction } from "redux-actions";
 import type {
   BoardId,
   Board,
+  BoardEntity,
   Boards,
 
   AddBoardDialogOpenAction,
@@ -15,7 +16,13 @@ import type {
   AddBoardSuccessAction,
   AddBoardFailureAction,
 
-  GotoAddedBoardAction
+  GotoAddedBoardAction,
+
+  UpdateBoardSuccessPayload,
+  UpdateBoardIfNeededAction,
+  UpdateBoardRequestAction,
+  UpdateBoardSuccessAction,
+  UpdateBoardFailureAction
 } from "../types/board";
 
 
@@ -68,17 +75,25 @@ export const gotoAddedBoard = (id: BoardId): GotoAddedBoardAction => (
 
 
 // Update
-export const UPDATE_BOARD_IF_NEEDED: string = "UPDATE_BOARD_IF_NEEDED";
-export const UPDATE_BOARD_REQUEST: string = "UPDATE_BOARD_REQUEST";
-export const UPDATE_BOARD_SUCCESS: string = "UPDATE_BOARD_SUCCESS";
-export const UPDATE_BOARD_FAILURE: string = "UPDATE_BOARD_FAILURE";
+export const UPDATE_BOARD_IF_NEEDED = "UPDATE_BOARD_IF_NEEDED";
+export const UPDATE_BOARD_REQUEST = "UPDATE_BOARD_REQUEST";
+export const UPDATE_BOARD_SUCCESS = "UPDATE_BOARD_SUCCESS";
+export const UPDATE_BOARD_FAILURE = "UPDATE_BOARD_FAILURE";
 
-export const updateBoardIfNeeded = createAction(UPDATE_BOARD_IF_NEEDED);
-export const updateBoardRequest = createAction(UPDATE_BOARD_REQUEST);
-export const updateBoardSuccess = createAction(UPDATE_BOARD_SUCCESS);
-export const updateBoardFailure = createAction(UPDATE_BOARD_FAILURE,
-  identity,
-  (payload: Object, entity: Boards): Array<any> => entity
+export const updateBoardIfNeeded = (entity: BoardEntity): UpdateBoardIfNeededAction => (
+  { type: UPDATE_BOARD_IF_NEEDED, payload: entity }
+);
+
+export const updateBoardRequest = (entity: BoardEntity): UpdateBoardRequestAction => (
+  { type: UPDATE_BOARD_REQUEST, payload: entity }
+);
+
+export const updateBoardSuccess = (payload: UpdateBoardSuccessPayload): UpdateBoardSuccessAction => (
+  { type: UPDATE_BOARD_SUCCESS, payload }
+);
+
+export const updateBoardFailure = (error: Error, entity: ?BoardEntity): UpdateBoardFailureAction => (
+  { type: UPDATE_BOARD_FAILURE, payload: error, error: true, meta: entity }
 );
 
 

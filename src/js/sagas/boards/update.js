@@ -1,3 +1,4 @@
+// @flow
 import deepEqual from "deep-equal";
 import { normalize, arrayOf } from "normalizr";
 import { takeEvery } from "redux-saga";
@@ -5,41 +6,46 @@ import { call, put, select } from "redux-saga/effects";
 import BoardSchema from "../../schemas/board";
 import * as Services from "../../services/boards";
 import * as Notifications from "../../actions/notifications";
-import * as Boards from "../../actions/boards";
+import * as B from "../../actions/boards";
 import { getBoardEntityById } from "../../selectors/boards";
 
+import type {
+  UpdateBoardIfNeededAction,
+  UpdateBoardRequestAction,
+  UpdateBoardFailureAction
+} from "../../types/board";
 
-export function *handleUpdateBoardIfNeeded({ payload }) {
-  const entity = yield select(getBoardEntityById, payload.id);
 
-  if (!deepEqual(entity, payload)) {
-    yield put(Boards.updateBoardRequest(payload));
+export function *handleUpdateBoardIfNeeded(action: UpdateBoardIfNeededAction): Generator<any, *, *> {
+  const entity = yield select(getBoardEntityById, action.payload.id);
+
+  if (!deepEqual(entity, action.payload)) {
+    yield put(B.updateBoardRequest(action.payload));
   }
 }
 
-export function *handleUpdateBoardRequest({ payload }) {
+export function *handleUpdateBoardRequest(action: UpdateBoardRequestAction): Generator<any, *, *> {
   try {
-    const response = yield call(Services.updateBoards, [payload]);
-    const normalized = normalize(response, {
-      boards: arrayOf(BoardSchema)
-    });
+    const response = yield call(Services.updateBoards, [action.payload]);
+    if (!response) throw new Error("ボードの更新に失敗しました");
 
-    yield put(Boards.updateBoardSuccess(normalized));
+    const normalized = normalize(response, { boards: arrayOf(BoardSchema) });
+    yield put(B.updateBoardSuccess(normalized));
+
   } catch (error) {
-    yield put(Boards.updateBoardFailure(error, payload));
+    yield put(B.updateBoardFailure(error, action.payload));
   }
 }
 
-function *handleUpdateBoardFailure() {
-  // TODO: More error message
-  yield put(Notifications.showNotify("ボードの更新に失敗しました"));
+function *handleUpdateBoardFailure(action: UpdateBoardFailureAction): Generator<any, *, *> {
+  yield put(Notifications.showNotify(action.payload.message));
 }
 
 
-export default function *updateBoardSaga() {
+export default function *updateBoardSaga(): Generator<any, *, *> {
   yield [
-    takeEvery(Boards.UPDATE_BOARD_IF_NEEDED, handleUpdateBoardIfNeeded),
-    takeEvery(Boards.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest),
-    takeEvery(Boards.UPDATE_BOARD_FAILURE, handleUpdateBoardFailure)
+    takeEvery(B.UPDATE_BOARD_IF_NEEDED, handleUpdateBoardIfNeeded),
+    takeEvery(B.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest),
+    takeEvery(B.UPDATE_BOARD_FAILURE, handleUpdateBoardFailure)
   ];
 }

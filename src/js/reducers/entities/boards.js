@@ -9,13 +9,28 @@ import type {
   BoardEntity,
   BoardEntitiesState,
   FetchBoardsSuccessAction,
-  AddBoardSuccessAction
+  AddBoardSuccessAction,
+  UpdateBoardRequestAction,
+  UpdateBoardSuccessAction,
+  UpdateBoardFailureAction
 } from "../../types/board";
 
 
 function mergeEntities(state: BoardEntitiesState, entities: BoardEntitiesState): BoardEntitiesState {
   return assign(state, entities || {});
 }
+
+function mapEntities(state: BoardEntitiesState, ids: Array<BoardId>, iteratee: Function): BoardEntitiesState {
+  return mapValues(state, (entity: BoardEntity) =>
+    ids.indexOf(entity.id) > -1 ? iteratee(entity) : entity
+  );
+}
+
+// function removeEntities(state: BoardEntitiesState, ids: Array<BoardId>): BoardEntitiesState {
+//   return pickBy(state, (entity: BoardEntity): boolean =>
+//     ids.indexOf(entity.id) === -1
+//   );
+// }
 
 
 export default handleActions({
@@ -32,35 +47,25 @@ export default handleActions({
 
 
   // Update
-  [B.UPDATE_BOARD_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        ...payload,
-        isUpdating: true
-      }
-    )
+  [B.UPDATE_BOARD_REQUEST]: (state: BoardEntitiesState, action: UpdateBoardRequestAction): BoardEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: BoardEntity) => ({
+      ...entity,
+      ...action.payload,
+      isUpdating: true
+    }))
   ),
 
-  [B.UPDATE_BOARD_SUCCESS]: (state, { payload }) => {
-    const board = payload.entities.boards[payload.result.boards[0]];
+  [B.UPDATE_BOARD_SUCCESS]: (state: BoardEntitiesState, action: UpdateBoardSuccessAction): BoardEntitiesState => (
+    mergeEntities(state, action.payload.entities.boards)
+  ),
 
-    return mapValues(state, entity =>
-      entity.id !== board.id ? entity : {
-        ...entity,
-        ...board,
-        isUpdating: false
-      }
-    );
-  },
-
-  [B.UPDATE_BOARD_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
+  [B.UPDATE_BOARD_FAILURE]: (state: BoardEntitiesState, action: UpdateBoardFailureAction): BoardEntitiesState => (
+    action.meta
+      ? mapEntities(state, [action.meta.id], (entity: BoardEntity) => ({
         ...entity,
         isUpdating: false
-      }
-    )
+      }))
+      : state
   ),
 
 

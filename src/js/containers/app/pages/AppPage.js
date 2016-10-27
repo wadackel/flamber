@@ -210,7 +210,7 @@ export class AppPage extends Component {
           processing={boards.isFetching || items.isAdding}
           open={items.addURLDialogOpen}
           selectBoards={selectBoards}
-          defaultBoard={boards.currentBoardId}
+          defaultBoard={boards.currentId}
           onRequestClose={this.handleAddItemURLClose}
           onRequestAdd={this.handleAddItemURL}
         />
@@ -221,7 +221,7 @@ export class AppPage extends Component {
           open={items.addFileDialogOpen}
           file={dropFile}
           selectBoards={selectBoards}
-          defaultBoard={boards.currentBoardId}
+          defaultBoard={boards.currentId}
           onRequestClose={this.handleAddItemFileClose}
           onRequestAdd={this.handleAddItemFile}
         />

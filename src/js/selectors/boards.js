@@ -1,42 +1,34 @@
-import _ from "lodash";
-import * as OrderBy from "../constants/order-by";
-import * as Order from "../constants/order";
+// @flow
+import { values, orderBy } from "lodash";
 
-function getOrderByProp(orderBy) {
-  switch (orderBy) {
-    case OrderBy.CREATED:
-      return "created";
-    case OrderBy.MODIFIED:
-      return "modified";
-    case OrderBy.NAME:
-      return "name";
-    default:
-      return "created";
-  }
+import type { ConnectState } from "../types/redux";
+import type { BoardId, BoardEntity, BoardEntities } from "../types/board";
+import type { OrderBy, Order } from "../types/prop-types";
+
+
+export function getRawBoardEntities(state: ConnectState): BoardEntities {
+  return values(state.entities.boards);
 }
 
-export function getRawBoardEntities(state) {
-  return _.values(state.entities.boards);
-}
-
-export function getBoardEntityById(state, id) {
+export function getBoardEntityById(state: ConnectState, id: BoardId): ?BoardEntity {
   return state.entities.boards[id];
 }
 
-export function getBoardEntities(state, orderBy = OrderBy.CREATED, order = Order.ASC) {
-  const entities = state.boards.results.map(id => getBoardEntityById(state, id));
+export function getBoardEntities(state: ConnectState, by: OrderBy = "created_at", order: Order = "asc"): BoardEntities {
+  const entities = state.boards.results.map((id: BoardId): BoardEntity => state.entities.boards[id]);
 
-  return _.orderBy(
+  return orderBy(
     entities,
-    [getOrderByProp(orderBy)],
-    [Order.StringMap[order]]
+    [by],
+    [order]
   );
 }
 
-export function getSelectedBoardEntities(state) {
-  return getBoardEntities(state).filter(entity => entity.select);
+export function getSelectedBoardEntities(state: ConnectState): BoardEntities {
+  return getBoardEntities(state).filter((entity: BoardEntity): boolean => entity.select);
 }
 
-export function getCurrentBoard(state) {
-  return state.entities.boards[state.boards.currentBoardId];
+export function getCurrentBoard(state: ConnectState): ?BoardEntity {
+  const { currentId } = state.boards;
+  return currentId != null ? state.entities.boards[currentId] : null;
 }
