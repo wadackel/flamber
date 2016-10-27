@@ -30,6 +30,7 @@ export default function(sequelize: any, DataTypes: any) {
       associate(models) {
         Item.belongsTo(models.User);
         Item.belongsTo(models.Board);
+        Item.belongsToMany(models.Tag, { through: models.ItemTags });
       }
     }
   });

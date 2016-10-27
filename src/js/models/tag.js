@@ -14,6 +14,7 @@ export default function(sequelize: any, DataTypes: any) {
     classMethods: {
       associate(models) {
         Tag.belongsTo(models.User);
+        Tag.belongsToMany(models.Item, { through: models.ItemTags });
       }
     }
   });
