@@ -39,7 +39,7 @@ export class NotificationsContainer extends Component {
     };
 
     if (action) {
-      props.action = action.payload;
+      props.action = action.payload.text;
       props.onActionClick = this.handleActionClick;
     }
 

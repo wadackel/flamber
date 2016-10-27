@@ -1,19 +1,26 @@
+// @flow
 import { handleActions } from "redux-actions";
 import * as Notifications from "../actions/notifications";
 
-const initialState = {
-  message: null,
-  action: null // { type: String, text: String, payload: Any }
+import type {
+  NotificationState,
+  ShowNotifyAction
+} from "../types/notification";
+
+
+const initialState: NotificationState = {
+  message: "",
+  action: null
 };
 
 export default handleActions({
-  [Notifications.SHOW_NOTIFY]: (state, { payload, meta }) => ({
+  [Notifications.SHOW_NOTIFY]: (state: NotificationState, action: ShowNotifyAction): NotificationState => ({
     ...state,
-    message: payload,
-    action: meta
+    message: action.payload.text,
+    action: action.payload.action
   }),
 
-  [Notifications.HIDE_NOTIFY]: state => ({
+  [Notifications.HIDE_NOTIFY]: (state: NotificationState): NotificationState => ({
     ...state,
     message: "",
     action: null

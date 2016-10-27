@@ -1,6 +1,6 @@
 // @flow
 import type {
-  ShowNotifyPayload,
+  StoreNotifyAction,
   ShowNotifyAction,
   HideNotifyAction,
   NotifyAction
@@ -8,8 +8,8 @@ import type {
 
 
 export const SHOW_NOTIFY = "SHOW_NOTIFY";
-export const showNotify = (text: string, action?: ShowNotifyPayload): ShowNotifyAction => (
-  { type: SHOW_NOTIFY, payload: text, meta: action }
+export const showNotify = (text: string, action?: StoreNotifyAction): ShowNotifyAction => (
+  { type: SHOW_NOTIFY, payload: { text, action } }
 );
 
 export const HIDE_NOTIFY = "HIDE_NOTIFY";

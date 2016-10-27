@@ -1,12 +1,19 @@
 // @flow
 import type { Action, PayloadAction } from "./action";
 
-export type ShowNotifyPayload = PayloadAction<string, any>;
-export type ShowNotifyAction = PayloadAction<"SHOW_NOTIFY", string>;
+export type StoreNotifyAction = PayloadAction<string, {
+  text: string;
+  value: any;
+}>;
+export type ShowNotifyPayload = {
+  text: string;
+  action: ?StoreNotifyAction;
+};
+export type ShowNotifyAction = PayloadAction<"SHOW_NOTIFY", ShowNotifyPayload>;
 export type HideNotifyAction = Action<"HIDE_NOTIFY">;
 export type NotifyAction = Action<"NOTIFY_ACTION">;
 
 export type NotificationState = {
-  message: ?string;
-  action: ?ShowNotifyPayload;
+  message: string;
+  action: ?StoreNotifyAction;
 };

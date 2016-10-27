@@ -7,7 +7,7 @@ import * as N from "../actions/notifications";
 import type { ConnectState } from "../types/redux";
 import type {
   NotificationState,
-  ShowNotifyPayload
+  StoreNotifyAction
 } from "../types/notification";
 
 
@@ -15,12 +15,12 @@ export function *handleNotifyAction(): Generator<any, *, *> {
   const notifications: ?NotificationState = yield select((state: ConnectState) => state.notifications);
   if (!notifications) return;
 
-  const action: ?ShowNotifyPayload = notifications.action;
+  const action: ?StoreNotifyAction = notifications.action;
   if (!action) return;
 
   if (_.isPlainObject(action)) {
     const { type, payload } = action;
-    const payloadAction: ShowNotifyPayload = { type, payload };
+    const payloadAction: StoreNotifyAction = { type, payload: payload.value };
     yield put(payloadAction);
   }
 }
