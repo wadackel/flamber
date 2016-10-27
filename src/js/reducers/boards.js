@@ -11,7 +11,8 @@ import type {
   AddBoardSuccessAction,
   AddBoardFailureAction,
   DeleteBoardSuccessAction,
-  DeleteBoardFailureAction
+  DeleteBoardFailureAction,
+  SetCurrentBoardAction
 } from "../types/board";
 
 
@@ -101,9 +102,9 @@ export default handleActions({
 
 
   // Current
-  [B.SET_CURRENT_BOARD]: (state, { payload }) => ({
+  [B.SET_CURRENT_BOARD]: (state: BoardState, action: SetCurrentBoardAction) => ({
     ...state,
-    currentId: payload
+    currentId: action.payload
   }),
 
 

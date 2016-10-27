@@ -75,3 +75,7 @@ export type DeleteBoardSuccessPayload = SingleBoard;
 export type DeleteBoardRequestAction = PayloadAction<"DELETE_BOARD_REQUEST", BoardId>;
 export type DeleteBoardSuccessAction = PayloadAction<"DELETE_BOARD_SUCCESS", DeleteBoardSuccessPayload>;
 export type DeleteBoardFailureAction = ErrorAction<"DELETE_BOARD_FAILURE", Error>;
+
+
+// Set current
+export type SetCurrentBoardAction = PayloadAction<"SET_CURRENT_BOARD", BoardId>;

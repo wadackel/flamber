@@ -26,7 +26,9 @@ import type {
   DeleteBoardSuccessPayload,
   DeleteBoardRequestAction,
   DeleteBoardSuccessAction,
-  DeleteBoardFailureAction
+  DeleteBoardFailureAction,
+
+  SetCurrentBoardAction
 } from "../types/board";
 
 
@@ -120,8 +122,10 @@ export const deleteBoardFailure = (error: Error, entity: ?BoardEntity): DeleteBo
 
 
 // Current
-export const SET_CURRENT_BOARD: string = "SET_CURRENT_BOARD";
-export const setCurrentBoard = createAction(SET_CURRENT_BOARD);
+export const SET_CURRENT_BOARD = "SET_CURRENT_BOARD";
+export const setCurrentBoard = (id: BoardId): SetCurrentBoardAction => (
+  { type: SET_CURRENT_BOARD, payload: id }
+);
 
 
 // Select
