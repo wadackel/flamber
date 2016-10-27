@@ -1,65 +1,92 @@
+// @flow
+import { normalize } from "normalizr";
 import { takeEvery } from "redux-saga";
 import { fork, call, put, take, select } from "redux-saga/effects";
+import BoardSchema from "../../schemas/board";
 import * as Services from "../../services/boards";
-import * as Notifications from "../../actions/notifications";
-import * as Boards from "../../actions/boards";
+import { showNotify } from "../../actions/notifications";
+import * as B from "../../actions/boards";
 import { getBoardEntityById, getSelectedBoardEntities } from "../../selectors/boards";
 
+import type {
+  Boards,
+  BoardEntity,
+  BoardEntities,
+  DeleteBoardRequestAction,
+  DeleteBoardSuccessAction,
+  DeleteBoardFailureAction
+} from "../../types/board";
 
-export function *handleDeleteBoardRequest() {
+
+export function *handleDeleteBoardRequest(): Generator<any, *, *> {
   while (true) {
-    const { payload } = yield take(Boards.DELETE_BOARD_REQUEST);
-    const entity = yield select(getBoardEntityById, payload);
+    let entity: ?BoardEntity = null;
 
     try {
-      const [board] = yield call(Services.deleteBoards, [entity]);
-      yield put(Boards.deleteBoardSuccess(board));
+      const action: ?DeleteBoardRequestAction = yield take(B.DELETE_BOARD_REQUEST);
+      if (!action) throw new Error("ボードの削除に失敗しました");
+
+      entity = yield select(getBoardEntityById, action.payload);
+      if (!entity) throw new Error("ボードの削除に失敗しました");
+
+      const validEntity: BoardEntity = entity;
+      const response = yield call((): Promise<{ boards: Boards }> => Services.deleteBoards([validEntity]));
+      if (!response) throw new Error(`${validEntity.name} の削除に失敗しました`);
+
+      const normalized = normalize({ board: response[0] }, { board: BoardSchema });
+      yield put(B.deleteBoardSuccess(normalized));
+
     } catch (error) {
-      yield put(Boards.deleteBoardFailure(error, entity));
+      yield put(B.deleteBoardFailure(error, entity));
     }
   }
 }
 
-function *handleDeleteBoardSuccess({ payload }) {
-  yield put(Notifications.showNotify(`${payload.name}を削除しました`));
+function *handleDeleteBoardSuccess(action: DeleteBoardSuccessAction): Generator<any, *, *> {
+  const entity = action.payload.entities.boards[action.payload.result.board];
+  yield put(showNotify(`${entity.name}を削除しました`));
 }
 
-function *handleDeleteBoardFailure() {
-  // TODO: More error message
-  yield put(Notifications.showNotify("ボードの削除に失敗しました"));
+function *handleDeleteBoardFailure(action: DeleteBoardFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
 }
 
-export function *handleSelectedBoardsDeleteRequest() {
+
+// TODO: Type definition
+export function *handleSelectedBoardsDeleteRequest(): Generator<any, *, *> {
   while (true) {
-    yield take(Boards.SELECTED_BOARDS_DELETE_REQUEST);
-    const entities = yield select(getSelectedBoardEntities);
+    yield take(B.SELECTED_BOARDS_DELETE_REQUEST);
+    const entities: ?BoardEntities = yield select(getSelectedBoardEntities);
 
     try {
-      const boards = yield call(Services.deleteBoards, entities);
-      yield put(Boards.selectedBoardsDeleteSuccess(boards));
+      if (!entities) throw new Error("選択したボードの削除に失敗しました");
+
+      const response = yield call((): Promise<{ boards: Boards }> => Services.deleteBoards(entities));
+      yield put(B.selectedBoardsDeleteSuccess(response));
+
     } catch (error) {
-      yield put(Boards.selectedBoardsDeleteFailure(error, entities));
+      yield put(B.selectedBoardsDeleteFailure(error, entities));
     }
   }
 }
 
-function *handleSelectedBoardsDeleteSuccess({ payload }) {
-  yield put(Notifications.showNotify(`${payload.length}個のボードを削除しました`));
+function *handleSelectedBoardsDeleteSuccess(action: any): Generator<any, *, *> {
+  yield put(showNotify(`${action.payload.length}個のボードを削除しました`));
 }
 
-function *handleSelectedBoardsDeleteFailure() {
+function *handleSelectedBoardsDeleteFailure(): Generator<any, *, *> {
   // TODO: More error message
-  yield put(Notifications.showNotify("選択したボードの削除に失敗しました"));
+  yield put(showNotify("選択したボードの削除に失敗しました"));
 }
 
 
-export default function *deleteBoardSaga() {
+export default function *deleteBoardSaga(): Generator<any, *, *> {
   yield [
     fork(handleDeleteBoardRequest),
-    takeEvery(Boards.DELETE_BOARD_SUCCESS, handleDeleteBoardSuccess),
-    takeEvery(Boards.DELETE_BOARD_FAILURE, handleDeleteBoardFailure),
+    takeEvery(B.DELETE_BOARD_SUCCESS, handleDeleteBoardSuccess),
+    takeEvery(B.DELETE_BOARD_FAILURE, handleDeleteBoardFailure),
     fork(handleSelectedBoardsDeleteRequest),
-    takeEvery(Boards.SELECTED_BOARDS_DELETE_SUCCESS, handleSelectedBoardsDeleteSuccess),
-    takeEvery(Boards.SELECTED_BOARDS_DELETE_FAILURE, handleSelectedBoardsDeleteFailure)
+    takeEvery(B.SELECTED_BOARDS_DELETE_SUCCESS, handleSelectedBoardsDeleteSuccess),
+    takeEvery(B.SELECTED_BOARDS_DELETE_FAILURE, handleSelectedBoardsDeleteFailure)
   ];
 }

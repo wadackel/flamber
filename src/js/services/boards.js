@@ -29,8 +29,7 @@ export function updateBoards(boards: BoardEntities): Promise<ResponseArrayBoard>
   return apiClient.put("/", { body: boards });
 }
 
-// TODO
-export function deleteBoards(boards: any) {
+export function deleteBoards(boards: BoardEntities): Promise<ResponseArrayBoard> {
   return apiClient.delete("/", { body: boards })
     .then(() => boards);
 }

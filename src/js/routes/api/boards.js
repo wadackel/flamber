@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 
   user.getBoards()
     .then(boards => {
-      res.json({ boards: boards.map(entity => entity.get({ plain: true })) });
+      res.json({ boards: boards.map(o => o.get({ plain: true })) });
     })
     .catch(res.errorJSON);
 });
@@ -44,11 +44,14 @@ router.put("/", (req, res) => {
 
 
 router.delete("/", (req, res) => {
-  const { body, user } = req;
+  const { user, body } = req;
 
-  Promise.all(body.map(board => Board.removeByUserAndId(user.id, board.id)))
+  user.getBoards({
+    where: { id: { $in: body.map(entity => entity.id) } }
+  })
+    .then(boards => Promise.all(boards.map(o => o.destroy())).then(() => boards))
     .then(boards => {
-      res.json({ boards });
+      res.json({ boards: boards.map(o => o.get({ plain: true })) });
     })
     .catch(res.errorJSON);
 });

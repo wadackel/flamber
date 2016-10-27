@@ -4,7 +4,6 @@ import { createAction } from "redux-actions";
 
 import type {
   BoardId,
-  Board,
   BoardEntity,
   Boards,
 
@@ -22,7 +21,12 @@ import type {
   UpdateBoardIfNeededAction,
   UpdateBoardRequestAction,
   UpdateBoardSuccessAction,
-  UpdateBoardFailureAction
+  UpdateBoardFailureAction,
+
+  DeleteBoardSuccessPayload,
+  DeleteBoardRequestAction,
+  DeleteBoardSuccessAction,
+  DeleteBoardFailureAction
 } from "../types/board";
 
 
@@ -98,15 +102,20 @@ export const updateBoardFailure = (error: Error, entity: ?BoardEntity): UpdateBo
 
 
 // Delete
-export const DELETE_BOARD_REQUEST: string = "DELETE_BOARD_REQUEST";
-export const DELETE_BOARD_SUCCESS: string = "DELETE_BOARD_SUCCESS";
-export const DELETE_BOARD_FAILURE: string = "DELETE_BOARD_FAILURE";
+export const DELETE_BOARD_REQUEST = "DELETE_BOARD_REQUEST";
+export const DELETE_BOARD_SUCCESS = "DELETE_BOARD_SUCCESS";
+export const DELETE_BOARD_FAILURE = "DELETE_BOARD_FAILURE";
 
-export const deleteBoardRequest = createAction(DELETE_BOARD_REQUEST);
-export const deleteBoardSuccess = createAction(DELETE_BOARD_SUCCESS);
-export const deleteBoardFailure = createAction(DELETE_BOARD_FAILURE,
-  identity,
-  (payload: Object, entity: Board): Object => entity
+export const deleteBoardRequest = (id: BoardId): DeleteBoardRequestAction => (
+  { type: DELETE_BOARD_REQUEST, payload: id }
+);
+
+export const deleteBoardSuccess = (payload: DeleteBoardSuccessPayload): DeleteBoardSuccessAction => (
+  { type: DELETE_BOARD_SUCCESS, payload }
+);
+
+export const deleteBoardFailure = (error: Error, entity: ?BoardEntity): DeleteBoardFailureAction => (
+  { type: DELETE_BOARD_FAILURE, payload: error, error: true, meta: entity }
 );
 
 
@@ -116,14 +125,14 @@ export const setCurrentBoard = createAction(SET_CURRENT_BOARD);
 
 
 // Select
-export const SELECT_BOARD_TOGGLE: string = "SELECT_BOARD_TOGGLE";
+export const SELECT_BOARD_TOGGLE = "SELECT_BOARD_TOGGLE";
 export const selectBoardToggle = createAction(SELECT_BOARD_TOGGLE);
 
 
 // Selected boards delete
-export const SELECTED_BOARDS_DELETE_REQUEST: string = "SELECTED_BOARDS_DELETE_REQUEST";
-export const SELECTED_BOARDS_DELETE_SUCCESS: string = "SELECTED_BOARDS_DELETE_SUCCESS";
-export const SELECTED_BOARDS_DELETE_FAILURE: string = "SELECTED_BOARDS_DELETE_FAILURE";
+export const SELECTED_BOARDS_DELETE_REQUEST = "SELECTED_BOARDS_DELETE_REQUEST";
+export const SELECTED_BOARDS_DELETE_SUCCESS = "SELECTED_BOARDS_DELETE_SUCCESS";
+export const SELECTED_BOARDS_DELETE_FAILURE = "SELECTED_BOARDS_DELETE_FAILURE";
 
 export const selectedBoardsDeleteRequest = createAction(SELECTED_BOARDS_DELETE_REQUEST);
 export const selectedBoardsDeleteSuccess = createAction(SELECTED_BOARDS_DELETE_SUCCESS);

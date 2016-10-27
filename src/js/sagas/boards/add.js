@@ -34,8 +34,10 @@ export function *handleAddBoardRequest(action: AddBoardRequestAction): Generator
 function *handleAddBoardSuccess(action: AddBoardSuccessAction): Generator<any, *, *> {
   yield put(showNotify("ボードを追加しました", {
     type: B.GOTO_ADDED_BOARD,
-    text: "Show",
-    payload: action.payload.result.board
+    payload: {
+      text: "Show",
+      value: action.payload.result.board
+    }
   }));
 }
 

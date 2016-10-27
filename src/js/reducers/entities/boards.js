@@ -12,7 +12,10 @@ import type {
   AddBoardSuccessAction,
   UpdateBoardRequestAction,
   UpdateBoardSuccessAction,
-  UpdateBoardFailureAction
+  UpdateBoardFailureAction,
+  DeleteBoardRequestAction,
+  DeleteBoardSuccessAction,
+  DeleteBoardFailureAction
 } from "../../types/board";
 
 
@@ -26,11 +29,11 @@ function mapEntities(state: BoardEntitiesState, ids: Array<BoardId>, iteratee: F
   );
 }
 
-// function removeEntities(state: BoardEntitiesState, ids: Array<BoardId>): BoardEntitiesState {
-//   return pickBy(state, (entity: BoardEntity): boolean =>
-//     ids.indexOf(entity.id) === -1
-//   );
-// }
+function removeEntities(state: BoardEntitiesState, ids: Array<BoardId>): BoardEntitiesState {
+  return pickBy(state, (entity: BoardEntity): boolean =>
+    ids.indexOf(entity.id) === -1
+  );
+}
 
 
 export default handleActions({
@@ -70,28 +73,24 @@ export default handleActions({
 
 
   // Delete
-  [B.DELETE_BOARD_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload ? entity : {
-        ...entity,
-        isDeleting: true
-      }
-    )
+  [B.DELETE_BOARD_REQUEST]: (state: BoardEntitiesState, action: DeleteBoardRequestAction): BoardEntitiesState => (
+    mapEntities(state, [action.payload], (entity: BoardEntity) => ({
+      ...entity,
+      isDeleting: true
+    }))
   ),
 
-  [B.DELETE_BOARD_SUCCESS]: (state, { payload }) => (
-    pickBy(state, (entity: BoardEntity, id: BoardId): boolean =>
-      id !== payload.id
-    )
+  [B.DELETE_BOARD_SUCCESS]: (state: BoardEntitiesState, action: DeleteBoardSuccessAction): BoardEntitiesState => (
+    removeEntities(state, [action.payload.result.board])
   ),
 
-  [B.DELETE_BOARD_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
+  [B.DELETE_BOARD_FAILURE]: (state: BoardEntitiesState, action: DeleteBoardFailureAction): BoardEntitiesState => (
+    action.meta
+      ? mapEntities(state, [action.meta.id], (entity: BoardEntity) => ({
         ...entity,
         isDeleting: false
-      }
-    )
+      }))
+      : state
   ),
 
 

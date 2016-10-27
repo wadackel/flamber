@@ -63,8 +63,15 @@ export type GotoAddedBoardAction = PayloadAction<"GOTO_ADDED_BOARD", BoardId>;
 
 
 // Update
-export type UpdateBoardSuccessPayload = ArrayBoard;
+export type UpdateBoardSuccessPayload = SingleBoard;
 export type UpdateBoardIfNeededAction = PayloadAction<"UPDATE_BOARD_IF_NEEDED", BoardEntity>;
 export type UpdateBoardRequestAction = PayloadAction<"UPDATE_BOARD_REQUEST", BoardEntity>;
-export type UpdateBoardSuccessAction = PayloadAction<"UPDATE_BOARD_SUCCESS", ArrayBoard>;
+export type UpdateBoardSuccessAction = PayloadAction<"UPDATE_BOARD_SUCCESS", UpdateBoardSuccessPayload>;
 export type UpdateBoardFailureAction = ErrorAction<"UPDATE_BOARD_FAILURE", Error>;
+
+
+// Delete
+export type DeleteBoardSuccessPayload = SingleBoard;
+export type DeleteBoardRequestAction = PayloadAction<"DELETE_BOARD_REQUEST", BoardId>;
+export type DeleteBoardSuccessAction = PayloadAction<"DELETE_BOARD_SUCCESS", DeleteBoardSuccessPayload>;
+export type DeleteBoardFailureAction = ErrorAction<"DELETE_BOARD_FAILURE", Error>;

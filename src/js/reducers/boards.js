@@ -4,11 +4,14 @@ import * as A from "../actions/auth";
 import * as B from "../actions/boards";
 
 import type {
+  BoardId,
   BoardState,
   FetchBoardsSuccessAction,
   FetchBoardsFailureAction,
   AddBoardSuccessAction,
-  AddBoardFailureAction
+  AddBoardFailureAction,
+  DeleteBoardSuccessAction,
+  DeleteBoardFailureAction
 } from "../types/board";
 
 
@@ -79,21 +82,21 @@ export default handleActions({
 
 
   // Delete
-  [B.DELETE_BOARD_REQUEST]: state => ({
+  [B.DELETE_BOARD_REQUEST]: (state: BoardState): BoardState => ({
     ...state,
     isDeleting: true
   }),
 
-  [B.DELETE_BOARD_SUCCESS]: (state, { payload }) => ({
+  [B.DELETE_BOARD_SUCCESS]: (state: BoardState, action: DeleteBoardSuccessAction): BoardState => ({
     ...state,
     isDeleting: false,
-    results: state.results.filter(id => id !== payload.id)
+    results: state.results.filter((id: BoardId): boolean => id !== action.payload.result.board)
   }),
 
-  [B.DELETE_BOARD_FAILURE]: (state, { payload }) => ({
+  [B.DELETE_BOARD_FAILURE]: (state: BoardState, action: DeleteBoardFailureAction): BoardState => ({
     ...state,
     isDeleting: false,
-    error: payload
+    error: action.payload
   }),
 
 
