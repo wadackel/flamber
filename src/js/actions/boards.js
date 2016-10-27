@@ -1,11 +1,12 @@
 // @flow
-import { identity } from "lodash";
-import { createAction } from "redux-actions";
-
 import type {
   BoardId,
   BoardEntity,
-  Boards,
+
+  FetchBoardsSuccessPayload,
+  FetchBoardsRequestAction,
+  FetchBoardsSuccessAction,
+  FetchBoardsFailureAction,
 
   AddBoardDialogOpenAction,
   AddBoardDialogCloseAction,
@@ -28,7 +29,14 @@ import type {
   DeleteBoardSuccessAction,
   DeleteBoardFailureAction,
 
-  SetCurrentBoardAction
+  SetCurrentBoardAction,
+
+  SelectBoardToggleAction,
+
+  SelectedBoardsDeleteSuccessPayload,
+  SelectedBoardsDeleteRequestAction,
+  SelectedBoardsDeleteSuccessAction,
+  SelectedBoardsDeleteFailureAction
 } from "../types/board";
 
 
@@ -37,9 +45,17 @@ export const FETCH_BOARDS_REQUEST = "FETCH_BOARDS_REQUEST";
 export const FETCH_BOARDS_SUCCESS = "FETCH_BOARDS_SUCCESS";
 export const FETCH_BOARDS_FAILURE = "FETCH_BOARDS_FAILURE";
 
-export const fetchBoardsRequest = createAction(FETCH_BOARDS_REQUEST);
-export const fetchBoardsSuccess = createAction(FETCH_BOARDS_SUCCESS);
-export const fetchBoardsFailure = createAction(FETCH_BOARDS_FAILURE);
+export const fetchBoardsRequest = (): FetchBoardsRequestAction => (
+  { type: FETCH_BOARDS_REQUEST }
+);
+
+export const fetchBoardsSuccess = (payload: FetchBoardsSuccessPayload): FetchBoardsSuccessAction => (
+  { type: FETCH_BOARDS_SUCCESS, payload }
+);
+
+export const fetchBoardsFailure = (error: Error): FetchBoardsFailureAction => (
+  { type: FETCH_BOARDS_FAILURE, payload: error, error: true }
+);
 
 
 // Add (UI)
@@ -130,17 +146,26 @@ export const setCurrentBoard = (id: BoardId): SetCurrentBoardAction => (
 
 // Select
 export const SELECT_BOARD_TOGGLE = "SELECT_BOARD_TOGGLE";
-export const selectBoardToggle = createAction(SELECT_BOARD_TOGGLE);
+export const selectBoardToggle = (id: BoardId): SelectBoardToggleAction => (
+  { type: SELECT_BOARD_TOGGLE, payload: id }
+);
 
 
-// Selected boards delete
+// Select delete
 export const SELECTED_BOARDS_DELETE_REQUEST = "SELECTED_BOARDS_DELETE_REQUEST";
 export const SELECTED_BOARDS_DELETE_SUCCESS = "SELECTED_BOARDS_DELETE_SUCCESS";
 export const SELECTED_BOARDS_DELETE_FAILURE = "SELECTED_BOARDS_DELETE_FAILURE";
 
-export const selectedBoardsDeleteRequest = createAction(SELECTED_BOARDS_DELETE_REQUEST);
-export const selectedBoardsDeleteSuccess = createAction(SELECTED_BOARDS_DELETE_SUCCESS);
-export const selectedBoardsDeleteFailure = createAction(SELECTED_BOARDS_DELETE_FAILURE,
-  identity,
-  (payload: Object, entities: Boards): Boards => entities
+export const selectedBoardsDeleteRequest = (): SelectedBoardsDeleteRequestAction => (
+  { type: SELECTED_BOARDS_DELETE_REQUEST }
+);
+
+/* eslint-disable max-len */
+export const selectedBoardsDeleteSuccess = (payload: SelectedBoardsDeleteSuccessPayload): SelectedBoardsDeleteSuccessAction => (
+  { type: SELECTED_BOARDS_DELETE_SUCCESS, payload }
+);
+/* eslint-enable max-len */
+
+export const selectedBoardsDeleteFailure = (error: Error): SelectedBoardsDeleteFailureAction => (
+  { type: SELECTED_BOARDS_DELETE_FAILURE, payload: error, error: true }
 );

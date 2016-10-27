@@ -1,5 +1,5 @@
 // @flow
-import { normalize } from "normalizr";
+import { normalize, arrayOf } from "normalizr";
 import { takeEvery } from "redux-saga";
 import { fork, call, put, take, select } from "redux-saga/effects";
 import BoardSchema from "../../schemas/board";
@@ -14,7 +14,9 @@ import type {
   BoardEntities,
   DeleteBoardRequestAction,
   DeleteBoardSuccessAction,
-  DeleteBoardFailureAction
+  DeleteBoardFailureAction,
+  SelectedBoardsDeleteSuccessAction,
+  SelectedBoardsDeleteFailureAction
 } from "../../types/board";
 
 
@@ -33,7 +35,7 @@ export function *handleDeleteBoardRequest(): Generator<any, *, *> {
       const response = yield call((): Promise<{ boards: Boards }> => Services.deleteBoards([validEntity]));
       if (!response) throw new Error(`${validEntity.name} の削除に失敗しました`);
 
-      const normalized = normalize({ board: response[0] }, { board: BoardSchema });
+      const normalized = normalize({ board: response.boards[0] }, { board: BoardSchema });
       yield put(B.deleteBoardSuccess(normalized));
 
     } catch (error) {
@@ -44,7 +46,7 @@ export function *handleDeleteBoardRequest(): Generator<any, *, *> {
 
 function *handleDeleteBoardSuccess(action: DeleteBoardSuccessAction): Generator<any, *, *> {
   const entity = action.payload.entities.boards[action.payload.result.board];
-  yield put(showNotify(`${entity.name}を削除しました`));
+  yield put(showNotify(`${entity.name} を削除しました`));
 }
 
 function *handleDeleteBoardFailure(action: DeleteBoardFailureAction): Generator<any, *, *> {
@@ -52,17 +54,19 @@ function *handleDeleteBoardFailure(action: DeleteBoardFailureAction): Generator<
 }
 
 
-// TODO: Type definition
 export function *handleSelectedBoardsDeleteRequest(): Generator<any, *, *> {
   while (true) {
     yield take(B.SELECTED_BOARDS_DELETE_REQUEST);
     const entities: ?BoardEntities = yield select(getSelectedBoardEntities);
 
     try {
-      if (!entities) throw new Error("選択したボードの削除に失敗しました");
+      if (!entities) throw new Error("ボードが選択されていません");
 
       const response = yield call((): Promise<{ boards: Boards }> => Services.deleteBoards(entities));
-      yield put(B.selectedBoardsDeleteSuccess(response));
+      if (!response) throw new Error("選択したボードの削除に失敗しました");
+
+      const normalized = normalize(response, { boards: arrayOf(BoardSchema) });
+      yield put(B.selectedBoardsDeleteSuccess(normalized));
 
     } catch (error) {
       yield put(B.selectedBoardsDeleteFailure(error, entities));
@@ -70,13 +74,12 @@ export function *handleSelectedBoardsDeleteRequest(): Generator<any, *, *> {
   }
 }
 
-function *handleSelectedBoardsDeleteSuccess(action: any): Generator<any, *, *> {
-  yield put(showNotify(`${action.payload.length}個のボードを削除しました`));
+function *handleSelectedBoardsDeleteSuccess(action: SelectedBoardsDeleteSuccessAction): Generator<any, *, *> {
+  yield put(showNotify(`${action.payload.result.boards.length}個のボードを削除しました`));
 }
 
-function *handleSelectedBoardsDeleteFailure(): Generator<any, *, *> {
-  // TODO: More error message
-  yield put(showNotify("選択したボードの削除に失敗しました"));
+function *handleSelectedBoardsDeleteFailure(action: SelectedBoardsDeleteFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
 }
 
 

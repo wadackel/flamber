@@ -12,7 +12,9 @@ import type {
   AddBoardFailureAction,
   DeleteBoardSuccessAction,
   DeleteBoardFailureAction,
-  SetCurrentBoardAction
+  SetCurrentBoardAction,
+  SelectedBoardsDeleteSuccessAction,
+  SelectedBoardsDeleteFailureAction
 } from "../types/board";
 
 
@@ -102,27 +104,27 @@ export default handleActions({
 
 
   // Current
-  [B.SET_CURRENT_BOARD]: (state: BoardState, action: SetCurrentBoardAction) => ({
+  [B.SET_CURRENT_BOARD]: (state: BoardState, action: SetCurrentBoardAction): BoardState => ({
     ...state,
     currentId: action.payload
   }),
 
 
   // Selected boards delete
-  [B.SELECTED_BOARDS_DELETE_REQUEST]: state => ({
+  [B.SELECTED_BOARDS_DELETE_REQUEST]: (state: BoardState): BoardState => ({
     ...state,
     isDeleting: true
   }),
 
-  [B.SELECTED_BOARDS_DELETE_SUCCESS]: (state, { payload }) => ({
+  [B.SELECTED_BOARDS_DELETE_SUCCESS]: (state: BoardState, action: SelectedBoardsDeleteSuccessAction): BoardState => ({
     ...state,
     isDeleting: false,
-    results: state.results.filter(id => !payload.some(o => id === o.id))
+    results: state.results.filter(id => action.payload.result.boards.indexOf(id) < 0)
   }),
 
-  [B.SELECTED_BOARDS_DELETE_FAILURE]: (state, { payload }) => ({
+  [B.SELECTED_BOARDS_DELETE_FAILURE]: (state, action: SelectedBoardsDeleteFailureAction): BoardState => ({
     ...state,
     isDeleting: false,
-    error: payload
+    error: action.payload
   })
 }, initialState);

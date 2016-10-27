@@ -79,3 +79,15 @@ export type DeleteBoardFailureAction = ErrorAction<"DELETE_BOARD_FAILURE", Error
 
 // Set current
 export type SetCurrentBoardAction = PayloadAction<"SET_CURRENT_BOARD", BoardId>;
+
+
+// Select toggle
+export type SelectBoardToggleAction = PayloadAction<"SELECT_BOARD_TOGGLE", BoardId>;
+
+
+// Selected boards delete
+export type SelectedBoardsDeleteSuccessPayload = ArrayBoard;
+export type SelectedBoardsDeleteRequestAction = Action<"SELECTED_BOARDS_DELETE_REQUEST">;
+export type SelectedBoardsDeleteSuccessAction = PayloadAction<"SELECTED_BOARDS_DELETE_SUCCESS",
+  SelectedBoardsDeleteSuccessPayload>;
+export type SelectedBoardsDeleteFailureAction = ErrorAction<"SELECTED_BOARDS_DELETE_FAILURE", Error>;

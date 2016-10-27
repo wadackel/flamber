@@ -15,7 +15,8 @@ import type {
   UpdateBoardFailureAction,
   DeleteBoardRequestAction,
   DeleteBoardSuccessAction,
-  DeleteBoardFailureAction
+  DeleteBoardFailureAction,
+  SelectBoardToggleAction
 } from "../../types/board";
 
 
@@ -95,19 +96,17 @@ export default handleActions({
 
 
   // Select
-  [B.SELECT_BOARD_TOGGLE]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload ? entity : {
-        ...entity,
-        select: !entity.select
-      }
-    )
+  [B.SELECT_BOARD_TOGGLE]: (state: BoardEntitiesState, action: SelectBoardToggleAction): BoardEntitiesState => (
+    mapEntities(state, [action.payload], (entity: BoardEntity) => ({
+      ...entity,
+      select: !entity.select
+    }))
   ),
 
 
   // Select delete
-  [B.SELECTED_BOARDS_DELETE_REQUEST]: state => (
-    mapValues(state, entity =>
+  [B.SELECTED_BOARDS_DELETE_REQUEST]: (state: BoardEntitiesState): BoardEntitiesState => (
+    mapValues(state, (entity: BoardEntity) =>
       !entity.select ? entity : {
         ...entity,
         isDeleting: true
@@ -115,8 +114,8 @@ export default handleActions({
     )
   ),
 
-  [B.SELECTED_BOARDS_DELETE_FAILURE]: state => (
-    mapValues(state, entity =>
+  [B.SELECTED_BOARDS_DELETE_FAILURE]: (state: BoardEntitiesState): BoardEntitiesState => (
+    mapValues(state, (entity: BoardEntity) =>
       !entity.select ? entity : {
         ...entity,
         isDeleting: false

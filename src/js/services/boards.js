@@ -30,6 +30,5 @@ export function updateBoards(boards: BoardEntities): Promise<ResponseArrayBoard>
 }
 
 export function deleteBoards(boards: BoardEntities): Promise<ResponseArrayBoard> {
-  return apiClient.delete("/", { body: boards })
-    .then(() => boards);
+  return apiClient.delete("/", { body: boards });
 }
