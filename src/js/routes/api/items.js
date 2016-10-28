@@ -1,19 +1,11 @@
 import { Router } from "express";
 import multer from "multer";
-import Item from "../../models/item";
+import models from "../../models/";
 
-const router = Router();
+const { Item } = models;
+const router = new Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-
-
-router.get("/", (req, res) => {
-  Item.findAllByUser(req.drive, req.user.id, req.query)
-    .then(items => {
-      res.json({ items });
-    })
-    .catch(res.errorJSON);
-});
 
 
 router.get("/:id", (req, res) => {
@@ -25,23 +17,22 @@ router.get("/:id", (req, res) => {
 });
 
 
-router.get("/image/:id", (req, res) => {
-  Item.getImageBufferByUserAndId(req.drive, req.user.id, req.params.id)
-    .then(buffer => {
-      res.status(200).end(buffer, "binary");
-    })
-    .catch(res.errorJSON);
-});
-
-
 router.post("/file", upload.single("file"), (req, res) => {
-  const { user, body, file } = req;
-  const { board } = body;
-  const palette = body.palette.split(",");
+  const { user, body: { board, palette }, file } = req;
 
-  Item.appendByUserAndFile(user.id, board, file, palette)
-    .then(item => {
-      res.json({ item });
+  user.getBoards({ where: { id: board } })
+    .then(boardEntities => {
+      if (!boardEntities) throw new Error("Not found board");
+      return boardEntities[0];
+    })
+    .then(boardEntity =>
+      Item.createByFile(file, palette).then(entity => ({ boardEntity, entity }))
+    )
+    .then(({ boardEntity, entity }) =>
+      boardEntity.addItem(entity).then(() => entity)
+    )
+    .then(entity => {
+      res.json({ item: entity.get({ plain: true }) });
     })
     .catch(res.errorJSON);
 });

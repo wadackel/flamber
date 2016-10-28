@@ -1,5 +1,11 @@
 // @flow
+import * as path from "path";
 import Sequelize from "sequelize";
+import imgur from "imgur";
+import { makeThumbnailURL } from "../utils/imgur";
+
+import type { MulterMemoryFile } from "../types/multer";
+
 
 export default function(sequelize: any, DataTypes: any) {
   const Item = sequelize.define("Item", {
@@ -31,6 +37,27 @@ export default function(sequelize: any, DataTypes: any) {
         Item.belongsTo(models.User);
         Item.belongsTo(models.Board);
         Item.belongsToMany(models.Tag, { through: models.ItemTags });
+      },
+      createByFile(file: MulterMemoryFile, palette: string) {
+        return imgur.uploadBase64(file.buffer.toString("base64"))
+          .then(json => {
+            if (!json.success) throw new Error("Imgur API Error");
+
+            const { data } = json;
+
+            return Item.create({
+              file_id: data.id,
+              name: path.parse(file.originalname).name,
+              url: file.originalname,
+              width: data.width,
+              height: data.height,
+              image: data.link,
+              thumbnail: makeThumbnailURL(data.link, "l"),
+              size: data.size,
+              type: data.type,
+              palette
+            });
+          });
       }
     }
   });
@@ -41,7 +68,6 @@ export default function(sequelize: any, DataTypes: any) {
 // import Url from "url";
 // import _ from "lodash";
 // import imgur from "imgur";
-// import mongoose, { Schema } from "mongoose";
 // import Board from "./board";
 // import { makeThumbnailURL } from "../utils/imgur";
 //

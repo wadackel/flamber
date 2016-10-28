@@ -1,3 +1,4 @@
+// @flow
 type MulterBaseFile = {
   fieldname: string;
   originalname: string;

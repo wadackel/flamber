@@ -1,6 +1,6 @@
 // @flow
-import path from "path";
-import url from "url";
+import * as path from "path";
+import * as url from "url";
 
 type ThumbnailSize = "s" | "b" | "t" | "m" | "l" | "h";
 
