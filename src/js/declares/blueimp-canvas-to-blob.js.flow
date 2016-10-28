@@ -1,0 +1,3 @@
+declare module "blueimp-canvas-to-blob" {
+  declare export default any;
+}

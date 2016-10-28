@@ -1,11 +1,17 @@
-/* eslint-disable */
-import _ from "lodash";
+// @flow
 import { handleActions } from "redux-actions";
 import * as ItemVisibilityFilters from "../constants/item-visibility-filters";
-import * as Boards from "../actions/boards";
-import * as Items from "../actions/items";
+import * as I from "../actions/items";
 
-const initialState = {
+import type {
+  ItemState,
+
+  AddItemURLFailureAction,
+  AddItemFileFailureAction
+} from "../types/item";
+
+
+const initialState: ItemState = {
   isFetching: false,
   isAdding: false,
   isMoving: false,
@@ -23,109 +29,104 @@ const initialState = {
 };
 
 export default handleActions({
-  // Set current item
-  [Items.SET_CURRENT_ITEM]: (state, { payload }) => ({
-    ...state,
-    currentItem: payload,
-    detailDrawerOpen: true
-  }),
+  // // Set current item
+  // [I.SET_CURRENT_ITEM]: (state, { payload }) => ({
+  //   ...state,
+  //   currentItem: payload,
+  //   detailDrawerOpen: true
+  // }),
+  //
+  //
+  // // Image editing
+  // [I.SET_ITEM_IMAGE_EDITING]: (state, { payload }) => ({
+  //   ...state,
+  //   isImageEditing: payload,
+  //   detailDrawerOpen: !payload
+  // }),
+  //
+  //
+  // // Detail drawer
+  // [I.ITEM_DETAIL_DRAWER_TOGGLE]: state => ({
+  //   ...state,
+  //   detailDrawerOpen: !state.detailDrawerOpen
+  // }),
+  //
+  // [I.ITEM_DETAIL_DRAWER_OPEN]: state => ({
+  //   ...state,
+  //   detailDrawerOpen: true
+  // }),
+  //
+  // [I.ITEM_DETAIL_DRAWER_CLOSE]: state => ({
+  //   ...state,
+  //   detailDrawerOpen: false
+  // }),
+  //
+  //
+  // // Set currentColor
+  // [I.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({
+  //   ...state,
+  //   currentColor: payload
+  // }),
+  //
+  //
+  // // Set visibility filter
+  // [I.SET_ITEM_VISIBILITY_FILTER]: (state, { payload }) => ({
+  //   ...state,
+  //   visibilityFilter: payload
+  // }),
 
 
-  // Image editing
-  [Items.SET_ITEM_IMAGE_EDITING]: (state, { payload }) => ({
-    ...state,
-    isImageEditing: payload,
-    detailDrawerOpen: !payload
-  }),
-
-
-  // Detail drawer
-  [Items.ITEM_DETAIL_DRAWER_TOGGLE]: state => ({
-    ...state,
-    detailDrawerOpen: !state.detailDrawerOpen
-  }),
-
-  [Items.ITEM_DETAIL_DRAWER_OPEN]: state => ({
-    ...state,
-    detailDrawerOpen: true
-  }),
-
-  [Items.ITEM_DETAIL_DRAWER_CLOSE]: state => ({
-    ...state,
-    detailDrawerOpen: false
-  }),
-
-
-  // Set currentColor
-  [Items.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({
-    ...state,
-    currentColor: payload
-  }),
-
-
-  // Set visibility filter
-  [Items.SET_ITEM_VISIBILITY_FILTER]: (state, { payload }) => ({
-    ...state,
-    visibilityFilter: payload
-  }),
-
-
-  // Fetch
-  [Items.FETCH_ITEMS_REQUEST]: state => ({
-    ...state,
-    isFetching: true
-  }),
-
-  [Items.FETCH_ITEMS_SUCCESS]: (state, { payload }) => ({
-    ...state,
-    isFetching: false
-  }),
-
-  [Items.FETCH_ITEMS_FAILURE]: (state, { payload }) => ({
-    ...state,
-    isFetching: false,
-    error: payload
-  }),
+  // // Fetch
+  // [I.FETCH_ITEMS_REQUEST]: state => ({
+  //   ...state,
+  //   isFetching: true
+  // }),
+  //
+  // [I.FETCH_ITEMS_SUCCESS]: (state, { payload }) => ({
+  //   ...state,
+  //   isFetching: false
+  // }),
+  //
+  // [I.FETCH_ITEMS_FAILURE]: (state, { payload }) => ({
+  //   ...state,
+  //   isFetching: false,
+  //   error: payload
+  // }),
 
 
   // Add from URL (UI)
-  [Items.ADD_ITEM_URL_DIALOG_OPEN]: state => ({
+  [I.ADD_ITEM_URL_DIALOG_OPEN]: state => ({
     ...state,
     addURLDialogOpen: true,
     addSnackbarOpen: false
   }),
 
-  [Items.ADD_ITEM_URL_DIALOG_CLOSE]: state => ({
+  [I.ADD_ITEM_URL_DIALOG_CLOSE]: state => ({
     ...state,
     addURLDialogOpen: false
   }),
 
 
   // Add from File (UI)
-  [Items.ADD_ITEM_FILE_DIALOG_OPEN]: state => ({
+  [I.ADD_ITEM_FILE_DIALOG_OPEN]: state => ({
     ...state,
     addFileDialogOpen: true,
     addSnackbarOpen: false
   }),
 
-  [Items.ADD_ITEM_FILE_DIALOG_CLOSE]: state => ({
+  [I.ADD_ITEM_FILE_DIALOG_CLOSE]: state => ({
     ...state,
     addFileDialogOpen: false
   }),
 
-  [Items.ADD_ITEM_SNACKBAR_CLOSE]: state => ({
-    ...state,
-    addSnackbarOpen: false
-  }),
-
 
   // Add from URL
-  [Items.ADD_ITEM_URL_REQUEST]: (state, { payload }) => ({
+  [I.ADD_ITEM_URL_REQUEST]: (state: ItemState): ItemState => ({
     ...state,
     isAdding: true
   }),
 
-  [Items.ADD_ITEM_URL_SUCCESS]: (state, { payload }) => ({
+  [I.ADD_ITEM_URL_SUCCESS]: (state: ItemState): ItemState => ({
     ...state,
     isAdding: false,
     error: null,
@@ -133,22 +134,22 @@ export default handleActions({
     addSnackbarOpen: true
   }),
 
-  [Items.ADD_ITEM_URL_FAILURE]: (state, { payload }) => ({
+  [I.ADD_ITEM_URL_FAILURE]: (state, action: AddItemURLFailureAction): ItemState => ({
     ...state,
     isAdding: false,
-    error: payload,
+    error: action.payload,
     addURLDialogOpen: false,
     addSnackbarOpen: true
   }),
 
 
   // Add from file
-  [Items.ADD_ITEM_FILE_REQUEST]: state => ({
+  [I.ADD_ITEM_FILE_REQUEST]: (state: ItemState): ItemState => ({
     ...state,
     isAdding: true
   }),
 
-  [Items.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => ({
+  [I.ADD_ITEM_FILE_SUCCESS]: (state: ItemState): ItemState => ({
     ...state,
     isAdding: false,
     error: null,
@@ -156,88 +157,88 @@ export default handleActions({
     addSnackbarOpen: true
   }),
 
-  [Items.ADD_ITEM_FILE_FAILURE]: (state, { payload }) => ({
+  [I.ADD_ITEM_FILE_FAILURE]: (state: ItemState, action: AddItemFileFailureAction): ItemState => ({
     ...state,
     isAdding: false,
-    error: payload,
+    error: action.payload,
     addFileDialogOpen: false,
     addSnackbarOpen: true
-  }),
-
-
-  // Update name
-  [Items.UPDATE_ITEM_NAME_FAILURE]: (state, { payload }) => ({
-    ...state,
-    error: payload
-  }),
-
-
-  // Delete
-  [Items.DELETE_ITEM_REQUEST]: (state, { payload }) => ({
-    ...state,
-    currentItem: null
-  }),
-
-
-  // Move
-  [Items.MOVE_ITEM_SELECT_BOARD_OPEN]: (state, { payload }) => ({
-    ...state,
-    moveItems: [payload],
-    selectBoardDialogOpen: true
-  }),
-
-  [Items.MOVE_ITEM_SELECT_BOARD_CLOSE]: (state, { payload }) => ({
-    ...state,
-    moveItems: [],
-    selectBoardDialogOpen: false
-  }),
-
-  [Items.MOVE_ITEM_REQUEST]: state => ({
-    ...state,
-    isMoving: true
-  }),
-
-  [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => ({
-    ...state,
-    isMoving: false,
-    selectBoardDialogOpen: false
-  }),
-
-  [Items.MOVE_ITEM_FAILURE]: (state, { payload, meta }) => ({
-    ...state,
-    isMoving: false,
-    selectBoardDialogOpen: false,
-    error: payload
-  }),
-
-
-  // Selected move
-  [Items.SELECTED_ITEMS_MOVE_OPEN]: state => ({
-    ...state,
-    selectBoardDialogOpen: true
-  }),
-
-  [Items.SELECTED_ITEMS_MOVE_CLOSE]: state => ({
-    ...state,
-    selectBoardDialogOpen: false
-  }),
-
-  [Items.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => ({
-    ...state,
-    isMoving: true
-  }),
-
-  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => ({
-    ...state,
-    isMoving: false,
-    error: null,
-    selectBoardDialogOpen: false
-  }),
-
-  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload }) => ({
-    ...state,
-    isMoving: false,
-    error: payload,
-    selectBoardDialogOpen: false
   })
+
+
+  // // Update name
+  // [I.UPDATE_ITEM_NAME_FAILURE]: (state, { payload }) => ({
+  //   ...state,
+  //   error: payload
+  // }),
+
+
+  // // Delete
+  // [I.DELETE_ITEM_REQUEST]: (state, { payload }) => ({
+  //   ...state,
+  //   currentItem: null
+  // }),
+  //
+  //
+  // // Move
+  // [I.MOVE_ITEM_SELECT_BOARD_OPEN]: (state, { payload }) => ({
+  //   ...state,
+  //   moveItems: [payload],
+  //   selectBoardDialogOpen: true
+  // }),
+  //
+  // [I.MOVE_ITEM_SELECT_BOARD_CLOSE]: (state, { payload }) => ({
+  //   ...state,
+  //   moveItems: [],
+  //   selectBoardDialogOpen: false
+  // }),
+  //
+  // [I.MOVE_ITEM_REQUEST]: state => ({
+  //   ...state,
+  //   isMoving: true
+  // }),
+  //
+  // [I.MOVE_ITEM_SUCCESS]: (state, { payload }) => ({
+  //   ...state,
+  //   isMoving: false,
+  //   selectBoardDialogOpen: false
+  // }),
+  //
+  // [I.MOVE_ITEM_FAILURE]: (state, { payload, meta }) => ({
+  //   ...state,
+  //   isMoving: false,
+  //   selectBoardDialogOpen: false,
+  //   error: payload
+  // }),
+  //
+  //
+  // // Selected move
+  // [I.SELECTED_ITEMS_MOVE_OPEN]: state => ({
+  //   ...state,
+  //   selectBoardDialogOpen: true
+  // }),
+  //
+  // [I.SELECTED_ITEMS_MOVE_CLOSE]: state => ({
+  //   ...state,
+  //   selectBoardDialogOpen: false
+  // }),
+  //
+  // [I.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => ({
+  //   ...state,
+  //   isMoving: true
+  // }),
+  //
+  // [I.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => ({
+  //   ...state,
+  //   isMoving: false,
+  //   error: null,
+  //   selectBoardDialogOpen: false
+  // }),
+  //
+  // [I.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload }) => ({
+  //   ...state,
+  //   isMoving: false,
+  //   error: payload,
+  //   selectBoardDialogOpen: false
+  // })
 }, initialState);

@@ -1,0 +1,5 @@
+declare module "query-string" {
+  declare function extract(str: string): string;
+  declare function parse(str: string): Object;
+  declare function stringify(obj: Object, opts?: Object): string;
+}

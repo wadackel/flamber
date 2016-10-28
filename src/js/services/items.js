@@ -1,3 +1,4 @@
+// @flow
 import queryString from "query-string";
 import libFetch from "isomorphic-fetch";
 import { API_ROOT } from "../constants/application";
@@ -8,24 +9,32 @@ import ApiClient from "../utils/api-client";
 const dataURLtoBlob = ExecutionEnvironment.canUseDOM ? require("blueimp-canvas-to-blob") : null;
 import getImagePalette from "../utils/get-image-palette";
 
+import type { BoardId } from "../types/board";
+import type { ItemId, Item, Items, ItemEntities } from "../types/item";
+import type { Palette } from "../types/prop-types";
+
+
 const apiClient = new ApiClient("/items");
 
+type ResponseItem = Promise<{ item: Item }>;
+type ResponseArrayItem = Promise<{ items: Items }>;
 
-export function fetchItems(query = {}) {
+
+export function fetchItems(query: Object = {}): ResponseArrayItem {
   const qs = queryString.stringify(query);
   return apiClient.get(`?${qs}`);
 }
 
 
-export function fetchBoardItems(boardId) {
-  return apiClient.get(`/board/${boardId}`);
+export function fetchBoardItems(board: BoardId) {
+  return apiClient.get(`/board/${board}`);
 }
 
 
-export function addItemByFile({ file, palette, board }) {
+export function addItemByFile(board: BoardId, file: File, palette: Palette): ResponseItem {
   const data = new FormData();
-  data.append("file", file);
   data.append("board", board);
+  data.append("file", file);
   data.append("palette", palette);
 
   return apiClient.post("/file", { body: data });
@@ -33,7 +42,7 @@ export function addItemByFile({ file, palette, board }) {
 
 
 // TODO: Refactor
-function takeScreenshotAndPalette(url) {
+function takeScreenshotAndPalette(url: string) {
   return new Promise((resolve, reject) => {
     const screenshotURL = `${API_ROOT}/screenshot/${encodeURIComponent(url)}`;
 
@@ -51,6 +60,8 @@ function takeScreenshotAndPalette(url) {
           const palette = getImagePalette(image);
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
+          if (!ctx) return reject();
+
           canvas.width = image.naturalWidth;
           canvas.height = image.naturalHeight;
           ctx.fillStyle = "white";
@@ -70,9 +81,11 @@ function takeScreenshotAndPalette(url) {
   });
 }
 
-export function addItemByURL({ url, board }) {
+export function addItemByURL(board: BoardId, url: string) {
   return takeScreenshotAndPalette(url)
     .then(({ image, palette }) => {
+      if (typeof dataURLtoBlob !== "function") throw new Error("Please run in the browser");
+
       const data = new FormData();
       data.append("file", dataURLtoBlob(image));
       data.append("url", url);
@@ -84,12 +97,12 @@ export function addItemByURL({ url, board }) {
 }
 
 
-export function updateItems(items) {
+export function updateItems(items: ItemEntities) {
   return apiClient.put("/", { body: items });
 }
 
 
-export function updateItemImage({ id, image }) {
+export function updateItemImage(id: ItemId, image: File) {
   const data = new FormData();
   data.append("id", id);
   data.append("file", image);
@@ -98,6 +111,6 @@ export function updateItemImage({ id, image }) {
 }
 
 
-export function deleteItems(items) {
+export function deleteItems(items: ItemEntities) {
   return apiClient.delete("/", { body: items });
 }

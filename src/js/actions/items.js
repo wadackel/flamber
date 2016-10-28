@@ -2,13 +2,33 @@
 import uuid from "node-uuid";
 import { identity } from "lodash";
 import { createAction } from "redux-actions";
+
 import type { Palette } from "../types/prop-types";
 import type { BoardId } from "../types/board";
-import type { ItemId, Item, Items } from "../types/item";
 import type { TagId } from "../types/tag";
+import type {
+  ItemId,
+  Item,
+  Items,
 
+  AddItemURLDialogOpenAction,
+  AddItemURLDialogCloseAction,
 
-// TODO: Payload type definition
+  AddItemFileDialogOpenAction,
+  AddItemFileDialogCloseAction,
+
+  AddItemURLSuccessPayload,
+  AddItemURLRequestAction,
+  AddItemURLSuccessAction,
+  AddItemURLFailureAction,
+
+  AddItemFileSuccessPayload,
+  AddItemFileRequestAction,
+  AddItemFileSuccessAction,
+  AddItemFileFailureAction,
+
+  GotoAddedItemAction
+} from "../types/item";
 
 
 // Set color
@@ -46,48 +66,62 @@ export const fetchItemsFailure = createAction(FETCH_ITEMS_FAILURE);
 
 
 // Add from URL (UI)
-export const ADD_ITEM_URL_DIALOG_OPEN: string = "ADD_ITEM_URL_DIALOG_OPEN";
-export const ADD_ITEM_URL_DIALOG_CLOSE: string = "ADD_ITEM_URL_DIALOG_CLOSE";
+export const ADD_ITEM_URL_DIALOG_OPEN = "ADD_ITEM_URL_DIALOG_OPEN";
+export const ADD_ITEM_URL_DIALOG_CLOSE = "ADD_ITEM_URL_DIALOG_CLOSE";
 
-export const addItemURLDialogOpen = createAction(ADD_ITEM_URL_DIALOG_OPEN);
-export const addItemURLDialogClose = createAction(ADD_ITEM_URL_DIALOG_CLOSE);
+export const addItemURLDialogOpen = (): AddItemURLDialogOpenAction => ({ type: ADD_ITEM_URL_DIALOG_OPEN });
+export const addItemURLDialogClose = (): AddItemURLDialogCloseAction => ({ type: ADD_ITEM_URL_DIALOG_CLOSE });
 
 
 // Add from File (UI)
-export const ADD_ITEM_FILE_DIALOG_OPEN: string = "ADD_ITEM_FILE_DIALOG_OPEN";
-export const ADD_ITEM_FILE_DIALOG_CLOSE: string = "ADD_ITEM_FILE_DIALOG_CLOSE";
+export const ADD_ITEM_FILE_DIALOG_OPEN = "ADD_ITEM_FILE_DIALOG_OPEN";
+export const ADD_ITEM_FILE_DIALOG_CLOSE = "ADD_ITEM_FILE_DIALOG_CLOSE";
 
-export const addItemFileDialogOpen = createAction(ADD_ITEM_FILE_DIALOG_OPEN);
-export const addItemFileDialogClose = createAction(ADD_ITEM_FILE_DIALOG_CLOSE);
+export const addItemFileDialogOpen = (): AddItemFileDialogOpenAction => ({ type: ADD_ITEM_FILE_DIALOG_OPEN });
+export const addItemFileDialogClose = (): AddItemFileDialogCloseAction => ({ type: ADD_ITEM_FILE_DIALOG_CLOSE });
 
 
 // Add from URL
-export const ADD_ITEM_URL_REQUEST: string = "ADD_ITEM_URL_REQUEST";
-export const ADD_ITEM_URL_SUCCESS: string = "ADD_ITEM_URL_SUCCESS";
-export const ADD_ITEM_URL_FAILURE: string = "ADD_ITEM_URL_FAILURE";
+export const ADD_ITEM_URL_REQUEST = "ADD_ITEM_URL_REQUEST";
+export const ADD_ITEM_URL_SUCCESS = "ADD_ITEM_URL_SUCCESS";
+export const ADD_ITEM_URL_FAILURE = "ADD_ITEM_URL_FAILURE";
 
-export const addItemURLRequest = createAction(ADD_ITEM_URL_REQUEST,
-  (url: string, board: BoardId): Object => ({ url, board })
+export const addItemURLRequest = (url: string, board: BoardId): AddItemURLRequestAction => (
+  { type: ADD_ITEM_URL_REQUEST, payload: { url, board } }
 );
-export const addItemURLSuccess = createAction(ADD_ITEM_URL_SUCCESS);
-export const addItemURLFailure = createAction(ADD_ITEM_URL_FAILURE);
+
+export const addItemURLSuccess = (payload: AddItemURLSuccessPayload): AddItemURLSuccessAction => (
+  { type: ADD_ITEM_URL_SUCCESS, payload }
+);
+
+export const addItemURLFailure = (error: Error): AddItemURLFailureAction => (
+  { type: ADD_ITEM_URL_FAILURE, payload: error, error: true }
+);
 
 
 // Add from file
-export const ADD_ITEM_FILE_REQUEST: string = "ADD_ITEM_FILE_REQUEST";
-export const ADD_ITEM_FILE_SUCCESS: string = "ADD_ITEM_FILE_SUCCESS";
-export const ADD_ITEM_FILE_FAILURE: string = "ADD_ITEM_FILE_FAILURE";
+export const ADD_ITEM_FILE_REQUEST = "ADD_ITEM_FILE_REQUEST";
+export const ADD_ITEM_FILE_SUCCESS = "ADD_ITEM_FILE_SUCCESS";
+export const ADD_ITEM_FILE_FAILURE = "ADD_ITEM_FILE_FAILURE";
 
-export const addItemFileRequest = createAction(ADD_ITEM_FILE_REQUEST,
-  (board: BoardId, file: File, palette: Palette): Object => ({ board, file, palette })
+export const addItemFileRequest = (board: BoardId, file: File, palette: Palette): AddItemFileRequestAction => (
+  { type: ADD_ITEM_FILE_REQUEST, payload: { board, file, palette } }
 );
-export const addItemFileSuccess = createAction(ADD_ITEM_FILE_SUCCESS);
-export const addItemFileFailure = createAction(ADD_ITEM_FILE_FAILURE);
+
+export const addItemFileSuccess = (payload: AddItemFileSuccessPayload): AddItemFileSuccessAction => (
+  { type: ADD_ITEM_FILE_SUCCESS, payload }
+);
+
+export const addItemFileFailure = (error: Error): AddItemFileFailureAction => (
+  { type: ADD_ITEM_FILE_FAILURE, payload: error, error: true }
+);
 
 
 // Goto added item
-export const GOTO_ADDED_ITEM: string = "GOTO_ADDED_ITEM";
-export const gotoAddedItem = createAction(GOTO_ADDED_ITEM);
+export const GOTO_ADDED_ITEM = "GOTO_ADDED_ITEM";
+export const gotoAddedItem = (id: ItemId): GotoAddedItemAction => (
+  { type: GOTO_ADDED_ITEM, payload: id }
+);
 
 
 // Star

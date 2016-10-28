@@ -1,99 +1,122 @@
+// @flow
 import { normalize } from "normalizr";
 import { takeEvery } from "redux-saga";
 import { fork, take, call, put, select } from "redux-saga/effects";
 import ItemSchema from "../../schemas/item";
 import * as Services from "../../services/items";
-import * as Notifications from "../../actions/notifications";
-import * as Items from "../../actions/items";
+import { showNotify } from "../../actions/notifications";
+import * as I from "../../actions/items";
 import { getBoardEntityById } from "../../selectors/boards";
 
+import type { BoardEntity } from "../../types/board";
+import type {
+  Item,
+  AddItemFileRequestAction,
+  AddItemFileSuccessAction,
+  AddItemFileFailureAction,
+  AddItemURLRequestAction,
+  AddItemURLSuccessAction,
+  AddItemURLFailureAction
+} from "../../types/item";
 
-export function *handleAddItemFileRequest() {
+
+export function *handleAddItemFileRequest(): Generator<any, *, *> {
   while (true) {
-    const { payload } = yield take(Items.ADD_ITEM_FILE_REQUEST);
-
     try {
-      const response = yield call(Services.addItemByFile, payload);
-      const normalized = normalize(response, {
-        item: ItemSchema
-      });
-      yield put(Items.addItemFileSuccess(normalized));
+      const action: ?AddItemFileRequestAction = yield take(I.ADD_ITEM_FILE_REQUEST);
+      if (!action) throw new Error("アイテムの追加に失敗しました");
+
+      const { board, file, palette } = action.payload;
+      const response = yield call((): Promise<{ item: Item }> => Services.addItemByFile(board, file, palette));
+      if (!response) throw new Error("アイテムの追加に失敗しました");
+
+      const normalized = normalize(response, { item: ItemSchema });
+      yield put(I.addItemFileSuccess(normalized));
 
     } catch (error) {
-      yield put(Items.addItemFileFailure(error));
+      yield put(I.addItemFileFailure(error));
     }
   }
 }
 
-export function *handleAddItemFileSuccess({ payload }) {
-  const item = payload.entities.items[payload.result.item];
-  const board = yield select(getBoardEntityById, item.board);
+function *handleAddItemFileSuccess(action: AddItemFileSuccessAction): Generator<any, *, *> {
+  const { entities, result } = action.payload;
+  const item = entities.items[result.item];
+  const board: ?BoardEntity = yield select(getBoardEntityById, item.board_id);
+  if (!board) return;
 
-  yield put(Notifications.showNotify(`${board.name}にアイテムを追加しました`, {
-    type: Items.GOTO_ADDED_ITEM,
-    text: "Show"
+  yield put(showNotify(`${board.name}にアイテムを追加しました`, {
+    type: I.GOTO_ADDED_ITEM,
+    payload: {
+      text: "Show",
+      value: result.item
+    }
   }));
 }
 
-function *handleAddItemFileFailure() {
-  // TODO: More error message
-  yield put(Notifications.showNotify("アイテムの追加に失敗しました"));
+function *handleAddItemFileFailure(action: AddItemFileFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
 }
 
 
-export function *handleAddItemURLRequest() {
+export function *handleAddItemURLRequest(): Generator<any, *, *> {
   while (true) {
-    const { payload } = yield take(Items.ADD_ITEM_URL_REQUEST);
 
     try {
-      const response = yield call(Services.addItemByURL, payload);
-      const normalized = normalize(response, {
-        item: ItemSchema
-      });
-      yield put(Items.addItemURLSuccess(normalized));
+      const action: ?AddItemURLRequestAction = yield take(I.ADD_ITEM_URL_REQUEST);
+      if (!action) throw new Error("ボードの追加に失敗しました");
+
+      const { board, url } = action.payload;
+      const response = yield call((): Promise<{ item: Item }> => Services.addItemByURL(board, url));
+      if (!response) throw new Error("ボードの追加に失敗しました");
+
+      const normalized = normalize(response, { item: ItemSchema });
+      yield put(I.addItemURLSuccess(normalized));
 
     } catch (error) {
-      yield put(Items.addItemURLFailure(error));
+      yield put(I.addItemURLFailure(error));
     }
   }
 }
 
-export function *handleAddItemURLSuccess({ payload }) {
-  const item = payload.entities.items[payload.result.item];
-  const board = yield select(getBoardEntityById, item.board);
+function *handleAddItemURLSuccess(action: AddItemURLSuccessAction): Generator<any, *, *> {
+  const { entities, result } = action.payload;
+  const item = entities.items[result.item];
+  const board: ?BoardEntity = yield select(getBoardEntityById, item.board_id);
+  if (!board) return;
 
-  yield put(Notifications.showNotify(`${board.name}にアイテムを追加しました`, {
-    type: Items.GOTO_ADDED_ITEM,
-    text: "Show"
+  yield put(showNotify(`${board.name}にアイテムを追加しました`, {
+    type: I.GOTO_ADDED_ITEM,
+    payload: {
+      text: "Show",
+      value: result.item
+    }
   }));
 }
 
-function *handleAddItemURLFailure() {
-  // TODO: More error message
-  yield put(Notifications.showNotify("アイテムの追加に失敗しました"));
+function *handleAddItemURLFailure(action: AddItemURLFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
 }
 
 
 /* eslint-disable */
-function *handleGotoAddedItem() {
+function *handleGotoAddedItem(): Generator<any, *, *> {
   // TODO
-  console.log("ADD TODO");
+  console.log("Goto item!!");
 }
 /* eslint-enable */
 
 
-export default function *addItemSaga() {
+export default function *addItemSaga(): Generator<any, *, *> {
   yield [
-    // File
     fork(handleAddItemFileRequest),
-    takeEvery(Items.ADD_ITEM_FILE_SUCCESS, handleAddItemFileSuccess),
-    takeEvery(Items.ADD_ITEM_FILE_FAILURE, handleAddItemFileFailure),
+    takeEvery(I.ADD_ITEM_FILE_SUCCESS, handleAddItemFileSuccess),
+    takeEvery(I.ADD_ITEM_FILE_FAILURE, handleAddItemFileFailure),
 
-    // URL
     fork(handleAddItemURLRequest),
-    takeEvery(Items.ADD_ITEM_URL_SUCCESS, handleAddItemURLSuccess),
-    takeEvery(Items.ADD_ITEM_URL_FAILURE, handleAddItemURLFailure),
+    takeEvery(I.ADD_ITEM_URL_SUCCESS, handleAddItemURLSuccess),
+    takeEvery(I.ADD_ITEM_URL_FAILURE, handleAddItemURLFailure),
 
-    takeEvery(Items.GOTO_ADDED_ITEM, handleGotoAddedItem)
+    takeEvery(I.GOTO_ADDED_ITEM, handleGotoAddedItem)
   ];
 }

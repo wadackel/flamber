@@ -1,61 +1,81 @@
-import _ from "lodash";
+// @flow
+import { assign, mapValues, union, without, findIndex } from "lodash";
 import { handleActions } from "redux-actions";
-import * as Boards from "../../actions/boards";
-import * as Items from "../../actions/items";
+import * as B from "../../actions/boards";
+import * as I from "../../actions/items";
 
-// TODO: Refactor
-function mergeEntities(state, entities) {
-  return _.assign(state, entities || {});
+import type {
+  ItemEntitiesState,
+  AddItemURLSuccessAction,
+  AddItemFileSuccessAction
+} from "../../types/item";
+
+
+function mergeEntities(state: ItemEntitiesState, entities: ItemEntitiesState): ItemEntitiesState {
+  return assign(state, entities || {});
 }
+
+// function mapEntities(state: BoardEntitiesState, ids: Array<BoardId>, iteratee: Function): BoardEntitiesState {
+//   return mapValues(state, (entity: BoardEntity) =>
+//     ids.indexOf(entity.id) > -1 ? iteratee(entity) : entity
+//   );
+// }
+//
+// function removeEntities(state: BoardEntitiesState, ids: Array<BoardId>): BoardEntitiesState {
+//   return pickBy(state, (entity: BoardEntity): boolean =>
+//     ids.indexOf(entity.id) === -1
+//   );
+// }
+
 
 export default handleActions({
   // Fetch
-  [Items.FETCH_ITEMS_SUCCESS]: (state, { payload }) => (
+  [I.FETCH_ITEMS_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
   ),
 
 
   // Add from URL
-  [Items.ADD_ITEM_URL_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.items)
+  [I.ADD_ITEM_URL_SUCCESS]: (state: ItemEntitiesState, action: AddItemURLSuccessAction): ItemEntitiesState => (
+    mergeEntities(state, action.payload.entities.items)
   ),
 
 
   // Add from file
-  [Items.ADD_ITEM_FILE_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.items)
+  [I.ADD_ITEM_FILE_SUCCESS]: (state: ItemEntitiesState, action: AddItemFileSuccessAction): ItemEntitiesState => (
+    mergeEntities(state, action.payload.entities.items)
   ),
 
 
-  // Delete
-  [Items.DELETE_ITEM_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
-      entity.id !== payload ? entity : {
-        ...entity,
-        isDeleting: true
-      }
-    )
-  ),
-
-  [Items.DELETE_ITEM_SUCCESS]: (state, { payload }) => (
-    _.pickBy(state, (entity, id) =>
-      id !== payload.id
-    )
-  ),
-
-  [Items.DELETE_ITEM_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
-      entity.id !== meta.entity.id ? entity : {
-        ...entity,
-        isDeleting: false
-      }
-    )
-  ),
+  // // Delete
+  // [I.DELETE_ITEM_REQUEST]: (state, { payload }) => (
+  //   mapValues(state, entity =>
+  //     entity.id !== payload ? entity : {
+  //       ...entity,
+  //       isDeleting: true
+  //     }
+  //   )
+  // ),
+  //
+  // [I.DELETE_ITEM_SUCCESS]: (state, { payload }) => (
+  //   pickBy(state, (entity, id) =>
+  //     id !== payload.id
+  //   )
+  // ),
+  //
+  // [I.DELETE_ITEM_FAILURE]: (state, { meta }) => (
+  //   mapValues(state, entity =>
+  //     entity.id !== meta.entity.id ? entity : {
+  //       ...entity,
+  //       isDeleting: false
+  //     }
+  //   )
+  // ),
 
 
   // Star
-  [Items.STAR_ITEM_TOGGLE_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.STAR_ITEM_TOGGLE_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload ? entity : {
         ...entity,
         star: !entity.star
@@ -63,8 +83,8 @@ export default handleActions({
     )
   ),
 
-  [Items.STAR_ITEM_TOGGLE_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.STAR_ITEM_TOGGLE_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         star: payload.star
@@ -72,8 +92,8 @@ export default handleActions({
     )
   ),
 
-  [Items.STAR_ITEM_TOGGLE_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.STAR_ITEM_TOGGLE_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta ? entity : {
         ...entity,
         star: !entity.star
@@ -83,8 +103,8 @@ export default handleActions({
 
 
   // Update name
-  [Items.UPDATE_ITEM_NAME_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_NAME_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         name: payload.name,
@@ -94,8 +114,8 @@ export default handleActions({
     )
   ),
 
-  [Items.UPDATE_ITEM_NAME_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_NAME_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity =>
       payload.result.items.indexOf(entity.id) < 0 ? entity : {
         ...entity,
         name: payload.entities.items[entity.id].name,
@@ -105,8 +125,8 @@ export default handleActions({
     )
   ),
 
-  [Items.UPDATE_ITEM_NAME_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_NAME_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
         isUpdating: false,
@@ -117,8 +137,8 @@ export default handleActions({
 
 
   // Update description
-  [Items.UPDATE_ITEM_DESCRIPTION_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_DESCRIPTION_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         description: payload.description,
@@ -128,8 +148,8 @@ export default handleActions({
     )
   ),
 
-  [Items.UPDATE_ITEM_DESCRIPTION_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_DESCRIPTION_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity =>
       payload.result.items.indexOf(entity.id) < 0 ? entity : {
         ...entity,
         description: payload.entities.items[entity.id].description,
@@ -139,8 +159,8 @@ export default handleActions({
     )
   ),
 
-  [Items.UPDATE_ITEM_DESCRIPTION_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_DESCRIPTION_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id === meta.id ? entity : {
         ...entity,
         isUpdating: false,
@@ -151,8 +171,8 @@ export default handleActions({
 
 
   // Update palette
-  [Items.UPDATE_ITEM_PALETTE_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_PALETTE_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         palette: payload.palette,
@@ -162,8 +182,8 @@ export default handleActions({
     )
   ),
 
-  [Items.UPDATE_ITEM_PALETTE_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_PALETTE_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity =>
       payload.result.items.indexOf(entity.id) < 0 ? entity : {
         ...entity,
         palette: payload.entities.items[entity.id].palette,
@@ -173,8 +193,8 @@ export default handleActions({
     )
   ),
 
-  [Items.UPDATE_ITEM_PALETTE_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_PALETTE_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id === meta.id ? entity : {
         ...entity,
         isUpdating: false,
@@ -185,8 +205,8 @@ export default handleActions({
 
 
   // Image
-  [Items.UPDATE_ITEM_IMAGE_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_IMAGE_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         isImageUpdating: true
@@ -194,12 +214,12 @@ export default handleActions({
     )
   ),
 
-  [Items.UPDATE_ITEM_IMAGE_SUCCESS]: (state, { payload }) => (
+  [I.UPDATE_ITEM_IMAGE_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
   ),
 
-  [Items.UPDATE_ITEM_IMAGE_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.UPDATE_ITEM_IMAGE_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
         isImageUpdating: false
@@ -209,8 +229,8 @@ export default handleActions({
 
 
   // Add tag
-  [Items.ADD_ITEM_TAG_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.ADD_ITEM_TAG_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         tags: [...entity.tags, payload.tagId],
@@ -220,8 +240,8 @@ export default handleActions({
     )
   ),
 
-  [Items.ADD_ITEM_TAG_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.ADD_ITEM_TAG_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity =>
       payload.result.items.indexOf(entity.id) < 0 ? entity : {
         ...entity,
         isUpdating: false,
@@ -230,8 +250,8 @@ export default handleActions({
     )
   ),
 
-  [Items.ADD_ITEM_TAG_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.ADD_ITEM_TAG_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
         isUpdating: false,
@@ -242,8 +262,8 @@ export default handleActions({
 
 
   // Remove tag
-  [Items.REMOVE_ITEM_TAG_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.REMOVE_ITEM_TAG_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         tags: entity.tags.filter(tagId => payload.tagId !== tagId),
@@ -253,8 +273,8 @@ export default handleActions({
     )
   ),
 
-  [Items.REMOVE_ITEM_TAG_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.REMOVE_ITEM_TAG_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity =>
       payload.result.items.indexOf(entity.id) < 0 ? entity : {
         ...entity,
         isUpdating: false,
@@ -263,8 +283,8 @@ export default handleActions({
     )
   ),
 
-  [Items.REMOVE_ITEM_TAG_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.REMOVE_ITEM_TAG_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
         isUpdating: false,
@@ -275,8 +295,8 @@ export default handleActions({
 
 
   // Register tag
-  [Items.REGISTER_ITEM_TAG_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.REGISTER_ITEM_TAG_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload.id ? entity : {
         ...entity,
         tags: [...entity.tags, payload.tagId],
@@ -286,12 +306,12 @@ export default handleActions({
     )
   ),
 
-  [Items.REGISTER_ITEM_TAG_SUCCESS]: (state, { payload, meta }) => (
-    _.mapValues(state, entity =>
+  [I.REGISTER_ITEM_TAG_SUCCESS]: (state, { payload, meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
-        tags: _.union(
-          _.without(entity.tags, meta.tagId),
+        tags: union(
+          without(entity.tags, meta.tagId),
           payload.entities.items[payload.result.items[0]].tags
         ),
         isUpdating: false,
@@ -300,11 +320,11 @@ export default handleActions({
     )
   ),
 
-  [Items.REGISTER_ITEM_TAG_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.REGISTER_ITEM_TAG_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       entity.id !== meta.id ? entity : {
         ...entity,
-        tags: _.without(entity.tags, meta.tagId),
+        tags: without(entity.tags, meta.tagId),
         isUpdating: false,
         isTagAdding: false
       }
@@ -313,14 +333,14 @@ export default handleActions({
 
 
   // Move
-  [Items.MOVE_ITEM_SUCCESS]: (state, { payload }) => (
+  [I.MOVE_ITEM_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
   ),
 
 
   // Select
-  [Items.SELECT_ITEM_TOGGLE]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.SELECT_ITEM_TOGGLE]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.id !== payload ? entity : {
         ...entity,
         select: !entity.select
@@ -330,8 +350,8 @@ export default handleActions({
 
 
   // Select all
-  [Items.SELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.SELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
+    mapValues(state, entity =>
       !payload.some(o => o.id === entity.id) ? entity : {
         ...entity,
         select: true
@@ -341,8 +361,8 @@ export default handleActions({
 
 
   // Unselect all
-  [Items.UNSELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.UNSELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
+    mapValues(state, entity =>
       !payload.some(o => o.id === entity.id) ? entity : {
         ...entity,
         select: false
@@ -352,8 +372,8 @@ export default handleActions({
 
 
   // Select star item
-  [Items.SELECT_STAR_ITEM_EXEC]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.SELECT_STAR_ITEM_EXEC]: (state, { payload }) => (
+    mapValues(state, entity =>
       !payload.some(o => o.id === entity.id) ? entity : {
         ...entity,
         select: entity.star
@@ -362,35 +382,35 @@ export default handleActions({
   ),
 
 
-  // Selected delete
-  [Items.SELECTED_ITEMS_DELETE_REQUEST]: state => (
-    _.mapValues(state, entity =>
-      !entity.select ? entity : {
-        ...entity,
-        isDeleting: true
-      }
-    )
-  ),
-
-  [Items.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => (
-    _.pickBy(state, (entity, id) =>
-      !payload.some(o => o.id === id)
-    )
-  ),
-
-  [Items.SELECTED_ITEMS_DELETE_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
-      !meta.entities.indexOf(entity.id) < 0 ? entity : {
-        ...entity,
-        isDeleting: false
-      }
-    )
-  ),
+  // // Selected delete
+  // [I.SELECTED_ITEMS_DELETE_REQUEST]: state => (
+  //   mapValues(state, entity =>
+  //     !entity.select ? entity : {
+  //       ...entity,
+  //       isDeleting: true
+  //     }
+  //   )
+  // ),
+  //
+  // [I.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => (
+  //   pickBy(state, (entity, id) =>
+  //     !payload.some(o => o.id === id)
+  //   )
+  // ),
+  //
+  // [I.SELECTED_ITEMS_DELETE_FAILURE]: (state, { meta }) => (
+  //   mapValues(state, entity =>
+  //     !meta.entities.indexOf(entity.id) < 0 ? entity : {
+  //       ...entity,
+  //       isDeleting: false
+  //     }
+  //   )
+  // ),
 
 
   // Selected star
-  [Items.SELECTED_ITEMS_STAR_REQUEST]: state => (
-    _.mapValues(state, entity =>
+  [I.SELECTED_ITEMS_STAR_REQUEST]: state => (
+    mapValues(state, entity =>
       !entity.select ? entity : {
         ...entity,
         isUpdating: true
@@ -398,8 +418,8 @@ export default handleActions({
     )
   ),
 
-  [Items.SELECTED_ITEMS_STAR_SUCCESS]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.SELECTED_ITEMS_STAR_SUCCESS]: (state, { payload }) => (
+    mapValues(state, entity =>
       !payload.entities.items.hasOwnProperty(entity.id) ? entity : {
         ...entity,
         select: false,
@@ -409,9 +429,9 @@ export default handleActions({
     )
   ),
 
-  [Items.SELECTED_ITEMS_STAR_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity => {
-      const index = _.findIndex(meta.entities, o => o.id === entity.id);
+  [I.SELECTED_ITEMS_STAR_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity => {
+      const index = findIndex(meta.entities, o => o.id === entity.id);
       return index < 0 ? entity : {
         ...meta.entities[index],
         isUpdating: false
@@ -421,8 +441,8 @@ export default handleActions({
 
 
   // Selected move
-  [Items.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => (
-    _.mapValues(state, entity =>
+  [I.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => (
+    mapValues(state, entity =>
       entity.board !== payload || !entity.select ? entity : {
         ...entity,
         isMoving: true
@@ -430,12 +450,12 @@ export default handleActions({
     )
   ),
 
-  [Items.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => (
+  [I.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
   ),
 
-  [Items.SELECTED_ITEMS_MOVE_FAILURE]: (state, { meta }) => (
-    _.mapValues(state, entity =>
+  [I.SELECTED_ITEMS_MOVE_FAILURE]: (state, { meta }) => (
+    mapValues(state, entity =>
       meta.prevBoards.indexOf(entity.board) < 0 ? entity : {
         ...entity,
         isMoving: false
@@ -444,8 +464,8 @@ export default handleActions({
   ),
 
 
-  // Boards
-  [Boards.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
+  // B
+  [B.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
   )
 }, {});
