@@ -1,6 +1,12 @@
 // @flow
 import { createAction } from "redux-actions";
 
+import type {
+  AppMenuOpenAction,
+  AppMenuCloseAction,
+  AppMenuToggleAction
+} from "../types/application";
+
 
 // Create
 export const CREATE_APP_REQUEST: string = "CREATE_APP_REQUEST";
@@ -33,3 +39,13 @@ export const DELETE_APP_FAILURE: string = "DELETE_APP_FAILURE";
 export const deleteAppRequest = createAction(DELETE_APP_REQUEST);
 export const deleteAppSuccess = createAction(DELETE_APP_SUCCESS);
 export const deleteAppFailure = createAction(DELETE_APP_FAILURE);
+
+
+// Menu
+export const APP_MENU_OPEN = "APP_MENU_OPEN";
+export const APP_MENU_CLOSE = "APP_MENU_CLOSE";
+export const APP_MENU_TOGGLE = "APP_MENU_TOGGLE";
+
+export const appMenuOpen = (): AppMenuOpenAction => ({ type: APP_MENU_OPEN });
+export const appMenuClose = (): AppMenuCloseAction => ({ type: APP_MENU_CLOSE });
+export const appMenuToggle = (): AppMenuToggleAction => ({ type: APP_MENU_TOGGLE });

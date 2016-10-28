@@ -1,26 +1,34 @@
+// @flow
 import { handleActions } from "redux-actions";
-import * as App from "../actions/application";
+import * as A from "../actions/application";
 
-const initialState = {
+import type {
+  AppState
+} from "../types/application";
+
+
+const initialState: AppState = {
   isCreating: false,
   isDeleting: false,
+  isMenuOpen: false,
   error: null
 };
 
+
 export default handleActions({
   // Create
-  [App.CREATE_APP_REQUEST]: state => ({
+  [A.CREATE_APP_REQUEST]: state => ({
     ...state,
     isCreating: true
   }),
 
-  [App.CREATE_APP_SUCCESS]: state => ({
+  [A.CREATE_APP_SUCCESS]: state => ({
     ...state,
     isCreating: false,
     error: null
   }),
 
-  [App.CREATE_APP_FAILURE]: (state, { payload }) => ({
+  [A.CREATE_APP_FAILURE]: (state, { payload }) => ({
     ...state,
     isCreating: false,
     error: payload
@@ -28,18 +36,35 @@ export default handleActions({
 
 
   // TODO: Delete all application data
-  [App.DELETE_APP_REQUEST]: state => ({
+  [A.DELETE_APP_REQUEST]: state => ({
     ...state,
     isDeleting: true
   }),
 
-  [App.DELETE_APP_SUCCESS]: state => ({
+  [A.DELETE_APP_SUCCESS]: state => ({
     ...state,
     isDeleting: false
   }),
 
-  [App.DELETE_APP_FAILURE]: state => ({
+  [A.DELETE_APP_FAILURE]: state => ({
     ...state,
     isDeleting: false
+  }),
+
+
+  // Menu
+  [A.APP_MENU_OPEN]: (state: AppState): AppState => ({
+    ...state,
+    isMenuOpen: true
+  }),
+
+  [A.APP_MENU_CLOSE]: (state: AppState): AppState => ({
+    ...state,
+    isMenuOpen: false
+  }),
+
+  [A.APP_MENU_TOGGLE]: (state: AppState): AppState => ({
+    ...state,
+    isMenuOpen: !state.isMenuOpen
   })
 }, initialState);

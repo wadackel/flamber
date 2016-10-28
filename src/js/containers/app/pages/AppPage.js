@@ -1,7 +1,8 @@
-// TODO: flow
+// TODO
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import * as AppActions from "../../../actions/application";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import bem from "../../../helpers/bem";
@@ -33,6 +34,7 @@ import {
 
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
+import type { AppState } from "../../../types/application";
 import type { AuthState } from "../../../types/auth";
 import type { BoardState, BoardId } from "../../../types/board";
 import type { Palette } from "../../../types/prop-types";
@@ -42,6 +44,7 @@ const b = bem("app-page");
 
 type Props = {
   dispatch: Dispatch;
+  application: AppState;
   children: React$Element<any>;
   auth: AuthState;
   boards: BoardState;
@@ -69,6 +72,15 @@ export class AppPage extends Component {
     };
 
     autoBind(this);
+  }
+
+  // Menu
+  handleMenuOpen() {
+    this.props.dispatch(AppActions.appMenuOpen());
+  }
+
+  handleMenuClose() {
+    this.props.dispatch(AppActions.appMenuClose());
   }
 
   // Dragging
@@ -136,6 +148,7 @@ export class AppPage extends Component {
   // Render
   renderContent() {
     const {
+      application,
       auth: { authenticated, hasJwtToken },
       children,
       boards,
@@ -173,7 +186,12 @@ export class AppPage extends Component {
         </div>
 
         {/* Menu */}
-        <FloatingMenu className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })()}>
+        <FloatingMenu
+          className={b("floating-menu", { "has-selected-entity": hasSelectedEntity })()}
+          open={application.isMenuOpen}
+          onRequestOpen={this.handleMenuOpen}
+          onRequestClose={this.handleMenuClose}
+        >
           <FloatingButton
             type="primary"
             icon={<BoardIcon />}
@@ -282,6 +300,7 @@ export class AppPage extends Component {
 
 export default connect(
   (state: ConnectState) => ({
+    application: state.application,
     auth: state.auth,
     boards: state.boards,
     boardEntities: getBoardEntities(state),
