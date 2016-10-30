@@ -16,7 +16,7 @@ import visibilityFilterSaga from "./visibility-filter";
 
 ItemSchema.define({
   board: BoardSchema,
-  tags: arrayOf(TagSchema)
+  Tags: arrayOf(TagSchema)
 });
 
 export default function *itemsSaga() {

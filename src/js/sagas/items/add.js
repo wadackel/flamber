@@ -64,11 +64,11 @@ export function *handleAddItemURLRequest(): Generator<any, *, *> {
 
     try {
       const action: ?AddItemURLRequestAction = yield take(I.ADD_ITEM_URL_REQUEST);
-      if (!action) throw new Error("ボードの追加に失敗しました");
+      if (!action) throw new Error("アイテムの追加に失敗しました");
 
       const { board, url } = action.payload;
       const response = yield call((): Promise<{ item: Item }> => Services.addItemByURL(board, url));
-      if (!response) throw new Error("ボードの追加に失敗しました");
+      if (!response) throw new Error("アイテムの追加に失敗しました");
 
       const normalized = normalize(response, { item: ItemSchema });
       yield put(I.addItemURLSuccess(normalized));

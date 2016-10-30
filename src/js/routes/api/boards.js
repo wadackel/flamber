@@ -2,16 +2,18 @@ import { Router } from "express";
 import models from "../../models/";
 
 
-const { Board } = models;
+const { Board, Item, Tag } = models;
 const router = new Router();
 
 
 router.get("/", (req, res) => {
-  const { user } = req;
-
-  user.getBoards()
+  Board.findAll({
+    where: { user_id: req.user.id },
+    include: [{ model: Item, include: [{ model: Tag }] }]
+  })
     .then(boards => {
-      res.json({ boards: boards.map(o => o.get({ plain: true })) });
+      console.log(boards);
+      res.json({ boards });
     })
     .catch(res.errorJSON);
 });
@@ -23,7 +25,7 @@ router.post("/", (req, res) => {
   Board.create({ name, secret })
     .then(board => user.addBoard(board).then(() => board))
     .then(board => {
-      res.json({ board: board.get({ plain: true }) });
+      res.json({ board });
     })
     .catch(res.errorJSON);
 });
@@ -51,7 +53,7 @@ router.delete("/", (req, res) => {
   })
     .then(boards => Promise.all(boards.map(o => o.destroy())).then(() => boards))
     .then(boards => {
-      res.json({ boards: boards.map(o => o.get({ plain: true })) });
+      res.json({ boards });
     })
     .catch(res.errorJSON);
 });
