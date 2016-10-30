@@ -1,14 +1,15 @@
 import { Schema } from "normalizr";
 
 const ItemSchema = new Schema("items", {
-  assignEntity(output, key, value, input) {
-    if (key === "thumbnail") {
-      const width = Math.min(500, input.width);
-      value = value.replace(/^(.+)=s\d+$/, `$1=s${width}`); // eslint-disable-line no-param-reassign
+  /* eslint-disable no-param-reassign */
+  assignEntity(output, key, value) {
+    if (key === "palette") {
+      value = value.split(",");
     }
 
     output[key] = value;
   },
+  /* eslint-enable no-param-reassign */
   defaults: {
     select: false,
     isUpdating: false,

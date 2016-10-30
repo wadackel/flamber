@@ -12,7 +12,6 @@ router.get("/", (req, res) => {
     include: [{ model: Item, include: [{ model: Tag }] }]
   })
     .then(boards => {
-      console.log(boards);
       res.json({ boards });
     })
     .catch(res.errorJSON);
