@@ -108,3 +108,22 @@ export type StarItemToggleSuccessPayload = SingleItem;
 export type StarItemToggleRequestAction = PayloadAction<"STAR_ITEM_TOGGLE_REQUEST", ItemId>;
 export type StarItemToggleSuccessAction = PayloadAction<"STAR_ITEM_TOGGLE_SUCCESS", StarItemToggleSuccessPayload>;
 export type StarItemToggleFailureAction = ErrorAction<"STAR_ITEM_TOGGLE_FAILURE", Error>;
+
+
+// Select
+export type SelectItemToggleAction = PayloadAction<"SELECT_ITEM_TOGGLE", ItemId>;
+
+
+// Select all
+export type SelectAllItemExecAction = PayloadAction<"SELECT_ALL_ITEM_EXEC", ItemEntities>;
+export type SelectAllItemAction = Action<"SELECT_ALL_ITEM">;
+
+
+// Unselect all
+export type UnselectAllItemExecAction = PayloadAction<"UNSELECT_ALL_ITEM_EXEC", ItemEntities>;
+export type UnselectAllItemAction = Action<"UNSELECT_ALL_ITEM">;
+
+
+// Select star item
+export type SelectStarItemExecAction = PayloadAction<"SELECT_STAR_ITEM_EXEC", ItemEntities>;
+export type SelectStarItemAction = Action<"SELECT_STAR_ITEM">;

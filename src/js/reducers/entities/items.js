@@ -12,7 +12,11 @@ import type {
   AddItemFileSuccessAction,
   StarItemToggleRequestAction,
   StarItemToggleSuccessAction,
-  StarItemToggleFailureAction
+  StarItemToggleFailureAction,
+  SelectItemToggleAction,
+  SelectAllItemExecAction,
+  UnselectAllItemExecAction,
+  SelectStarItemExecAction
 } from "../../types/item";
 
 
@@ -340,46 +344,38 @@ export default handleActions({
 
 
   // Select
-  [I.SELECT_ITEM_TOGGLE]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload ? entity : {
-        ...entity,
-        select: !entity.select
-      }
-    )
+  [I.SELECT_ITEM_TOGGLE]: (state: ItemEntitiesState, action: SelectItemToggleAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload], (entity: ItemEntity) => ({
+      ...entity,
+      select: !entity.select
+    }))
   ),
 
 
   // Select all
-  [I.SELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
-    mapValues(state, entity =>
-      !payload.some(o => o.id === entity.id) ? entity : {
-        ...entity,
-        select: true
-      }
-    )
+  [I.SELECT_ALL_ITEM_EXEC]: (state: ItemEntitiesState, action: SelectAllItemExecAction): ItemEntitiesState => (
+    mapEntities(state, action.payload.map(o => o.id), (entity: ItemEntity) => ({
+      ...entity,
+      select: true
+    }))
   ),
 
 
   // Unselect all
-  [I.UNSELECT_ALL_ITEM_EXEC]: (state, { payload }) => (
-    mapValues(state, entity =>
-      !payload.some(o => o.id === entity.id) ? entity : {
-        ...entity,
-        select: false
-      }
-    )
+  [I.UNSELECT_ALL_ITEM_EXEC]: (state: ItemEntitiesState, action: UnselectAllItemExecAction): ItemEntitiesState => (
+    mapEntities(state, action.payload.map(o => o.id), (entity: ItemEntity) => ({
+      ...entity,
+      select: false
+    }))
   ),
 
 
   // Select star item
-  [I.SELECT_STAR_ITEM_EXEC]: (state, { payload }) => (
-    mapValues(state, entity =>
-      !payload.some(o => o.id === entity.id) ? entity : {
-        ...entity,
-        select: entity.star
-      }
-    )
+  [I.SELECT_STAR_ITEM_EXEC]: (state: ItemEntitiesState, action: SelectStarItemExecAction): ItemEntitiesState => (
+    mapEntities(state, action.payload.map(o => o.id), (entity: ItemEntity) => ({
+      ...entity,
+      select: entity.star
+    }))
   ),
 
 

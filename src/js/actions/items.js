@@ -10,6 +10,7 @@ import type {
   ItemId,
   Item,
   Items,
+  ItemEntities,
 
   AddItemURLDialogOpenAction,
   AddItemURLDialogCloseAction,
@@ -32,7 +33,18 @@ import type {
   StarItemToggleSuccessPayload,
   StarItemToggleRequestAction,
   StarItemToggleSuccessAction,
-  StarItemToggleFailureAction
+  StarItemToggleFailureAction,
+
+  SelectItemToggleAction,
+
+  SelectAllItemExecAction,
+  SelectAllItemAction,
+
+  UnselectAllItemExecAction,
+  UnselectAllItemAction,
+
+  SelectStarItemExecAction,
+  SelectStarItemAction
 } from "../types/item";
 
 
@@ -306,37 +318,42 @@ export const deleteItemFailure = createAction(DELETE_ITEM_FAILURE,
 
 
 // Select
-export const SELECT_ITEM_TOGGLE: string = "SELECT_ITEM_TOGGLE";
-export const selectItemToggle = createAction(SELECT_ITEM_TOGGLE);
+export const SELECT_ITEM_TOGGLE = "SELECT_ITEM_TOGGLE";
+export const selectItemToggle = (id: ItemId): SelectItemToggleAction => (
+  { type: SELECT_ITEM_TOGGLE, payload: id }
+);
 
 
 // Select all
-export const SELECT_ALL_ITEM_EXEC: string = "SELECT_ALL_ITEM_EXEC";
-export const SELECT_ALL_ITEM: string = "SELECT_ALL_ITEM";
-export const selectAllItemExec = createAction(SELECT_ALL_ITEM_EXEC);
-export const selectAllItem = createAction(SELECT_ALL_ITEM,
-  identity,
-  (): Function => selectAllItemExec
+export const SELECT_ALL_ITEM_EXEC = "SELECT_ALL_ITEM_EXEC";
+export const SELECT_ALL_ITEM = "SELECT_ALL_ITEM";
+export const selectAllItemExec = (entities: ItemEntities): SelectAllItemExecAction => (
+  { type: SELECT_ALL_ITEM_EXEC, payload: entities }
+);
+export const selectAllItem = (): SelectAllItemAction => (
+  { type: SELECT_ALL_ITEM, meta: selectAllItemExec }
 );
 
 
 // Unselect all
 export const UNSELECT_ALL_ITEM_EXEC = "UNSELECT_ALL_ITEM_EXEC";
 export const UNSELECT_ALL_ITEM = "UNSELECT_ALL_ITEM";
-export const unselectAllItemExec = createAction(UNSELECT_ALL_ITEM_EXEC);
-export const unselectAllItem = createAction(UNSELECT_ALL_ITEM,
-  identity,
-  (): Function => unselectAllItemExec
+export const unselectAllItemExec = (entities: ItemEntities): UnselectAllItemExecAction => (
+  { type: UNSELECT_ALL_ITEM_EXEC, payload: entities }
+);
+export const unselectAllItem = (): UnselectAllItemAction => (
+  { type: UNSELECT_ALL_ITEM, meta: unselectAllItemExec }
 );
 
 
-// Select star items
-export const SELECT_STAR_ITEM_EXEC: string = "SELECT_STAR_ITEM_EXEC";
-export const SELECT_STAR_ITEM: string = "SELECT_STAR_ITEM";
-export const selectStarItemExec = createAction(SELECT_STAR_ITEM_EXEC);
-export const selectStarItem = createAction(SELECT_STAR_ITEM,
-  identity,
-  (): Function => selectStarItemExec
+// Select star item
+export const SELECT_STAR_ITEM_EXEC = "SELECT_STAR_ITEM_EXEC";
+export const SELECT_STAR_ITEM = "SELECT_STAR_ITEM";
+export const selectStarItemExec = (entities: ItemEntities): SelectStarItemExecAction => (
+  { type: SELECT_STAR_ITEM_EXEC, payload: entities }
+);
+export const selectStarItem = (): SelectStarItemAction => (
+  { type: SELECT_STAR_ITEM, meta: selectStarItemExec }
 );
 
 
