@@ -1,10 +1,9 @@
-// TODO: flow
+// @flow
 import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
-import * as Layout from "../../../constants/layouts";
 import * as AuthActions from "../../../actions/auth";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
@@ -32,6 +31,30 @@ import {
   ListIcon
 } from "../../../components/svg-icons/";
 
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
+import type { AuthState } from "../../../types/auth";
+import type { BoardState, BoardEntity, BoardEntities } from "../../../types/board";
+import type { ItemState, ItemEntities } from "../../../types/item";
+import type { Layout } from "../../../types/prop-types";
+
+
+type Props = {
+  dispatch: Dispatch;
+  routes: any;
+  auth: AuthState;
+  boards: BoardState;
+  selectedBoardEntities: BoardEntities;
+  currentBoard: ?BoardEntity;
+  items: ItemState;
+  selectedItemEntities: ItemEntities;
+};
+
+type State = {
+  boardName: string;
+  itemsSize: number;
+};
+
 const NavItemActive = {
   BOARDS: "BOARDS",
   ALL_ITEMS: "ALL_ITEMS",
@@ -39,18 +62,23 @@ const NavItemActive = {
 };
 
 export class HeaderContainer extends Component {
+  props: Props;
+  state: State;
+
   constructor(props: Props, context: Object) {
     super(props, context);
 
+    // TODO
     this.state = {
       boardName: "",
-      itemsSize: props.settings.itemsSize
+      itemsSize: 180
+      // itemsSize: props.settings.itemsSize
     };
 
     autoBind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
 
     if (
@@ -96,9 +124,9 @@ export class HeaderContainer extends Component {
   }
 
   // Update board
-  handleBoardNameComplete(name) {
+  handleBoardNameComplete(name: string) {
     const { currentBoard } = this.props;
-    const board = {
+    const board: BoardEntity = {
       ...currentBoard,
       name
     };
@@ -108,15 +136,15 @@ export class HeaderContainer extends Component {
   }
 
   // Update layouts
-  handleBoardsLayoutChange(layout) {
+  handleBoardsLayoutChange(layout: Layout) {
     this.props.dispatch(SettingActions.updateBoardsLayoutRequest(layout));
   }
 
-  handleItemsLayoutChange(layout) {
+  handleItemsLayoutChange(layout: Layout) {
     this.props.dispatch(SettingActions.updateItemsLayoutRequest(layout));
   }
 
-  handleItemsSizeChange(size) {
+  handleItemsSizeChange(size: number) {
     this.setState({
       itemsSize: size
     });
@@ -125,7 +153,7 @@ export class HeaderContainer extends Component {
   }
 
   // Update currentColor
-  handleColorChange(color) {
+  handleColorChange(color: string) {
     this.props.dispatch(ItemActions.setItemCurrentColor(color));
   }
 
@@ -152,10 +180,11 @@ export class HeaderContainer extends Component {
 
   getHeaderBoardsProps() {
     const {
-      selectedBoardEntities,
-      settings: { boardsLayout }
+      selectedBoardEntities
+      // settings: { boardsLayout }
     } = this.props;
 
+    const boardsLayout = "grid"; // TODO
     const hasSelectedBoard = selectedBoardEntities.length > 0;
 
     return {
@@ -170,12 +199,12 @@ export class HeaderContainer extends Component {
           >
             <LayoutButton
               icon={<GridIcon />}
-              value={Layout.GRID}
+              value="grid"
               tooltip="グリッド"
             />
             <LayoutButton
               icon={<ListIcon />}
-              value={Layout.LIST}
+              value="list"
               tooltip="リスト"
             />
           </LayoutButtonGroup>
@@ -184,14 +213,15 @@ export class HeaderContainer extends Component {
     };
   }
 
-  getHeaderBoardDetailProps(activeNavItem) {
+  getHeaderBoardDetailProps(activeNavItem?: string) {
     const {
       currentBoard,
-      selectedItemEntities,
-      settings: { itemsLayout }
+      selectedItemEntities
+      // settings: { itemsLayout }
     } = this.props;
 
     const { boardName, itemsSize } = this.state;
+    const itemsLayout = "gallery";
     const hasSelectedItem = selectedItemEntities.length > 0;
 
     return {
@@ -215,11 +245,11 @@ export class HeaderContainer extends Component {
       ),
       subLeft: this.getHeaderMyItemsSubLeft(),
       subTitle: currentBoard && (
-        <div>Total {currentBoard.items.length} items</div>
+        <div>Total {currentBoard.Items.length} items</div>
       ),
       subRight: (
         <div style={{ display: hasSelectedItem ? "none" : "block" }}>
-          {itemsLayout !== Layout.LIST && <Slider
+          {itemsLayout !== "list" && <Slider
             min={140}
             max={400}
             value={itemsSize}
@@ -231,17 +261,17 @@ export class HeaderContainer extends Component {
           >
             <LayoutButton
               icon={<GalleryIcon />}
-              value={Layout.GALLERY}
+              value="gallery"
               tooltip="ギャラリー表示"
             />
             <LayoutButton
               icon={<GridIcon />}
-              value={Layout.GRID}
+              value="grid"
               tooltip="グリッド表示"
             />
             <LayoutButton
               icon={<ListIcon />}
-              value={Layout.LIST}
+              value="list"
               tooltip="リスト表示"
             />
           </LayoutButtonGroup>
@@ -269,7 +299,7 @@ export class HeaderContainer extends Component {
     return {/* TODO */};
   }
 
-  getHeaderProps() {
+  getHeaderProps(): any {
     const { routes } = this.props;
     const currentComponent = routes[routes.length - 1].component.WrappedComponent;
     const currentComponentName = currentComponent ? currentComponent.name : "";
@@ -299,7 +329,7 @@ export class HeaderContainer extends Component {
     }
   }
 
-  push(path) {
+  push(path: string) {
     this.props.dispatch(push(path));
   }
 
@@ -351,16 +381,12 @@ export class HeaderContainer extends Component {
 }
 
 export default connect(
-  state => ({
+  (state: ConnectState) => ({
     auth: state.auth,
-    settings: state.settings,
     boards: state.boards,
     selectedBoardEntities: getSelectedBoardEntities(state),
     currentBoard: getCurrentBoard(state),
     items: state.items,
     selectedItemEntities: getSelectedItemEntities(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(HeaderContainer);

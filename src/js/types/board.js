@@ -2,6 +2,7 @@
 import type { TypeMap } from "./map";
 import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
+import type { ItemId } from "./item";
 
 export type BoardId = string; // UUID
 
@@ -14,6 +15,7 @@ export type Board = {
 };
 
 export type BoardEntity = $All<Board, {
+  Items: Array<ItemId>;
   select: boolean;
   isUpdating: boolean;
   isDeleting: boolean;

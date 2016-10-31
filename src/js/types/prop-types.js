@@ -36,6 +36,7 @@ export type SizeString = "xl" | "lg" | "md" | "sm" | "xs";
 export type GalleryLayout = "gallery";
 export type GridLayout = "grid";
 export type ListLayout = "list";
+export type Layout = GalleryLayout | GridLayout | ListLayout;
 
 export type DropDownBoardValue = {
   name: string;

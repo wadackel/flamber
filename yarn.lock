@@ -3603,6 +3603,14 @@ iflow-moment@^1.1.13:
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/iflow-moment/-/iflow-moment-1.1.13.tgz#6f01b5eda16c83d595ce3d56f7266345219e1041"
 
+iflow-react-router:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/iflow-react-router/-/iflow-react-router-1.2.1.tgz#7688a0a2d483817b4bd193f4af2968632a47f04a"
+
+iflow-react-router-redux:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/iflow-react-router-redux/-/iflow-react-router-redux-1.0.15.tgz#ce9c8f1436f323f216d9138f4075978f67075089"
+
 ignore@^3.1.2, ignore@^3.1.5:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.2.0.tgz#8d88f03c3002a0ac52114db25d2c673b0bf1e435"

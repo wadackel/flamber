@@ -109,6 +109,8 @@
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "feedparser": "^1.1.5",
+    "iflow-react-router": "^1.2.1",
+    "iflow-react-router-redux": "^1.0.15",
     "imagesloaded": "^4.1.1",
     "imgur": "^0.1.7",
     "inline-style-prefixer": "^2.0.4",
