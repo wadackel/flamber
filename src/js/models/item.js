@@ -1,5 +1,6 @@
 // @flow
 import * as path from "path";
+import { pickBy } from "lodash";
 import Sequelize from "sequelize";
 import imgur from "imgur";
 import { makeThumbnailURL } from "../utils/imgur";
@@ -38,6 +39,14 @@ export default function(sequelize: any, DataTypes: any) {
         Item.belongsTo(models.Board);
         Item.belongsToMany(models.Tag, { through: models.ItemTags });
       },
+      filterEditableAttributes(attributes: Object) {
+        const readOnly = ["id", "user_id"];
+        const tableAttributes = Object.keys(Item.tableAttributes).filter(k => readOnly.indexOf(k) < 0);
+
+        return pickBy(attributes, (value: any, key: string): boolean =>
+          tableAttributes.indexOf(key) > -1
+        );
+      },
       createByFile(file: MulterMemoryFile, palette: string) {
         return imgur.uploadBase64(file.buffer.toString("base64"))
           .then(json => {
@@ -59,6 +68,22 @@ export default function(sequelize: any, DataTypes: any) {
             });
           });
       }
+    },
+    instanceMethods: {
+      includeAll() {
+        const { models } = this.sequelize;
+
+        return Item.find({
+          where: { id: this.id },
+          include: [models.Tag]
+        });
+      }
+    }
+  });
+
+  Item.hook("beforeValidate", item => {
+    if (Array.isArray(item.palette)) {
+      item.palette = item.palette.join(",");
     }
   });
 

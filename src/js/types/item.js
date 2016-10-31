@@ -101,3 +101,10 @@ export type AddItemFileFailureAction = ErrorAction<"ADD_ITEM_FILE_FAILURE", Erro
 
 // Goto added item
 export type GotoAddedItemAction = PayloadAction<"GOTO_ADDED_ITEM", ItemId>;
+
+
+// Star
+export type StarItemToggleSuccessPayload = SingleItem;
+export type StarItemToggleRequestAction = PayloadAction<"STAR_ITEM_TOGGLE_REQUEST", ItemId>;
+export type StarItemToggleSuccessAction = PayloadAction<"STAR_ITEM_TOGGLE_SUCCESS", StarItemToggleSuccessPayload>;
+export type StarItemToggleFailureAction = ErrorAction<"STAR_ITEM_TOGGLE_FAILURE", Error>;

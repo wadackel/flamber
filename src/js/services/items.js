@@ -97,7 +97,7 @@ export function addItemByURL(board: BoardId, url: string) {
 }
 
 
-export function updateItems(items: ItemEntities) {
+export function updateItems(items: ItemEntities): ResponseArrayItem {
   return apiClient.put("/", { body: items });
 }
 

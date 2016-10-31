@@ -5,9 +5,14 @@ import * as B from "../../actions/boards";
 import * as I from "../../actions/items";
 
 import type {
+  ItemId,
+  ItemEntity,
   ItemEntitiesState,
   AddItemURLSuccessAction,
-  AddItemFileSuccessAction
+  AddItemFileSuccessAction,
+  StarItemToggleRequestAction,
+  StarItemToggleSuccessAction,
+  StarItemToggleFailureAction
 } from "../../types/item";
 
 
@@ -15,12 +20,12 @@ function mergeEntities(state: ItemEntitiesState, entities: ItemEntitiesState): I
   return assign(state, entities || {});
 }
 
-// function mapEntities(state: BoardEntitiesState, ids: Array<BoardId>, iteratee: Function): BoardEntitiesState {
-//   return mapValues(state, (entity: BoardEntity) =>
-//     ids.indexOf(entity.id) > -1 ? iteratee(entity) : entity
-//   );
-// }
-//
+function mapEntities(state: ItemEntitiesState, ids: Array<ItemId>, iteratee: Function): ItemEntitiesState {
+  return mapValues(state, (entity: ItemEntity) =>
+    ids.indexOf(entity.id) > -1 ? iteratee(entity) : entity
+  );
+}
+
 // function removeEntities(state: BoardEntitiesState, ids: Array<BoardId>): BoardEntitiesState {
 //   return pickBy(state, (entity: BoardEntity): boolean =>
 //     ids.indexOf(entity.id) === -1
@@ -74,31 +79,27 @@ export default handleActions({
 
 
   // Star
-  [I.STAR_ITEM_TOGGLE_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload ? entity : {
-        ...entity,
-        star: !entity.star
-      }
-    )
+  [I.STAR_ITEM_TOGGLE_REQUEST]: (state: ItemEntitiesState, action: StarItemToggleRequestAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload], (entity: ItemEntity) => ({
+      ...entity,
+      star: !entity.star
+    }))
   ),
 
-  [I.STAR_ITEM_TOGGLE_SUCCESS]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        star: payload.star
-      }
-    )
+  [I.STAR_ITEM_TOGGLE_SUCCESS]: (state: ItemEntitiesState, action: StarItemToggleSuccessAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.result.item], (entity: ItemEntity) => ({
+      ...entity,
+      star: action.payload.entities.items[action.payload.result.item].star
+    }))
   ),
 
-  [I.STAR_ITEM_TOGGLE_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta ? entity : {
+  [I.STAR_ITEM_TOGGLE_FAILURE]: (state: ItemEntitiesState, action: StarItemToggleFailureAction): ItemEntitiesState => (
+    action.meta
+      ? mapEntities(state, [action.meta], (entity: ItemEntity) => ({
         ...entity,
         star: !entity.star
-      }
-    )
+      }))
+      : state
   ),
 
 

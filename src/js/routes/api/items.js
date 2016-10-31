@@ -22,17 +22,13 @@ router.post("/file", upload.single("file"), (req, res) => {
 
   user.getBoards({ where: { id: board } })
     .then(boardEntities => {
-      if (!boardEntities) throw new Error("Not found board");
-      return boardEntities[0];
+      if (boardEntities.length === 0) throw new Error("Not found board");
+      return Promise.resolve();
     })
-    .then(boardEntity =>
-      Item.createByFile(file, palette).then(entity => ({ boardEntity, entity }))
-    )
-    .then(({ boardEntity, entity }) =>
-      boardEntity.addItem(entity).then(() => entity)
-    )
-    .then(entity => {
-      res.json({ item: entity.get({ plain: true }) });
+    .then(() => Item.createByFile(file, palette))
+    .then(entity => entity.update({ user_id: user.id, board_id: board }))
+    .then(item => {
+      res.json({ item });
     })
     .catch(res.errorJSON);
 });
@@ -54,7 +50,14 @@ router.post("/url", upload.single("file"), (req, res) => {
 router.put("/", (req, res) => {
   const { user, body } = req;
 
-  Item.updateByUserFromArray(user.id, body)
+  Promise.all(body.map(attributes =>
+    Item.find({ where: { id: attributes.id, user_id: user.id } })
+      .then(item => {
+        if (!item) throw new Error("Not found item");
+        return item.update(Item.filterEditableAttributes(attributes));
+      })
+      .then(item => item.includeAll())
+  ))
     .then(items => {
       res.json({ items });
     })

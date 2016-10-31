@@ -27,7 +27,12 @@ import type {
   AddItemFileSuccessAction,
   AddItemFileFailureAction,
 
-  GotoAddedItemAction
+  GotoAddedItemAction,
+
+  StarItemToggleSuccessPayload,
+  StarItemToggleRequestAction,
+  StarItemToggleSuccessAction,
+  StarItemToggleFailureAction
 } from "../types/item";
 
 
@@ -125,15 +130,20 @@ export const gotoAddedItem = (id: ItemId): GotoAddedItemAction => (
 
 
 // Star
-export const STAR_ITEM_TOGGLE_REQUEST: string = "STAR_ITEM_TOGGLE_REQUEST";
-export const STAR_ITEM_TOGGLE_SUCCESS: string = "STAR_ITEM_TOGGLE_SUCCESS";
-export const STAR_ITEM_TOGGLE_FAILURE: string = "STAR_ITEM_TOGGLE_FAILURE";
+export const STAR_ITEM_TOGGLE_REQUEST = "STAR_ITEM_TOGGLE_REQUEST";
+export const STAR_ITEM_TOGGLE_SUCCESS = "STAR_ITEM_TOGGLE_SUCCESS";
+export const STAR_ITEM_TOGGLE_FAILURE = "STAR_ITEM_TOGGLE_FAILURE";
 
-export const starItemToggleRequest = createAction(STAR_ITEM_TOGGLE_REQUEST);
-export const starItemToggleSuccess = createAction(STAR_ITEM_TOGGLE_SUCCESS);
-export const starItemToggleFailure = createAction(STAR_ITEM_TOGGLE_FAILURE,
-  identity,
-  (payload: Object, id: ItemId): Object => ({ id })
+export const starItemToggleRequest = (id: ItemId): StarItemToggleRequestAction => (
+  { type: STAR_ITEM_TOGGLE_REQUEST, payload: id }
+);
+
+export const starItemToggleSuccess = (payload: StarItemToggleSuccessPayload): StarItemToggleSuccessAction => (
+  { type: STAR_ITEM_TOGGLE_SUCCESS, payload }
+);
+
+export const starItemToggleFailure = (error: Error, id: ItemId): StarItemToggleFailureAction => (
+  { type: STAR_ITEM_TOGGLE_FAILURE, payload: error, error: true, meta: id }
 );
 
 
