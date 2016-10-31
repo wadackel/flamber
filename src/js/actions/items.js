@@ -44,7 +44,12 @@ import type {
   UnselectAllItemAction,
 
   SelectStarItemExecAction,
-  SelectStarItemAction
+  SelectStarItemAction,
+
+  SelectedItemsStarSuccessPayload,
+  SelectedItemsStarRequestAction,
+  SelectedItemsStarSuccessAction,
+  SelectedItemsStarFailureAction
 } from "../types/item";
 
 
@@ -383,15 +388,18 @@ export const selectedItemsMoveFailure = createAction(SELECTED_ITEMS_MOVE_FAILURE
 
 
 // Selected items star
-export const SELECTED_ITEMS_STAR_REQUEST: string = "SELECTED_ITEMS_STAR_REQUEST";
-export const SELECTED_ITEMS_STAR_SUCCESS: string = "SELECTED_ITEMS_STAR_SUCCESS";
-export const SELECTED_ITEMS_STAR_FAILURE: string = "SELECTED_ITEMS_STAR_FAILURE";
+export const SELECTED_ITEMS_STAR_REQUEST = "SELECTED_ITEMS_STAR_REQUEST";
+export const SELECTED_ITEMS_STAR_SUCCESS = "SELECTED_ITEMS_STAR_SUCCESS";
+export const SELECTED_ITEMS_STAR_FAILURE = "SELECTED_ITEMS_STAR_FAILURE";
 
-export const selectedItemsStarRequest = createAction(SELECTED_ITEMS_STAR_REQUEST);
-export const selectedItemsStarSuccess = createAction(SELECTED_ITEMS_STAR_SUCCESS);
-export const selectedItemsStarFailure = createAction(SELECTED_ITEMS_STAR_FAILURE,
-  identity,
-  (payload: Object, entities: Items): Object => ({ entities })
+export const selectedItemsStarRequest = (star: boolean): SelectedItemsStarRequestAction => (
+  { type: SELECTED_ITEMS_STAR_REQUEST, payload: star }
+);
+export const selectedItemsStarSuccess = (payload: SelectedItemsStarSuccessPayload): SelectedItemsStarSuccessAction => (
+  { type: SELECTED_ITEMS_STAR_SUCCESS, payload }
+);
+export const selectedItemsStarFailure = (error: Error, entities?: ?ItemEntities): SelectedItemsStarFailureAction => (
+  { type: SELECTED_ITEMS_STAR_FAILURE, payload: error, error: true, meta: entities }
 );
 
 

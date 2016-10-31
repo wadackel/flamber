@@ -11,8 +11,11 @@ import { getItemEntityById, getSelectedItemEntities } from "../../selectors/item
 import type {
   ItemEntity,
   Items,
+  ItemEntities,
   StarItemToggleRequestAction,
-  StarItemToggleFailureAction
+  StarItemToggleFailureAction,
+  SelectedItemsStarRequestAction,
+  SelectedItemsStarFailureAction
 } from "../../types/item";
 
 
@@ -38,25 +41,34 @@ function *handleStarItemToggleFailure(action: StarItemToggleFailureAction): Gene
 
 export function *handleSelectedItemsStarRequest(): Generator<any, *, *> {
   while (true) {
-    const { payload } = yield take(I.SELECTED_ITEMS_STAR_REQUEST);
-    const entities = yield select(getSelectedItemEntities);
-    const newEntities = entities.map(entity => ({ ...entity, star: payload }));
+    let entities: ?ItemEntities = null;
 
     try {
-      const response = yield call(Services.updateItems, newEntities);
-      const normalized = normalize(response, {
-        items: arrayOf(ItemSchema)
-      });
+      const action: ?SelectedItemsStarRequestAction = yield take(I.SELECTED_ITEMS_STAR_REQUEST);
+      if (!action) throw new Error("アイテムの更新に失敗しました");
+
+      entities = yield select(getSelectedItemEntities);
+      if (!entities) throw new Error("アイテムが選択されていません");
+
+      const newEntities: ItemEntities = entities.map((entity: ItemEntity): ItemEntity => ({
+        ...entity,
+        star: action.payload
+      }));
+
+      const response = yield call((): Promise<{ items: Items }> => Services.updateItems(newEntities));
+      if (!response) throw new Error("選択したアイテムの更新に失敗しました");
+
+      const normalized = normalize(response, { items: arrayOf(ItemSchema) });
       yield put(I.selectedItemsStarSuccess(normalized));
+
     } catch (error) {
       yield put(I.selectedItemsStarFailure(error, entities));
     }
   }
 }
 
-function *handleSelectedItemsStarFailure(): Generator<any, *, *> {
-  // TODO: More error message
-  yield put(showNotify("選択したアイテムの更新に失敗しました"));
+function *handleSelectedItemsStarFailure(action: SelectedItemsStarFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
 }
 
 

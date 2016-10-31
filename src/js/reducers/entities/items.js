@@ -1,5 +1,5 @@
 // @flow
-import { assign, mapValues, union, without, findIndex } from "lodash";
+import { assign, mapValues, union, without } from "lodash";
 import { handleActions } from "redux-actions";
 import * as B from "../../actions/boards";
 import * as I from "../../actions/items";
@@ -16,7 +16,9 @@ import type {
   SelectItemToggleAction,
   SelectAllItemExecAction,
   UnselectAllItemExecAction,
-  SelectStarItemExecAction
+  SelectStarItemExecAction,
+  SelectedItemsStarSuccessAction,
+  SelectedItemsStarFailureAction
 } from "../../types/item";
 
 
@@ -406,8 +408,8 @@ export default handleActions({
 
 
   // Selected star
-  [I.SELECTED_ITEMS_STAR_REQUEST]: state => (
-    mapValues(state, entity =>
+  [I.SELECTED_ITEMS_STAR_REQUEST]: (state: ItemEntitiesState): ItemEntitiesState => (
+    mapValues(state, (entity: ItemEntity) =>
       !entity.select ? entity : {
         ...entity,
         isUpdating: true
@@ -415,25 +417,24 @@ export default handleActions({
     )
   ),
 
-  [I.SELECTED_ITEMS_STAR_SUCCESS]: (state, { payload }) => (
-    mapValues(state, entity =>
-      !payload.entities.items.hasOwnProperty(entity.id) ? entity : {
-        ...entity,
-        select: false,
-        isUpdating: false,
-        star: payload.entities.items[entity.id].star
-      }
-    )
+  [I.SELECTED_ITEMS_STAR_SUCCESS]:
+  (state: ItemEntitiesState, action: SelectedItemsStarSuccessAction): ItemEntitiesState => (
+    mapEntities(state, action.payload.result.items, (entity: ItemEntity) => ({
+      ...entity,
+      select: false,
+      isUpdating: false,
+      star: action.payload.entities.items[entity.id].star
+    }))
   ),
 
-  [I.SELECTED_ITEMS_STAR_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity => {
-      const index = findIndex(meta.entities, o => o.id === entity.id);
-      return index < 0 ? entity : {
-        ...meta.entities[index],
+  [I.SELECTED_ITEMS_STAR_FAILURE]:
+  (state: ItemEntitiesState, action: SelectedItemsStarFailureAction): ItemEntitiesState => (
+    action.meta
+      ? mapEntities(state, action.meta.map(o => o.id), (entity: ItemEntity) => ({
+        ...entity,
         isUpdating: false
-      };
-    })
+      }))
+      : state
   ),
 
 
@@ -461,7 +462,7 @@ export default handleActions({
   ),
 
 
-  // B
+  // Boards
   [B.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
     mergeEntities(state, payload.entities.items)
   )

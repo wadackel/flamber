@@ -1,5 +1,5 @@
 // @flow
-import type { SingleNormalized } from "./normalize";
+import type { SingleNormalized, ArrayNormalized } from "./normalize";
 import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { TypeMap } from "./map";
 import type { BoardId } from "./board";
@@ -70,7 +70,7 @@ export type ItemEntitiesState = TypeMap<ItemId, ItemEntity>;
 
 
 type SingleItem = SingleNormalized<"items", "item", ItemEntity, ItemId>;
-// type ArrayItem = ArrayNormalized<"items", ItemEntity, ItemId>;
+type ArrayItem = ArrayNormalized<"items", ItemEntity, ItemId>;
 
 
 // Add from URL (UI)
@@ -127,3 +127,11 @@ export type UnselectAllItemAction = Action<"UNSELECT_ALL_ITEM">;
 // Select star item
 export type SelectStarItemExecAction = PayloadAction<"SELECT_STAR_ITEM_EXEC", ItemEntities>;
 export type SelectStarItemAction = Action<"SELECT_STAR_ITEM">;
+
+
+// Selected items star
+export type SelectedItemsStarSuccessPayload = ArrayItem;
+export type SelectedItemsStarRequestAction = PayloadAction<"SELECTED_ITEMS_STAR_REQUEST", boolean>;
+export type SelectedItemsStarSuccessAction = PayloadAction<"SELECTED_ITEMS_STAR_SUCCESS",
+  SelectedItemsStarSuccessPayload>;
+export type SelectedItemsStarFailureAction = ErrorAction<"SELECTED_ITEMS_STAR_FAILURE", Error>;
