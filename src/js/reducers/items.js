@@ -6,6 +6,7 @@ import * as I from "../actions/items";
 import type {
   ItemState,
 
+  SetItemVisibilityFilterAction,
   AddItemURLFailureAction,
   AddItemFileFailureAction
 } from "../types/item";
@@ -19,7 +20,7 @@ const initialState: ItemState = {
   error: null,
   currentItem: null,
   currentColor: null,
-  visibilityFilter: ItemVisibilityFilters.SHOW_ITEM_ALL,
+  visibilityFilter: ItemVisibilityFilters.ALL,
   addFileDialogOpen: false,
   addURLDialogOpen: false,
   addSnackbarOpen: false,
@@ -67,13 +68,13 @@ export default handleActions({
   //   ...state,
   //   currentColor: payload
   // }),
-  //
-  //
-  // // Set visibility filter
-  // [I.SET_ITEM_VISIBILITY_FILTER]: (state, { payload }) => ({
-  //   ...state,
-  //   visibilityFilter: payload
-  // }),
+
+
+  // Set visibility filter
+  [I.SET_ITEM_VISIBILITY_FILTER]: (state: ItemState, action: SetItemVisibilityFilterAction): ItemState => ({
+    ...state,
+    visibilityFilter: action.payload
+  }),
 
 
   // // Fetch

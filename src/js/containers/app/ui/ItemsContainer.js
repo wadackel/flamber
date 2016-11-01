@@ -1,13 +1,7 @@
-/* eslint-disable */
-import _ from "lodash";
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { push } from "react-router-redux";
-import * as OrderBy from "../../../constants/order-by";
-import * as Layout from "../../../constants/layouts";
-import * as SettingActions from "../../../actions/settings";
-import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import { getRawBoardEntities, getCurrentBoard } from "../../../selectors/boards";
 import {
@@ -22,7 +16,6 @@ import {
   ItemCard,
   IconButton,
   SelectBoardDialog,
-  Snackbar,
   ToolBox,
   IconMenu,
   MenuItem,
@@ -36,16 +29,37 @@ import {
   MoreVertIcon
 } from "../../../components/svg-icons/";
 
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
+import type { BoardState, BoardId, BoardEntity, BoardEntities } from "../../../types/board";
+import type { ItemState, ItemId, ItemEntity, ItemEntities } from "../../../types/item";
+import type { Order, OrderBy } from "../../../types/prop-types";
+
+
 const b = bem("items-container");
 
+type Props = {
+  dispatch: Dispatch;
+  boards: BoardState;
+  rawBoardEntities: BoardEntities;
+  items: ItemState;
+  itemEntities: ItemEntities;
+  selectedItemEntities: ItemEntities;
+  currentBoard: ?BoardEntity;
+  currentItem: ?ItemEntity;
+  emptyComponent: React$Element<any>;
+};
+
+type State = {
+  selectMenuOpen: boolean;
+  selectMenuTrigger: ?HTMLElement;
+};
+
 export class ItemsContainer extends Component {
-  static propTypes = {
-  };
+  props: Props;
+  state: State;
 
-  static defaultProps = {
-  };
-
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
 
     this.state = {
@@ -56,27 +70,31 @@ export class ItemsContainer extends Component {
     autoBind(this);
   }
 
-  handleOrderByChange(orderBy) {
-    this.props.dispatch(SettingActions.updateItemsOrderByRequest(orderBy));
+  // TODO
+  handleOrderByChange(orderBy: OrderBy) {
+    console.log("TODO: updateItemsOrderBy", orderBy);
+    // this.props.dispatch(SettingActions.updateItemsOrderByRequest(orderBy));
   }
 
-  handleOrderChange(order) {
-    this.props.dispatch(SettingActions.updateItemsOrderRequest(order));
+  // TODO
+  handleOrderChange(order: Order) {
+    console.log("TODO: updateItemsOrder", order);
+    // this.props.dispatch(SettingActions.updateItemsOrderRequest(order));
   }
 
-  handleDetail(id) {
+  handleDetail(id: ItemId) {
     this.props.dispatch(ItemActions.setCurrentItem(id));
   }
 
-  handleSelect(id) {
+  handleSelect(id: ItemId) {
     this.props.dispatch(ItemActions.selectItemToggle(id));
   }
 
-  handleStar(id) {
+  handleStar(id: ItemId) {
     this.props.dispatch(ItemActions.starItemToggleRequest(id));
   }
 
-  handleMove(id) {
+  handleMove(id: ItemId) {
     this.props.dispatch(ItemActions.moveItemSelectBoardOpen(id));
   }
 
@@ -84,7 +102,7 @@ export class ItemsContainer extends Component {
     this.props.dispatch(ItemActions.selectedItemsMoveOpen());
   }
 
-  handleSelectBoard(boardId) {
+  handleSelectBoard(boardId: BoardId) {
     if (this.props.items.moveItems.length > 0) {
       this.props.dispatch(ItemActions.moveItemRequest(boardId));
     } else {
@@ -100,7 +118,7 @@ export class ItemsContainer extends Component {
     }
   }
 
-  handleDelete(id) {
+  handleDelete(id: ItemId) {
     this.props.dispatch(ItemActions.deleteItemRequest(id));
   }
 
@@ -114,11 +132,11 @@ export class ItemsContainer extends Component {
     dispatch(ItemActions.selectedItemsStarRequest(!isAllStar));
   }
 
-  handleSelectMenuItemClick(menuItem, value) {
+  handleSelectMenuItemClick(menuItem: MenuItem, value: Function) {
     this.props.dispatch(value());
   }
 
-  isAllStarByItemEntities(entities) {
+  isAllStarByItemEntities(entities: ItemEntities): boolean {
     return entities.every(entity => entity.star);
   }
 
@@ -157,25 +175,24 @@ export class ItemsContainer extends Component {
 
   render() {
     const {
-      boards,
       rawBoardEntities,
       currentBoard,
       currentItem,
       items,
       itemEntities,
-      selectedItemEntities,
-      settings: {
-        itemsLayout,
-        itemsSize,
-        itemsOrderBy,
-        itemsOrder
-      }
+      selectedItemEntities
+      // settings: {
+      //   itemsLayout,
+      //   itemsSize,
+      //   itemsOrderBy,
+      //   itemsOrder
+      // }
     } = this.props;
 
-    const {
-      selectMenuOpen,
-      selectMenuTrigger
-    } = this.state;
+    const itemsLayout = "gallery"; // TODO
+    const itemsSize = 300; // TODO
+    const itemsOrderBy = "created_at"; // TODO
+    const itemsOrder = "desc"; // TODO
 
     const hasSelectedItems = selectedItemEntities.length > 0;
     const isAllStar = this.isAllStarByItemEntities(selectedItemEntities);
@@ -184,7 +201,7 @@ export class ItemsContainer extends Component {
         if (currentBoard) {
           return currentBoard.id !== entity.id;
         } else if (currentItem) {
-          return currentItem.board !== entity.id;
+          return currentItem.board_id !== entity.id;
         }
         return true;
       })
@@ -201,9 +218,9 @@ export class ItemsContainer extends Component {
             orderBy={itemsOrderBy}
             order={itemsOrder}
             types={[
-              { name: "名前", value: OrderBy.NAME },
-              { name: "作成", value: OrderBy.CREATED },
-              { name: "最終閲覧", value: OrderBy.LAST_VIEW }
+              { name: "名前", value: "name" },
+              { name: "作成", value: "created_at" },
+              { name: "最終閲覧", value: "viewed_at" }
             ]}
             onOrderByChange={this.handleOrderByChange}
             onOrderChange={this.handleOrderChange}
@@ -289,8 +306,7 @@ export class ItemsContainer extends Component {
 }
 
 export default connect(
-  state => ({
-    settings: state.settings,
+  (state: ConnectState) => ({
     boards: state.boards,
     rawBoardEntities: getRawBoardEntities(state),
     items: state.items,
@@ -298,8 +314,5 @@ export default connect(
     selectedItemEntities: getSelectedItemEntities(state),
     currentBoard: getCurrentBoard(state),
     currentItem: getCurrentItem(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(ItemsContainer);

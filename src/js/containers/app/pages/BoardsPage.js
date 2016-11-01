@@ -1,4 +1,4 @@
-// TODO: flow
+// @flow
 import autoBind from "auto-bind";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -23,11 +23,9 @@ import {
 
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
-import type {
-  BoardId,
-  BoardEntities,
-  BoardState
-} from "../../../types/board";
+import type { BoardId, BoardEntities, BoardState } from "../../../types/board";
+import type { ItemEntitiesState } from "../../../types/item";
+
 
 const b = bem("boards-page");
 
@@ -35,8 +33,8 @@ type Props = {
   dispatch: Dispatch;
   boards: BoardState;
   boardEntities: BoardEntities;
-  selectedBoardEntities: any; // TODO
-  itemEntities: any; // TODO
+  selectedBoardEntities: BoardEntities;
+  itemEntities: ItemEntitiesState;
 };
 
 export class BoardsPage extends Component {

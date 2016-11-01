@@ -11,6 +11,9 @@ import type {
   Item,
   Items,
   ItemEntities,
+  ItemVisibilityFilter,
+
+  SetItemVisibilityFilterAction,
 
   AddItemURLDialogOpenAction,
   AddItemURLDialogCloseAction,
@@ -59,8 +62,10 @@ export const setItemCurrentColor = createAction(SET_ITEM_CURRENT_COLOR);
 
 
 // Ser visibility filters
-export const SET_ITEM_VISIBILITY_FILTER: string = "SET_ITEM_VISIBILITY_FILTER";
-export const setItemVisibilityFilter = createAction(SET_ITEM_VISIBILITY_FILTER);
+export const SET_ITEM_VISIBILITY_FILTER = "SET_ITEM_VISIBILITY_FILTER";
+export const setItemVisibilityFilter = (visibilityFilter: ItemVisibilityFilter): SetItemVisibilityFilterAction => (
+  { type: SET_ITEM_VISIBILITY_FILTER, payload: visibilityFilter }
+);
 
 
 // Background sync

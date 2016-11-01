@@ -71,7 +71,7 @@ export class HeaderContainer extends Component {
     // TODO
     this.state = {
       boardName: "",
-      itemsSize: 180
+      itemsSize: 300
       // itemsSize: props.settings.itemsSize
     };
 

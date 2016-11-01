@@ -1,84 +1,83 @@
-/* eslint-disable */
-import _ from "lodash";
+// @flow
+import { values, orderBy } from "lodash";
 import * as ItemVisibilityFilters from "../constants/item-visibility-filters";
-import * as OrderBy from "../constants/order-by";
-import * as Order from "../constants/order";
 import { getBoardEntityById } from "./boards";
 
-function getOrderByProp(orderBy) {
-  switch (orderBy) {
-    case OrderBy.CREATED:
-      return "created";
-    case OrderBy.NAME:
-      return "name";
-    case OrderBy.LAST_VIEW:
-      return "lastView";
-    default:
-      return "created";
-  }
+import type { ConnectState } from "../types/redux";
+import type { BoardId } from "../types/board";
+import type {
+  ItemId,
+  ItemEntity,
+  ItemEntities
+} from "../types/item";
+import type { Order, OrderBy } from "../types/prop-types";
+
+
+function sortEntities(entities: ItemEntities, by: OrderBy, order: Order): ItemEntities {
+  return orderBy(entities, [by], [order]);
 }
 
-function sortEntities(entities, orderBy, order) {
-  return _.orderBy(
-    entities,
-    [getOrderByProp(orderBy)],
-    [Order.StringMap[order]]
-  );
+export function getItemEntityById(state: ConnectState, id: ?ItemId): ?ItemEntity {
+  return id ? state.entities.items[id] : null;
 }
 
-export function getItemEntityById(state, id) {
-  return state.entities.items[id];
+export function getItemEntities(state: ConnectState): ItemEntities {
+  return values(state.entities.items);
 }
 
-export function getItemEntities(state) {
-  return _.values(state.entities.items);
-}
-
-export function getVisibleItemEntities(state) {
-  const { items, boards, tags, settings } = state;
+export function getVisibleItemEntities(state: ConnectState): ItemEntities {
+  const { items, boards, tags } = state;
   const { visibilityFilter, currentColor } = items;
   const { currentId } = boards;
   const { currentTag } = tags;
-  const { itemsOrderBy, itemsOrder } = settings;
+  const itemsOrderBy = "created_at"; // TODO
+  const itemsOrder = "desc"; // TODO
   let entities = getItemEntities(state);
   entities = currentColor ? entities.filter(entity => entity.palette.indexOf(currentColor) > -1) : entities;
   entities = sortEntities(entities, itemsOrderBy, itemsOrder);
 
   switch (visibilityFilter) {
-    case ItemVisibilityFilters.SHOW_ITEM_ALL:
+    case ItemVisibilityFilters.ALL:
       return entities;
 
-    case ItemVisibilityFilters.SHOW_ITEM_CURRENT_BOARD:
-      return entities.filter(entity => entity.board === currentId);
+    case ItemVisibilityFilters.STAR:
+      return entities.filter((entity: ItemEntity): boolean => entity.star);
 
-    case ItemVisibilityFilters.SHOW_ITEM_CURRENT_TAG:
-      return entities.filter(entity => entity.tags.indexOf(currentTag) > -1);
+    case ItemVisibilityFilters.CURRENT_BOARD:
+      return entities.filter((entity: ItemEntity): boolean => entity.board_id === currentId);
 
-    case ItemVisibilityFilters.SHOW_ITEM_STAR:
-      return entities.filter(entity => entity.star);
+    case ItemVisibilityFilters.CURRENT_TAG:
+      return currentTag
+        ? entities.filter((entity: ItemEntity): boolean => entity.Tags.indexOf(currentTag) > -1)
+        : [];
+
+    default:
+      return [];
   }
 }
 
-export function getItemEntitiesByBoardId(state, boardId) {
-  const { itemsOrderBy, itemsOrder } = state.settings;
+export function getItemEntitiesByBoardId(state: ConnectState, boardId: BoardId): ItemEntities {
+  const itemsOrderBy = "created_at"; // TODO
+  const itemsOrder = "desc"; // TODO
   const board = getBoardEntityById(state, boardId);
-  const entities = !board ? [] : board.items.map(id => state.entities.items[id]);
+  const entities = !board ? [] : board.Items.map(id => state.entities.items[id]);
+
   return sortEntities(entities, itemsOrderBy, itemsOrder);
 }
 
-export function getSelectedItemEntities(state) {
-  return _.values(state.entities.items).filter(entity => entity.select);
+export function getSelectedItemEntities(state: ConnectState): ItemEntities {
+  return values(state.entities.items).filter(entity => entity.select);
 }
 
-export function getSelectedItemEntitiesByBoardId(state, boardId) {
+export function getSelectedItemEntitiesByBoardId(state: ConnectState, boardId: BoardId): ItemEntities {
   const entities = getItemEntitiesByBoardId(state, boardId);
   return entities.filter(entity => entity.select);
 }
 
-export function getMoveItemEntities(state) {
-  return state.items.moveItems.map(id => getItemEntityById(state, id));
+export function getMoveItemEntities(state: ConnectState): ItemEntities {
+  return state.items.moveItems.map(id => state.entities.items[id]);
 }
 
-export function getCurrentItem(state) {
+export function getCurrentItem(state: ConnectState): ?ItemEntity {
   return getItemEntityById(state, state.items.currentItem);
 }

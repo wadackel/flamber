@@ -1,4 +1,5 @@
-export const SHOW_ITEM_ALL = "SHOW_ITEM_ALL";
-export const SHOW_ITEM_CURRENT_BOARD = "SHOW_ITEM_CURRENT_BOARD";
-export const SHOW_ITEM_STAR = "SHOW_ITEM_STAR";
-export const SHOW_ITEM_CURRENT_TAG = "SHOW_ITEM_CURRENT_TAG";
+// @flow
+export const ALL = "ALL";
+export const STAR = "STAR";
+export const CURRENT_BOARD = "CURRENT_BOARD";
+export const CURRENT_TAG = "CURRENT_TAG";

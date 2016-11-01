@@ -3,6 +3,7 @@ import type { SingleNormalized, ArrayNormalized } from "./normalize";
 import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { TypeMap } from "./map";
 import type { BoardId } from "./board";
+import type { TagId } from "./tag";
 import type { Palette } from "./prop-types";
 
 export type ItemId = string;
@@ -29,6 +30,7 @@ export type Item = {
 };
 
 export type ItemEntity = $All<Item, {
+  Tags: Array<TagId>;
   select: boolean;
   isUpdating: boolean;
   isMoving: boolean;
@@ -43,11 +45,7 @@ export type Items = Array<Item>;
 
 export type ItemEntities = Array<ItemEntity>;
 
-export type ItemVisibilityFilter =
-  "SHOW_ITEM_ALL" |
-  "SHOW_ITEM_CURRENT_BOARD" |
-  "SHOW_ITEM_STAR" |
-  "SHOW_ITEM_CURRENT_TAG";
+export type ItemVisibilityFilter = "ALL" | "STAR" | "CURRENT_BOARD" | "CURRENT_TAG";
 
 
 export type ItemState = {
@@ -71,6 +69,10 @@ export type ItemEntitiesState = TypeMap<ItemId, ItemEntity>;
 
 type SingleItem = SingleNormalized<"items", "item", ItemEntity, ItemId>;
 type ArrayItem = ArrayNormalized<"items", ItemEntity, ItemId>;
+
+
+// Set item visibilityFilter
+export type SetItemVisibilityFilterAction = PayloadAction<"SET_ITEM_VISIBILITY_FILTER", ItemVisibilityFilter>;
 
 
 // Add from URL (UI)
