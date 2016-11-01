@@ -5,7 +5,7 @@ import { takeEvery } from "redux-saga";
 import { call, put, select } from "redux-saga/effects";
 import BoardSchema from "../../schemas/board";
 import * as Services from "../../services/boards";
-import * as Notifications from "../../actions/notifications";
+import { showNotify } from "../../actions/notifications";
 import * as B from "../../actions/boards";
 import { getBoardEntityById } from "../../selectors/boards";
 
@@ -37,8 +37,12 @@ export function *handleUpdateBoardRequest(action: UpdateBoardRequestAction): Gen
   }
 }
 
+function *handleUpdateBoardSuccess(): Generator<any, *, *> {
+  yield put(showNotify("ボードを更新しました"));
+}
+
 function *handleUpdateBoardFailure(action: UpdateBoardFailureAction): Generator<any, *, *> {
-  yield put(Notifications.showNotify(action.payload.message));
+  yield put(showNotify(action.payload.message));
 }
 
 
@@ -46,6 +50,7 @@ export default function *updateBoardSaga(): Generator<any, *, *> {
   yield [
     takeEvery(B.UPDATE_BOARD_IF_NEEDED, handleUpdateBoardIfNeeded),
     takeEvery(B.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest),
+    takeEvery(B.UPDATE_BOARD_SUCCESS, handleUpdateBoardSuccess),
     takeEvery(B.UPDATE_BOARD_FAILURE, handleUpdateBoardFailure)
   ];
 }

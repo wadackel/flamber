@@ -30,17 +30,21 @@ router.post("/", (req, res) => {
 });
 
 
-// TODO
 router.put("/", (req, res) => {
-  // const { user, body } = req;
-  console.log(req.body);
-  res.erroJSON(new Error("TODO"));
-  // body.map(
-  // Promise.all(req.body.map(board => Board.updateByUserAndIdFromObject(req.user.id, board.id, board)))
-  //   .then(boards => {
-  //     res.json({ boards });
-  //   })
-  //   .catch(res.errorJSON);
+  const { user, body } = req;
+
+  Promise.all(body.map(attributes =>
+    Board.find({ where: { id: attributes.id, user_id: user.id } })
+      .then(board => {
+        if (!board) throw new Error("Not found board");
+        return board.update(Board.filterEditableAttributes(attributes));
+      })
+      .then(board => board.includeAll())
+  ))
+    .then(boards => {
+      res.json({ boards });
+    })
+    .catch(res.errorJSON);
 });
 
 

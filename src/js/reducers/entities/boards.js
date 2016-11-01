@@ -124,7 +124,7 @@ export default handleActions({
   ),
 
 
-  // I
+  // Items
   [I.ADD_ITEM_URL_SUCCESS]: (state, { payload }) => (
     mapValues(state, entity => {
       const item = payload.entities.items[payload.result.item];

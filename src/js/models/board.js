@@ -1,4 +1,6 @@
 // @flow
+import { pickBy } from "lodash";
+
 export default function(sequelize: any, DataTypes: any) {
   const Board = sequelize.define("Board", {
     id: {
@@ -16,6 +18,31 @@ export default function(sequelize: any, DataTypes: any) {
       associate(models) {
         Board.belongsTo(models.User);
         Board.hasMany(models.Item);
+      },
+      filterEditableAttributes(attributes: Object) {
+        const readOnly = ["id", "user_id"];
+        const tableAttributes = Object.keys(Board.tableAttributes).filter(k => readOnly.indexOf(k) < 0);
+
+        return pickBy(attributes, (value: any, key: string): boolean =>
+          tableAttributes.indexOf(key) > -1
+        );
+      }
+    },
+    instanceMethods: {
+      includeAll() {
+        const { models } = this.sequelize;
+
+        return Board.find({
+          where: { id: this.id },
+          include: [
+            {
+              model: models.Item,
+              include: [
+                models.Tag
+              ]
+            }
+          ]
+        });
       }
     }
   });
