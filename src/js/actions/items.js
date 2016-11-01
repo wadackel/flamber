@@ -68,20 +68,6 @@ export const setItemVisibilityFilter = (visibilityFilter: ItemVisibilityFilter):
 );
 
 
-// Background sync
-export const BG_SYNC_ITEMS_START: string = "BG_SYNC_ITEMS_START";
-export const BG_SYNC_ITEMS_STOP: string = "BG_SYNC_ITEMS_STOP";
-export const BG_SYNC_ITEMS_REQUEST: string = "BG_SYNC_ITEMS_REQUEST";
-export const BG_SYNC_ITEMS_SUCCESS: string = "BG_SYNC_ITEMS_SUCCESS";
-export const BG_SYNC_ITEMS_FAILURE: string = "BG_SYNC_ITEMS_FAILURE";
-
-export const bgSyncItemsStart = createAction(BG_SYNC_ITEMS_START);
-export const bgSyncItemsStop = createAction(BG_SYNC_ITEMS_STOP);
-export const bgSyncItemsRequest = createAction(BG_SYNC_ITEMS_REQUEST);
-export const bgSyncItemsSuccess = createAction(BG_SYNC_ITEMS_SUCCESS);
-export const bgSyncItemsFailure = createAction(BG_SYNC_ITEMS_FAILURE);
-
-
 // Fetch
 export const FETCH_ITEMS_REQUEST: string = "FETCH_ITEMS_REQUEST";
 export const FETCH_ITEMS_SUCCESS: string = "FETCH_ITEMS_SUCCESS";
