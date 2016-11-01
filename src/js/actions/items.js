@@ -13,6 +13,8 @@ import type {
   ItemEntities,
   ItemVisibilityFilter,
 
+  SetCurrentItemAction,
+
   SetItemVisibilityFilterAction,
 
   AddItemURLDialogOpenAction,
@@ -56,16 +58,28 @@ import type {
 } from "../types/item";
 
 
+// Set current
+export const SET_CURRENT_ITEM = "SET_CURRENT_ITEM";
+export const setCurrentItem = (id: ItemId): SetCurrentItemAction => (
+  { type: SET_CURRENT_ITEM, payload: id }
+);
+
+
 // Set color
 export const SET_ITEM_CURRENT_COLOR: string = "SET_ITEM_CURRENT_COLOR";
 export const setItemCurrentColor = createAction(SET_ITEM_CURRENT_COLOR);
 
 
-// Ser visibility filters
+// Set visibility filters
 export const SET_ITEM_VISIBILITY_FILTER = "SET_ITEM_VISIBILITY_FILTER";
 export const setItemVisibilityFilter = (visibilityFilter: ItemVisibilityFilter): SetItemVisibilityFilterAction => (
   { type: SET_ITEM_VISIBILITY_FILTER, payload: visibilityFilter }
 );
+
+
+// Set image editing
+export const SET_ITEM_IMAGE_EDITING: string = "SET_ITEM_IMAGE_EDITING";
+export const setItemImageEditing = createAction(SET_ITEM_IMAGE_EDITING);
 
 
 // Fetch
@@ -415,16 +429,6 @@ export const FETCH_BOARD_ITEMS_FAILURE: string = "FETCH_BOARD_ITEMS_FAILURE";
 export const fetchBoardItemsRequest = createAction(FETCH_BOARD_ITEMS_REQUEST);
 export const fetchBoardItemsSuccess = createAction(FETCH_BOARD_ITEMS_SUCCESS);
 export const fetchBoardItemsFailure = createAction(FETCH_BOARD_ITEMS_FAILURE);
-
-
-// Current
-export const SET_CURRENT_ITEM: string = "SET_CURRENT_ITEM";
-export const setCurrentItem = createAction(SET_CURRENT_ITEM);
-
-
-// Image editing
-export const SET_ITEM_IMAGE_EDITING: string = "SET_ITEM_IMAGE_EDITING";
-export const setItemImageEditing = createAction(SET_ITEM_IMAGE_EDITING);
 
 
 // Detail drawer

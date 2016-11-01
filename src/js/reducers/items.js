@@ -6,6 +6,7 @@ import * as I from "../actions/items";
 import type {
   ItemState,
 
+  SetCurrentItemAction,
   SetItemVisibilityFilterAction,
   AddItemURLFailureAction,
   AddItemFileFailureAction
@@ -30,14 +31,28 @@ const initialState: ItemState = {
 };
 
 export default handleActions({
-  // // Set current item
-  // [I.SET_CURRENT_ITEM]: (state, { payload }) => ({
-  //   ...state,
-  //   currentItem: payload,
-  //   detailDrawerOpen: true
-  // }),
-  //
-  //
+  // Set current item
+  [I.SET_CURRENT_ITEM]: (state: ItemState, action: SetCurrentItemAction): ItemState => ({
+    ...state,
+    currentItem: action.payload,
+    detailDrawerOpen: true
+  }),
+
+
+  // Set currentColor
+  [I.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({
+    ...state,
+    currentColor: payload
+  }),
+
+
+  // Set visibility filter
+  [I.SET_ITEM_VISIBILITY_FILTER]: (state: ItemState, action: SetItemVisibilityFilterAction): ItemState => ({
+    ...state,
+    visibilityFilter: action.payload
+  }),
+
+
   // // Image editing
   // [I.SET_ITEM_IMAGE_EDITING]: (state, { payload }) => ({
   //   ...state,
@@ -63,20 +78,6 @@ export default handleActions({
   // }),
   //
   //
-  // // Set currentColor
-  // [I.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({
-  //   ...state,
-  //   currentColor: payload
-  // }),
-
-
-  // Set visibility filter
-  [I.SET_ITEM_VISIBILITY_FILTER]: (state: ItemState, action: SetItemVisibilityFilterAction): ItemState => ({
-    ...state,
-    visibilityFilter: action.payload
-  }),
-
-
   // // Fetch
   // [I.FETCH_ITEMS_REQUEST]: state => ({
   //   ...state,

@@ -71,6 +71,10 @@ type SingleItem = SingleNormalized<"items", "item", ItemEntity, ItemId>;
 type ArrayItem = ArrayNormalized<"items", ItemEntity, ItemId>;
 
 
+// Set current
+export type SetCurrentItemAction = PayloadAction<"SET_CURRENT_ITEM", ItemId>;
+
+
 // Set item visibilityFilter
 export type SetItemVisibilityFilterAction = PayloadAction<"SET_ITEM_VISIBILITY_FILTER", ItemVisibilityFilter>;
 
