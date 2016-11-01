@@ -17,6 +17,7 @@ body {
 
 html {
   @include font-smooth(true);
+
   color: $color-root;
   font-family: $font-family-base;
   font-size: $font-size-root;
@@ -30,6 +31,7 @@ body {
 
 a {
   @include transition(all);
+
   color: $brand-primary;
   text-decoration: none;
 
