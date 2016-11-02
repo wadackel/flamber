@@ -4,5 +4,11 @@
   ],
   "extends": "stylelint-config-standard",
   "rules": {
+    "number-leading-zero": "never",
+    "max-empty-lines": 2,
+    "block-closing-brace-newline-after": ["if", "else"],
+    "at-rule-empty-line-before": ["always", {
+      "ignoreAtRules": ["array", "of", "at-rules", "if", "else", "include", "import"]
+    }]
   }
 }

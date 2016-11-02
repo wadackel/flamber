@@ -7,6 +7,7 @@
 
   &__floating-menu {
     @include transition((transform, opacity), $transition-duration-fast);
+
     position: fixed !important;
     right: 20px;
     bottom: 20px;
