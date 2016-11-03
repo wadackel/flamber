@@ -1,5 +1,5 @@
 // @flow
-import { normalize } from "normalizr";
+import { normalize, arrayOf } from "normalizr";
 import { takeEvery } from "redux-saga";
 import { fork, take, call, put, select } from "redux-saga/effects";
 import ItemSchema from "../../schemas/item";
@@ -12,9 +12,12 @@ import { getItemEntityById, getSelectedItemEntities } from "../../selectors/item
 import type {
   Items,
   ItemEntity,
+  ItemEntities,
   DeleteItemRequestAction,
   DeleteItemSuccessAction,
-  DeleteItemFailureAction
+  DeleteItemFailureAction,
+  SelectedItemsDeleteSuccessAction,
+  SelectedItemsDeleteFailureAction
 } from "../../types/item";
 
 
@@ -56,27 +59,35 @@ function *handleDeleteItemFailure(action: DeleteItemFailureAction): Generator<an
   yield put(showNotify(action.payload.message));
 }
 
+
 export function *handleSelectedItemsDeleteRequest(): Generator<any, *, *> {
   while (true) {
     yield take(I.SELECTED_ITEMS_DELETE_REQUEST);
-    const entities = yield select(getSelectedItemEntities);
+    let entities: ?ItemEntities = null;
 
     try {
-      yield call(Services.deleteItems, entities);
-      yield put(I.selectedItemsDeleteSuccess(entities));
+      entities = yield select(getSelectedItemEntities);
+      if (!entities) throw new Error("アイテムの削除に失敗しました");
+
+      const validEntities: ItemEntities = entities;
+      const response = yield call((): Promise<{ items: Items }> => Services.deleteItems(validEntities));
+      if (!response) throw new Error("選択したアイテムの削除に失敗しました");
+
+      const normalized = normalize(response, { items: arrayOf(ItemSchema) });
+      yield put(I.selectedItemsDeleteSuccess(normalized));
+
     } catch (error) {
       yield put(I.selectedItemsDeleteFailure(error, entities));
     }
   }
 }
 
-function *handleSelectedItemsDeleteSuccess({ payload }): Generator<any, *, *> {
-  yield put(showNotify(`${payload.length}個のアイテムを削除しました`));
+function *handleSelectedItemsDeleteSuccess(action: SelectedItemsDeleteSuccessAction): Generator<any, *, *> {
+  yield put(showNotify(`${action.payload.result.items.length}個のアイテムを削除しました`));
 }
 
-function *handleSelectedItemsDeleteFailure(): Generator<any, *, *> {
-  // TODO: More error message
-  yield put(showNotify("選択アイテムの削除に失敗しました"));
+function *handleSelectedItemsDeleteFailure(action: SelectedItemsDeleteFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
 }
 
 

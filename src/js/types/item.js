@@ -148,3 +148,11 @@ export type SelectedItemsStarRequestAction = PayloadAction<"SELECTED_ITEMS_STAR_
 export type SelectedItemsStarSuccessAction = PayloadAction<"SELECTED_ITEMS_STAR_SUCCESS",
   SelectedItemsStarSuccessPayload>;
 export type SelectedItemsStarFailureAction = ErrorAction<"SELECTED_ITEMS_STAR_FAILURE", Error>;
+
+
+// Selected items delete
+export type SelectedItemsDeleteSuccessPayload = ArrayItem;
+export type SelectedItemsDeleteRequestAction = Action<"SELECTED_ITEMS_DELETE_REQUEST">;
+export type SelectedItemsDeleteSuccessAction = PayloadAction<"SELECTED_ITEMS_DELETE_SUCCESS",
+  SelectedItemsDeleteSuccessPayload>;
+export type SelectedItemsDeleteFailureAction = ErrorAction<"SELECTED_ITEMS_DELETE_FAILURE", Error>;

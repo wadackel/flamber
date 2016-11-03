@@ -19,7 +19,8 @@ import type {
   SelectBoardToggleAction
 } from "../../types/board";
 import type {
-  DeleteItemSuccessAction
+  DeleteItemSuccessAction,
+  SelectedItemsDeleteSuccessAction
 } from "../../types/item";
 
 
@@ -155,10 +156,11 @@ export default handleActions({
     }))
   ),
 
-  [I.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => (
-    mapValues(state, entity => ({
+  [I.SELECTED_ITEMS_DELETE_SUCCESS]:
+    (state: BoardEntitiesState, action: SelectedItemsDeleteSuccessAction): BoardEntitiesState => (
+    mapValues(state, (entity: BoardEntity) => ({
       ...entity,
-      items: entity.items.filter(id => !payload.some(o => o.id === id))
+      Items: entity.Items.filter(id => action.payload.result.items.indexOf(id) < 0)
     }))
   ),
 

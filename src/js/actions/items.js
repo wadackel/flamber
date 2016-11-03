@@ -60,7 +60,12 @@ import type {
   SelectedItemsStarSuccessPayload,
   SelectedItemsStarRequestAction,
   SelectedItemsStarSuccessAction,
-  SelectedItemsStarFailureAction
+  SelectedItemsStarFailureAction,
+
+  SelectedItemsDeleteSuccessPayload,
+  SelectedItemsDeleteRequestAction,
+  SelectedItemsDeleteSuccessAction,
+  SelectedItemsDeleteFailureAction
 } from "../types/item";
 
 
@@ -418,15 +423,19 @@ export const selectedItemsStarFailure = (error: Error, entities?: ?ItemEntities)
 
 
 // Selected items delete
-export const SELECTED_ITEMS_DELETE_REQUEST: string = "SELECTED_ITEMS_DELETE_REQUEST";
-export const SELECTED_ITEMS_DELETE_SUCCESS: string = "SELECTED_ITEMS_DELETE_SUCCESS";
-export const SELECTED_ITEMS_DELETE_FAILURE: string = "SELECTED_ITEMS_DELETE_FAILURE";
+export const SELECTED_ITEMS_DELETE_REQUEST = "SELECTED_ITEMS_DELETE_REQUEST";
+export const SELECTED_ITEMS_DELETE_SUCCESS = "SELECTED_ITEMS_DELETE_SUCCESS";
+export const SELECTED_ITEMS_DELETE_FAILURE = "SELECTED_ITEMS_DELETE_FAILURE";
 
-export const selectedItemsDeleteRequest = createAction(SELECTED_ITEMS_DELETE_REQUEST);
-export const selectedItemsDeleteSuccess = createAction(SELECTED_ITEMS_DELETE_SUCCESS);
-export const selectedItemsDeleteFailure = createAction(SELECTED_ITEMS_DELETE_FAILURE,
-  identity,
-  (payload: Object, entities: Items): Object => ({ entities })
+export const selectedItemsDeleteRequest = (): SelectedItemsDeleteRequestAction => (
+  { type: SELECTED_ITEMS_DELETE_REQUEST }
+);
+export const selectedItemsDeleteSuccess =
+  (payload: SelectedItemsDeleteSuccessPayload): SelectedItemsDeleteSuccessAction => (
+  { type: SELECTED_ITEMS_DELETE_SUCCESS, payload }
+);
+export const selectedItemsDeleteFailure = (error: Error, entities: ?ItemEntities): SelectedItemsDeleteFailureAction => (
+  { type: SELECTED_ITEMS_DELETE_FAILURE, payload: error, error: true, meta: entities }
 );
 
 

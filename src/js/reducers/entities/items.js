@@ -21,7 +21,9 @@ import type {
   UnselectAllItemExecAction,
   SelectStarItemExecAction,
   SelectedItemsStarSuccessAction,
-  SelectedItemsStarFailureAction
+  SelectedItemsStarFailureAction,
+  SelectedItemsDeleteSuccessAction,
+  SelectedItemsDeleteFailureAction
 } from "../../types/item";
 
 
@@ -380,30 +382,30 @@ export default handleActions({
   ),
 
 
-  // // Selected delete
-  // [I.SELECTED_ITEMS_DELETE_REQUEST]: state => (
-  //   mapValues(state, entity =>
-  //     !entity.select ? entity : {
-  //       ...entity,
-  //       isDeleting: true
-  //     }
-  //   )
-  // ),
-  //
-  // [I.SELECTED_ITEMS_DELETE_SUCCESS]: (state, { payload }) => (
-  //   pickBy(state, (entity, id) =>
-  //     !payload.some(o => o.id === id)
-  //   )
-  // ),
-  //
-  // [I.SELECTED_ITEMS_DELETE_FAILURE]: (state, { meta }) => (
-  //   mapValues(state, entity =>
-  //     !meta.entities.indexOf(entity.id) < 0 ? entity : {
-  //       ...entity,
-  //       isDeleting: false
-  //     }
-  //   )
-  // ),
+  // Selected delete
+  [I.SELECTED_ITEMS_DELETE_REQUEST]: (state: ItemEntitiesState): ItemEntitiesState => (
+    mapValues(state, (entity: ItemEntity) =>
+      !entity.select ? entity : {
+        ...entity,
+        isDeleting: true
+      }
+    )
+  ),
+
+  [I.SELECTED_ITEMS_DELETE_SUCCESS]:
+    (state: ItemEntitiesState, action: SelectedItemsDeleteSuccessAction): ItemEntitiesState => (
+    removeEntities(state, action.payload.result.items)
+  ),
+
+  [I.SELECTED_ITEMS_DELETE_FAILURE]:
+    (state: ItemEntitiesState, action: SelectedItemsDeleteFailureAction): ItemEntitiesState => (
+    action.meta
+      ? mapEntities(state, action.meta.map(o => o.id), (entity: ItemEntity) => ({
+        ...entity,
+        isDeleting: false
+      }))
+      : state
+  ),
 
 
   // Selected star
