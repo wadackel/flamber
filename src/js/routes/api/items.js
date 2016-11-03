@@ -79,9 +79,15 @@ router.put("/image", upload.single("file"), (req, res) => {
 router.delete("/", (req, res) => {
   const { user, body } = req;
 
-  Promise.all(body.map(item => Item.removeByUserAndId(user.id, item.id)))
-    .then(() => {
-      res.json({});
+  user.getItems({ where: { id: body.map(entity => entity.id) } })
+    .then(items => {
+      if (items.length !== body.length) throw new Error("Invalida parameter");
+      return items;
+    })
+    .then(items => user.removeItems(items).then(() => items))
+    .then(items => Promise.all(items.map(item => item.destroy())).then(() => items))
+    .then(items => {
+      res.json({ items });
     })
     .catch(res.errorJSON);
 });

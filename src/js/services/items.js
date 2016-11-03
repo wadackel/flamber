@@ -111,6 +111,6 @@ export function updateItemImage(id: ItemId, image: File) {
 }
 
 
-export function deleteItems(items: ItemEntities) {
+export function deleteItems(items: ItemEntities): ResponseArrayItem {
   return apiClient.delete("/", { body: items });
 }

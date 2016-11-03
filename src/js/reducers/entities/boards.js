@@ -18,6 +18,9 @@ import type {
   DeleteBoardFailureAction,
   SelectBoardToggleAction
 } from "../../types/board";
+import type {
+  DeleteItemSuccessAction
+} from "../../types/item";
 
 
 function mergeEntities(state: BoardEntitiesState, entities: BoardEntitiesState): BoardEntitiesState {
@@ -145,10 +148,10 @@ export default handleActions({
     })
   ),
 
-  [I.DELETE_ITEM_SUCCESS]: (state, { payload }) => (
-    mapValues(state, entity => ({
+  [I.DELETE_ITEM_SUCCESS]: (state: BoardEntitiesState, action: DeleteItemSuccessAction): BoardEntitiesState => (
+    mapValues(state, (entity: BoardEntity) => ({
       ...entity,
-      items: entity.items.filter(id => id !== payload.id)
+      Items: entity.Items.filter(id => id !== action.payload.result.item)
     }))
   ),
 

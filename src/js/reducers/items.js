@@ -165,6 +165,13 @@ export default handleActions({
     error: action.payload,
     addFileDialogOpen: false,
     addSnackbarOpen: true
+  }),
+
+
+  // Delete
+  [I.DELETE_ITEM_REQUEST]: (state: ItemState): ItemState => ({
+    ...state,
+    currentItem: null
   })
 
 
@@ -172,13 +179,6 @@ export default handleActions({
   // [I.UPDATE_ITEM_NAME_FAILURE]: (state, { payload }) => ({
   //   ...state,
   //   error: payload
-  // }),
-
-
-  // // Delete
-  // [I.DELETE_ITEM_REQUEST]: (state, { payload }) => ({
-  //   ...state,
-  //   currentItem: null
   // }),
   //
   //

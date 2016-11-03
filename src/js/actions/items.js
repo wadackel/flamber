@@ -10,6 +10,7 @@ import type {
   ItemId,
   Item,
   Items,
+  ItemEntity,
   ItemEntities,
   ItemVisibilityFilter,
 
@@ -34,6 +35,11 @@ import type {
   AddItemFileFailureAction,
 
   GotoAddedItemAction,
+
+  DeleteItemSuccessPayload,
+  DeleteItemRequestAction,
+  DeleteItemSuccessAction,
+  DeleteItemFailureAction,
 
   StarItemToggleSuccessPayload,
   StarItemToggleRequestAction,
@@ -315,15 +321,18 @@ export const gotoAfterMoveItemBoard = createAction(GOTO_AFTER_MOVE_ITEM_BOARD);
 
 
 // Delete
-export const DELETE_ITEM_REQUEST: string = "DELETE_ITEM_REQUEST";
-export const DELETE_ITEM_SUCCESS: string = "DELETE_ITEM_SUCCESS";
-export const DELETE_ITEM_FAILURE: string = "DELETE_ITEM_FAILURE";
+export const DELETE_ITEM_REQUEST = "DELETE_ITEM_REQUEST";
+export const DELETE_ITEM_SUCCESS = "DELETE_ITEM_SUCCESS";
+export const DELETE_ITEM_FAILURE = "DELETE_ITEM_FAILURE";
 
-export const deleteItemRequest = createAction(DELETE_ITEM_REQUEST);
-export const deleteItemSuccess = createAction(DELETE_ITEM_SUCCESS);
-export const deleteItemFailure = createAction(DELETE_ITEM_FAILURE,
-  identity,
-  (payload: Object, entity: Item): Object => ({ entity })
+export const deleteItemRequest = (id: ItemId): DeleteItemRequestAction => (
+  { type: DELETE_ITEM_REQUEST, payload: id }
+);
+export const deleteItemSuccess = (payload: DeleteItemSuccessPayload): DeleteItemSuccessAction => (
+  { type: DELETE_ITEM_SUCCESS, payload }
+);
+export const deleteItemFailure = (error: Error, entity: ?ItemEntity): DeleteItemFailureAction => (
+  { type: DELETE_ITEM_FAILURE, payload: error, error: true, meta: entity }
 );
 
 

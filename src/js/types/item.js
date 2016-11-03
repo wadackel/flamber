@@ -109,6 +109,13 @@ export type AddItemFileFailureAction = ErrorAction<"ADD_ITEM_FILE_FAILURE", Erro
 export type GotoAddedItemAction = PayloadAction<"GOTO_ADDED_ITEM", ItemId>;
 
 
+// Delete
+export type DeleteItemSuccessPayload = SingleItem;
+export type DeleteItemRequestAction = PayloadAction<"DELETE_ITEM_REQUEST", ItemId>;
+export type DeleteItemSuccessAction = PayloadAction<"DELETE_ITEM_SUCCESS", DeleteItemSuccessPayload>;
+export type DeleteItemFailureAction = ErrorAction<"DELETE_ITEM_FAILURE", Error>;
+
+
 // Star
 export type StarItemToggleSuccessPayload = SingleItem;
 export type StarItemToggleRequestAction = PayloadAction<"STAR_ITEM_TOGGLE_REQUEST", ItemId>;

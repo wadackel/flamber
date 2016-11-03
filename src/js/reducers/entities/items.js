@@ -1,5 +1,5 @@
 // @flow
-import { assign, mapValues, union, without } from "lodash";
+import { assign, mapValues, union, without, pickBy } from "lodash";
 import { handleActions } from "redux-actions";
 import * as B from "../../actions/boards";
 import * as I from "../../actions/items";
@@ -10,6 +10,9 @@ import type {
   ItemEntitiesState,
   AddItemURLSuccessAction,
   AddItemFileSuccessAction,
+  DeleteItemRequestAction,
+  DeleteItemSuccessAction,
+  DeleteItemFailureAction,
   StarItemToggleRequestAction,
   StarItemToggleSuccessAction,
   StarItemToggleFailureAction,
@@ -32,11 +35,11 @@ function mapEntities(state: ItemEntitiesState, ids: Array<ItemId>, iteratee: Fun
   );
 }
 
-// function removeEntities(state: BoardEntitiesState, ids: Array<BoardId>): BoardEntitiesState {
-//   return pickBy(state, (entity: BoardEntity): boolean =>
-//     ids.indexOf(entity.id) === -1
-//   );
-// }
+function removeEntities(state: ItemEntitiesState, ids: Array<ItemId>): ItemEntitiesState {
+  return pickBy(state, (entity: ItemEntity): boolean =>
+    ids.indexOf(entity.id) === -1
+  );
+}
 
 
 export default handleActions({
@@ -58,30 +61,26 @@ export default handleActions({
   ),
 
 
-  // // Delete
-  // [I.DELETE_ITEM_REQUEST]: (state, { payload }) => (
-  //   mapValues(state, entity =>
-  //     entity.id !== payload ? entity : {
-  //       ...entity,
-  //       isDeleting: true
-  //     }
-  //   )
-  // ),
-  //
-  // [I.DELETE_ITEM_SUCCESS]: (state, { payload }) => (
-  //   pickBy(state, (entity, id) =>
-  //     id !== payload.id
-  //   )
-  // ),
-  //
-  // [I.DELETE_ITEM_FAILURE]: (state, { meta }) => (
-  //   mapValues(state, entity =>
-  //     entity.id !== meta.entity.id ? entity : {
-  //       ...entity,
-  //       isDeleting: false
-  //     }
-  //   )
-  // ),
+  // Delete
+  [I.DELETE_ITEM_REQUEST]: (state: ItemEntitiesState, action: DeleteItemRequestAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload], (entity: ItemEntity) => ({
+      ...entity,
+      isDeleting: true
+    }))
+  ),
+
+  [I.DELETE_ITEM_SUCCESS]: (state: ItemEntitiesState, action: DeleteItemSuccessAction): ItemEntitiesState => (
+    removeEntities(state, [action.payload.result.item])
+  ),
+
+  [I.DELETE_ITEM_FAILURE]: (state: ItemEntitiesState, action: DeleteItemFailureAction): ItemEntitiesState => (
+    action.meta
+      ? mapEntities(state, [action.meta.id], (entity: ItemEntity) => ({
+        ...entity,
+        isDeleting: false
+      }))
+      : state
+  ),
 
 
   // Star
