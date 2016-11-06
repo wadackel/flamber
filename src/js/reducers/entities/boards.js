@@ -9,6 +9,7 @@ import type {
   BoardEntity,
   BoardEntitiesState,
   FetchBoardsSuccessAction,
+  FetchBoardSuccessAction,
   AddBoardSuccessAction,
   UpdateBoardRequestAction,
   UpdateBoardSuccessAction,
@@ -44,6 +45,10 @@ function removeEntities(state: BoardEntitiesState, ids: Array<BoardId>): BoardEn
 export default handleActions({
   // Fetch
   [B.FETCH_BOARDS_SUCCESS]: (state: BoardEntitiesState, action: FetchBoardsSuccessAction): BoardEntitiesState => (
+    mergeEntities(state, action.payload.entities.boards)
+  ),
+
+  [B.FETCH_BOARD_SUCCESS]: (state: BoardEntitiesState, action: FetchBoardSuccessAction): BoardEntitiesState => (
     mergeEntities(state, action.payload.entities.boards)
   ),
 

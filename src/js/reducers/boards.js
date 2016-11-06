@@ -8,6 +8,7 @@ import type {
   BoardState,
   FetchBoardsSuccessAction,
   FetchBoardsFailureAction,
+  FetchBoardSuccessAction,
   AddBoardSuccessAction,
   AddBoardFailureAction,
   DeleteBoardSuccessAction,
@@ -49,6 +50,14 @@ export default handleActions({
     ...state,
     isFetching: false,
     error: action.payload
+  }),
+
+  [B.FETCH_BOARD_SUCCESS]: (state: BoardState, action: FetchBoardSuccessAction): BoardState => ({
+    ...state,
+    results: [
+      ...state.results.filter(id => id !== action.payload.result.board),
+      action.payload.result.board
+    ]
   }),
 
 

@@ -52,7 +52,7 @@ function *handleDeleteItemSuccess(action: DeleteItemSuccessAction): Generator<an
   yield put(showNotify(`${entity.name} を削除しました`));
 
   // fetch board
-  yield put(B.fetchBoard(entity.board_id));
+  yield put(B.fetchBoardRequest(entity.board_id));
 }
 
 function *handleDeleteItemFailure(action: DeleteItemFailureAction): Generator<any, *, *> {

@@ -2,17 +2,29 @@ import { Router } from "express";
 import models from "../../models/";
 
 
-const { Board, Item, Tag } = models;
+const { Board } = models;
 const router = new Router();
 
 
 router.get("/", (req, res) => {
   Board.findAll({
-    where: { user_id: req.user.id },
-    include: [{ model: Item, include: [{ model: Tag }] }]
+    where: { user_id: req.user.id }
   })
+    .then(boards => Promise.all(boards.map(board => board.includeAll())))
     .then(boards => {
       res.json({ boards });
+    })
+    .catch(res.errorJSON);
+});
+
+
+router.get("/:id", (req, res) => {
+  Board.find({
+    where: { user_id: req.user.id, id: req.params.id }
+  })
+    .then(board => board.includeAll())
+    .then(board => {
+      res.json({ board });
     })
     .catch(res.errorJSON);
 });

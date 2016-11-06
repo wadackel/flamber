@@ -47,6 +47,11 @@ export type FetchBoardsRequestAction = Action<"FETCH_BOARDS_REQUEST">;
 export type FetchBoardsSuccessAction = PayloadAction<"FETCH_BOARDS_SUCCESS", FetchBoardsSuccessPayload>;
 export type FetchBoardsFailureAction = ErrorAction<"FETCH_BOARDS_FAILURE", Error>;
 
+export type FetchBoardSuccessPayload = SingleBoard;
+export type FetchBoardRequestAction = PayloadAction<"FETCH_BOARD_REQUEST", BoardId>;
+export type FetchBoardSuccessAction = PayloadAction<"FETCH_BOARD_SUCCESS", FetchBoardSuccessPayload>;
+export type FetchBoardFailureAction = ErrorAction<"FETCH_BOARD_FAILURE", Error>;
+
 
 // Add UI
 export type AddBoardDialogOpenAction = Action<"ADD_BOARD_DIALOG_OPEN">;

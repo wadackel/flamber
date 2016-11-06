@@ -8,6 +8,11 @@ import type {
   FetchBoardsSuccessAction,
   FetchBoardsFailureAction,
 
+  FetchBoardSuccessPayload,
+  FetchBoardRequestAction,
+  FetchBoardSuccessAction,
+  FetchBoardFailureAction,
+
   AddBoardDialogOpenAction,
   AddBoardDialogCloseAction,
 
@@ -55,6 +60,22 @@ export const fetchBoardsSuccess = (payload: FetchBoardsSuccessPayload): FetchBoa
 
 export const fetchBoardsFailure = (error: Error): FetchBoardsFailureAction => (
   { type: FETCH_BOARDS_FAILURE, payload: error, error: true }
+);
+
+export const FETCH_BOARD_REQUEST = "FETCH_BOARD_REQUEST";
+export const FETCH_BOARD_SUCCESS = "FETCH_BOARD_SUCCESS";
+export const FETCH_BOARD_FAILURE = "FETCH_BOARD_FAILURE";
+
+export const fetchBoardRequest = (id: BoardId): FetchBoardRequestAction => (
+  { type: FETCH_BOARD_REQUEST, payload: id }
+);
+
+export const fetchBoardSuccess = (payload: FetchBoardSuccessPayload) => (
+  { type: FETCH_BOARD_SUCCESS, payload }
+);
+
+export const fetchBoardFailure = (error: Error): FetchBoardFailureAction => (
+  { type: FETCH_BOARD_FAILURE, payload: error, error: true }
 );
 
 
