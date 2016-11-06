@@ -159,7 +159,7 @@ export class BoardsPage extends Component {
               title={board.name}
               image={firstItem ? firstItem.thumbnail : "/images/default.png"}
               layout={boardsLayout}
-              itemCount={0}
+              itemCount={board.Items.length}
               lastModified={new Date(board.updated_at)}
               onClick={this.handleEdit}
               onEdit={this.handleEdit}
