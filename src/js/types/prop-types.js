@@ -37,6 +37,8 @@ export type GalleryLayout = "gallery";
 export type GridLayout = "grid";
 export type ListLayout = "list";
 export type Layout = GalleryLayout | GridLayout | ListLayout;
+export type BoardsLayout = GridLayout | ListLayout;
+export type ItemsLayout = Layout;
 
 export type DropDownBoardValue = {
   name: string;

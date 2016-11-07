@@ -6,7 +6,14 @@ export default function(sequelize: any, DataTypes: any) {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4
     },
-    theme: DataTypes.STRING
+    theme: DataTypes.STRING,
+    boardsLayout: DataTypes.STRING,
+    boardsOrderBy: DataTypes.STRING,
+    boardsOrder: DataTypes.STRING,
+    itemsLayout: DataTypes.INTEGER,
+    itemsSize: DataTypes.INTEGER,
+    itemsOrderBy: DataTypes.STRING,
+    itemsOrder: DataTypes.STRING
   }, {
     tableName: "options",
     timestamps: false,

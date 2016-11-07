@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as AuthActions from "../../../actions/auth";
-import * as SettingActions from "../../../actions/settings";
+import * as OptionActions from "../../../actions/options";
 import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
@@ -34,15 +34,17 @@ import {
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
 import type { AuthState } from "../../../types/auth";
+import type { OptionsState } from "../../../types/options";
 import type { BoardState, BoardEntity, BoardEntities } from "../../../types/board";
 import type { ItemState, ItemEntities } from "../../../types/item";
-import type { Layout } from "../../../types/prop-types";
+import type { BoardsLayout, Layout } from "../../../types/prop-types";
 
 
 type Props = {
   dispatch: Dispatch;
   routes: any;
   auth: AuthState;
+  options: OptionsState;
   boards: BoardState;
   selectedBoardEntities: BoardEntities;
   currentBoard: ?BoardEntity;
@@ -136,12 +138,13 @@ export class HeaderContainer extends Component {
   }
 
   // Update layouts
-  handleBoardsLayoutChange(layout: Layout) {
-    this.props.dispatch(SettingActions.updateBoardsLayoutRequest(layout));
+  handleBoardsLayoutChange(layout: BoardsLayout) {
+    this.props.dispatch(OptionActions.updateBoardsLayoutRequest(layout));
   }
 
   handleItemsLayoutChange(layout: Layout) {
-    this.props.dispatch(SettingActions.updateItemsLayoutRequest(layout));
+    console.log("TODO: ", layout);
+    // this.props.dispatch(SettingActions.updateItemsLayoutRequest(layout));
   }
 
   handleItemsSizeChange(size: number) {
@@ -149,7 +152,7 @@ export class HeaderContainer extends Component {
       itemsSize: size
     });
 
-    this.props.dispatch(SettingActions.updateItemsSizeRequestDebounce(size));
+    // this.props.dispatch(SettingActions.updateItemsSizeRequestDebounce(size));
   }
 
   // Update currentColor
@@ -180,11 +183,10 @@ export class HeaderContainer extends Component {
 
   getHeaderBoardsProps() {
     const {
-      selectedBoardEntities
-      // settings: { boardsLayout }
+      selectedBoardEntities,
+      options: { boardsLayout }
     } = this.props;
 
-    const boardsLayout = "grid"; // TODO
     const hasSelectedBoard = selectedBoardEntities.length > 0;
 
     return {
@@ -383,6 +385,7 @@ export class HeaderContainer extends Component {
 export default connect(
   (state: ConnectState) => ({
     auth: state.auth,
+    options: state.options,
     boards: state.boards,
     selectedBoardEntities: getSelectedBoardEntities(state),
     currentBoard: getCurrentBoard(state),

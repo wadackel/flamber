@@ -1,22 +1,35 @@
 import { Router } from "express";
-import Setting from "../../models/setting";
+import models from "../../models/";
 
-const router = Router();
+const { Option } = models;
+const router = new Router();
 
 
 router.get("/", (req, res) => {
-  Setting.findByUser(req.user.id)
-    .then(settings => {
-      res.json(settings);
-    })
-    .catch(res.errorJSON);
+  // TODO
+  res.errorJSON("TODO");
+  // Setting.findByUser(req.user.id)
+  //   .then(settings => {
+  //     res.json(settings);
+  //   })
+  //   .catch(res.errorJSON);
 });
 
 
-router.put("/", (req, res) => {
-  Setting.updateByUser(req.user.id, req.body)
-    .then(settings => {
-      res.json(settings);
+router.put("/:key", (req, res) => {
+  const { user, params: { key }, body } = req;
+  const value = body.hasOwnProperty(key) ? body[key] : null;
+
+  Option.findOne({ where: { user_id: user.id } })
+    .then(entity => {
+      if (!entity || value == null || !Option.tableAttributes.hasOwnProperty(key)) {
+        throw new Error("Invalid parameter");
+      }
+      return entity;
+    })
+    .then(entity => entity.update({ [key]: value }))
+    .then(() => {
+      res.json({ [key]: value });
     })
     .catch(res.errorJSON);
 });

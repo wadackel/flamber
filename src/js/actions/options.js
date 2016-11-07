@@ -1,5 +1,4 @@
 // @flow
-import type { Theme } from "../types/prop-types";
 import type { User } from "../types/user";
 import type {
   UpdateProfileRequestAction,
@@ -8,8 +7,13 @@ import type {
 
   UpdateThemeRequestAction,
   UpdateThemeSuccessAction,
-  UpdateThemeFailureAction
+  UpdateThemeFailureAction,
+
+  UpdateBoardsLayoutRequestAction,
+  UpdateBoardsLayoutSuccessAction,
+  UpdateBoardsLayoutFailureAction
 } from "../types/options";
+import type { Theme, BoardsLayout } from "../types/prop-types";
 
 
 // Profile
@@ -45,4 +49,22 @@ export const updateThemeSuccess = (theme: Theme): UpdateThemeSuccessAction => (
 
 export const updateThemeFailure = (error: Error): UpdateThemeFailureAction => (
   { type: UPDATE_THEME_FAILURE, payload: error, error: true }
+);
+
+
+// Boards layout
+export const UPDATE_BOARDS_LAYOUT_REQUEST = "UPDATE_BOARDS_LAYOUT_REQUEST";
+export const UPDATE_BOARDS_LAYOUT_SUCCESS = "UPDATE_BOARDS_LAYOUT_SUCCESS";
+export const UPDATE_BOARDS_LAYOUT_FAILURE = "UPDATE_BOARDS_LAYOUT_FAILURE";
+
+export const updateBoardsLayoutRequest = (layout: BoardsLayout): UpdateBoardsLayoutRequestAction => (
+  { type: UPDATE_BOARDS_LAYOUT_REQUEST, payload: layout }
+);
+
+export const updateBoardsLayoutSuccess = (layout: BoardsLayout): UpdateBoardsLayoutSuccessAction => (
+  { type: UPDATE_BOARDS_LAYOUT_SUCCESS, payload: layout }
+);
+
+export const updateBoardsLayoutFailure = (error: Error): UpdateBoardsLayoutFailureAction => (
+  { type: UPDATE_BOARDS_LAYOUT_FAILURE, payload: error, error: true }
 );

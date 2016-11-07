@@ -1,12 +1,20 @@
 // @flow
 import type { PayloadAction, ErrorAction } from "./action";
 import type { User } from "./user";
-import type { Theme } from "./prop-types";
+import type {
+  Theme,
+  BoardsLayout,
+  ItemsLayout
+} from "./prop-types";
 
 export type OptionsState = {
   isProfileUpdating: boolean;
   theme: Theme;
   isThemeUpdating: boolean;
+  boardsLayout: BoardsLayout;
+  isBoardsLayoutUpdating: boolean;
+  itemsLayout: ItemsLayout;
+  isItemsLayoutUpdating: boolean;
 };
 
 
@@ -24,3 +32,9 @@ export type UpdateProfileFailureAction = ErrorAction<"UPDATE_PROFILE_FAILURE", E
 export type UpdateThemeRequestAction = PayloadAction<"UPDATE_THEME_REQUEST", Theme>;
 export type UpdateThemeSuccessAction = PayloadAction<"UPDATE_THEME_SUCCESS", Theme>;
 export type UpdateThemeFailureAction = ErrorAction<"UPDATE_THEME_FAILURE", Error>;
+
+
+// Update boards layout
+export type UpdateBoardsLayoutRequestAction = PayloadAction<"UPDATE_BOARDS_LAYOUT_REQUEST", BoardsLayout>;
+export type UpdateBoardsLayoutSuccessAction = PayloadAction<"UPDATE_BOARDS_LAYOUT_SUCCESS", BoardsLayout>;
+export type UpdateBoardsLayoutFailureAction = ErrorAction<"UPDATE_BOARDS_LAYOUT_FAILURE", Error>;
