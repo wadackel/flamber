@@ -70,11 +70,9 @@ export class HeaderContainer extends Component {
   constructor(props: Props, context: Object) {
     super(props, context);
 
-    // TODO
     this.state = {
       boardName: "",
-      itemsSize: 300
-      // itemsSize: props.settings.itemsSize
+      itemsSize: props.options.itemsSize
     };
 
     autoBind(this);
@@ -151,7 +149,7 @@ export class HeaderContainer extends Component {
       itemsSize: size
     });
 
-    // this.props.dispatch(SettingActions.updateItemsSizeRequestDebounce(size));
+    this.props.dispatch(OptionActions.updateItemsSizeRequest(size));
   }
 
   // Update currentColor

@@ -1,12 +1,13 @@
 // @flow
-import { takeEvery } from "redux-saga";
-import { call, put } from "redux-saga/effects";
+import { takeEvery, delay } from "redux-saga";
+import { fork, take, call, put, cancel } from "redux-saga/effects";
 import * as Services from "../../services/settings";
 import * as O from "../../actions/options";
 
 import type {
   UpdateBoardsLayoutRequestAction,
-  UpdateItemsLayoutRequestAction
+  UpdateItemsLayoutRequestAction,
+  UpdateItemsSizeRequestAction
 } from "../../types/options";
 
 
@@ -50,9 +51,40 @@ export function *handleItemsLayoutRequest(action: UpdateItemsLayoutRequestAction
 }
 
 
+export function *handleItemsSizeRequestDebounced(size: number): Generator<any, *, *> {
+  yield call(delay, 500);
+  yield put(O.updateItemsSizeRequestDebounced(size));
+
+  yield callUpdateSettings(
+    "itemsSize",
+    size,
+    O.updateItemsSizeSuccess,
+    O.updateItemsSizeFailure,
+    "アイテムの表示サイズ変更に失敗しました"
+  );
+}
+
+export function *watchItemsSize(): Generator<any, *, *> {
+  let task = null;
+
+  while (true) {
+    const action: ?UpdateItemsSizeRequestAction = yield take(O.UPDATE_ITEMS_SIZE_REQUEST);
+
+    if (task) {
+      yield cancel(task);
+    }
+
+    if (action) {
+      task = yield fork(handleItemsSizeRequestDebounced, action.payload);
+    }
+  }
+}
+
+
 export default function *settingsSaga(): Generator<any, *, *> {
   yield [
     takeEvery(O.UPDATE_BOARDS_LAYOUT_REQUEST, handleBoardsLayoutRequest),
-    takeEvery(O.UPDATE_ITEMS_LAYOUT_REQUEST, handleItemsLayoutRequest)
+    takeEvery(O.UPDATE_ITEMS_LAYOUT_REQUEST, handleItemsLayoutRequest),
+    fork(watchItemsSize)
   ];
 }

@@ -15,6 +15,8 @@ export type OptionsState = {
   isBoardsLayoutUpdating: boolean;
   itemsLayout: ItemsLayout;
   isItemsLayoutUpdating: boolean;
+  itemsSize: number;
+  isItemsSizeUpdating: boolean;
 };
 
 
@@ -44,3 +46,10 @@ export type UpdateBoardsLayoutFailureAction = ErrorAction<"UPDATE_BOARDS_LAYOUT_
 export type UpdateItemsLayoutRequestAction = PayloadAction<"UPDATE_ITEMS_LAYOUT_REQUEST", ItemsLayout>;
 export type UpdateItemsLayoutSuccessAction = PayloadAction<"UPDATE_ITEMS_LAYOUT_SUCCESS", ItemsLayout>;
 export type UpdateItemsLayoutFailureAction = ErrorAction<"UPDATE_ITEMS_LAYOUT_FAILURE", Error>;
+
+
+// Update items size
+export type UpdateItemsSizeRequestAction = PayloadAction<"UPDATE_ITEMS_SIZE_REQUEST", number>;
+export type UpdateItemsSizeRequestDeboucedAction = PayloadAction<"UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCED", number>;
+export type UpdateItemsSizeSuccessAction = PayloadAction<"UPDATE_ITEMS_SIZE_SUCCESS", number>;
+export type UpdateItemsSizeFailureAction = ErrorAction<"UPDATE_ITEMS_SIZE_FAILURE", Error>;

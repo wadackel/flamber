@@ -15,7 +15,12 @@ import type {
 
   UpdateItemsLayoutRequestAction,
   UpdateItemsLayoutSuccessAction,
-  UpdateItemsLayoutFailureAction
+  UpdateItemsLayoutFailureAction,
+
+  UpdateItemsSizeRequestAction,
+  UpdateItemsSizeRequestDeboucedAction,
+  UpdateItemsSizeSuccessAction,
+  UpdateItemsSizeFailureAction
 } from "../types/options";
 import type { Theme, BoardsLayout, ItemsLayout } from "../types/prop-types";
 
@@ -89,4 +94,27 @@ export const updateItemsLayoutSuccess = (layout: ItemsLayout): UpdateItemsLayout
 
 export const updateItemsLayoutFailure = (error: Error): UpdateItemsLayoutFailureAction => (
   { type: UPDATE_ITEMS_LAYOUT_FAILURE, payload: error, error: true }
+);
+
+
+// Items size
+export const UPDATE_ITEMS_SIZE_REQUEST = "UPDATE_ITEMS_SIZE_REQUEST";
+export const UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCED = "UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCED";
+export const UPDATE_ITEMS_SIZE_SUCCESS = "UPDATE_ITEMS_SIZE_SUCCESS";
+export const UPDATE_ITEMS_SIZE_FAILURE = "UPDATE_ITEMS_SIZE_FAILURE";
+
+export const updateItemsSizeRequest = (size: number): UpdateItemsSizeRequestAction => (
+  { type: UPDATE_ITEMS_SIZE_REQUEST, payload: size }
+);
+
+export const updateItemsSizeRequestDebounced = (size: number): UpdateItemsSizeRequestDeboucedAction => (
+  { type: UPDATE_ITEMS_SIZE_REQUEST_DEBOUNCED, payload: size }
+);
+
+export const updateItemsSizeSuccess = (size: number): UpdateItemsSizeSuccessAction => (
+  { type: UPDATE_ITEMS_SIZE_SUCCESS, payload: size }
+);
+
+export const updateItemsSizeFailure = (error: Error): UpdateItemsSizeFailureAction => (
+  { type: UPDATE_ITEMS_SIZE_FAILURE, payload: error, error: true }
 );

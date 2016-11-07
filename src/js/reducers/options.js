@@ -7,7 +7,9 @@ import type {
   UpdateBoardsLayoutRequestAction,
   UpdateBoardsLayoutSuccessAction,
   UpdateItemsLayoutRequestAction,
-  UpdateItemsLayoutSuccessAction
+  UpdateItemsLayoutSuccessAction,
+  UpdateItemsSizeRequestAction,
+  UpdateItemsSizeSuccessAction
 } from "../types/options";
 
 const initialState: OptionsState = {
@@ -20,7 +22,10 @@ const initialState: OptionsState = {
   isBoardsLayoutUpdating: false,
 
   itemsLayout: "gallery",
-  isItemsLayoutUpdating: false
+  isItemsLayoutUpdating: false,
+
+  itemsSize: 300,
+  isItemsSizeUpdating: false
 };
 
 export default handleActions({
@@ -94,5 +99,24 @@ export default handleActions({
   [O.UPDATE_ITEMS_LAYOUT_FAILURE]: (state: OptionsState) => ({
     ...state,
     isItemsLayoutUpdating: false
+  }),
+
+
+  // Items size
+  [O.UPDATE_ITEMS_SIZE_REQUEST]: (state: OptionsState, action: UpdateItemsSizeRequestAction) => ({
+    ...state,
+    itemsSize: action.payload,
+    isItemsSizeUpdating: true
+  }),
+
+  [O.UPDATE_ITEMS_SIZE_SUCCESS]: (state: OptionsState, action: UpdateItemsSizeSuccessAction) => ({
+    ...state,
+    itemsSize: action.payload,
+    isItemsSizeUpdating: false
+  }),
+
+  [O.UPDATE_ITEMS_SIZE_FAILURE]: (state: OptionsState) => ({
+    ...state,
+    isItemsSizeUpdating: false
   })
 }, initialState);
