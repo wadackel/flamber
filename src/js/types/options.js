@@ -38,3 +38,9 @@ export type UpdateThemeFailureAction = ErrorAction<"UPDATE_THEME_FAILURE", Error
 export type UpdateBoardsLayoutRequestAction = PayloadAction<"UPDATE_BOARDS_LAYOUT_REQUEST", BoardsLayout>;
 export type UpdateBoardsLayoutSuccessAction = PayloadAction<"UPDATE_BOARDS_LAYOUT_SUCCESS", BoardsLayout>;
 export type UpdateBoardsLayoutFailureAction = ErrorAction<"UPDATE_BOARDS_LAYOUT_FAILURE", Error>;
+
+
+// Update items layout
+export type UpdateItemsLayoutRequestAction = PayloadAction<"UPDATE_ITEMS_LAYOUT_REQUEST", ItemsLayout>;
+export type UpdateItemsLayoutSuccessAction = PayloadAction<"UPDATE_ITEMS_LAYOUT_SUCCESS", ItemsLayout>;
+export type UpdateItemsLayoutFailureAction = ErrorAction<"UPDATE_ITEMS_LAYOUT_FAILURE", Error>;

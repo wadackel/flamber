@@ -5,7 +5,9 @@ import type {
   OptionsState,
   UpdateThemeSuccessAction,
   UpdateBoardsLayoutRequestAction,
-  UpdateBoardsLayoutSuccessAction
+  UpdateBoardsLayoutSuccessAction,
+  UpdateItemsLayoutRequestAction,
+  UpdateItemsLayoutSuccessAction
 } from "../types/options";
 
 const initialState: OptionsState = {
@@ -73,5 +75,24 @@ export default handleActions({
   [O.UPDATE_BOARDS_LAYOUT_FAILURE]: (state: OptionsState) => ({
     ...state,
     isBoardsLayoutUpdating: false
+  }),
+
+
+  // Items layout
+  [O.UPDATE_ITEMS_LAYOUT_REQUEST]: (state: OptionsState, action: UpdateItemsLayoutRequestAction) => ({
+    ...state,
+    itemsLayout: action.payload,
+    isItemsLayoutUpdating: true
+  }),
+
+  [O.UPDATE_ITEMS_LAYOUT_SUCCESS]: (state: OptionsState, action: UpdateItemsLayoutSuccessAction) => ({
+    ...state,
+    itemsLayout: action.payload,
+    isItemsLayoutUpdating: false
+  }),
+
+  [O.UPDATE_ITEMS_LAYOUT_FAILURE]: (state: OptionsState) => ({
+    ...state,
+    isItemsLayoutUpdating: false
   })
 }, initialState);

@@ -37,7 +37,7 @@ import type { AuthState } from "../../../types/auth";
 import type { OptionsState } from "../../../types/options";
 import type { BoardState, BoardEntity, BoardEntities } from "../../../types/board";
 import type { ItemState, ItemEntities } from "../../../types/item";
-import type { BoardsLayout, Layout } from "../../../types/prop-types";
+import type { BoardsLayout, ItemsLayout } from "../../../types/prop-types";
 
 
 type Props = {
@@ -142,9 +142,8 @@ export class HeaderContainer extends Component {
     this.props.dispatch(OptionActions.updateBoardsLayoutRequest(layout));
   }
 
-  handleItemsLayoutChange(layout: Layout) {
-    console.log("TODO: ", layout);
-    // this.props.dispatch(SettingActions.updateItemsLayoutRequest(layout));
+  handleItemsLayoutChange(layout: ItemsLayout) {
+    this.props.dispatch(OptionActions.updateItemsLayoutRequest(layout));
   }
 
   handleItemsSizeChange(size: number) {
@@ -218,12 +217,11 @@ export class HeaderContainer extends Component {
   getHeaderBoardDetailProps(activeNavItem?: string) {
     const {
       currentBoard,
-      selectedItemEntities
-      // settings: { itemsLayout }
+      selectedItemEntities,
+      options: { itemsLayout }
     } = this.props;
 
     const { boardName, itemsSize } = this.state;
-    const itemsLayout = "gallery";
     const hasSelectedItem = selectedItemEntities.length > 0;
 
     return {

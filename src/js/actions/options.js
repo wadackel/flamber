@@ -11,9 +11,13 @@ import type {
 
   UpdateBoardsLayoutRequestAction,
   UpdateBoardsLayoutSuccessAction,
-  UpdateBoardsLayoutFailureAction
+  UpdateBoardsLayoutFailureAction,
+
+  UpdateItemsLayoutRequestAction,
+  UpdateItemsLayoutSuccessAction,
+  UpdateItemsLayoutFailureAction
 } from "../types/options";
-import type { Theme, BoardsLayout } from "../types/prop-types";
+import type { Theme, BoardsLayout, ItemsLayout } from "../types/prop-types";
 
 
 // Profile
@@ -67,4 +71,22 @@ export const updateBoardsLayoutSuccess = (layout: BoardsLayout): UpdateBoardsLay
 
 export const updateBoardsLayoutFailure = (error: Error): UpdateBoardsLayoutFailureAction => (
   { type: UPDATE_BOARDS_LAYOUT_FAILURE, payload: error, error: true }
+);
+
+
+// Items layout
+export const UPDATE_ITEMS_LAYOUT_REQUEST = "UPDATE_ITEMS_LAYOUT_REQUEST";
+export const UPDATE_ITEMS_LAYOUT_SUCCESS = "UPDATE_ITEMS_LAYOUT_SUCCESS";
+export const UPDATE_ITEMS_LAYOUT_FAILURE = "UPDATE_ITEMS_LAYOUT_FAILURE";
+
+export const updateItemsLayoutRequest = (layout: ItemsLayout): UpdateItemsLayoutRequestAction => (
+  { type: UPDATE_ITEMS_LAYOUT_REQUEST, payload: layout }
+);
+
+export const updateItemsLayoutSuccess = (layout: ItemsLayout): UpdateItemsLayoutSuccessAction => (
+  { type: UPDATE_ITEMS_LAYOUT_SUCCESS, payload: layout }
+);
+
+export const updateItemsLayoutFailure = (error: Error): UpdateItemsLayoutFailureAction => (
+  { type: UPDATE_ITEMS_LAYOUT_FAILURE, payload: error, error: true }
 );
