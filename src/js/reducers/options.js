@@ -25,6 +25,9 @@ const initialState: OptionsState = {
   boardsLayout: "grid",
   isBoardsLayoutUpdating: false,
 
+  boardsOrderBy: "created_at",
+  isBoardsOrderByUpdating: false,
+
   itemsLayout: "gallery",
   isItemsLayoutUpdating: false,
 

@@ -35,6 +35,7 @@ router.post("/", (req, res) => {
 
   Board.create({ name, secret })
     .then(board => user.addBoard(board).then(() => board))
+    .then(board => board.includeAll())
     .then(board => {
       res.json({ board });
     })

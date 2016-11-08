@@ -9,6 +9,8 @@ export type OptionsState = {
   isThemeUpdating: boolean;
   boardsLayout: BoardsLayout;
   isBoardsLayoutUpdating: boolean;
+  boardsOrderBy: OrderBy;
+  isBoardsOrderByUpdating: boolean;
   itemsLayout: ItemsLayout;
   isItemsLayoutUpdating: boolean;
   itemsSize: number;
@@ -40,6 +42,12 @@ export type UpdateThemeFailureAction = ErrorAction<"UPDATE_THEME_FAILURE", Error
 export type UpdateBoardsLayoutRequestAction = PayloadAction<"UPDATE_BOARDS_LAYOUT_REQUEST", BoardsLayout>;
 export type UpdateBoardsLayoutSuccessAction = PayloadAction<"UPDATE_BOARDS_LAYOUT_SUCCESS", BoardsLayout>;
 export type UpdateBoardsLayoutFailureAction = ErrorAction<"UPDATE_BOARDS_LAYOUT_FAILURE", Error>;
+
+
+// Update boards orderBy
+export type UpdateBoardsOrderByRequestAction = PayloadAction<"UPDATE_BOARDS_ORDER_BY_REQUEST", OrderBy>;
+export type UpdateBoardsOrderBySuccessAction = PayloadAction<"UPDATE_BOARDS_ORDER_BY_SUCCESS", OrderBy>;
+export type UpdateBoardsOrderByFailureAction = ErrorAction<"UPDATE_BOARDS_ORDER_BY_FAILURE", Error>;
 
 
 // Update items layout

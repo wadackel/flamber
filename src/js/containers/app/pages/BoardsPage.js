@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../../helpers/bem";
 import ExecutionEnvironment from "../../../constants/execution-environment";
-import * as OrderBy from "../../../constants/order-by";
-import * as SettingActions from "../../../actions/settings";
+import * as OptionActions from "../../../actions/options";
 import * as BoardActions from "../../../actions/boards";
 import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/boards";
 import { TrashIcon, BoardIcon } from "../../../components/svg-icons/";
@@ -23,14 +22,17 @@ import {
 
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
+import type { OptionsState } from "../../../types/options";
 import type { BoardId, BoardEntities, BoardState } from "../../../types/board";
 import type { ItemEntitiesState } from "../../../types/item";
+import type { OrderBy, Order } from "../../../types/prop-types";
 
 
 const b = bem("boards-page");
 
 type Props = {
   dispatch: Dispatch;
+  options: OptionsState;
   boards: BoardState;
   boardEntities: BoardEntities;
   selectedBoardEntities: BoardEntities;
@@ -59,14 +61,13 @@ export class BoardsPage extends Component {
     this.props.dispatch(BoardActions.selectedBoardsDeleteRequest());
   }
 
-  // TODO
-  handleOrderByChange(orderBy: string) {
-    this.props.dispatch(SettingActions.updateBoardsOrderByRequest(orderBy));
+  handleOrderByChange(orderBy: OrderBy) {
+    this.props.dispatch(OptionActions.updateBoardsOrderByRequest(orderBy));
   }
 
   // TODO
-  handleOrderChange(order: string) {
-    this.props.dispatch(SettingActions.updateBoardsOrderRequest(order));
+  handleOrderChange(order: Order) {
+    // this.props.dispatch(SettingActions.updateBoardsOrderRequest(order));
   }
 
   handleAddBoardClick() {
@@ -104,20 +105,17 @@ export class BoardsPage extends Component {
 
   render() {
     const {
-      // settings: {
-      //   boardsLayout,
-      //   boardsOrderBy,
-      //   boardsOrder
-      // },
+      options: {
+        boardsLayout,
+        boardsOrderBy
+      },
       boardEntities,
       selectedBoardEntities
       // itemEntities
     } = this.props;
 
     // TODO
-    const boardsLayout = "grid";
-    const boardsOrder = "created_at";
-    const boardsOrderBy = "asc";
+    const boardsOrder = "asc";
 
     const hasSelectedBoard = selectedBoardEntities.length > 0;
 
@@ -129,9 +127,8 @@ export class BoardsPage extends Component {
             orderBy={boardsOrderBy}
             order={boardsOrder}
             types={[
-              { name: "名前", value: OrderBy.NAME },
-              { name: "作成", value: OrderBy.CREATED },
-              { name: "最終編集", value: OrderBy.MODIFIED }
+              { name: "名前", value: "name" },
+              { name: "作成", value: "created_at" }
             ]}
             onOrderByChange={this.handleOrderByChange}
             onOrderChange={this.handleOrderChange}
@@ -147,7 +144,7 @@ export class BoardsPage extends Component {
           layout={boardsLayout}
         >
           {boardEntities.map(board => {
-            // TODO
+            // TODO: Cover image
             // const firstItem = board.items.length > 0 ? itemEntities[board.items[0]] : null;
             const firstItem = null;
 
@@ -189,8 +186,9 @@ export class BoardsPage extends Component {
 // TODO
 export default connect(
   (state: ConnectState) => ({
+    options: state.options,
     boards: state.boards,
-    boardEntities: getBoardEntities(state, "created_at", "asc"),
+    boardEntities: getBoardEntities(state, state.options.boardsOrderBy, "asc"),
     selectedBoardEntities: getSelectedBoardEntities(state),
     itemEntities: state.entities.items
   })
