@@ -17,6 +17,10 @@ import type {
   UpdateBoardsOrderBySuccessAction,
   UpdateBoardsOrderByFailureAction,
 
+  UpdateBoardsOrderRequestAction,
+  UpdateBoardsOrderSuccessAction,
+  UpdateBoardsOrderFailureAction,
+
   UpdateItemsLayoutRequestAction,
   UpdateItemsLayoutSuccessAction,
   UpdateItemsLayoutFailureAction,
@@ -106,6 +110,24 @@ export const updateBoardsOrderBySuccess = (orderBy: OrderBy): UpdateBoardsOrderB
 
 export const updateBoardsOrderByFailure = (error: Error): UpdateBoardsOrderByFailureAction => (
   { type: UPDATE_BOARDS_ORDER_BY_FAILURE, payload: error, error: true }
+);
+
+
+// Boards order
+export const UPDATE_BOARDS_ORDER_REQUEST = "UPDATE_BOARDS_ORDER_REQUEST";
+export const UPDATE_BOARDS_ORDER_SUCCESS = "UPDATE_BOARDS_ORDER_SUCCESS";
+export const UPDATE_BOARDS_ORDER_FAILURE = "UPDATE_BOARDS_ORDER_FAILURE";
+
+export const updateBoardsOrderRequest = (order: Order): UpdateBoardsOrderRequestAction => (
+  { type: UPDATE_BOARDS_ORDER_REQUEST, payload: order }
+);
+
+export const updateBoardsOrderSuccess = (order: Order): UpdateBoardsOrderSuccessAction => (
+  { type: UPDATE_BOARDS_ORDER_SUCCESS, payload: order }
+);
+
+export const updateBoardsOrderFailure = (error: Error): UpdateBoardsOrderFailureAction => (
+  { type: UPDATE_BOARDS_ORDER_FAILURE, payload: error, error: true }
 );
 
 

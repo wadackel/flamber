@@ -6,6 +6,10 @@ import type {
   UpdateThemeSuccessAction,
   UpdateBoardsLayoutRequestAction,
   UpdateBoardsLayoutSuccessAction,
+  UpdateBoardsOrderByRequestAction,
+  UpdateBoardsOrderBySuccessAction,
+  UpdateBoardsOrderRequestAction,
+  UpdateBoardsOrderSuccessAction,
   UpdateItemsLayoutRequestAction,
   UpdateItemsLayoutSuccessAction,
   UpdateItemsSizeRequestAction,
@@ -27,6 +31,9 @@ const initialState: OptionsState = {
 
   boardsOrderBy: "created_at",
   isBoardsOrderByUpdating: false,
+
+  boardsOrder: "asc",
+  isBoardsOrderUpdating: false,
 
   itemsLayout: "gallery",
   isItemsLayoutUpdating: false,
@@ -93,6 +100,44 @@ export default handleActions({
   [O.UPDATE_BOARDS_LAYOUT_FAILURE]: (state: OptionsState) => ({
     ...state,
     isBoardsLayoutUpdating: false
+  }),
+
+
+  // Boards orderBy
+  [O.UPDATE_BOARDS_ORDER_BY_REQUEST]: (state: OptionsState, action: UpdateBoardsOrderByRequestAction) => ({
+    ...state,
+    boardsOrderBy: action.payload,
+    isBoardsOrderByUpdating: true
+  }),
+
+  [O.UPDATE_BOARDS_ORDER_BY_SUCCESS]: (state: OptionsState, action: UpdateBoardsOrderBySuccessAction) => ({
+    ...state,
+    boardsOrderBy: action.payload,
+    isBoardsOrderByUpdating: false
+  }),
+
+  [O.UPDATE_BOARDS_ORDER_BY_FAILURE]: (state: OptionsState) => ({
+    ...state,
+    isBoardsOrderByUpdating: false
+  }),
+
+
+  // Boards order
+  [O.UPDATE_BOARDS_ORDER_REQUEST]: (state: OptionsState, action: UpdateBoardsOrderRequestAction) => ({
+    ...state,
+    boardsOrder: action.payload,
+    isBoardsOrderUpdating: true
+  }),
+
+  [O.UPDATE_BOARDS_ORDER_SUCCESS]: (state: OptionsState, action: UpdateBoardsOrderSuccessAction) => ({
+    ...state,
+    boardsOrder: action.payload,
+    isBoardsOrderUpdating: false
+  }),
+
+  [O.UPDATE_BOARDS_ORDER_FAILURE]: (state: OptionsState) => ({
+    ...state,
+    isBoardsOrderUpdating: false
   }),
 
 

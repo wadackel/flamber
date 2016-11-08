@@ -7,6 +7,7 @@ import * as O from "../../actions/options";
 import type {
   UpdateBoardsLayoutRequestAction,
   UpdateBoardsOrderByRequestAction,
+  UpdateBoardsOrderRequestAction,
   UpdateItemsLayoutRequestAction,
   UpdateItemsSizeRequestAction,
   UpdateItemsOrderByRequestAction,
@@ -47,8 +48,19 @@ export function *handleBoardsOrderByRequest(action: UpdateBoardsOrderByRequestAc
   yield callUpdateSettings(
     "boardsOrderBy",
     action.payload,
-    O.updateBoardsLayoutSuccess,
-    O.updateBoardsLayoutFailure,
+    O.updateBoardsOrderBySuccess,
+    O.updateBoardsOrderByFailure,
+    "ボードの表示順序の変更に失敗しました"
+  );
+}
+
+
+export function *handleBoardsOrderRequest(action: UpdateBoardsOrderRequestAction): Generator<any, *, *> {
+  yield callUpdateSettings(
+    "boardsOrder",
+    action.payload,
+    O.updateBoardsOrderSuccess,
+    O.updateBoardsOrderFailure,
     "ボードの表示順序の変更に失敗しました"
   );
 }
@@ -121,6 +133,7 @@ export default function *settingsSaga(): Generator<any, *, *> {
   yield [
     takeLatest(O.UPDATE_BOARDS_LAYOUT_REQUEST, handleBoardsLayoutRequest),
     takeLatest(O.UPDATE_BOARDS_ORDER_BY_REQUEST, handleBoardsOrderByRequest),
+    takeLatest(O.UPDATE_BOARDS_ORDER_REQUEST, handleBoardsOrderRequest),
     takeLatest(O.UPDATE_ITEMS_LAYOUT_REQUEST, handleItemsLayoutRequest),
     fork(watchItemsSize),
     takeLatest(O.UPDATE_ITEMS_ORDER_BY_REQUEST, handleItemsOrderByRequest),

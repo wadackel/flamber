@@ -11,6 +11,8 @@ export type OptionsState = {
   isBoardsLayoutUpdating: boolean;
   boardsOrderBy: OrderBy;
   isBoardsOrderByUpdating: boolean;
+  boardsOrder: Order;
+  isBoardsOrderUpdating: boolean;
   itemsLayout: ItemsLayout;
   isItemsLayoutUpdating: boolean;
   itemsSize: number;
@@ -48,6 +50,12 @@ export type UpdateBoardsLayoutFailureAction = ErrorAction<"UPDATE_BOARDS_LAYOUT_
 export type UpdateBoardsOrderByRequestAction = PayloadAction<"UPDATE_BOARDS_ORDER_BY_REQUEST", OrderBy>;
 export type UpdateBoardsOrderBySuccessAction = PayloadAction<"UPDATE_BOARDS_ORDER_BY_SUCCESS", OrderBy>;
 export type UpdateBoardsOrderByFailureAction = ErrorAction<"UPDATE_BOARDS_ORDER_BY_FAILURE", Error>;
+
+
+// Update boards order
+export type UpdateBoardsOrderRequestAction = PayloadAction<"UPDATE_BOARDS_ORDER_REQUEST", Order>;
+export type UpdateBoardsOrderSuccessAction = PayloadAction<"UPDATE_BOARDS_ORDER_SUCCESS", Order>;
+export type UpdateBoardsOrderFailureAction = ErrorAction<"UPDATE_BOARDS_ORDER_FAILURE", Error>;
 
 
 // Update items layout

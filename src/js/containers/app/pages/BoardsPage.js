@@ -65,9 +65,8 @@ export class BoardsPage extends Component {
     this.props.dispatch(OptionActions.updateBoardsOrderByRequest(orderBy));
   }
 
-  // TODO
   handleOrderChange(order: Order) {
-    // this.props.dispatch(SettingActions.updateBoardsOrderRequest(order));
+    this.props.dispatch(OptionActions.updateBoardsOrderRequest(order));
   }
 
   handleAddBoardClick() {
@@ -107,15 +106,13 @@ export class BoardsPage extends Component {
     const {
       options: {
         boardsLayout,
-        boardsOrderBy
+        boardsOrderBy,
+        boardsOrder
       },
       boardEntities,
       selectedBoardEntities
       // itemEntities
     } = this.props;
-
-    // TODO
-    const boardsOrder = "asc";
 
     const hasSelectedBoard = selectedBoardEntities.length > 0;
 
@@ -188,7 +185,11 @@ export default connect(
   (state: ConnectState) => ({
     options: state.options,
     boards: state.boards,
-    boardEntities: getBoardEntities(state, state.options.boardsOrderBy, "asc"),
+    boardEntities: getBoardEntities(
+      state,
+      state.options.boardsOrderBy,
+      state.options.boardsOrder
+    ),
     selectedBoardEntities: getSelectedBoardEntities(state),
     itemEntities: state.entities.items
   })
