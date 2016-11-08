@@ -1,5 +1,5 @@
 // @flow
-import { takeEvery, delay } from "redux-saga";
+import { takeLatest, delay } from "redux-saga";
 import { fork, take, call, put, cancel } from "redux-saga/effects";
 import * as Services from "../../services/settings";
 import * as O from "../../actions/options";
@@ -7,7 +7,8 @@ import * as O from "../../actions/options";
 import type {
   UpdateBoardsLayoutRequestAction,
   UpdateItemsLayoutRequestAction,
-  UpdateItemsSizeRequestAction
+  UpdateItemsSizeRequestAction,
+  UpdateItemsOrderByRequestAction
 } from "../../types/options";
 
 
@@ -81,10 +82,22 @@ export function *watchItemsSize(): Generator<any, *, *> {
 }
 
 
+export function *handleItemsOrderByRequest(action: UpdateItemsOrderByRequestAction): Generator<any, *, *> {
+  yield callUpdateSettings(
+    "itemsOrderBy",
+    action.payload,
+    O.updateItemsOrderBySuccess,
+    O.updateItemsOrderByFailure,
+    "アイテムの表示順序の変更に失敗しました"
+  );
+}
+
+
 export default function *settingsSaga(): Generator<any, *, *> {
   yield [
-    takeEvery(O.UPDATE_BOARDS_LAYOUT_REQUEST, handleBoardsLayoutRequest),
-    takeEvery(O.UPDATE_ITEMS_LAYOUT_REQUEST, handleItemsLayoutRequest),
-    fork(watchItemsSize)
+    takeLatest(O.UPDATE_BOARDS_LAYOUT_REQUEST, handleBoardsLayoutRequest),
+    takeLatest(O.UPDATE_ITEMS_LAYOUT_REQUEST, handleItemsLayoutRequest),
+    fork(watchItemsSize),
+    takeLatest(O.UPDATE_ITEMS_ORDER_BY_REQUEST, handleItemsOrderByRequest)
   ];
 }

@@ -2,6 +2,7 @@
 import autoBind from "auto-bind";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import * as OptionActions from "../../../actions/options";
 import * as ItemActions from "../../../actions/items";
 import { getRawBoardEntities, getCurrentBoard } from "../../../selectors/boards";
 import {
@@ -31,6 +32,7 @@ import {
 
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
+import type { OptionsState } from "../../../types/options";
 import type { BoardState, BoardId, BoardEntity, BoardEntities } from "../../../types/board";
 import type { ItemState, ItemId, ItemEntity, ItemEntities } from "../../../types/item";
 import type { Order, OrderBy } from "../../../types/prop-types";
@@ -40,6 +42,7 @@ const b = bem("items-container");
 
 type Props = {
   dispatch: Dispatch;
+  options: OptionsState;
   boards: BoardState;
   rawBoardEntities: BoardEntities;
   items: ItemState;
@@ -70,10 +73,8 @@ export class ItemsContainer extends Component {
     autoBind(this);
   }
 
-  // TODO
   handleOrderByChange(orderBy: OrderBy) {
-    console.log("TODO: updateItemsOrderBy", orderBy);
-    // this.props.dispatch(SettingActions.updateItemsOrderByRequest(orderBy));
+    this.props.dispatch(OptionActions.updateItemsOrderByRequest(orderBy));
   }
 
   // TODO
@@ -180,18 +181,14 @@ export class ItemsContainer extends Component {
       currentItem,
       items,
       itemEntities,
-      selectedItemEntities
-      // settings: {
-      //   itemsLayout,
-      //   itemsSize,
-      //   itemsOrderBy,
-      //   itemsOrder
-      // }
+      selectedItemEntities,
+      options: {
+        itemsLayout,
+        itemsSize,
+        itemsOrderBy
+      }
     } = this.props;
 
-    const itemsLayout = "gallery"; // TODO
-    const itemsSize = 300; // TODO
-    const itemsOrderBy = "created_at"; // TODO
     const itemsOrder = "desc"; // TODO
 
     const hasSelectedItems = selectedItemEntities.length > 0;
@@ -307,6 +304,7 @@ export class ItemsContainer extends Component {
 
 export default connect(
   (state: ConnectState) => ({
+    options: state.options,
     boards: state.boards,
     rawBoardEntities: getRawBoardEntities(state),
     items: state.items,

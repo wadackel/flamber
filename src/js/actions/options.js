@@ -20,9 +20,13 @@ import type {
   UpdateItemsSizeRequestAction,
   UpdateItemsSizeRequestDeboucedAction,
   UpdateItemsSizeSuccessAction,
-  UpdateItemsSizeFailureAction
+  UpdateItemsSizeFailureAction,
+
+  UpdateItemsOrderByRequestAction,
+  UpdateItemsOrderBySuccessAction,
+  UpdateItemsOrderByFailureAction
 } from "../types/options";
-import type { Theme, BoardsLayout, ItemsLayout } from "../types/prop-types";
+import type { Theme, BoardsLayout, ItemsLayout, OrderBy } from "../types/prop-types";
 
 
 // Profile
@@ -117,4 +121,22 @@ export const updateItemsSizeSuccess = (size: number): UpdateItemsSizeSuccessActi
 
 export const updateItemsSizeFailure = (error: Error): UpdateItemsSizeFailureAction => (
   { type: UPDATE_ITEMS_SIZE_FAILURE, payload: error, error: true }
+);
+
+
+// Items orderBy
+export const UPDATE_ITEMS_ORDER_BY_REQUEST = "UPDATE_ITEMS_ORDER_BY_REQUEST";
+export const UPDATE_ITEMS_ORDER_BY_SUCCESS = "UPDATE_ITEMS_ORDER_BY_SUCCESS";
+export const UPDATE_ITEMS_ORDER_BY_FAILURE = "UPDATE_ITEMS_ORDER_BY_FAILURE";
+
+export const updateItemsOrderByRequest = (orderBy: OrderBy): UpdateItemsOrderByRequestAction => (
+  { type: UPDATE_ITEMS_ORDER_BY_REQUEST, payload: orderBy }
+);
+
+export const updateItemsOrderBySuccess = (orderBy: OrderBy): UpdateItemsOrderBySuccessAction => (
+  { type: UPDATE_ITEMS_ORDER_BY_SUCCESS, payload: orderBy }
+);
+
+export const updateItemsOrderByFailure = (error: Error): UpdateItemsOrderByFailureAction => (
+  { type: UPDATE_ITEMS_ORDER_BY_FAILURE, payload: error, error: true }
 );

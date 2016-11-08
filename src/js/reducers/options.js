@@ -9,7 +9,9 @@ import type {
   UpdateItemsLayoutRequestAction,
   UpdateItemsLayoutSuccessAction,
   UpdateItemsSizeRequestAction,
-  UpdateItemsSizeSuccessAction
+  UpdateItemsSizeSuccessAction,
+  UpdateItemsOrderByRequestAction,
+  UpdateItemsOrderBySuccessAction
 } from "../types/options";
 
 const initialState: OptionsState = {
@@ -25,7 +27,10 @@ const initialState: OptionsState = {
   isItemsLayoutUpdating: false,
 
   itemsSize: 300,
-  isItemsSizeUpdating: false
+  isItemsSizeUpdating: false,
+
+  itemsOrderBy: "created_at",
+  isItemsOrderByUpdating: false
 };
 
 export default handleActions({
@@ -118,5 +123,24 @@ export default handleActions({
   [O.UPDATE_ITEMS_SIZE_FAILURE]: (state: OptionsState) => ({
     ...state,
     isItemsSizeUpdating: false
+  }),
+
+
+  // Items orderBy
+  [O.UPDATE_ITEMS_ORDER_BY_REQUEST]: (state: OptionsState, action: UpdateItemsOrderByRequestAction) => ({
+    ...state,
+    itemsOrderBy: action.payload,
+    isItemsOrderByUpdating: true
+  }),
+
+  [O.UPDATE_ITEMS_ORDER_BY_SUCCESS]: (state: OptionsState, action: UpdateItemsOrderBySuccessAction) => ({
+    ...state,
+    itemsOrderBy: action.payload,
+    isItemsOrderByUpdating: false
+  }),
+
+  [O.UPDATE_ITEMS_ORDER_BY_FAILURE]: (state: OptionsState) => ({
+    ...state,
+    isItemsOrderByUpdating: false
   })
 }, initialState);
