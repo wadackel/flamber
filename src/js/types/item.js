@@ -123,6 +123,16 @@ export type StarItemToggleSuccessAction = PayloadAction<"STAR_ITEM_TOGGLE_SUCCES
 export type StarItemToggleFailureAction = ErrorAction<"STAR_ITEM_TOGGLE_FAILURE", Error>;
 
 
+// Move board
+export type MoveItemSelectBoardOpenAction = PayloadAction<"MOVE_ITEM_SELECT_BOARD_OPEN", ItemId>;
+export type MoveItemSelectBoardCloseAction = Action<"MOVE_ITEM_SELECT_BOARD_CLOSE">;
+
+export type MoveItemSuccessPayload = SingleItem;
+export type MoveItemRequestAction = PayloadAction<"MOVE_ITEM_REQUEST", BoardId>;
+export type MoveItemSuccessAction = PayloadAction<"MOVE_ITEM_SUCCESS", MoveItemSuccessPayload>;
+export type MoveItemFailureAction = ErrorAction<"MOVE_ITEM_FAILURE", Error>;
+
+
 // Select
 export type SelectItemToggleAction = PayloadAction<"SELECT_ITEM_TOGGLE", ItemId>;
 

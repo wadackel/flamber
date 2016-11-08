@@ -8,7 +8,6 @@ import type { BoardId } from "../types/board";
 import type { TagId } from "../types/tag";
 import type {
   ItemId,
-  Item,
   Items,
   ItemEntity,
   ItemEntities,
@@ -45,6 +44,14 @@ import type {
   StarItemToggleRequestAction,
   StarItemToggleSuccessAction,
   StarItemToggleFailureAction,
+
+  MoveItemSelectBoardOpenAction,
+  MoveItemSelectBoardCloseAction,
+
+  MoveItemSuccessPayload,
+  MoveItemRequestAction,
+  MoveItemSuccessAction,
+  MoveItemFailureAction,
 
   SelectItemToggleAction,
 
@@ -301,22 +308,36 @@ export const registerItemTagFailure = createAction(REGISTER_ITEM_TAG_FAILURE,
 
 
 // Move board
-export const MOVE_ITEM_SELECT_BOARD_OPEN: string = "MOVE_ITEM_SELECT_BOARD_OPEN";
-export const MOVE_ITEM_SELECT_BOARD_CLOSE: string = "MOVE_ITEM_SELECT_BOARD_CLOSE";
-export const MOVE_ITEM_REQUEST: string = "MOVE_ITEM_REQUEST";
-export const MOVE_ITEM_SUCCESS: string = "MOVE_ITEM_SUCCESS";
-export const MOVE_ITEM_FAILURE: string = "MOVE_ITEM_FAILURE";
+export const MOVE_ITEM_SELECT_BOARD_OPEN = "MOVE_ITEM_SELECT_BOARD_OPEN";
+export const MOVE_ITEM_SELECT_BOARD_CLOSE = "MOVE_ITEM_SELECT_BOARD_CLOSE";
 
-export const moveItemSelectBoardOpen = createAction(MOVE_ITEM_SELECT_BOARD_OPEN);
-export const moveItemSelectBoardClose = createAction(MOVE_ITEM_SELECT_BOARD_CLOSE);
-export const moveItemRequest = createAction(MOVE_ITEM_REQUEST);
-export const moveItemSuccess = createAction(MOVE_ITEM_SUCCESS,
-  identity,
-  (payload: Object, prevBoard: BoardId): Object => ({ prevBoard })
+export const moveItemSelectBoardOpen = (id: ItemId): MoveItemSelectBoardOpenAction => (
+  { type: MOVE_ITEM_SELECT_BOARD_OPEN, payload: id }
 );
-export const moveItemFailure = createAction(MOVE_ITEM_FAILURE,
-  identity,
-  (payload: Object, item: Item, prevBoard: BoardId, nextBoard: BoardId): Object => ({ item, prevBoard, nextBoard })
+
+export const moveItemSelectBoardClose = (): MoveItemSelectBoardCloseAction => (
+  { type: MOVE_ITEM_SELECT_BOARD_CLOSE }
+);
+
+export const MOVE_ITEM_REQUEST = "MOVE_ITEM_REQUEST";
+export const MOVE_ITEM_SUCCESS = "MOVE_ITEM_SUCCESS";
+export const MOVE_ITEM_FAILURE = "MOVE_ITEM_FAILURE";
+
+export const moveItemRequest = (boardId: BoardId): MoveItemRequestAction => (
+  { type: MOVE_ITEM_REQUEST, payload: boardId }
+);
+
+export const moveItemSuccess = (payload: MoveItemSuccessPayload, prevBoard: BoardId): MoveItemSuccessAction => (
+  { type: MOVE_ITEM_SUCCESS, payload, meta: prevBoard }
+);
+
+export const moveItemFailure = (
+  error: Error,
+  item: ?ItemEntity,
+  prevBoard: ?BoardId,
+  nextBoard: ?BoardId
+): MoveItemFailureAction => (
+  { type: MOVE_ITEM_FAILURE, payload: error, error: true, meta: { item, prevBoard, nextBoard } }
 );
 
 

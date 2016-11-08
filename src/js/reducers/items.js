@@ -9,7 +9,9 @@ import type {
   SetCurrentItemAction,
   SetItemVisibilityFilterAction,
   AddItemURLFailureAction,
-  AddItemFileFailureAction
+  AddItemFileFailureAction,
+  MoveItemSelectBoardOpenAction,
+  MoveItemFailureAction
 } from "../types/item";
 
 
@@ -172,7 +174,7 @@ export default handleActions({
   [I.DELETE_ITEM_REQUEST]: (state: ItemState): ItemState => ({
     ...state,
     currentItem: null
-  })
+  }),
 
 
   // // Update name
@@ -180,40 +182,40 @@ export default handleActions({
   //   ...state,
   //   error: payload
   // }),
-  //
-  //
-  // // Move
-  // [I.MOVE_ITEM_SELECT_BOARD_OPEN]: (state, { payload }) => ({
-  //   ...state,
-  //   moveItems: [payload],
-  //   selectBoardDialogOpen: true
-  // }),
-  //
-  // [I.MOVE_ITEM_SELECT_BOARD_CLOSE]: (state, { payload }) => ({
-  //   ...state,
-  //   moveItems: [],
-  //   selectBoardDialogOpen: false
-  // }),
-  //
-  // [I.MOVE_ITEM_REQUEST]: state => ({
-  //   ...state,
-  //   isMoving: true
-  // }),
-  //
-  // [I.MOVE_ITEM_SUCCESS]: (state, { payload }) => ({
-  //   ...state,
-  //   isMoving: false,
-  //   selectBoardDialogOpen: false
-  // }),
-  //
-  // [I.MOVE_ITEM_FAILURE]: (state, { payload, meta }) => ({
-  //   ...state,
-  //   isMoving: false,
-  //   selectBoardDialogOpen: false,
-  //   error: payload
-  // }),
-  //
-  //
+
+
+  // Move
+  [I.MOVE_ITEM_SELECT_BOARD_OPEN]: (state: ItemState, action: MoveItemSelectBoardOpenAction): ItemState => ({
+    ...state,
+    moveItems: [action.payload],
+    selectBoardDialogOpen: true
+  }),
+
+  [I.MOVE_ITEM_SELECT_BOARD_CLOSE]: (state: ItemState): ItemState => ({
+    ...state,
+    moveItems: [],
+    selectBoardDialogOpen: false
+  }),
+
+  [I.MOVE_ITEM_REQUEST]: (state: ItemState): ItemState => ({
+    ...state,
+    isMoving: true
+  }),
+
+  [I.MOVE_ITEM_SUCCESS]: (state: ItemState): ItemState => ({
+    ...state,
+    isMoving: false,
+    selectBoardDialogOpen: false
+  }),
+
+  [I.MOVE_ITEM_FAILURE]: (state: ItemState, action: MoveItemFailureAction): ItemState => ({
+    ...state,
+    isMoving: false,
+    selectBoardDialogOpen: false,
+    error: action.payload
+  })
+
+
   // // Selected move
   // [I.SELECTED_ITEMS_MOVE_OPEN]: state => ({
   //   ...state,

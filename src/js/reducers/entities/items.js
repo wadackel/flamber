@@ -16,6 +16,7 @@ import type {
   StarItemToggleRequestAction,
   StarItemToggleSuccessAction,
   StarItemToggleFailureAction,
+  MoveItemSuccessAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
   UnselectAllItemExecAction,
@@ -341,8 +342,8 @@ export default handleActions({
 
 
   // Move
-  [I.MOVE_ITEM_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.items)
+  [I.MOVE_ITEM_SUCCESS]: (state: ItemEntitiesState, action: MoveItemSuccessAction): ItemEntitiesState => (
+    mergeEntities(state, action.payload.entities.items)
   ),
 
 
