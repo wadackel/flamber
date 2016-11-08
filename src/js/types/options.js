@@ -1,7 +1,7 @@
 // @flow
 import type { PayloadAction, ErrorAction } from "./action";
 import type { User } from "./user";
-import type { Theme, BoardsLayout, ItemsLayout, OrderBy } from "./prop-types";
+import type { Theme, BoardsLayout, ItemsLayout, OrderBy, Order } from "./prop-types";
 
 export type OptionsState = {
   isProfileUpdating: boolean;
@@ -15,6 +15,8 @@ export type OptionsState = {
   isItemsSizeUpdating: boolean;
   itemsOrderBy: OrderBy;
   isItemsOrderByUpdating: boolean;
+  itemsOrder: Order;
+  isItemsOrderUpdating: boolean;
 };
 
 
@@ -57,3 +59,9 @@ export type UpdateItemsSizeFailureAction = ErrorAction<"UPDATE_ITEMS_SIZE_FAILUR
 export type UpdateItemsOrderByRequestAction = PayloadAction<"UPDATE_ITEMS_ORDER_BY_REQUEST", OrderBy>;
 export type UpdateItemsOrderBySuccessAction = PayloadAction<"UPDATE_ITEMS_ORDER_BY_SUCCESS", OrderBy>;
 export type UpdateItemsOrderByFailureAction = ErrorAction<"UPDATE_ITEMS_ORDER_BY_FAILURE", Error>;
+
+
+// Update items order
+export type UpdateItemsOrderRequestAction = PayloadAction<"UPDATE_ITEMS_ORDER_REQUEST", Order>;
+export type UpdateItemsOrderSuccessAction = PayloadAction<"UPDATE_ITEMS_ORDER_SUCCESS", Order>;
+export type UpdateItemsOrderFailureAction = ErrorAction<"UPDATE_ITEMS_ORDER_FAILURE", Error>;

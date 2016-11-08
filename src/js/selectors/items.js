@@ -26,12 +26,11 @@ export function getItemEntities(state: ConnectState): ItemEntities {
 }
 
 export function getVisibleItemEntities(state: ConnectState): ItemEntities {
-  const { items, boards, tags } = state;
+  const { items, boards, tags, options } = state;
   const { visibilityFilter, currentColor } = items;
   const { currentId } = boards;
   const { currentTag } = tags;
-  const itemsOrderBy = "created_at"; // TODO
-  const itemsOrder = "desc"; // TODO
+  const { itemsOrderBy, itemsOrder } = options;
   let entities = getItemEntities(state);
   entities = currentColor ? entities.filter(entity => entity.palette.indexOf(currentColor) > -1) : entities;
   entities = sortEntities(entities, itemsOrderBy, itemsOrder);
@@ -57,8 +56,7 @@ export function getVisibleItemEntities(state: ConnectState): ItemEntities {
 }
 
 export function getItemEntitiesByBoardId(state: ConnectState, boardId: BoardId): ItemEntities {
-  const itemsOrderBy = "created_at"; // TODO
-  const itemsOrder = "desc"; // TODO
+  const { itemsOrderBy, itemsOrder } = state.options;
   const board = getBoardEntityById(state, boardId);
   const entities = !board ? [] : board.Items.map(id => state.entities.items[id]);
 

@@ -8,7 +8,8 @@ import type {
   UpdateBoardsLayoutRequestAction,
   UpdateItemsLayoutRequestAction,
   UpdateItemsSizeRequestAction,
-  UpdateItemsOrderByRequestAction
+  UpdateItemsOrderByRequestAction,
+  UpdateItemsOrderRequestAction
 } from "../../types/options";
 
 
@@ -93,11 +94,23 @@ export function *handleItemsOrderByRequest(action: UpdateItemsOrderByRequestActi
 }
 
 
+export function *handleItemsOrderRequest(action: UpdateItemsOrderRequestAction): Generator<any, *, *> {
+  yield callUpdateSettings(
+    "itemsOrder",
+    action.payload,
+    O.updateItemsOrderSuccess,
+    O.updateItemsOrderFailure,
+    "アイテムの表示順序の変更に失敗しました"
+  );
+}
+
+
 export default function *settingsSaga(): Generator<any, *, *> {
   yield [
     takeLatest(O.UPDATE_BOARDS_LAYOUT_REQUEST, handleBoardsLayoutRequest),
     takeLatest(O.UPDATE_ITEMS_LAYOUT_REQUEST, handleItemsLayoutRequest),
     fork(watchItemsSize),
-    takeLatest(O.UPDATE_ITEMS_ORDER_BY_REQUEST, handleItemsOrderByRequest)
+    takeLatest(O.UPDATE_ITEMS_ORDER_BY_REQUEST, handleItemsOrderByRequest),
+    takeLatest(O.UPDATE_ITEMS_ORDER_REQUEST, handleItemsOrderRequest)
   ];
 }

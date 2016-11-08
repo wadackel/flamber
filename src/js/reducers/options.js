@@ -11,7 +11,9 @@ import type {
   UpdateItemsSizeRequestAction,
   UpdateItemsSizeSuccessAction,
   UpdateItemsOrderByRequestAction,
-  UpdateItemsOrderBySuccessAction
+  UpdateItemsOrderBySuccessAction,
+  UpdateItemsOrderRequestAction,
+  UpdateItemsOrderSuccessAction
 } from "../types/options";
 
 const initialState: OptionsState = {
@@ -30,7 +32,10 @@ const initialState: OptionsState = {
   isItemsSizeUpdating: false,
 
   itemsOrderBy: "created_at",
-  isItemsOrderByUpdating: false
+  isItemsOrderByUpdating: false,
+
+  itemsOrder: "asc",
+  isItemsOrderUpdating: false
 };
 
 export default handleActions({
@@ -142,5 +147,24 @@ export default handleActions({
   [O.UPDATE_ITEMS_ORDER_BY_FAILURE]: (state: OptionsState) => ({
     ...state,
     isItemsOrderByUpdating: false
+  }),
+
+
+  // Items order
+  [O.UPDATE_ITEMS_ORDER_REQUEST]: (state: OptionsState, action: UpdateItemsOrderRequestAction) => ({
+    ...state,
+    itemsOrder: action.payload,
+    isItemsOrderUpdating: true
+  }),
+
+  [O.UPDATE_ITEMS_ORDER_SUCCESS]: (state: OptionsState, action: UpdateItemsOrderSuccessAction) => ({
+    ...state,
+    itemsOrder: action.payload,
+    isItemsOrderUpdating: false
+  }),
+
+  [O.UPDATE_ITEMS_ORDER_FAILURE]: (state: OptionsState) => ({
+    ...state,
+    isItemsOrderUpdating: false
   })
 }, initialState);

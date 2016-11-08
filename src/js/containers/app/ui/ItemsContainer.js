@@ -77,10 +77,8 @@ export class ItemsContainer extends Component {
     this.props.dispatch(OptionActions.updateItemsOrderByRequest(orderBy));
   }
 
-  // TODO
   handleOrderChange(order: Order) {
-    console.log("TODO: updateItemsOrder", order);
-    // this.props.dispatch(SettingActions.updateItemsOrderRequest(order));
+    this.props.dispatch(OptionActions.updateItemsOrderRequest(order));
   }
 
   handleDetail(id: ItemId) {
@@ -185,11 +183,10 @@ export class ItemsContainer extends Component {
       options: {
         itemsLayout,
         itemsSize,
-        itemsOrderBy
+        itemsOrderBy,
+        itemsOrder
       }
     } = this.props;
-
-    const itemsOrder = "desc"; // TODO
 
     const hasSelectedItems = selectedItemEntities.length > 0;
     const isAllStar = this.isAllStarByItemEntities(selectedItemEntities);

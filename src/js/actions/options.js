@@ -24,9 +24,13 @@ import type {
 
   UpdateItemsOrderByRequestAction,
   UpdateItemsOrderBySuccessAction,
-  UpdateItemsOrderByFailureAction
+  UpdateItemsOrderByFailureAction,
+
+  UpdateItemsOrderRequestAction,
+  UpdateItemsOrderSuccessAction,
+  UpdateItemsOrderFailureAction
 } from "../types/options";
-import type { Theme, BoardsLayout, ItemsLayout, OrderBy } from "../types/prop-types";
+import type { Theme, BoardsLayout, ItemsLayout, OrderBy, Order } from "../types/prop-types";
 
 
 // Profile
@@ -139,4 +143,22 @@ export const updateItemsOrderBySuccess = (orderBy: OrderBy): UpdateItemsOrderByS
 
 export const updateItemsOrderByFailure = (error: Error): UpdateItemsOrderByFailureAction => (
   { type: UPDATE_ITEMS_ORDER_BY_FAILURE, payload: error, error: true }
+);
+
+
+// Items order
+export const UPDATE_ITEMS_ORDER_REQUEST = "UPDATE_ITEMS_ORDER_REQUEST";
+export const UPDATE_ITEMS_ORDER_SUCCESS = "UPDATE_ITEMS_ORDER_SUCCESS";
+export const UPDATE_ITEMS_ORDER_FAILURE = "UPDATE_ITEMS_ORDER_FAILURE";
+
+export const updateItemsOrderRequest = (order: Order): UpdateItemsOrderRequestAction => (
+  { type: UPDATE_ITEMS_ORDER_REQUEST, payload: order }
+);
+
+export const updateItemsOrderSuccess = (order: Order): UpdateItemsOrderSuccessAction => (
+  { type: UPDATE_ITEMS_ORDER_SUCCESS, payload: order }
+);
+
+export const updateItemsOrderFailure = (error: Error): UpdateItemsOrderFailureAction => (
+  { type: UPDATE_ITEMS_ORDER_FAILURE, payload: error, error: true }
 );
