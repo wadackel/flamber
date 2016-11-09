@@ -1,6 +1,6 @@
 // @flow
 import type { TypeMap } from "./map";
-import type { Action, PayloadAction, ErrorAction } from "./action";
+import type { Action, PayloadAction, ErrorAction, ErrorWithMetaAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
 export type FeedId = string; // UUID
@@ -49,4 +49,4 @@ export type AddFeedFailureAction = ErrorAction<"ADD_FEED_FAILURE", Error>;
 export type DeleteFeedSuccessPayload = SingleNormalized<"feeds", "feed", FeedEntity, FeedId>;
 export type DeleteFeedRequestAction = PayloadAction<"DELETE_FEED_REQUEST", FeedId>;
 export type DeleteFeedSuccessAction = PayloadAction<"DELETE_FEED_SUCCESS", DeleteFeedSuccessPayload>;
-export type DeleteFeedFailureAction = ErrorAction<"DELETE_FEED_FAILURE", Error>;
+export type DeleteFeedFailureAction = ErrorWithMetaAction<"DELETE_FEED_FAILURE", Error, ?FeedEntity>;

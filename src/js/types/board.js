@@ -1,6 +1,6 @@
 // @flow
 import type { TypeMap } from "./map";
-import type { Action, PayloadAction, ErrorAction } from "./action";
+import type { Action, PayloadAction, ErrorAction, ErrorWithMetaAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 import type { ItemId } from "./item";
 
@@ -74,14 +74,14 @@ export type UpdateBoardSuccessPayload = SingleBoard;
 export type UpdateBoardIfNeededAction = PayloadAction<"UPDATE_BOARD_IF_NEEDED", BoardEntity>;
 export type UpdateBoardRequestAction = PayloadAction<"UPDATE_BOARD_REQUEST", BoardEntity>;
 export type UpdateBoardSuccessAction = PayloadAction<"UPDATE_BOARD_SUCCESS", UpdateBoardSuccessPayload>;
-export type UpdateBoardFailureAction = ErrorAction<"UPDATE_BOARD_FAILURE", Error>;
+export type UpdateBoardFailureAction = ErrorWithMetaAction<"UPDATE_BOARD_FAILURE", Error, ?BoardEntity>;
 
 
 // Delete
 export type DeleteBoardSuccessPayload = SingleBoard;
 export type DeleteBoardRequestAction = PayloadAction<"DELETE_BOARD_REQUEST", BoardId>;
 export type DeleteBoardSuccessAction = PayloadAction<"DELETE_BOARD_SUCCESS", DeleteBoardSuccessPayload>;
-export type DeleteBoardFailureAction = ErrorAction<"DELETE_BOARD_FAILURE", Error>;
+export type DeleteBoardFailureAction = ErrorWithMetaAction<"DELETE_BOARD_FAILURE", Error, ?BoardEntity>;
 
 
 // Set current

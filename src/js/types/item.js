@@ -1,6 +1,13 @@
 // @flow
 import type { SingleNormalized, ArrayNormalized } from "./normalize";
-import type { Action, PayloadAction, ErrorAction } from "./action";
+import type {
+  Action,
+  MetaAction,
+  PayloadAction,
+  PayloadWithMetaAction,
+  ErrorAction,
+  ErrorWithMetaAction
+} from "./action";
 import type { TypeMap } from "./map";
 import type { BoardId } from "./board";
 import type { TagId } from "./tag";
@@ -113,14 +120,14 @@ export type GotoAddedItemAction = PayloadAction<"GOTO_ADDED_ITEM", ItemId>;
 export type DeleteItemSuccessPayload = SingleItem;
 export type DeleteItemRequestAction = PayloadAction<"DELETE_ITEM_REQUEST", ItemId>;
 export type DeleteItemSuccessAction = PayloadAction<"DELETE_ITEM_SUCCESS", DeleteItemSuccessPayload>;
-export type DeleteItemFailureAction = ErrorAction<"DELETE_ITEM_FAILURE", Error>;
+export type DeleteItemFailureAction = ErrorWithMetaAction<"DELETE_ITEM_FAILURE", Error, ?ItemEntity>;
 
 
 // Star
 export type StarItemToggleSuccessPayload = SingleItem;
 export type StarItemToggleRequestAction = PayloadAction<"STAR_ITEM_TOGGLE_REQUEST", ItemId>;
 export type StarItemToggleSuccessAction = PayloadAction<"STAR_ITEM_TOGGLE_SUCCESS", StarItemToggleSuccessPayload>;
-export type StarItemToggleFailureAction = ErrorAction<"STAR_ITEM_TOGGLE_FAILURE", Error>;
+export type StarItemToggleFailureAction = ErrorWithMetaAction<"STAR_ITEM_TOGGLE_FAILURE", Error, ItemId>;
 
 
 // Move board
@@ -129,8 +136,12 @@ export type MoveItemSelectBoardCloseAction = Action<"MOVE_ITEM_SELECT_BOARD_CLOS
 
 export type MoveItemSuccessPayload = SingleItem;
 export type MoveItemRequestAction = PayloadAction<"MOVE_ITEM_REQUEST", BoardId>;
-export type MoveItemSuccessAction = PayloadAction<"MOVE_ITEM_SUCCESS", MoveItemSuccessPayload>;
-export type MoveItemFailureAction = ErrorAction<"MOVE_ITEM_FAILURE", Error>;
+export type MoveItemSuccessAction = PayloadWithMetaAction<"MOVE_ITEM_SUCCESS", MoveItemSuccessPayload, BoardId>;
+export type MoveItemFailureAction = ErrorWithMetaAction<"MOVE_ITEM_FAILURE", Error, {
+  entity: ?ItemEntity;
+  prevBoard: ?BoardId;
+  nextBoard: ?BoardId;
+}>;
 
 
 // Select
@@ -139,17 +150,20 @@ export type SelectItemToggleAction = PayloadAction<"SELECT_ITEM_TOGGLE", ItemId>
 
 // Select all
 export type SelectAllItemExecAction = PayloadAction<"SELECT_ALL_ITEM_EXEC", ItemEntities>;
-export type SelectAllItemAction = Action<"SELECT_ALL_ITEM">;
+export type SelectAllItemAction = MetaAction<"SELECT_ALL_ITEM",
+  (entities: ItemEntities) => SelectAllItemExecAction>;
 
 
 // Unselect all
 export type UnselectAllItemExecAction = PayloadAction<"UNSELECT_ALL_ITEM_EXEC", ItemEntities>;
-export type UnselectAllItemAction = Action<"UNSELECT_ALL_ITEM">;
+export type UnselectAllItemAction = MetaAction<"UNSELECT_ALL_ITEM",
+  (entities: ItemEntities) => UnselectAllItemExecAction>;
 
 
 // Select star item
 export type SelectStarItemExecAction = PayloadAction<"SELECT_STAR_ITEM_EXEC", ItemEntities>;
-export type SelectStarItemAction = Action<"SELECT_STAR_ITEM">;
+export type SelectStarItemAction = MetaAction<"SELECT_STAR_ITEM",
+  (entities: ItemEntities) => SelectStarItemExecAction>;
 
 
 // Selected items star
@@ -157,7 +171,22 @@ export type SelectedItemsStarSuccessPayload = ArrayItem;
 export type SelectedItemsStarRequestAction = PayloadAction<"SELECTED_ITEMS_STAR_REQUEST", boolean>;
 export type SelectedItemsStarSuccessAction = PayloadAction<"SELECTED_ITEMS_STAR_SUCCESS",
   SelectedItemsStarSuccessPayload>;
-export type SelectedItemsStarFailureAction = ErrorAction<"SELECTED_ITEMS_STAR_FAILURE", Error>;
+export type SelectedItemsStarFailureAction = ErrorWithMetaAction<"SELECTED_ITEMS_STAR_FAILURE", Error, ?ItemEntities>;
+
+
+// Selected items move
+export type SelectedItemsMoveOpenAction = Action<"SELECTED_ITEMS_MOVE_OPEN">;
+export type SelectedItemsMoveCloseAction = Action<"SELECTED_ITEMS_MOVE_CLOSE">;
+
+export type SelectedItemsMoveSuccessPayload = ArrayItem;
+export type SelectedItemsMoveRequestAction = PayloadAction<"SELECTED_ITEMS_MOVE_REQUEST", BoardId>;
+export type SelectedItemsMoveSuccessAction = PayloadAction<"SELECTED_ITEMS_MOVE_SUCCESS",
+  SelectedItemsMoveSuccessPayload>;
+export type SelectedItemsMoveFailureAction = ErrorWithMetaAction<"SELECTED_ITEMS_MOVE_FAILURE", Error, {
+  entities: ?ItemEntities;
+  prevBoards: Array<BoardId>;
+  nextBoard: BoardId;
+}>;
 
 
 // Selected items delete
@@ -165,4 +194,5 @@ export type SelectedItemsDeleteSuccessPayload = ArrayItem;
 export type SelectedItemsDeleteRequestAction = Action<"SELECTED_ITEMS_DELETE_REQUEST">;
 export type SelectedItemsDeleteSuccessAction = PayloadAction<"SELECTED_ITEMS_DELETE_SUCCESS",
   SelectedItemsDeleteSuccessPayload>;
-export type SelectedItemsDeleteFailureAction = ErrorAction<"SELECTED_ITEMS_DELETE_FAILURE", Error>;
+export type SelectedItemsDeleteFailureAction = ErrorWithMetaAction<"SELECTED_ITEMS_DELETE_FAILURE",
+  Error, ?ItemEntities>;

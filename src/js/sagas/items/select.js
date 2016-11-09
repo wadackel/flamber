@@ -5,10 +5,12 @@ import { getVisibleItemEntities } from "../../selectors/items";
 import * as I from "../../actions/items";
 
 import type {
+  ItemEntities,
   SelectAllItemAction,
   UnselectAllItemAction,
   SelectStarItemAction
 } from "../../types/item";
+
 
 type SelectItemAction =
   SelectAllItemAction |
@@ -16,11 +18,13 @@ type SelectItemAction =
   SelectStarItemAction;
 
 export function *handleSelectItems(action: SelectItemAction): Generator<any, *, *> {
-  const entities = yield select(getVisibleItemEntities);
-  if (action.meta) {
+  const entities: ?ItemEntities = yield select(getVisibleItemEntities);
+
+  if (action.meta && entities) {
     yield put(action.meta(entities));
   }
 }
+
 
 export default function *selectItemSaga(): Generator<any, *, *> {
   yield [

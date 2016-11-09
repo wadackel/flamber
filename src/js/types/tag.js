@@ -1,6 +1,6 @@
 // @flow
 import type { TypeMap } from "./map";
-import type { Action, PayloadAction, ErrorAction } from "./action";
+import type { Action, PayloadAction, ErrorAction, ErrorWithMetaAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
 export type TagId = string; // UUID
@@ -67,11 +67,14 @@ export type UpdateTagSuccessPayload = SingleTag;
 export type UpdateTagIfNeededAction = PayloadAction<"UPDATE_TAG_IF_NEEDED", UpdateTagRequestPayload>;
 export type UpdateTagRequestAction = PayloadAction<"UPDATE_TAG_REQUEST", UpdateTagRequestPayload>;
 export type UpdateTagSuccessAction = PayloadAction<"UPDATE_TAG_SUCCESS", UpdateTagSuccessPayload>;
-export type UpdateTagFailureAction = ErrorAction<"UPDATE_TAG_FAILURE", Error>;
+export type UpdateTagFailureAction = ErrorWithMetaAction<"UPDATE_TAG_FAILURE", Error, ?{
+  id: TagId;
+  name: string;
+}>;
 
 
 // Delete
 export type DeleteTagSuccessPayload = SingleTag;
 export type DeleteTagRequestAction = PayloadAction<"DELETE_TAG_REQUEST", TagId>;
 export type DeleteTagSuccessAction = PayloadAction<"DELETE_TAG_SUCCESS", DeleteTagSuccessPayload>;
-export type DeleteTagFailureAction = ErrorAction<"DELETE_TAG_FAILURE", Error>;
+export type DeleteTagFailureAction = ErrorWithMetaAction<"DELETE_TAG_FAILURE", Error, ?TagId>;
