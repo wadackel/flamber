@@ -23,6 +23,9 @@ import type {
   SelectStarItemExecAction,
   SelectedItemsStarSuccessAction,
   SelectedItemsStarFailureAction,
+  SelectedItemsMoveRequestAction,
+  SelectedItemsMoveSuccessAction,
+  SelectedItemsMoveFailureAction,
   SelectedItemsDeleteSuccessAction,
   SelectedItemsDeleteFailureAction
 } from "../../types/item";
@@ -441,22 +444,25 @@ export default handleActions({
 
 
   // Selected move
-  [I.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.board !== payload || !entity.select ? entity : {
+  [I.SELECTED_ITEMS_MOVE_REQUEST]:
+    (state: ItemEntitiesState, action: SelectedItemsMoveRequestAction): ItemEntitiesState => (
+    mapValues(state, (entity: ItemEntity) => (
+      entity.board_id !== action.payload || !entity.select ? entity : {
         ...entity,
         isMoving: true
       }
-    )
+    ))
   ),
 
-  [I.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.items)
+  [I.SELECTED_ITEMS_MOVE_SUCCESS]:
+    (state: ItemEntitiesState, action: SelectedItemsMoveSuccessAction): ItemEntitiesState => (
+    mergeEntities(state, action.payload.entities.items)
   ),
 
-  [I.SELECTED_ITEMS_MOVE_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      meta.prevBoards.indexOf(entity.board) < 0 ? entity : {
+  [I.SELECTED_ITEMS_MOVE_FAILURE]:
+    (state: ItemEntitiesState, action: SelectedItemsMoveFailureAction): ItemEntitiesState => (
+    mapValues(state, (entity: ItemEntity) =>
+      action.meta.prevBoards.indexOf(entity.board_id) < 0 ? entity : {
         ...entity,
         isMoving: false
       }

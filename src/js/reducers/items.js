@@ -11,7 +11,8 @@ import type {
   AddItemURLFailureAction,
   AddItemFileFailureAction,
   MoveItemSelectBoardOpenAction,
-  MoveItemFailureAction
+  MoveItemFailureAction,
+  SelectedItemsMoveFailureAction
 } from "../types/item";
 
 
@@ -213,36 +214,36 @@ export default handleActions({
     isMoving: false,
     selectBoardDialogOpen: false,
     error: action.payload
+  }),
+
+
+  // Selected move
+  [I.SELECTED_ITEMS_MOVE_OPEN]: (state: ItemState): ItemState => ({
+    ...state,
+    selectBoardDialogOpen: true
+  }),
+
+  [I.SELECTED_ITEMS_MOVE_CLOSE]: (state: ItemState): ItemState => ({
+    ...state,
+    selectBoardDialogOpen: false
+  }),
+
+  [I.SELECTED_ITEMS_MOVE_REQUEST]: (state: ItemState): ItemState => ({
+    ...state,
+    isMoving: true
+  }),
+
+  [I.SELECTED_ITEMS_MOVE_SUCCESS]: (state: ItemState): ItemState => ({
+    ...state,
+    isMoving: false,
+    error: null,
+    selectBoardDialogOpen: false
+  }),
+
+  [I.SELECTED_ITEMS_MOVE_FAILURE]: (state: ItemState, action: SelectedItemsMoveFailureAction): ItemState => ({
+    ...state,
+    isMoving: false,
+    error: action.payload,
+    selectBoardDialogOpen: false
   })
-
-
-  // // Selected move
-  // [I.SELECTED_ITEMS_MOVE_OPEN]: state => ({
-  //   ...state,
-  //   selectBoardDialogOpen: true
-  // }),
-  //
-  // [I.SELECTED_ITEMS_MOVE_CLOSE]: state => ({
-  //   ...state,
-  //   selectBoardDialogOpen: false
-  // }),
-  //
-  // [I.SELECTED_ITEMS_MOVE_REQUEST]: (state, { payload }) => ({
-  //   ...state,
-  //   isMoving: true
-  // }),
-  //
-  // [I.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload }) => ({
-  //   ...state,
-  //   isMoving: false,
-  //   error: null,
-  //   selectBoardDialogOpen: false
-  // }),
-  //
-  // [I.SELECTED_ITEMS_MOVE_FAILURE]: (state, { payload }) => ({
-  //   ...state,
-  //   isMoving: false,
-  //   error: payload,
-  //   selectBoardDialogOpen: false
-  // })
 }, initialState);

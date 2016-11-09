@@ -22,7 +22,8 @@ import type {
 import type {
   DeleteItemSuccessAction,
   SelectedItemsDeleteSuccessAction,
-  MoveItemSuccessAction
+  MoveItemSuccessAction,
+  SelectedItemsMoveSuccessAction
 } from "../../types/item";
 
 
@@ -179,11 +180,12 @@ export default handleActions({
       : state
   ),
 
-  [I.SELECTED_ITEMS_MOVE_SUCCESS]: (state, { payload, meta }) => (
-    mapValues(mergeEntities(state, payload.entities.boards), entity =>
-      meta.prevBoards.indexOf(entity.id) < 0 ? entity : {
+  [I.SELECTED_ITEMS_MOVE_SUCCESS]:
+    (state: BoardEntitiesState, action: SelectedItemsMoveSuccessAction): BoardEntitiesState => (
+    mapValues(state, (entity: BoardEntity) =>
+      action.meta.indexOf(entity.id) < 0 ? entity : {
         ...entity,
-        items: without(entity.items, ...payload.result.items)
+        Items: without(entity.Items, ...action.payload.result.items)
       }
     )
   )

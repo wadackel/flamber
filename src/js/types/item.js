@@ -180,8 +180,8 @@ export type SelectedItemsMoveCloseAction = Action<"SELECTED_ITEMS_MOVE_CLOSE">;
 
 export type SelectedItemsMoveSuccessPayload = ArrayItem;
 export type SelectedItemsMoveRequestAction = PayloadAction<"SELECTED_ITEMS_MOVE_REQUEST", BoardId>;
-export type SelectedItemsMoveSuccessAction = PayloadAction<"SELECTED_ITEMS_MOVE_SUCCESS",
-  SelectedItemsMoveSuccessPayload>;
+export type SelectedItemsMoveSuccessAction = PayloadWithMetaAction<"SELECTED_ITEMS_MOVE_SUCCESS",
+  SelectedItemsMoveSuccessPayload, Array<BoardId>>;
 export type SelectedItemsMoveFailureAction = ErrorWithMetaAction<"SELECTED_ITEMS_MOVE_FAILURE", Error, {
   entities: ?ItemEntities;
   prevBoards: Array<BoardId>;

@@ -8,7 +8,6 @@ import type { BoardId } from "../types/board";
 import type { TagId } from "../types/tag";
 import type {
   ItemId,
-  Items,
   ItemEntity,
   ItemEntities,
   ItemVisibilityFilter,
@@ -68,6 +67,14 @@ import type {
   SelectedItemsStarRequestAction,
   SelectedItemsStarSuccessAction,
   SelectedItemsStarFailureAction,
+
+  SelectedItemsMoveOpenAction,
+  SelectedItemsMoveCloseAction,
+
+  SelectedItemsMoveSuccessPayload,
+  SelectedItemsMoveRequestAction,
+  SelectedItemsMoveSuccessAction,
+  SelectedItemsMoveFailureAction,
 
   SelectedItemsDeleteSuccessPayload,
   SelectedItemsDeleteRequestAction,
@@ -333,11 +340,11 @@ export const moveItemSuccess = (payload: MoveItemSuccessPayload, prevBoard: Boar
 
 export const moveItemFailure = (
   error: Error,
-  item: ?ItemEntity,
+  entity: ?ItemEntity,
   prevBoard: ?BoardId,
   nextBoard: ?BoardId
 ): MoveItemFailureAction => (
-  { type: MOVE_ITEM_FAILURE, payload: error, error: true, meta: { item, prevBoard, nextBoard } }
+  { type: MOVE_ITEM_FAILURE, payload: error, error: true, meta: { entity, prevBoard, nextBoard } }
 );
 
 
@@ -403,27 +410,39 @@ export const selectStarItem = (): SelectStarItemAction => (
 
 
 // Selected items move
-export const SELECTED_ITEMS_MOVE_OPEN: string = "SELECTED_ITEMS_MOVE_OPEN";
-export const SELECTED_ITEMS_MOVE_CLOSE: string = "SELECTED_ITEMS_MOVE_CLOSE";
-export const SELECTED_ITEMS_MOVE_REQUEST: string = "SELECTED_ITEMS_MOVE_REQUEST";
-export const SELECTED_ITEMS_MOVE_SUCCESS: string = "SELECTED_ITEMS_MOVE_SUCCESS";
-export const SELECTED_ITEMS_MOVE_FAILURE: string = "SELECTED_ITEMS_MOVE_FAILURE";
+export const SELECTED_ITEMS_MOVE_OPEN = "SELECTED_ITEMS_MOVE_OPEN";
+export const SELECTED_ITEMS_MOVE_CLOSE = "SELECTED_ITEMS_MOVE_CLOSE";
 
-export const selectedItemsMoveOpen = createAction(SELECTED_ITEMS_MOVE_OPEN);
-export const selectedItemsMoveClose = createAction(SELECTED_ITEMS_MOVE_CLOSE);
-export const selectedItemsMoveRequest = createAction(SELECTED_ITEMS_MOVE_REQUEST);
-export const selectedItemsMoveSuccess = createAction(SELECTED_ITEMS_MOVE_SUCCESS,
-  identity,
-  (payload: Object, prevBoards: Array<BoardId>): Object => ({ prevBoards })
+export const selectedItemsMoveOpen = (): SelectedItemsMoveOpenAction => (
+  { type: SELECTED_ITEMS_MOVE_OPEN }
 );
-export const selectedItemsMoveFailure = createAction(SELECTED_ITEMS_MOVE_FAILURE,
-  identity,
-  (
-    payload: Object,
-    items: Items,
-    prevBoards: Array<BoardId>,
-    nextBoard: BoardId
-  ): Object => ({ items, prevBoards, nextBoard })
+
+export const selectedItemsMoveClose = (): SelectedItemsMoveCloseAction => (
+  { type: SELECTED_ITEMS_MOVE_CLOSE }
+);
+
+export const SELECTED_ITEMS_MOVE_REQUEST = "SELECTED_ITEMS_MOVE_REQUEST";
+export const SELECTED_ITEMS_MOVE_SUCCESS = "SELECTED_ITEMS_MOVE_SUCCESS";
+export const SELECTED_ITEMS_MOVE_FAILURE = "SELECTED_ITEMS_MOVE_FAILURE";
+
+export const selectedItemsMoveRequest = (boardId: BoardId): SelectedItemsMoveRequestAction => (
+  { type: SELECTED_ITEMS_MOVE_REQUEST, payload: boardId }
+);
+
+export const selectedItemsMoveSuccess = (
+  payload: SelectedItemsMoveSuccessPayload,
+  prevBoards: Array<BoardId>
+): SelectedItemsMoveSuccessAction => (
+  { type: SELECTED_ITEMS_MOVE_SUCCESS, payload, meta: prevBoards }
+);
+
+export const selectedItemsMoveFailure = (
+  error: Error,
+  entities: ?ItemEntities,
+  prevBoards: Array<BoardId>,
+  nextBoard: BoardId
+): SelectedItemsMoveFailureAction => (
+  { type: SELECTED_ITEMS_MOVE_FAILURE, payload: error, error: true, meta: { entities, prevBoards, nextBoard } }
 );
 
 

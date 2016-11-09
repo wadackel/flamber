@@ -2,7 +2,7 @@
 import { normalize, arrayOf } from "normalizr";
 import { push } from "react-router-redux";
 import { takeEvery } from "redux-saga";
-import { fork, take, call, put, select } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import ItemSchema from "../../schemas/item";
 import * as Services from "../../services/items";
 import { showNotify } from "../../actions/notifications";
@@ -17,7 +17,10 @@ import type {
   ItemEntities,
   MoveItemRequestAction,
   MoveItemSuccessAction,
-  MoveItemFailureAction
+  MoveItemFailureAction,
+  SelectedItemsMoveRequestAction,
+  SelectedItemsMoveSuccessAction,
+  SelectedItemsMoveFailureAction
 } from "../../types/item";
 import type { BoardId, BoardEntity } from "../../types/board";
 
@@ -71,61 +74,72 @@ function *handleMoveItemFailure(action: MoveItemFailureAction): Generator<any, *
 }
 
 
-// export function *handleSelectedItemsMoveRequest(): Generator<any, *, *> {
-//   while (true) {
-//     const { payload } = yield take(I.SELECTED_ITEMS_MOVE_REQUEST);
-//     const entities = yield select(getSelectedItemEntities);
-//     const prevBoards = entities.map(entity => entity.board);
-//     const newEntities = entities.map(entity => ({ ...entity, board: payload }));
-//
-//     try {
-//       const response = yield call(Services.updateItems, newEntities);
-//       const normalized = normalize(response, { items: arrayOf(ItemSchema) });
-//       yield put(I.selectedItemsMoveSuccess(
-//         normalized,
-//         prevBoards
-//       ));
-//     } catch (error) {
-//       yield put(I.selectedItemsMoveFailure(error, entities, prevBoards, payload));
-//     }
-//   }
-// }
+export function *handleSelectedItemsMoveRequest(action: SelectedItemsMoveRequestAction): Generator<any, *, *> {
+  let entities: ?ItemEntities = null;
+  let prevBoards: Array<BoardId> = [];
 
-// function *handleSelectedItemsMoveSuccess({ payload }): Generator<any, *, *> {
-//   const items = payload.result.items.map(id => payload.entities.items[id]);
-//   const nextBoard = yield select(getBoardEntityById, items[0].board);
-//
-//   yield put(showNotify(`${items.length}個のアイテムを${nextBoard.name}へ移動しました`, {
-//     type: I.GOTO_AFTER_MOVE_ITEM_BOARD,
-//     text: "Show",
-//     payload: nextBoard.id
-//   }));
-// }
+  try {
+    entities = yield select(getSelectedItemEntities);
+    if (!entities || entities.length === 0) throw new Error("アイテムが選択されていません");
 
-// function *handleSelectedItemsMoveFailure(): Generator<any, *, *> {
-//   // TODO: More error message
-//   yield put(showNotify("選択したアイテムの移動に失敗しました"));
-// }
-//
+    prevBoards = entities.map(entity => entity.board_id);
+
+    const newEntities = entities.map(entity => ({ ...entity, board_id: action.payload }));
+    const response = yield call(Services.updateItems, newEntities);
+    if (!response) throw new Error("選択したアイテムの移動に失敗しました");
+
+    const normalized = normalize(response, { items: arrayOf(ItemSchema) });
+    yield put(I.selectedItemsMoveSuccess(normalized, prevBoards));
+
+  } catch (error) {
+    yield put(I.selectedItemsMoveFailure(error, entities, prevBoards, action.payload));
+  }
+}
+
+function *handleSelectedItemsMoveSuccess(action: SelectedItemsMoveSuccessAction): Generator<any, *, *> {
+  const entities: ItemEntities = action.payload.result.items.map(id => action.payload.entities.items[id]);
+  const nextBoard = yield select(getBoardEntityById, entities[0].board_id);
+
+  if (!nextBoard) return;
+
+  // notify
+  yield put(showNotify(`${entities.length}個のアイテムを${nextBoard.name}へ移動しました`, {
+    type: I.GOTO_AFTER_MOVE_ITEM_BOARD,
+    payload: {
+      text: "Show",
+      value: nextBoard.id
+    }
+  }));
+
+  // fetch board
+  const boardIds: Array<BoardId> = [...action.meta, nextBoard.id];
+  yield boardIds.map((boardId: BoardId) => put(B.fetchBoardRequest(boardId)));
+}
+
+function *handleSelectedItemsMoveFailure(action: SelectedItemsMoveFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
+}
+
 // function *handleGotoAfterMoveItemBoard({ payload }): Generator<any, *, *> {
 //   yield put(push(`/app/board/${payload}`));
 // }
-//
-// function *unselectAllItems(): Generator<any, *, *> {
-//   yield put(I.unselectAllItem());
-// }
+
+function *unselectAllItems(): Generator<any, *, *> {
+  yield put(I.unselectAllItem());
+}
 
 
 export default function *moveItemSaga(): Generator<any, *, *> {
   yield [
     takeEvery(I.MOVE_ITEM_REQUEST, handleMoveItemRequest),
     takeEvery(I.MOVE_ITEM_SUCCESS, handleMoveItemSuccess),
-    takeEvery(I.MOVE_ITEM_FAILURE, handleMoveItemFailure)
+    takeEvery(I.MOVE_ITEM_FAILURE, handleMoveItemFailure),
 
-    // fork(handleSelectedItemsMoveRequest),
-    // takeEvery(I.SELECTED_ITEMS_MOVE_SUCCESS, handleSelectedItemsMoveSuccess),
-    // takeEvery(I.SELECTED_ITEMS_MOVE_FAILURE, handleSelectedItemsMoveFailure),
+    takeEvery(I.SELECTED_ITEMS_MOVE_REQUEST, handleSelectedItemsMoveRequest),
+    takeEvery(I.SELECTED_ITEMS_MOVE_SUCCESS, handleSelectedItemsMoveSuccess),
+    takeEvery(I.SELECTED_ITEMS_MOVE_FAILURE, handleSelectedItemsMoveFailure),
     // takeEvery(I.GOTO_AFTER_MOVE_ITEM_BOARD, handleGotoAfterMoveItemBoard),
-    // takeEvery("@@router/LOCATION_CHANGE", unselectAllItems)
+
+    takeEvery("@@router/LOCATION_CHANGE", unselectAllItems)
   ];
 }
