@@ -100,7 +100,7 @@ export default class SelectBoardDialog extends Component {
       <Dialog
         className={mergeClassNames(b(), className)}
         processing={processing}
-        title="Select board"
+        title="ボードを選択"
         titleIcon={<BoardIcon />}
         actions={[
           <FlatButton type="primary" onClick={this.handleClose} disable={processing}>Cancel</FlatButton>,
