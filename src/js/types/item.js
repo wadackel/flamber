@@ -144,6 +144,10 @@ export type MoveItemFailureAction = ErrorWithMetaAction<"MOVE_ITEM_FAILURE", Err
 }>;
 
 
+// Goto after move
+export type GotoAfterMoveItemBoardAction = PayloadAction<"GOTO_AFTER_MOVE_ITEM_BOARD", BoardId>;
+
+
 // Select
 export type SelectItemToggleAction = PayloadAction<"SELECT_ITEM_TOGGLE", ItemId>;
 

@@ -52,6 +52,8 @@ import type {
   MoveItemSuccessAction,
   MoveItemFailureAction,
 
+  GotoAfterMoveItemBoardAction,
+
   SelectItemToggleAction,
 
   SelectAllItemExecAction,
@@ -349,8 +351,10 @@ export const moveItemFailure = (
 
 
 // Goto after board
-export const GOTO_AFTER_MOVE_ITEM_BOARD: string = "GOTO_AFTER_MOVE_ITEM_BOARD";
-export const gotoAfterMoveItemBoard = createAction(GOTO_AFTER_MOVE_ITEM_BOARD);
+export const GOTO_AFTER_MOVE_ITEM_BOARD = "GOTO_AFTER_MOVE_ITEM_BOARD";
+export const gotoAfterMoveItemBoard = (boardId: BoardId): GotoAfterMoveItemBoardAction => (
+  { type: GOTO_AFTER_MOVE_ITEM_BOARD, payload: boardId }
+);
 
 
 // Delete

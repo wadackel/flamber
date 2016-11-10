@@ -18,6 +18,7 @@ import type {
   MoveItemRequestAction,
   MoveItemSuccessAction,
   MoveItemFailureAction,
+  GotoAfterMoveItemBoardAction,
   SelectedItemsMoveRequestAction,
   SelectedItemsMoveSuccessAction,
   SelectedItemsMoveFailureAction
@@ -103,7 +104,7 @@ function *handleSelectedItemsMoveSuccess(action: SelectedItemsMoveSuccessAction)
   if (!nextBoard) return;
 
   // notify
-  yield put(showNotify(`${entities.length}個のアイテムを${nextBoard.name}へ移動しました`, {
+  yield put(showNotify(`${entities.length}個のアイテムを ${nextBoard.name} へ移動しました`, {
     type: I.GOTO_AFTER_MOVE_ITEM_BOARD,
     payload: {
       text: "Show",
@@ -120,9 +121,9 @@ function *handleSelectedItemsMoveFailure(action: SelectedItemsMoveFailureAction)
   yield put(showNotify(action.payload.message));
 }
 
-// function *handleGotoAfterMoveItemBoard({ payload }): Generator<any, *, *> {
-//   yield put(push(`/app/board/${payload}`));
-// }
+function *handleGotoAfterMoveItemBoard(action: GotoAfterMoveItemBoardAction): Generator<any, *, *> {
+  yield put(push(`/app/board/${action.payload}`));
+}
 
 function *unselectAllItems(): Generator<any, *, *> {
   yield put(I.unselectAllItem());
@@ -138,7 +139,7 @@ export default function *moveItemSaga(): Generator<any, *, *> {
     takeEvery(I.SELECTED_ITEMS_MOVE_REQUEST, handleSelectedItemsMoveRequest),
     takeEvery(I.SELECTED_ITEMS_MOVE_SUCCESS, handleSelectedItemsMoveSuccess),
     takeEvery(I.SELECTED_ITEMS_MOVE_FAILURE, handleSelectedItemsMoveFailure),
-    // takeEvery(I.GOTO_AFTER_MOVE_ITEM_BOARD, handleGotoAfterMoveItemBoard),
+    takeEvery(I.GOTO_AFTER_MOVE_ITEM_BOARD, handleGotoAfterMoveItemBoard),
 
     takeEvery("@@router/LOCATION_CHANGE", unselectAllItems)
   ];
