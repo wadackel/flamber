@@ -130,6 +130,15 @@ export type StarItemToggleSuccessAction = PayloadAction<"STAR_ITEM_TOGGLE_SUCCES
 export type StarItemToggleFailureAction = ErrorWithMetaAction<"STAR_ITEM_TOGGLE_FAILURE", Error, ItemId>;
 
 
+// Update name
+export type UpdateItemNameSuccessPayload = SingleItem;
+export type UpdateItemNameIfNeededAction = PayloadAction<"UPDATE_ITEM_NAME_IF_NEEDED", { id: ItemId; name: string; }>;
+export type UpdateItemNameRequestAction = PayloadAction<"UPDATE_ITEM_NAME_REQUEST", { id: ItemId; name: string; }>;
+export type UpdateItemNameSuccessAction = PayloadAction<"UPDATE_ITEM_NAME_SUCCESS", UpdateItemNameSuccessPayload>;
+export type UpdateItemNameFailureAction = ErrorWithMetaAction<"UPDATE_ITEM_NAME_FAILURE",
+  Error, { id: ItemId; name: string; }>;
+
+
 // Move board
 export type MoveItemSelectBoardOpenAction = PayloadAction<"MOVE_ITEM_SELECT_BOARD_OPEN", ItemId>;
 export type MoveItemSelectBoardCloseAction = Action<"MOVE_ITEM_SELECT_BOARD_CLOSE">;

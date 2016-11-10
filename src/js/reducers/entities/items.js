@@ -16,6 +16,9 @@ import type {
   StarItemToggleRequestAction,
   StarItemToggleSuccessAction,
   StarItemToggleFailureAction,
+  UpdateItemNameRequestAction,
+  UpdateItemNameSuccessAction,
+  UpdateItemNameFailureAction,
   MoveItemSuccessAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
@@ -115,36 +118,30 @@ export default handleActions({
 
 
   // Update name
-  [I.UPDATE_ITEM_NAME_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        name: payload.name,
-        isUpdating: true,
-        isNameUpdating: true
-      }
-    )
+  [I.UPDATE_ITEM_NAME_REQUEST]: (state: ItemEntitiesState, action: UpdateItemNameRequestAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: ItemEntity) => ({
+      ...entity,
+      name: action.payload.name,
+      isUpdating: true,
+      isNameUpdating: true
+    }))
   ),
 
-  [I.UPDATE_ITEM_NAME_SUCCESS]: (state, { payload }) => (
-    mapValues(state, entity =>
-      payload.result.items.indexOf(entity.id) < 0 ? entity : {
-        ...entity,
-        name: payload.entities.items[entity.id].name,
-        isUpdating: false,
-        isNameUpdating: false
-      }
-    )
+  [I.UPDATE_ITEM_NAME_SUCCESS]: (state: ItemEntitiesState, action: UpdateItemNameSuccessAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.result.item], (entity: ItemEntity) => ({
+      ...entity,
+      name: action.payload.entities.items[entity.id].name,
+      isUpdating: false,
+      isNameUpdating: false
+    }))
   ),
 
-  [I.UPDATE_ITEM_NAME_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
-        ...entity,
-        isUpdating: false,
-        isNameUpdating: false
-      }
-    )
+  [I.UPDATE_ITEM_NAME_FAILURE]: (state: ItemEntitiesState, action: UpdateItemNameFailureAction): ItemEntitiesState => (
+    mapEntities(state, [action.meta.id], (entity: ItemEntity) => ({
+      ...entity,
+      isUpdating: false,
+      isNameUpdating: false
+    }))
   ),
 
 

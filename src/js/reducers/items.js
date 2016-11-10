@@ -10,6 +10,7 @@ import type {
   SetItemVisibilityFilterAction,
   AddItemURLFailureAction,
   AddItemFileFailureAction,
+  UpdateItemNameFailureAction,
   MoveItemSelectBoardOpenAction,
   MoveItemFailureAction,
   SelectedItemsMoveFailureAction
@@ -178,11 +179,11 @@ export default handleActions({
   }),
 
 
-  // // Update name
-  // [I.UPDATE_ITEM_NAME_FAILURE]: (state, { payload }) => ({
-  //   ...state,
-  //   error: payload
-  // }),
+  // Update name
+  [I.UPDATE_ITEM_NAME_FAILURE]: (state: ItemState, action: UpdateItemNameFailureAction): ItemState => ({
+    ...state,
+    error: action.payload
+  }),
 
 
   // Move

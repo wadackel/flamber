@@ -44,6 +44,12 @@ import type {
   StarItemToggleSuccessAction,
   StarItemToggleFailureAction,
 
+  UpdateItemNameSuccessPayload,
+  UpdateItemNameIfNeededAction,
+  UpdateItemNameRequestAction,
+  UpdateItemNameSuccessAction,
+  UpdateItemNameFailureAction,
+
   MoveItemSelectBoardOpenAction,
   MoveItemSelectBoardCloseAction,
 
@@ -206,16 +212,21 @@ export const UPDATE_ITEM_NAME_REQUEST = "UPDATE_ITEM_NAME_REQUEST";
 export const UPDATE_ITEM_NAME_SUCCESS = "UPDATE_ITEM_NAME_SUCCESS";
 export const UPDATE_ITEM_NAME_FAILURE = "UPDATE_ITEM_NAME_FAILURE";
 
-function updateNamePayloadCreator(id: ItemId, name: string): Object {
-  return { id, name };
-}
+export const updateItemNameIfNeeded = (id: ItemId, name: string): UpdateItemNameIfNeededAction => (
+  { type: UPDATE_ITEM_NAME_IF_NEEDED, payload: { id, name } }
+);
 
-export const updateItemNameIfNeeded = createAction(UPDATE_ITEM_NAME_IF_NEEDED, updateNamePayloadCreator);
-export const updateItemNameRequest = createAction(UPDATE_ITEM_NAME_REQUEST, updateNamePayloadCreator);
-export const updateItemNameSuccess = createAction(UPDATE_ITEM_NAME_SUCCESS);
-export const updateItemNameFailure = createAction(UPDATE_ITEM_NAME_FAILURE,
-  identity,
-  updateItemMetaCreator
+export const updateItemNameRequest = (id: ItemId, name: string): UpdateItemNameRequestAction => (
+  { type: UPDATE_ITEM_NAME_REQUEST, payload: { id, name } }
+);
+
+export const updateItemNameSuccess = (payload: UpdateItemNameSuccessPayload): UpdateItemNameSuccessAction => (
+  { type: UPDATE_ITEM_NAME_SUCCESS, payload }
+);
+
+export const updateItemNameFailure =
+  (error: Error, payload: { id: ItemId; name: string; }): UpdateItemNameFailureAction => (
+  { type: UPDATE_ITEM_NAME_FAILURE, payload: error, error: true, meta: payload }
 );
 
 
