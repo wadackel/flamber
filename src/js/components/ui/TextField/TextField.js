@@ -78,25 +78,23 @@ export default class TextField extends React.Component {
 
   handleChange(e: SyntheticInputEvent) {
     const target = e.target;
+    const value = typeof target.value === "string" ? target.value : "";
 
-    if (target instanceof HTMLInputElement) {
-      this.updateStateValue(target.value);
+    this.updateStateValue(value);
 
-      if (typeof this.props.onChange === "function") {
-        this.props.onChange(e, target.value);
-      }
+    if (typeof this.props.onChange === "function") {
+      this.props.onChange(e, value);
     }
   }
 
   handleEnter(e: SyntheticInputEvent) {
     const target = e.target;
+    const value = typeof target.value === "string" ? target.value : "";
 
-    if (target instanceof HTMLInputElement) {
-      this.updateStateValue(target.value);
+    this.updateStateValue(value);
 
-      if (typeof this.props.onEnter === "function") {
-        this.props.onEnter(e, target.value);
-      }
+    if (typeof this.props.onEnter === "function") {
+      this.props.onEnter(e, value);
     }
   }
 
