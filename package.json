@@ -30,7 +30,7 @@
     "lint:sass": "stylelint 'src/sass/**/*.scss' --syntax scss",
     "test": "npm-run-all test:*",
     "test:flow": "flow; test $? -eq 0 -o $? -eq 2",
-    "test:unit": "mocha --compilers js:babel-register --recursive --require test/.setup.js --require babel-polyfill",
+    "test:unit": "mocha test/**/*.spec.js --compilers js:babel-register --recursive --require test/.setup.js --require babel-polyfill",
     "styleguide": "NODE_ENV=styleguide styleguidist server",
     "uglify": "uglifyjs public/js/client.bundle.js -o public/js/client.bundle.js",
     "db:sync": "babel-node ./scripts/db-sync.js"
