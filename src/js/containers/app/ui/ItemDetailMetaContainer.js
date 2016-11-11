@@ -37,6 +37,7 @@ export class ItemDetailPaletteContainer extends Component {
 
   handleItemDescriptionComplete(value) {
     const { dispatch, currentItem } = this.props;
+    console.log(value);
     dispatch(ItemActions.updateItemDescriptionRequest(currentItem.id, value));
   }
 
@@ -83,8 +84,5 @@ export class ItemDetailPaletteContainer extends Component {
 export default connect(
   state => ({
     currentItem: getCurrentItem(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(ItemDetailPaletteContainer);

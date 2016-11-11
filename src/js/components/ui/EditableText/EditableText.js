@@ -81,14 +81,13 @@ export default class EditableText extends Component {
       this.props.onKeyDown(e);
     }
 
-    if (this.props.multiLine && keycode(e) === "enter") {
+    if (this.props.multiLine && (keycode(e) === "enter" && !e.shiftKey)) {
       e.preventDefault();
+
+      const value = typeof e.currentTarget.value === "string" ? e.currentTarget.value : "";
+
       this._isEnter = true;
-
-      if (e.currentTarget instanceof HTMLInputElement) {
-        this.triggerEnter(e, e.currentTarget.value);
-      }
-
+      this.triggerEnter(e, value);
       this.refs.textField.blur();
     }
   }

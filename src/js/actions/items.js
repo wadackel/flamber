@@ -50,6 +50,11 @@ import type {
   UpdateItemNameSuccessAction,
   UpdateItemNameFailureAction,
 
+  UpdateItemDescriptionSuccessPayload,
+  UpdateItemDescriptionRequestAction,
+  UpdateItemDescriptionSuccessAction,
+  UpdateItemDescriptionFailureAction,
+
   MoveItemSelectBoardOpenAction,
   MoveItemSelectBoardCloseAction,
 
@@ -231,17 +236,23 @@ export const updateItemNameFailure =
 
 
 // Update description
-export const UPDATE_ITEM_DESCRIPTION_REQUEST: string = "UPDATE_ITEM_DESCRIPTION_REQUEST";
-export const UPDATE_ITEM_DESCRIPTION_SUCCESS: string = "UPDATE_ITEM_DESCRIPTION_SUCCESS";
-export const UPDATE_ITEM_DESCRIPTION_FAILURE: string = "UPDATE_ITEM_DESCRIPTION_FAILURE";
+export const UPDATE_ITEM_DESCRIPTION_REQUEST = "UPDATE_ITEM_DESCRIPTION_REQUEST";
+export const UPDATE_ITEM_DESCRIPTION_SUCCESS = "UPDATE_ITEM_DESCRIPTION_SUCCESS";
+export const UPDATE_ITEM_DESCRIPTION_FAILURE = "UPDATE_ITEM_DESCRIPTION_FAILURE";
 
-export const updateItemDescriptionRequest = createAction(UPDATE_ITEM_DESCRIPTION_REQUEST,
-  (id: ItemId, description: string): Object => ({ id, description })
+export const updateItemDescriptionRequest =
+  (id: ItemId, description: string): UpdateItemDescriptionRequestAction => (
+  { type: UPDATE_ITEM_DESCRIPTION_REQUEST, payload: { id, description } }
 );
-export const updateItemDescriptionSuccess = createAction(UPDATE_ITEM_DESCRIPTION_SUCCESS);
-export const updateItemDescriptionFailure = createAction(UPDATE_ITEM_DESCRIPTION_FAILURE,
-  identity,
-  updateItemMetaCreator
+
+export const updateItemDescriptionSuccess =
+  (payload: UpdateItemDescriptionSuccessPayload): UpdateItemDescriptionSuccessAction => (
+  { type: UPDATE_ITEM_DESCRIPTION_SUCCESS, payload }
+);
+
+export const updateItemDescriptionFailure =
+  (error: Error, payload: { id: ItemId; description: string; }): UpdateItemDescriptionFailureAction => (
+  { type: UPDATE_ITEM_DESCRIPTION_FAILURE, payload: error, error: true, meta: payload }
 );
 
 

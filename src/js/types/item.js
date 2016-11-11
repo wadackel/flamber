@@ -139,6 +139,16 @@ export type UpdateItemNameFailureAction = ErrorWithMetaAction<"UPDATE_ITEM_NAME_
   Error, { id: ItemId; name: string; }>;
 
 
+// Update description
+export type UpdateItemDescriptionSuccessPayload = SingleItem;
+export type UpdateItemDescriptionRequestAction = PayloadAction<"UPDATE_ITEM_DESCRIPTION_REQUEST",
+  { id: ItemId; description: string; }>;
+export type UpdateItemDescriptionSuccessAction = PayloadAction<"UPDATE_ITEM_DESCRIPTION_SUCCESS",
+  UpdateItemDescriptionSuccessPayload>;
+export type UpdateItemDescriptionFailureAction = ErrorWithMetaAction<"UPDATE_ITEM_DESCRIPTION_FAILURE",
+  Error, { id: ItemId; description: string; }>;
+
+
 // Move board
 export type MoveItemSelectBoardOpenAction = PayloadAction<"MOVE_ITEM_SELECT_BOARD_OPEN", ItemId>;
 export type MoveItemSelectBoardCloseAction = Action<"MOVE_ITEM_SELECT_BOARD_CLOSE">;

@@ -19,6 +19,9 @@ import type {
   UpdateItemNameRequestAction,
   UpdateItemNameSuccessAction,
   UpdateItemNameFailureAction,
+  UpdateItemDescriptionRequestAction,
+  UpdateItemDescriptionSuccessAction,
+  UpdateItemDescriptionFailureAction,
   MoveItemSuccessAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
@@ -146,36 +149,33 @@ export default handleActions({
 
 
   // Update description
-  [I.UPDATE_ITEM_DESCRIPTION_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        description: payload.description,
-        isUpdating: true,
-        isDescriptionUpdating: true
-      }
-    )
+  [I.UPDATE_ITEM_DESCRIPTION_REQUEST]:
+    (state: ItemEntitiesState, action: UpdateItemDescriptionRequestAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: ItemEntity) => ({
+      ...entity,
+      description: action.payload.description,
+      isUpdating: true,
+      isDescriptionUpdating: true
+    }))
   ),
 
-  [I.UPDATE_ITEM_DESCRIPTION_SUCCESS]: (state, { payload }) => (
-    mapValues(state, entity =>
-      payload.result.items.indexOf(entity.id) < 0 ? entity : {
-        ...entity,
-        description: payload.entities.items[entity.id].description,
-        isUpdating: false,
-        isDescriptionUpdating: false
-      }
-    )
+  [I.UPDATE_ITEM_DESCRIPTION_SUCCESS]:
+    (state: ItemEntitiesState, action: UpdateItemDescriptionSuccessAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.result.item], (entity: ItemEntity) => ({
+      ...entity,
+      description: action.payload.entities.items[entity.id].description,
+      isUpdating: false,
+      isDescriptionUpdating: false
+    }))
   ),
 
-  [I.UPDATE_ITEM_DESCRIPTION_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id === meta.id ? entity : {
-        ...entity,
-        isUpdating: false,
-        isDescriptionUpdating: false
-      }
-    )
+  [I.UPDATE_ITEM_DESCRIPTION_FAILURE]:
+    (state: ItemEntitiesState, action: UpdateItemDescriptionFailureAction): ItemEntitiesState => (
+    mapEntities(state, [action.meta.id], (entity: ItemEntity) => ({
+      ...entity,
+      isUpdating: false,
+      isDescriptionUpdating: false
+    }))
   ),
 
 

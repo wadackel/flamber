@@ -14,10 +14,13 @@ import type {
   ItemEntity,
   UpdateItemNameIfNeededAction,
   UpdateItemNameRequestAction,
-  UpdateItemNameFailureAction
+  UpdateItemNameFailureAction,
+  UpdateItemDescriptionRequestAction,
+  UpdateItemDescriptionFailureAction
 } from "../../types/item";
 
-type UpdateItemErrorAction = UpdateItemNameFailureAction;
+type UpdateItemErrorAction = UpdateItemNameFailureAction
+  | UpdateItemDescriptionFailureAction;
 
 
 function *handleUpdateError(action: UpdateItemErrorAction): Generator<any, *, *> {
@@ -44,21 +47,16 @@ export function *handleUpdateItemNameRequest(action: UpdateItemNameRequestAction
 }
 
 
-// // Description
-// export function *handleUpdateItemDescriptionRequest({ payload }) {
-//   yield callUpdateItem(
-//     payload,
-//     I.updateItemDescriptionSuccess,
-//     I.updateItemDescriptionFailure
-//   );
-// }
-//
-// function *handleUpdateItemDescriptionFailure() {
-//   // TODO: More error message
-//   yield put(showNotify("アイテムの更新に失敗しました"));
-// }
-//
-//
+// Description
+export function *handleUpdateItemDescriptionRequest(action: UpdateItemDescriptionRequestAction): Generator<any, *, *> {
+  yield callUpdateItem(
+    action.payload,
+    I.updateItemDescriptionSuccess,
+    I.updateItemDescriptionFailure
+  );
+}
+
+
 // // Palette
 // export function *handleUpdateItemPaletteRequest({ payload }) {
 //   yield callUpdateItem(
@@ -103,14 +101,15 @@ export default function *updateItemSaga(): Generator<any, *, *> {
     takeEvery(I.UPDATE_ITEM_NAME_IF_NEEDED, handleUpdateItemNameIfNeeded),
     takeEvery(I.UPDATE_ITEM_NAME_REQUEST, handleUpdateItemNameRequest),
 
+    // Description
+    takeEvery(I.UPDATE_ITEM_DESCRIPTION_REQUEST, handleUpdateItemDescriptionRequest),
+
+    // Errors
     takeEvery([
-      I.UPDATE_ITEM_NAME_FAILURE
+      I.UPDATE_ITEM_NAME_FAILURE,
+      I.UPDATE_ITEM_DESCRIPTION_FAILURE
     ], handleUpdateError)
 
-    // // Description
-    // takeEvery(I.UPDATE_ITEM_DESCRIPTION_REQUEST, handleUpdateItemDescriptionRequest),
-    // takeEvery(I.UPDATE_ITEM_DESCRIPTION_FAILURE, handleUpdateItemDescriptionFailure),
-    //
     // // Palette
     // takeEvery(I.UPDATE_ITEM_PALETTE_REQUEST, handleUpdateItemPaletteRequest),
     // takeEvery(I.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure),
