@@ -113,8 +113,5 @@ export class ItemDetailPaletteContainer extends Component {
 export default connect(
   state => ({
     currentItem: getCurrentItem(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(ItemDetailPaletteContainer);

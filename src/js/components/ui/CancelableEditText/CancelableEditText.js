@@ -53,7 +53,6 @@ export default class CancelableEditText extends Component {
   }
 
   handleEnter(e: SyntheticKeyboardEvent, value: any) {
-    console.log(value);
     if (typeof this.props.onComplete === "function") {
       this.props.onComplete(value);
     }

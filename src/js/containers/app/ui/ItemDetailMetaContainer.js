@@ -37,7 +37,6 @@ export class ItemDetailPaletteContainer extends Component {
 
   handleItemDescriptionComplete(value) {
     const { dispatch, currentItem } = this.props;
-    console.log(value);
     dispatch(ItemActions.updateItemDescriptionRequest(currentItem.id, value));
   }
 

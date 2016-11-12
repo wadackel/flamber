@@ -4,6 +4,7 @@ import keycode from "keycode";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
+import nl2br from "../../../utils/react-nl2br";
 import { TextField } from "../";
 
 const b = bem("editable-text");
@@ -117,14 +118,11 @@ export default class EditableText extends Component {
 
   renderValue(): ?any {
     const { multiLine, value } = this.props;
-    const regex = /(\n)/g;
 
     if (!multiLine) return value;
     if (!value) return null;
 
-    return value.split(regex).map(line =>
-      !line.match(regex) ? line : React.createElement("br")
-    );
+    return nl2br(value);
   }
 
   render() {
