@@ -62,6 +62,12 @@ import type {
   UpdateItemImageSuccessAction,
   UpdateItemImageFailureAction,
 
+  AddItemTagSuccessPayload,
+  AddItemTagIfNeededAction,
+  AddItemTagRequestAction,
+  AddItemTagSuccessAction,
+  AddItemTagFailureAction,
+
   MoveItemSelectBoardOpenAction,
   MoveItemSelectBoardCloseAction,
 
@@ -300,21 +306,25 @@ export const updateItemImageFailure =
 
 
 // Add tag
-export const ADD_ITEM_TAG_IF_NEEDED: string = "ADD_ITEM_TAG_IF_NEEDED";
-export const ADD_ITEM_TAG_REQUEST: string = "ADD_ITEM_TAG_REQUEST";
-export const ADD_ITEM_TAG_SUCCESS: string = "ADD_ITEM_TAG_SUCCESS";
-export const ADD_ITEM_TAG_FAILURE: string = "ADD_ITEM_TAG_FAILURE";
+export const ADD_ITEM_TAG_IF_NEEDED = "ADD_ITEM_TAG_IF_NEEDED";
+export const ADD_ITEM_TAG_REQUEST = "ADD_ITEM_TAG_REQUEST";
+export const ADD_ITEM_TAG_SUCCESS = "ADD_ITEM_TAG_SUCCESS";
+export const ADD_ITEM_TAG_FAILURE = "ADD_ITEM_TAG_FAILURE";
 
-function addItemTagPayloadCreator(id: ItemId, tagId: TagId): Object {
-  return { id, tagId };
-}
+export const addItemTagIfNeeded = (id: ItemId, tagId: TagId): AddItemTagIfNeededAction => (
+  { type: ADD_ITEM_TAG_IF_NEEDED, payload: { id, tagId } }
+);
 
-export const addItemTagIfNeeded = createAction(ADD_ITEM_TAG_IF_NEEDED, addItemTagPayloadCreator);
-export const addItemTagRequest = createAction(ADD_ITEM_TAG_REQUEST, addItemTagPayloadCreator);
-export const addItemTagSuccess = createAction(ADD_ITEM_TAG_SUCCESS);
-export const addItemTagFailure = createAction(ADD_ITEM_TAG_FAILURE,
-  identity,
-  updateItemMetaCreator
+export const addItemTagRequest = (id: ItemId, tagId: TagId): AddItemTagRequestAction => (
+  { type: ADD_ITEM_TAG_REQUEST, payload: { id, tagId } }
+);
+
+export const addItemTagSuccess = (payload: AddItemTagSuccessPayload): AddItemTagSuccessAction => (
+  { type: ADD_ITEM_TAG_SUCCESS, payload }
+);
+
+export const addItemTagFailure = (error: Error, payload: { id: ItemId; tagId: TagId; }): AddItemTagFailureAction => (
+  { type: ADD_ITEM_TAG_FAILURE, payload: error, error: true, meta: payload }
 );
 
 

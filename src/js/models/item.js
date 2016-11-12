@@ -78,6 +78,16 @@ export default function(sequelize: any, DataTypes: any) {
           include: [models.Tag]
         });
       },
+      updateFromAttributes(attributes: Object) {
+        const validAttributes = Item.filterEditableAttributes(attributes);
+
+        return this.update(validAttributes)
+          .then(entity =>
+            attributes.hasOwnProperty("Tags")
+              ? entity.setTags(attributes.Tags).then(() => entity)
+              : entity
+          );
+      },
       updateImage(file: MulterMemoryFile) {
         return imgur.uploadBase64(file.buffer.toString("base64"))
           .then(json => {

@@ -25,6 +25,9 @@ import type {
   UpdateItemImageRequestAction,
   UpdateItemImageSuccessAction,
   UpdateItemImageFailureAction,
+  AddItemTagRequestAction,
+  AddItemTagSuccessAction,
+  AddItemTagFailureAction,
   MoveItemSuccessAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
@@ -242,35 +245,29 @@ export default handleActions({
 
 
   // Add tag
-  [I.ADD_ITEM_TAG_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        tags: [...entity.tags, payload.tagId],
-        isUpdating: true,
-        isTagAdding: true
-      }
-    )
+  [I.ADD_ITEM_TAG_REQUEST]: (state: ItemEntitiesState, action: AddItemTagRequestAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: ItemEntity) => ({
+      ...entity,
+      Tags: [...entity.Tags, action.payload.tagId],
+      isUpdating: true,
+      isTagAdding: true
+    }))
   ),
 
-  [I.ADD_ITEM_TAG_SUCCESS]: (state, { payload }) => (
-    mapValues(state, entity =>
-      payload.result.items.indexOf(entity.id) < 0 ? entity : {
-        ...entity,
-        isUpdating: false,
-        isTagAdding: false
-      }
-    )
+  [I.ADD_ITEM_TAG_SUCCESS]: (state: ItemEntitiesState, action: AddItemTagSuccessAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.result.item], (entity: ItemEntity) => ({
+      ...entity,
+      isUpdating: false,
+      isTagAdding: false
+    }))
   ),
 
-  [I.ADD_ITEM_TAG_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
-        ...entity,
-        isUpdating: false,
-        isTagAdding: false
-      }
-    )
+  [I.ADD_ITEM_TAG_FAILURE]: (state: ItemEntitiesState, action: AddItemTagFailureAction): ItemEntitiesState => (
+    mapEntities(state, [action.meta.id], (entity: ItemEntity) => ({
+      ...entity,
+      isUpdating: false,
+      isTagAdding: false
+    }))
   ),
 
 

@@ -161,6 +161,14 @@ export type UpdateItemImageFailureAction = ErrorWithMetaAction<"UPDATE_ITEM_IMAG
   Error, { id: ItemId; image: File; }>;
 
 
+// Add item tag
+export type AddItemTagSuccessPayload = SingleItem;
+export type AddItemTagIfNeededAction = PayloadAction<"ADD_ITEM_TAG_IF_NEEDED", { id: ItemId; tagId: TagId; }>;
+export type AddItemTagRequestAction = PayloadAction<"ADD_ITEM_TAG_REQUEST", { id: ItemId; tagId: TagId; }>;
+export type AddItemTagSuccessAction = PayloadAction<"ADD_ITEM_TAG_SUCCESS", AddItemTagSuccessPayload>;
+export type AddItemTagFailureAction = ErrorWithMetaAction<"ADD_ITEM_TAG_FAILURE", Error, { id: ItemId; tagId: TagId; }>
+
+
 // Move board
 export type MoveItemSelectBoardOpenAction = PayloadAction<"MOVE_ITEM_SELECT_BOARD_OPEN", ItemId>;
 export type MoveItemSelectBoardCloseAction = Action<"MOVE_ITEM_SELECT_BOARD_CLOSE">;

@@ -54,7 +54,7 @@ router.put("/", (req, res) => {
     Item.find({ where: { id: attributes.id, user_id: user.id } })
       .then(item => {
         if (!item) throw new Error("Not found item");
-        return item.update(Item.filterEditableAttributes(attributes));
+        return item.updateFromAttributes(attributes);
       })
       .then(item => item.includeAll())
   ))

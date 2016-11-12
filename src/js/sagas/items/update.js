@@ -19,11 +19,13 @@ import type {
   UpdateItemDescriptionRequestAction,
   UpdateItemDescriptionFailureAction,
   UpdateItemImageRequestAction,
-  UpdateItemImageSuccessAction
+  UpdateItemImageSuccessAction,
+  UpdateItemImageFailureAction
 } from "../../types/item";
 
 type UpdateItemErrorAction = UpdateItemNameFailureAction
-  | UpdateItemDescriptionFailureAction;
+  | UpdateItemDescriptionFailureAction
+  | UpdateItemImageFailureAction;
 
 
 function *handleUpdateError(action: UpdateItemErrorAction): Generator<any, *, *> {
@@ -111,7 +113,8 @@ export default function *updateItemSaga(): Generator<any, *, *> {
     // Errors
     takeEvery([
       I.UPDATE_ITEM_NAME_FAILURE,
-      I.UPDATE_ITEM_DESCRIPTION_FAILURE
+      I.UPDATE_ITEM_DESCRIPTION_FAILURE,
+      I.UPDATE_ITEM_IMAGE_FAILURE
     ], handleUpdateError)
 
     // // Palette

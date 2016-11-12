@@ -1,7 +1,6 @@
-/* eslint-disable */
-import _ from "lodash";
+// @flow
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as ItemActions from "../../../actions/items";
 import bem from "../../../helpers/bem";
@@ -11,34 +10,53 @@ import {
   TagInput
 } from "../../../components/ui/";
 
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
+import type { ItemEntity } from "../../../types/item";
+import type { TagId, TagEntities } from "../../../types/tag";
+
+
 const b = bem("item-detail-tag-container");
 
+type Props = {
+  dispatch: Dispatch;
+  currentItem: ?ItemEntity;
+  currentItemTagEntities: ?TagEntities;
+  tagEntities: TagEntities;
+};
+
+type TagValue = {
+  label: string;
+  value: TagId;
+};
+
 export class ItemDetailTagContainer extends Component {
-  static propTypes = {
-  };
+  props: Props;
 
-  static defaultProps = {
-  };
-
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
-
     autoBind(this);
   }
 
-  handleAddTag(tag) {
+  handleAddTag(tag: TagValue) {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.addItemTagIfNeeded(currentItem.id, tag.value));
+    if (currentItem) {
+      dispatch(ItemActions.addItemTagIfNeeded(currentItem.id, tag.value));
+    }
   }
 
-  handleNewTag(label) {
+  handleNewTag(label: string) {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.registerItemTagRequest(currentItem.id, label));
+    if (currentItem) {
+      dispatch(ItemActions.registerItemTagRequest(currentItem.id, label));
+    }
   }
 
-  handleRemoveTag(tag) {
+  handleRemoveTag(tag: TagValue) {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.removeItemTagRequest(currentItem.id, tag.value));
+    if (currentItem) {
+      dispatch(ItemActions.removeItemTagRequest(currentItem.id, tag.value));
+    }
   }
 
   render() {
@@ -48,7 +66,7 @@ export class ItemDetailTagContainer extends Component {
       tagEntities
     } = this.props;
 
-    if (!currentItem) return null;
+    if (!currentItem || !currentItemTagEntities) return null;
 
     const tags = currentItemTagEntities.map(entity => ({
       label: entity.name,
@@ -77,7 +95,7 @@ export class ItemDetailTagContainer extends Component {
 }
 
 export default connect(
-  state => {
+  (state: ConnectState) => {
     const currentItem = getCurrentItem(state);
 
     return {
@@ -85,8 +103,5 @@ export default connect(
       tagEntities: getTagEntities(state),
       currentItem
     };
-  },
-  null,
-  null,
-  { pure: false }
+  }
 )(ItemDetailTagContainer);
