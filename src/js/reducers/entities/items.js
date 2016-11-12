@@ -28,6 +28,9 @@ import type {
   AddItemTagRequestAction,
   AddItemTagSuccessAction,
   AddItemTagFailureAction,
+  RemoveItemTagRequestAction,
+  RemoveItemTagSuccessAction,
+  RemoveItemTagFailureAction,
   MoveItemSuccessAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
@@ -272,35 +275,29 @@ export default handleActions({
 
 
   // Remove tag
-  [I.REMOVE_ITEM_TAG_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        tags: entity.tags.filter(tagId => payload.tagId !== tagId),
-        isUpdating: true,
-        isTagRemoveing: true
-      }
-    )
+  [I.REMOVE_ITEM_TAG_REQUEST]: (state: ItemEntitiesState, action: RemoveItemTagRequestAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: ItemEntity) => ({
+      ...entity,
+      Tags: entity.Tags.filter(tagId => action.payload.tagId !== tagId),
+      isUpdating: true,
+      isTagRemoving: true
+    }))
   ),
 
-  [I.REMOVE_ITEM_TAG_SUCCESS]: (state, { payload }) => (
-    mapValues(state, entity =>
-      payload.result.items.indexOf(entity.id) < 0 ? entity : {
-        ...entity,
-        isUpdating: false,
-        isTagRemoveing: false
-      }
-    )
+  [I.REMOVE_ITEM_TAG_SUCCESS]: (state: ItemEntitiesState, action: RemoveItemTagSuccessAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.result.item], (entity: ItemEntity) => ({
+      ...entity,
+      isUpdating: false,
+      isTagRemoving: false
+    }))
   ),
 
-  [I.REMOVE_ITEM_TAG_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
-        ...entity,
-        isUpdating: false,
-        isTagRemoveing: false
-      }
-    )
+  [I.REMOVE_ITEM_TAG_FAILURE]: (state: ItemEntitiesState, action: RemoveItemTagFailureAction): ItemEntitiesState => (
+    mapEntities(state, [action.meta.id], (entity: ItemEntity) => ({
+      ...entity,
+      isUpdating: false,
+      isTagRemoving: false
+    }))
   ),
 
 

@@ -15,8 +15,13 @@ import type {
   ItemEntity,
   AddItemTagIfNeededAction,
   AddItemTagRequestAction,
-  AddItemTagFailureAction
+  AddItemTagFailureAction,
+  RemoveItemTagRequestAction,
+  RemoveItemTagFailureAction
 } from "../../types/item";
+
+type ItemTagFailureAction = AddItemTagFailureAction
+  | RemoveItemTagFailureAction;
 
 
 // Add tag
@@ -37,26 +42,17 @@ export function *handleAddItemTagRequest(action: AddItemTagRequestAction): Gener
   );
 }
 
-function *handleAddItemTagFailure(action: AddItemTagFailureAction): Generator<any, *, *> {
-  yield put(showNotify(action.payload.message));
+
+// Remove tag
+export function *handleRemoveItemTagRequest(action: RemoveItemTagRequestAction): Generator<any, *, *> {
+  yield callUpdateItem(
+    action.payload,
+    I.removeItemTagSuccess,
+    I.removeItemTagFailure
+  );
 }
 
 
-// // Remove tag
-// export function *handleRemoveItemTagRequest({ payload }): Generator<any, *, *> {
-//   yield callUpdateItem(
-//     payload,
-//     I.removeItemTagSuccess,
-//     I.removeItemTagFailure
-//   );
-// }
-//
-// function *handleRemoveItemTagFailure(): Generator<any, *, *> {
-//   // TODO: More erro message
-//   yield put(showNotify("アイテムの更新に失敗しました"));
-// }
-//
-//
 // // Register
 // export function *handleRegisterItemTagRequest({ payload }): Generator<any, *, *> {
 //   const entity = yield select(getItemEntityById, payload.id);
@@ -88,18 +84,27 @@ function *handleAddItemTagFailure(action: AddItemTagFailureAction): Generator<an
 // }
 
 
+function *handleItemTagFailureAction(action: ItemTagFailureAction): Generator<any, *, *> {
+  yield put(showNotify(action.payload.message));
+}
+
+
 export default function *tagItemSaga(): Generator<any, *, *> {
   yield [
     // Add tag
     takeEvery(I.ADD_ITEM_TAG_IF_NEEDED, handleAddItemTagIfNeeded),
     takeEvery(I.ADD_ITEM_TAG_REQUEST, handleAddItemTagRequest),
-    takeEvery(I.ADD_ITEM_TAG_FAILURE, handleAddItemTagFailure)
 
-    // // Remove tag
-    // takeEvery(I.REMOVE_ITEM_TAG_REQUEST, handleRemoveItemTagRequest),
-    // takeEvery(I.REMOVE_ITEM_TAG_FAILURE, handleRemoveItemTagFailure),
-    //
+    // Remove tag
+    takeEvery(I.REMOVE_ITEM_TAG_REQUEST, handleRemoveItemTagRequest),
+
     // // Register tag
     // takeEvery(I.REGISTER_ITEM_TAG_REQUEST, handleRegisterItemTagRequest)
+
+    // Error
+    takeEvery([
+      I.ADD_ITEM_TAG_FAILURE,
+      I.REMOVE_ITEM_TAG_FAILURE
+    ], handleItemTagFailureAction)
   ];
 }

@@ -161,7 +161,7 @@ export default class TagInput extends Component {
     this.setState({ searchText: "" });
   }
 
-  handleRequestDelete(value: any) {
+  handleDelete(value: any) {
     this.requestRemoveTag(value);
   }
 
@@ -212,7 +212,7 @@ export default class TagInput extends Component {
         ref={`chip-${tag.value}`}
         className={b("tag")()}
         value={tag.value}
-        onRequestDelete={this.handleRequestDelete}
+        onDelete={this.handleDelete}
         onClick={this.handleTagClick}
         onKeyDown={this.handleChipKeyDown}
         onFocus={this.handleChipFocus}

@@ -46,6 +46,7 @@ export type ItemEntity = $All<Item, {
   isDescriptionUpdating: boolean;
   isImageUpdating: boolean;
   isTagAdding: boolean;
+  isTagRemoving: boolean;
 }>;
 
 export type Items = Array<Item>;
@@ -167,6 +168,14 @@ export type AddItemTagIfNeededAction = PayloadAction<"ADD_ITEM_TAG_IF_NEEDED", {
 export type AddItemTagRequestAction = PayloadAction<"ADD_ITEM_TAG_REQUEST", { id: ItemId; tagId: TagId; }>;
 export type AddItemTagSuccessAction = PayloadAction<"ADD_ITEM_TAG_SUCCESS", AddItemTagSuccessPayload>;
 export type AddItemTagFailureAction = ErrorWithMetaAction<"ADD_ITEM_TAG_FAILURE", Error, { id: ItemId; tagId: TagId; }>
+
+
+// Remove item tag
+export type RemoveItemTagSuccessPayload = SingleItem;
+export type RemoveItemTagRequestAction = PayloadAction<"REMOVE_ITEM_TAG_REQUEST", { id: ItemId; tagId: TagId }>;
+export type RemoveItemTagSuccessAction = PayloadAction<"REMOVE_ITEM_TAG_SUCCESS", RemoveItemTagSuccessPayload>;
+export type RemoveItemTagFailureAction = ErrorWithMetaAction<"REMOVE_ITEM_TAG_FAILURE",
+  Error, { id: ItemId; tagId: TagId }>;
 
 
 // Move board

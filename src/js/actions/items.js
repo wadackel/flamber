@@ -68,6 +68,11 @@ import type {
   AddItemTagSuccessAction,
   AddItemTagFailureAction,
 
+  RemoveItemTagSuccessPayload,
+  RemoveItemTagRequestAction,
+  RemoveItemTagSuccessAction,
+  RemoveItemTagFailureAction,
+
   MoveItemSelectBoardOpenAction,
   MoveItemSelectBoardCloseAction,
 
@@ -329,17 +334,21 @@ export const addItemTagFailure = (error: Error, payload: { id: ItemId; tagId: Ta
 
 
 // Remove tag
-export const REMOVE_ITEM_TAG_REQUEST: string = "REMOVE_ITEM_TAG_REQUEST";
-export const REMOVE_ITEM_TAG_SUCCESS: string = "REMOVE_ITEM_TAG_SUCCESS";
-export const REMOVE_ITEM_TAG_FAILURE: string = "REMOVE_ITEM_TAG_FAILURE";
+export const REMOVE_ITEM_TAG_REQUEST = "REMOVE_ITEM_TAG_REQUEST";
+export const REMOVE_ITEM_TAG_SUCCESS = "REMOVE_ITEM_TAG_SUCCESS";
+export const REMOVE_ITEM_TAG_FAILURE = "REMOVE_ITEM_TAG_FAILURE";
 
-export const removeItemTagRequest = createAction(REMOVE_ITEM_TAG_REQUEST,
-  (id: ItemId, tagId: TagId): Object => ({ id, tagId })
+export const removeItemTagRequest = (id: ItemId, tagId: TagId): RemoveItemTagRequestAction => (
+  { type: REMOVE_ITEM_TAG_REQUEST, payload: { id, tagId } }
 );
-export const removeItemTagSuccess = createAction(REMOVE_ITEM_TAG_SUCCESS);
-export const removeItemTagFailure = createAction(REMOVE_ITEM_TAG_FAILURE,
-  identity,
-  updateItemMetaCreator
+
+export const removeItemTagSuccess = (payload: RemoveItemTagSuccessPayload): RemoveItemTagSuccessAction => (
+  { type: REMOVE_ITEM_TAG_SUCCESS, payload }
+);
+
+export const removeItemTagFailure =
+  (error: Error, payload: { id: ItemId; tagId: TagId; }): RemoveItemTagFailureAction => (
+  { type: REMOVE_ITEM_TAG_FAILURE, payload: error, error: true, meta: payload }
 );
 
 
