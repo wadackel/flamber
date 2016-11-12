@@ -102,7 +102,7 @@ export function updateItems(items: ItemEntities): ResponseArrayItem {
 }
 
 
-export function updateItemImage(id: ItemId, image: File) {
+export function updateItemImage(id: ItemId, image: File): ResponseItem {
   const data = new FormData();
   data.append("id", id);
   data.append("file", image);

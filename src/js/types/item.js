@@ -86,6 +86,10 @@ export type SetCurrentItemAction = PayloadAction<"SET_CURRENT_ITEM", ItemId>;
 export type SetItemVisibilityFilterAction = PayloadAction<"SET_ITEM_VISIBILITY_FILTER", ItemVisibilityFilter>;
 
 
+// Set item image editing
+export type SetItemImageEditingAction = PayloadAction<"SET_ITEM_IMAGE_EDITING", boolean>;
+
+
 // Add from URL (UI)
 export type AddItemURLDialogOpenAction = Action<"ADD_ITEM_URL_DIALOG_OPEN">;
 export type AddItemURLDialogCloseAction = Action<"ADD_ITEM_URL_DIALOG_CLOSE">;
@@ -147,6 +151,14 @@ export type UpdateItemDescriptionSuccessAction = PayloadAction<"UPDATE_ITEM_DESC
   UpdateItemDescriptionSuccessPayload>;
 export type UpdateItemDescriptionFailureAction = ErrorWithMetaAction<"UPDATE_ITEM_DESCRIPTION_FAILURE",
   Error, { id: ItemId; description: string; }>;
+
+
+// Update image
+export type UpdateItemImageSuccessPayload = SingleItem;
+export type UpdateItemImageRequestAction = PayloadAction<"UPDATE_ITEM_IMAGE_REQUEST", { id: ItemId; image: File; }>;
+export type UpdateItemImageSuccessAction = PayloadAction<"UPDATE_ITEM_IMAGE_SUCCESS", UpdateItemImageSuccessPayload>;
+export type UpdateItemImageFailureAction = ErrorWithMetaAction<"UPDATE_ITEM_IMAGE_FAILURE",
+  Error, { id: ItemId; image: File; }>;
 
 
 // Move board

@@ -77,6 +77,24 @@ export default function(sequelize: any, DataTypes: any) {
           where: { id: this.id },
           include: [models.Tag]
         });
+      },
+      updateImage(file: MulterMemoryFile) {
+        return imgur.uploadBase64(file.buffer.toString("base64"))
+          .then(json => {
+            if (!json.success) throw new Error("Imgur API Error");
+
+            const { data } = json;
+
+            return this.update({
+              file_id: data.id,
+              width: data.width,
+              height: data.height,
+              image: data.link,
+              thumbnail: makeThumbnailURL(data.link, "l"),
+              size: data.size,
+              type: data.type
+            });
+          });
       }
     }
   });

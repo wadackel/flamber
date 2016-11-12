@@ -68,7 +68,13 @@ router.put("/", (req, res) => {
 router.put("/image", upload.single("file"), (req, res) => {
   const { user, body, file } = req;
 
-  Item.updateImageByUserAndId(user.id, body.id, file)
+  user.getItems({ where: { id: body.id } })
+    .then(items => {
+      if (!items || items.length === 0) throw new Error("Not found item");
+      return items[0];
+    })
+    .then(item => item.updateImage(file))
+    .then(item => item.includeAll())
     .then(item => {
       res.json({ item });
     })

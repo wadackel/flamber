@@ -11,12 +11,15 @@ import * as I from "../../actions/items";
 import { callUpdateItem } from "./helpers";
 
 import type {
+  Item,
   ItemEntity,
   UpdateItemNameIfNeededAction,
   UpdateItemNameRequestAction,
   UpdateItemNameFailureAction,
   UpdateItemDescriptionRequestAction,
-  UpdateItemDescriptionFailureAction
+  UpdateItemDescriptionFailureAction,
+  UpdateItemImageRequestAction,
+  UpdateItemImageSuccessAction
 } from "../../types/item";
 
 type UpdateItemErrorAction = UpdateItemNameFailureAction
@@ -70,29 +73,26 @@ export function *handleUpdateItemDescriptionRequest(action: UpdateItemDescriptio
 //   // TODO: More erro message
 //   yield put(showNotify("アイテムの更新に失敗しました"));
 // }
-//
-//
-// // Image
-// export function *handleUpdateItemImageRequest({ payload }) {
-//   try {
-//     const response = yield call(Services.updateItemImage, payload);
-//     const normalized = normalize(response, {
-//       item: ItemSchema
-//     });
-//     yield put(I.updateItemImageSuccess(normalized));
-//   } catch (error) {
-//     yield put(I.updateItemImageFailure(error, payload));
-//   }
-// }
-//
-// export function *handleUpdateItemImageSuccess() {
-//   yield put(I.setItemImageEditing(false));
-// }
-//
-// function *handleUpdateItemImageFailure() {
-//   // TODO: More erro message
-//   yield put(showNotify("アイテムの更新に失敗しました"));
-// }
+
+
+// Image
+export function *handleUpdateItemImageRequest(action: UpdateItemImageRequestAction): Generator<any, *, *> {
+  try {
+    const { id, image } = action.payload;
+    const response = yield call((): Promise<{ item: Item }> => Services.updateItemImage(id, image));
+    if (!response) throw new Error("アイテムの更新に失敗しました");
+
+    const normalized = normalize(response, { item: ItemSchema });
+    yield put(I.updateItemImageSuccess(normalized));
+
+  } catch (error) {
+    yield put(I.updateItemImageFailure(error, action.payload));
+  }
+}
+
+export function *handleUpdateItemImageSuccess(): Generator<any, *, *> {
+  yield put(I.setItemImageEditing(false));
+}
 
 
 export default function *updateItemSaga(): Generator<any, *, *> {
@@ -104,6 +104,10 @@ export default function *updateItemSaga(): Generator<any, *, *> {
     // Description
     takeEvery(I.UPDATE_ITEM_DESCRIPTION_REQUEST, handleUpdateItemDescriptionRequest),
 
+    // Image
+    takeEvery(I.UPDATE_ITEM_IMAGE_REQUEST, handleUpdateItemImageRequest),
+    takeEvery(I.UPDATE_ITEM_IMAGE_SUCCESS, handleUpdateItemImageSuccess),
+
     // Errors
     takeEvery([
       I.UPDATE_ITEM_NAME_FAILURE,
@@ -114,9 +118,5 @@ export default function *updateItemSaga(): Generator<any, *, *> {
     // takeEvery(I.UPDATE_ITEM_PALETTE_REQUEST, handleUpdateItemPaletteRequest),
     // takeEvery(I.UPDATE_ITEM_PALETTE_FAILURE, handleUpdateItemPaletteFailure),
     //
-    // // Image
-    // takeEvery(I.UPDATE_ITEM_IMAGE_REQUEST, handleUpdateItemImageRequest),
-    // takeEvery(I.UPDATE_ITEM_IMAGE_SUCCESS, handleUpdateItemImageSuccess),
-    // takeEvery(I.UPDATE_ITEM_IMAGE_FAILURE, handleUpdateItemImageFailure)
   ];
 }

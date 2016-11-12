@@ -22,6 +22,9 @@ import type {
   UpdateItemDescriptionRequestAction,
   UpdateItemDescriptionSuccessAction,
   UpdateItemDescriptionFailureAction,
+  UpdateItemImageRequestAction,
+  UpdateItemImageSuccessAction,
+  UpdateItemImageFailureAction,
   MoveItemSuccessAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
@@ -214,26 +217,27 @@ export default handleActions({
 
 
   // Image
-  [I.UPDATE_ITEM_IMAGE_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        isImageUpdating: true
-      }
-    )
+  [I.UPDATE_ITEM_IMAGE_REQUEST]:
+    (state: ItemEntitiesState, action: UpdateItemImageRequestAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: ItemEntity) => ({
+      ...entity,
+      isUpdating: true,
+      isImageUpdating: true
+    }))
   ),
 
-  [I.UPDATE_ITEM_IMAGE_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.items)
+  [I.UPDATE_ITEM_IMAGE_SUCCESS]:
+    (state: ItemEntitiesState, action: UpdateItemImageSuccessAction): ItemEntitiesState => (
+    mergeEntities(state, action.payload.entities.items)
   ),
 
-  [I.UPDATE_ITEM_IMAGE_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
-        ...entity,
-        isImageUpdating: false
-      }
-    )
+  [I.UPDATE_ITEM_IMAGE_FAILURE]:
+    (state: ItemEntitiesState, action: UpdateItemImageFailureAction): ItemEntitiesState => (
+    mapEntities(state, [action.meta.id], (entity: ItemEntity) => ({
+      ...entity,
+      isUpdating: false,
+      isImageUpdating: false
+    }))
   ),
 
 

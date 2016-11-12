@@ -16,6 +16,8 @@ import type {
 
   SetItemVisibilityFilterAction,
 
+  SetItemImageEditingAction,
+
   AddItemURLDialogOpenAction,
   AddItemURLDialogCloseAction,
 
@@ -54,6 +56,11 @@ import type {
   UpdateItemDescriptionRequestAction,
   UpdateItemDescriptionSuccessAction,
   UpdateItemDescriptionFailureAction,
+
+  UpdateItemImageSuccessPayload,
+  UpdateItemImageRequestAction,
+  UpdateItemImageSuccessAction,
+  UpdateItemImageFailureAction,
 
   MoveItemSelectBoardOpenAction,
   MoveItemSelectBoardCloseAction,
@@ -116,8 +123,10 @@ export const setItemVisibilityFilter = (visibilityFilter: ItemVisibilityFilter):
 
 
 // Set image editing
-export const SET_ITEM_IMAGE_EDITING: string = "SET_ITEM_IMAGE_EDITING";
-export const setItemImageEditing = createAction(SET_ITEM_IMAGE_EDITING);
+export const SET_ITEM_IMAGE_EDITING = "SET_ITEM_IMAGE_EDITING";
+export const setItemImageEditing = (isOpen: boolean): SetItemImageEditingAction => (
+  { type: SET_ITEM_IMAGE_EDITING, payload: isOpen }
+);
 
 
 // Fetch
@@ -272,17 +281,21 @@ export const updateItemPaletteFailure = createAction(UPDATE_ITEM_PALETTE_FAILURE
 
 
 // Update image
-export const UPDATE_ITEM_IMAGE_REQUEST: string = "UPDATE_ITEM_IMAGE_REQUEST";
-export const UPDATE_ITEM_IMAGE_SUCCESS: string = "UPDATE_ITEM_IMAGE_SUCCESS";
-export const UPDATE_ITEM_IMAGE_FAILURE: string = "UPDATE_ITEM_IMAGE_FAILURE";
+export const UPDATE_ITEM_IMAGE_REQUEST = "UPDATE_ITEM_IMAGE_REQUEST";
+export const UPDATE_ITEM_IMAGE_SUCCESS = "UPDATE_ITEM_IMAGE_SUCCESS";
+export const UPDATE_ITEM_IMAGE_FAILURE = "UPDATE_ITEM_IMAGE_FAILURE";
 
-export const updateItemImageRequest = createAction(UPDATE_ITEM_IMAGE_REQUEST,
-  (id: ItemId, image: string): Object => ({ id, image })
+export const updateItemImageRequest = (id: ItemId, image: File): UpdateItemImageRequestAction => (
+  { type: UPDATE_ITEM_IMAGE_REQUEST, payload: { id, image } }
 );
-export const updateItemImageSuccess = createAction(UPDATE_ITEM_IMAGE_SUCCESS);
-export const updateItemImageFailure = createAction(UPDATE_ITEM_IMAGE_FAILURE,
-  identity,
-  updateItemMetaCreator
+
+export const updateItemImageSuccess = (payload: UpdateItemImageSuccessPayload): UpdateItemImageSuccessAction => (
+  { type: UPDATE_ITEM_IMAGE_SUCCESS, payload }
+);
+
+export const updateItemImageFailure =
+  (error: Error, payload: { id: ItemId; image: File; }): UpdateItemImageFailureAction => (
+  { type: UPDATE_ITEM_IMAGE_FAILURE, payload: error, error: true, meta: payload }
 );
 
 

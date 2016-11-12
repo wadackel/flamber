@@ -8,9 +8,9 @@ import type {
 
   SetCurrentItemAction,
   SetItemVisibilityFilterAction,
+  SetItemImageEditingAction,
   AddItemURLFailureAction,
   AddItemFileFailureAction,
-  UpdateItemNameFailureAction,
   MoveItemSelectBoardOpenAction,
   MoveItemFailureAction,
   SelectedItemsMoveFailureAction
@@ -57,14 +57,14 @@ export default handleActions({
   }),
 
 
-  // // Image editing
-  // [I.SET_ITEM_IMAGE_EDITING]: (state, { payload }) => ({
-  //   ...state,
-  //   isImageEditing: payload,
-  //   detailDrawerOpen: !payload
-  // }),
-  //
-  //
+  // Image editing
+  [I.SET_ITEM_IMAGE_EDITING]: (state: ItemState, action: SetItemImageEditingAction): ItemState => ({
+    ...state,
+    isImageEditing: action.payload,
+    detailDrawerOpen: !action.payload
+  }),
+
+
   // // Detail drawer
   // [I.ITEM_DETAIL_DRAWER_TOGGLE]: state => ({
   //   ...state,
@@ -176,13 +176,6 @@ export default handleActions({
   [I.DELETE_ITEM_REQUEST]: (state: ItemState): ItemState => ({
     ...state,
     currentItem: null
-  }),
-
-
-  // Update name
-  [I.UPDATE_ITEM_NAME_FAILURE]: (state: ItemState, action: UpdateItemNameFailureAction): ItemState => ({
-    ...state,
-    error: action.payload
   }),
 
 
