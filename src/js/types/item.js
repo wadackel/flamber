@@ -258,3 +258,9 @@ export type SelectedItemsDeleteSuccessAction = PayloadAction<"SELECTED_ITEMS_DEL
   SelectedItemsDeleteSuccessPayload>;
 export type SelectedItemsDeleteFailureAction = ErrorWithMetaAction<"SELECTED_ITEMS_DELETE_FAILURE",
   Error, ?ItemEntities>;
+
+
+// Detail drawer
+export type ItemDetailDrawerToggleAction = Action<"ITEM_DETAIL_DRAWER_TOGGLE">;
+export type ItemDetailDrawerOpenAction = Action<"ITEM_DETAIL_DRAWER_OPEN">;
+export type ItemDetailDrawerCloseAction = Action<"ITEM_DETAIL_DRAWER_CLOSE">;

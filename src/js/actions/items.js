@@ -115,7 +115,11 @@ import type {
   SelectedItemsDeleteSuccessPayload,
   SelectedItemsDeleteRequestAction,
   SelectedItemsDeleteSuccessAction,
-  SelectedItemsDeleteFailureAction
+  SelectedItemsDeleteFailureAction,
+
+  ItemDetailDrawerToggleAction,
+  ItemDetailDrawerOpenAction,
+  ItemDetailDrawerCloseAction
 } from "../types/item";
 
 
@@ -556,10 +560,18 @@ export const fetchBoardItemsFailure = createAction(FETCH_BOARD_ITEMS_FAILURE);
 
 
 // Detail drawer
-export const ITEM_DETAIL_DRAWER_TOGGLE: string = "ITEM_DETAIL_DRAWER_TOGGLE";
-export const ITEM_DETAIL_DRAWER_OPEN: string = "ITEM_DETAIL_DRAWER_OPEN";
-export const ITEM_DETAIL_DRAWER_CLOSE: string = "ITEM_DETAIL_DRAWER_CLOSE";
+export const ITEM_DETAIL_DRAWER_TOGGLE = "ITEM_DETAIL_DRAWER_TOGGLE";
+export const ITEM_DETAIL_DRAWER_OPEN = "ITEM_DETAIL_DRAWER_OPEN";
+export const ITEM_DETAIL_DRAWER_CLOSE = "ITEM_DETAIL_DRAWER_CLOSE";
 
-export const itemDetailDrawerToggle = createAction(ITEM_DETAIL_DRAWER_TOGGLE);
-export const itemDetailDrawerOpen = createAction(ITEM_DETAIL_DRAWER_OPEN);
-export const itemDetailDrawerClose = createAction(ITEM_DETAIL_DRAWER_CLOSE);
+export const itemDetailDrawerToggle = (): ItemDetailDrawerToggleAction => (
+  { type: ITEM_DETAIL_DRAWER_TOGGLE }
+);
+
+export const itemDetailDrawerOpen = (): ItemDetailDrawerOpenAction => (
+  { type: ITEM_DETAIL_DRAWER_OPEN }
+);
+
+export const itemDetailDrawerClose = (): ItemDetailDrawerCloseAction => (
+  { type: ITEM_DETAIL_DRAWER_CLOSE }
+);

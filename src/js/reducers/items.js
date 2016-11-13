@@ -65,23 +65,23 @@ export default handleActions({
   }),
 
 
-  // // Detail drawer
-  // [I.ITEM_DETAIL_DRAWER_TOGGLE]: state => ({
-  //   ...state,
-  //   detailDrawerOpen: !state.detailDrawerOpen
-  // }),
-  //
-  // [I.ITEM_DETAIL_DRAWER_OPEN]: state => ({
-  //   ...state,
-  //   detailDrawerOpen: true
-  // }),
-  //
-  // [I.ITEM_DETAIL_DRAWER_CLOSE]: state => ({
-  //   ...state,
-  //   detailDrawerOpen: false
-  // }),
-  //
-  //
+  // Detail drawer
+  [I.ITEM_DETAIL_DRAWER_TOGGLE]: (state: ItemState): ItemState => ({
+    ...state,
+    detailDrawerOpen: !state.detailDrawerOpen
+  }),
+
+  [I.ITEM_DETAIL_DRAWER_OPEN]: (state: ItemState): ItemState => ({
+    ...state,
+    detailDrawerOpen: true
+  }),
+
+  [I.ITEM_DETAIL_DRAWER_CLOSE]: (state: ItemState): ItemState => ({
+    ...state,
+    detailDrawerOpen: false
+  }),
+
+
   // // Fetch
   // [I.FETCH_ITEMS_REQUEST]: state => ({
   //   ...state,
