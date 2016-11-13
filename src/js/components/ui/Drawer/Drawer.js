@@ -2,7 +2,6 @@
 import autoBind from "auto-bind";
 import React from "react";
 import EventListener from "react-event-listener";
-import IScroll from "../../../utils/iscroll";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
 
@@ -24,23 +23,12 @@ export default class Drawer extends React.Component {
     open: false
   };
 
-  iScroll: ?IScroll = null;
-
   constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
 
   componentDidMount() {
-    this.iScroll = new IScroll(this.refs.scrollContainer, {
-      bounce: false,
-      mouseWheel: true,
-      scrollbars: "custom",
-      freeScroll: false,
-      click: true,
-      preventDefault: false
-    });
-
     this.updateScrollHeight();
   }
 
@@ -63,10 +51,7 @@ export default class Drawer extends React.Component {
     const maxHeight = Math.min(bottom, window.innerHeight) - Math.max(0, top);
     const footerHeight = footer ? footer.offsetHeight : 0;
 
-    if (this.iScroll) {
-      scrollContainer.style.maxHeight = `${maxHeight - footerHeight}px`;
-      this.iScroll.refresh();
-    }
+    scrollContainer.style.maxHeight = `${maxHeight - footerHeight}px`;
   }
 
   render() {

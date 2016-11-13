@@ -37,6 +37,7 @@ import type { ConnectState } from "../../../types/redux";
 import type { AppState } from "../../../types/application";
 import type { AuthState } from "../../../types/auth";
 import type { BoardState, BoardId } from "../../../types/board";
+import type { TagState } from "../../../types/tag";
 import type { Palette } from "../../../types/prop-types";
 
 
@@ -48,6 +49,7 @@ type Props = {
   children: React$Element<any>;
   auth: AuthState;
   boards: BoardState;
+  tags: TagState;
 };
 
 type State = {
@@ -155,7 +157,8 @@ export class AppPage extends Component {
       boardEntities,
       selectedBoardEntities,
       items,
-      selectedItemEntities
+      selectedItemEntities,
+      tags
     } = this.props;
 
     // loading
@@ -181,7 +184,7 @@ export class AppPage extends Component {
 
     return (
       <div>
-        <div className={b("content")()}>
+        <div className={b("content", { "is-tag-drawer-open": tags.drawerOpen })()}>
           {children}
         </div>
 
@@ -258,6 +261,7 @@ export class AppPage extends Component {
       selectedBoardEntities, // eslint-disable-line no-unused-vars
       items, // eslint-disable-line no-unused-vars
       selectedItemEntities, // eslint-disable-line no-unused-vars
+      tags, // eslint-disable-line no-unused-vars
       ...routerParams
     } = this.props;
 
@@ -306,6 +310,7 @@ export default connect(
     boardEntities: getBoardEntities(state),
     selectedBoardEntities: getSelectedBoardEntities(state),
     items: state.items,
-    selectedItemEntities: getSelectedItemEntities(state)
+    selectedItemEntities: getSelectedItemEntities(state),
+    tags: state.tags
   })
 )(AppPage);

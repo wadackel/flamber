@@ -65,3 +65,11 @@ $line-height-base: 1.6;
 
 //=== Selections
 $selection-bg: rgba(darken($brand-primary, 20%), .8);
+
+
+//=== Scrollbar (browser native)
+$scrollbar-width: 6px;
+$scrollbar-height: 3px;
+$scrollbar-radius: 0;
+$scrollbar-bg: transparent;
+$scrollbar-color: rgba(#fff, .2);

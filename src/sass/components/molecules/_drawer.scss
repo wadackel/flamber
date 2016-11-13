@@ -1,4 +1,4 @@
-$drawer-width: 220px;
+$drawer-width: 240px;
 $drawer-shadow-size: 8px;
 $drawer-duration: 260ms;
 
@@ -33,7 +33,8 @@ $drawer-duration: 260ms;
   }
 
   &__scroll-container {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     [class*="iScrollVerticalScrollbar"] {
       @include absolute(0, 0, 0, auto, 100);

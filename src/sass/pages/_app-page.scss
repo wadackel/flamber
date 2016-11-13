@@ -17,8 +17,13 @@
   }
 
   &__content {
+    @include transition(padding, fast);
     padding-top: 120px;
     padding-bottom: 120px;
+
+    &--is-tag-drawer-open {
+      padding-left: 270px;
+    }
   }
 
   &__floating-menu {
