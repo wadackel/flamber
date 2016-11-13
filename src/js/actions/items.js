@@ -1,5 +1,4 @@
 // @flow
-import uuid from "node-uuid";
 import { identity } from "lodash";
 import { createAction } from "redux-actions";
 
@@ -368,16 +367,16 @@ export const REGISTER_ITEM_TAG_FAILURE = "REGISTER_ITEM_TAG_FAILURE";
 
 export const registerItemTagRequest =
   (id: ItemId, label: string): RegisterItemTagRequestAction => (
-  { type: REGISTER_ITEM_TAG_REQUEST, payload: { id, label, tagId: uuid.v4() } }
+  { type: REGISTER_ITEM_TAG_REQUEST, payload: { id, label } }
 );
 
 export const registerItemTagSuccess =
-  (payload: RegisterItemTagSuccessPayload, tmpTagId: TagId): RegisterItemTagSuccessAction => (
-  { type: REGISTER_ITEM_TAG_SUCCESS, payload, meta: tmpTagId }
+  (payload: RegisterItemTagSuccessPayload): RegisterItemTagSuccessAction => (
+  { type: REGISTER_ITEM_TAG_SUCCESS, payload }
 );
 
 export const registerItemTagFailure =
-  (error: Error, payload: { id: ItemId; label: string; tagId: TagId; }): RegisterItemTagFailureAction => (
+  (error: Error, payload: { id: ItemId; label: string; }): RegisterItemTagFailureAction => (
   { type: REGISTER_ITEM_TAG_FAILURE, payload: error, error: true, meta: payload }
 );
 

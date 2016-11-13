@@ -181,11 +181,11 @@ export type RemoveItemTagFailureAction = ErrorWithMetaAction<"REMOVE_ITEM_TAG_FA
 // Register tag
 export type RegisterItemTagSuccessPayload = SingleItem;
 export type RegisterItemTagRequestAction = PayloadAction<"REGISTER_ITEM_TAG_REQUEST",
-  { id: ItemId; tagId: TagId; label: string; }>;
-export type RegisterItemTagSuccessAction = PayloadWithMetaAction<"REGISTER_ITEM_TAG_SUCCESS",
-  RegisterItemTagSuccessPayload, TagId>;
+  { id: ItemId; label: string; }>;
+export type RegisterItemTagSuccessAction = PayloadAction<"REGISTER_ITEM_TAG_SUCCESS",
+  RegisterItemTagSuccessPayload>;
 export type RegisterItemTagFailureAction = ErrorWithMetaAction<"REGISTER_ITEM_TAG_FAILURE",
-  Error, { id: ItemId; tagId: TagId; label: string; }>;
+  Error, { id: ItemId; label: string; }>;
 
 
 // Move board

@@ -1,11 +1,7 @@
 // @flow
-/* eslint-disable no-unused-vars */
-import { normalize, arrayOf } from "normalizr";
 import { takeEvery } from "redux-saga";
-import { take, call, put, select } from "redux-saga/effects";
-import ItemSchema from "../../schemas/item";
+import { take, put, select } from "redux-saga/effects";
 import { getItemEntityById } from "../../selectors/items";
-import * as Services from "../../services/items";
 import { showNotify } from "../../actions/notifications";
 import * as I from "../../actions/items";
 import * as T from "../../actions/tags";
@@ -74,22 +70,16 @@ export function *handleRegisterItemTagRequest(action: RegisterItemTagRequestActi
     if (!res || res.error) {
       yield put(I.registerItemTagFailure(
         new Error(failureMessage),
-        action.payload
+        {
+          ...action.payload,
+          tagId: null
+        }
       ));
 
       return;
     }
 
-    const newEntity = {
-      ...entity,
-      Tags: entity.Tags.map(id => id === action.payload.tagId ? res.payload.result.tag : id)
-    };
-
-    yield callUpdateItem(
-      newEntity,
-      I.registerItemTagSuccess,
-      I.registerItemTagFailure
-    );
+    yield put(I.addItemTagRequest(entity.id, res.payload.result.tag));
 
   } catch (error) {
     yield put(I.registerItemTagFailure(error, action.payload));
