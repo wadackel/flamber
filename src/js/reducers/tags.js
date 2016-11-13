@@ -1,4 +1,5 @@
 // @flow
+import { without } from "lodash";
 import { handleActions } from "redux-actions";
 import * as T from "../actions/tags";
 
@@ -8,6 +9,7 @@ import type {
   SetCurrentTagAction,
   FetchTagsSuccessAction,
   FetchTagsFailureAction,
+  AddTagRequestAction,
   AddTagSuccessAction,
   AddTagFailureAction,
   UpdateTagFailureAction,
@@ -69,21 +71,25 @@ export default handleActions({
 
 
   // Add
-  [T.ADD_TAG_REQUEST]: (state: TagState): TagState => ({
+  [T.ADD_TAG_REQUEST]: (state: TagState, action: AddTagRequestAction): TagState => ({
     ...state,
-    isAdding: true
+    isAdding: true,
+    results: [...state.results, action.payload.id]
   }),
 
   [T.ADD_TAG_SUCCESS]: (state: TagState, action: AddTagSuccessAction): TagState => ({
     ...state,
     isAdding: false,
-    results: [...state.results, action.payload.result.tag]
+    results: [...without(state.results, action.meta.id), action.payload.result.tag]
   }),
 
   [T.ADD_TAG_FAILURE]: (state: TagState, action: AddTagFailureAction): TagState => ({
     ...state,
     isAdding: false,
-    error: action.payload
+    error: action.payload,
+    results: action.meta
+      ? without(state.results, action.meta.id)
+      : state.results
   }),
 
 
@@ -97,7 +103,7 @@ export default handleActions({
   // Delete
   [T.DELETE_TAG_SUCCESS]: (state: TagState, action: DeleteTagSuccessAction): TagState => ({
     ...state,
-    results: state.results.filter(id => id !== action.payload.result.tag)
+    results: without(state.results, action.payload.result.tag)
   }),
 
   [T.DELETE_TAG_FAILURE]: (state: TagState, action: DeleteTagFailureAction): TagState => ({

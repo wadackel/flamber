@@ -4,7 +4,7 @@ import { takeEvery } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
 import TagSchema from "../../schemas/tag";
 import * as Services from "../../services/tags";
-import * as Notifications from "../../actions/notifications";
+import { showNotify } from "../../actions/notifications";
 import * as T from "../../actions/tags";
 import { getTagEntityByName } from "../../selectors/tags";
 
@@ -19,29 +19,28 @@ import type {
 
 export function *handleAddTagRequest(): Generator<any, *, *> {
   while (true) {
+    const action: ?AddTagRequestAction = yield take(T.ADD_TAG_REQUEST);
+
     try {
-      const action: ?AddTagRequestAction = yield take(T.ADD_TAG_REQUEST);
       if (!action) throw new Error("タグの追加に失敗しました");
 
-      const entity: ?TagEntity = yield select(getTagEntityByName, action.payload);
-      if (entity) throw new Error(`${action.payload} は既に登録済みです`);
+      const entity: ?TagEntity = yield select(getTagEntityByName, action.payload.id);
+      if (entity && entity.isSaved) throw new Error(`${action.payload.name} は既に登録済みです`);
 
-      const response = yield call((): Promise<{ tag: Tag }> => Services.addTag(action.payload));
+      const response = yield call((): Promise<{ tag: Tag }> => Services.addTag(action.payload.name));
       if (!response) throw new Error("タグの追加に失敗しました");
 
-      const normalized = normalize(response, {
-        tag: TagSchema
-      });
-      yield put(T.addTagSuccess(normalized));
+      const normalized = normalize(response, { tag: TagSchema });
+      yield put(T.addTagSuccess(normalized, action.payload));
 
     } catch (error) {
-      yield put(T.addTagFailure(error));
+      yield put(T.addTagFailure(error, action ? action.payload : null));
     }
   }
 }
 
 function *handleAddTagFailure(action: AddTagFailureAction): Generator<any, *, *> {
-  yield put(Notifications.showNotify(action.payload.message));
+  yield put(showNotify(action.payload.message));
 }
 
 

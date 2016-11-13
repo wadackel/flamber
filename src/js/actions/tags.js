@@ -1,6 +1,11 @@
 // @flow
+import uuid from "node-uuid";
+import { normalize } from "normalizr";
+import TagSchema from "../schemas/tag";
+
 import type {
   TagId,
+  TagEntity,
 
   SetCurrentTagAction,
 
@@ -71,16 +76,27 @@ export const ADD_TAG_REQUEST = "ADD_TAG_REQUEST";
 export const ADD_TAG_SUCCESS = "ADD_TAG_SUCCESS";
 export const ADD_TAG_FAILURE = "ADD_TAG_FAILURE";
 
-export const addTagRequest = (name: string): AddTagRequestAction => (
-  { type: ADD_TAG_REQUEST, payload: name }
+export const addTagRequest = (name: string): AddTagRequestAction => {
+  const normalized = normalize({
+    id: uuid.v4(),
+    created_at: new Date(),
+    updated_at: new Date(),
+    isSaved: false,
+    name
+  }, TagSchema);
+
+  return {
+    type: ADD_TAG_REQUEST,
+    payload: normalized.entities.tags[normalized.result]
+  };
+};
+
+export const addTagSuccess = (payload: AddTagSuccessPayload, tmpEntity: TagEntity): AddTagSuccessAction => (
+  { type: ADD_TAG_SUCCESS, payload, meta: tmpEntity }
 );
 
-export const addTagSuccess = (payload: AddTagSuccessPayload): AddTagSuccessAction => (
-  { type: ADD_TAG_SUCCESS, payload }
-);
-
-export const addTagFailure = (error: Error): AddTagFailureAction => (
-  { type: ADD_TAG_FAILURE, payload: error, error: true }
+export const addTagFailure = (error: Error, entity: ?TagEntity): AddTagFailureAction => (
+  { type: ADD_TAG_FAILURE, payload: error, error: true, meta: entity }
 );
 
 

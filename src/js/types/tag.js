@@ -1,6 +1,6 @@
 // @flow
 import type { TypeMap } from "./map";
-import type { Action, PayloadAction, ErrorAction, ErrorWithMetaAction } from "./action";
+import type { Action, PayloadAction, PayloadWithMetaAction, ErrorAction, ErrorWithMetaAction } from "./action";
 import type { ArrayNormalized, SingleNormalized } from "./normalize";
 
 export type TagId = string; // UUID
@@ -15,6 +15,7 @@ export type Tag = {
 export type Tags = Array<Tag>;
 
 export type TagEntity = $All<Tag, {
+  isSaved: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
 }>;
@@ -56,9 +57,9 @@ export type FetchTagsFailureAction = ErrorAction<"FETCH_TAGS_FAILURE", Error>;
 
 // Add
 export type AddTagSuccessPayload = SingleTag;
-export type AddTagRequestAction = PayloadAction<"ADD_TAG_REQUEST", string>;
-export type AddTagSuccessAction = PayloadAction<"ADD_TAG_SUCCESS", AddTagSuccessPayload>;
-export type AddTagFailureAction = ErrorAction<"ADD_TAG_FAILURE", Error>;
+export type AddTagRequestAction = PayloadAction<"ADD_TAG_REQUEST", TagEntity>;
+export type AddTagSuccessAction = PayloadWithMetaAction<"ADD_TAG_SUCCESS", AddTagSuccessPayload, TagEntity>;
+export type AddTagFailureAction = ErrorWithMetaAction<"ADD_TAG_FAILURE", Error, ?TagEntity>;
 
 
 // Update

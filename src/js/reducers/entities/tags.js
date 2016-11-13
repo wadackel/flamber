@@ -1,10 +1,8 @@
 // @flow
 import { assign, mapValues, pickBy } from "lodash";
-import { normalize } from "normalizr";
 import { handleActions } from "redux-actions";
-import TagSchema from "../../schemas/tag";
-import * as Items from "../../actions/items";
-import * as Tags from "../../actions/tags";
+// import * as I from "../../actions/items";
+import * as T from "../../actions/tags";
 
 import type {
   TagId,
@@ -12,7 +10,9 @@ import type {
   TagEntitiesState,
 
   FetchTagsSuccessAction,
+  AddTagRequestAction,
   AddTagSuccessAction,
+  AddTagFailureAction,
   UpdateTagRequestAction,
   UpdateTagSuccessAction,
   UpdateTagFailureAction,
@@ -41,19 +41,29 @@ function removeEntities(state: TagEntitiesState, ids: Array<TagId>): TagEntities
 
 export default handleActions({
   // Fetch
-  [Tags.FETCH_TAGS_SUCCESS]: (state: TagEntitiesState, action: FetchTagsSuccessAction): TagEntitiesState => (
+  [T.FETCH_TAGS_SUCCESS]: (state: TagEntitiesState, action: FetchTagsSuccessAction): TagEntitiesState => (
     mergeEntities(state, action.payload.entities.tags)
   ),
 
 
   // Add
-  [Tags.ADD_TAG_SUCCESS]: (state: TagEntitiesState, action: AddTagSuccessAction): TagEntitiesState => (
-    mergeEntities(state, action.payload.entities.tags)
+  [T.ADD_TAG_REQUEST]: (state: TagEntitiesState, action: AddTagRequestAction): TagEntitiesState => (
+    mergeEntities(state, { [action.payload.id]: action.payload })
+  ),
+
+  [T.ADD_TAG_SUCCESS]: (state: TagEntitiesState, action: AddTagSuccessAction): TagEntitiesState => (
+    mergeEntities(removeEntities(state, [action.meta.id]), action.payload.entities.tags)
+  ),
+
+  [T.ADD_TAG_FAILURE]: (state: TagEntitiesState, action: AddTagFailureAction): TagEntitiesState => (
+    action.meta
+      ? removeEntities(state, [action.meta.id])
+      : state
   ),
 
 
   // Update
-  [Tags.UPDATE_TAG_REQUEST]: (state: TagEntitiesState, action: UpdateTagRequestAction): TagEntitiesState => (
+  [T.UPDATE_TAG_REQUEST]: (state: TagEntitiesState, action: UpdateTagRequestAction): TagEntitiesState => (
     mapEntities(state, [action.payload.id], (entity: TagEntity): TagEntity => ({
       ...entity,
       ...action.payload,
@@ -61,11 +71,11 @@ export default handleActions({
     }))
   ),
 
-  [Tags.UPDATE_TAG_SUCCESS]: (state: TagEntitiesState, action: UpdateTagSuccessAction): TagEntitiesState => (
+  [T.UPDATE_TAG_SUCCESS]: (state: TagEntitiesState, action: UpdateTagSuccessAction): TagEntitiesState => (
     mergeEntities(state, action.payload.entities.tags)
   ),
 
-  [Tags.UPDATE_TAG_FAILURE]: (state: TagEntitiesState, action: UpdateTagFailureAction): TagEntitiesState => (
+  [T.UPDATE_TAG_FAILURE]: (state: TagEntitiesState, action: UpdateTagFailureAction): TagEntitiesState => (
     action.meta
       ? mapEntities(state, [action.meta.id], (entity: TagEntity): TagEntity => ({
         ...entity,
@@ -77,48 +87,34 @@ export default handleActions({
 
 
   // Delete
-  [Tags.DELETE_TAG_REQUEST]: (state: TagEntitiesState, action: DeleteTagRequestAction): TagEntitiesState => (
+  [T.DELETE_TAG_REQUEST]: (state: TagEntitiesState, action: DeleteTagRequestAction): TagEntitiesState => (
     mapEntities(state, [action.payload], (entity: TagEntity) => ({
       ...entity,
       isDeleting: true
     }))
   ),
 
-  [Tags.DELETE_TAG_SUCCESS]: (state: TagEntitiesState, action: DeleteTagSuccessAction): TagEntitiesState => (
+  [T.DELETE_TAG_SUCCESS]: (state: TagEntitiesState, action: DeleteTagSuccessAction): TagEntitiesState => (
     removeEntities(state, [action.payload.result.tag])
   ),
 
-  [Tags.DELETE_TAG_FAILURE]: (state: TagEntitiesState, action: DeleteTagFailureAction): TagEntitiesState => (
+  [T.DELETE_TAG_FAILURE]: (state: TagEntitiesState, action: DeleteTagFailureAction): TagEntitiesState => (
     action.meta
       ? mapEntities(state, [action.meta], (entity: TagEntity) => ({
         ...entity,
         isDeleting: false
       }))
       : state
-  ),
-
-
-  // Register item tag
-  [Items.REGISTER_ITEM_TAG_REQUEST]: (state, { payload }) => (
-    mergeEntities(state,
-      normalize({
-        id: payload.tagId,
-        user: "processing",
-        name: payload.label,
-        created: new Date(),
-        modified: new Date()
-      }, TagSchema).entities.tags
-    )
   )
 
   // TODO
-  // [Items.REGISTER_ITEM_TAG_SUCCESS]: (state, { meta }) => (
+  // [I.REGISTER_ITEM_TAG_SUCCESS]: (state, { meta }) => (
   //   pickBy(state, (entity, id) =>
   //     id !== meta.tagId
   //   )
   // ),
   //
-  // [Items.REGISTER_ITEM_TAG_FAILURE]: (state, { meta }) => (
+  // [I.REGISTER_ITEM_TAG_FAILURE]: (state, { meta }) => (
   //   pickBy(state, (entity, id) =>
   //     id !== meta.tagId
   //   )

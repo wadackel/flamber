@@ -11,8 +11,7 @@ import {
   List,
   ListItem,
   EmptyData,
-  TextField,
-  ProcessingOverlay
+  TextField
 } from "../../../components/ui/";
 import { TagsIcon } from "../../../components/svg-icons";
 
@@ -77,16 +76,10 @@ export class TagDrawerContainer extends Component {
   }
 
   renderFooter() {
-    const { tags } = this.props;
     const { addTagName } = this.state;
 
     return (
       <div className={b("footer")()}>
-        <ProcessingOverlay
-          className={b("footer-overlay")()}
-          show={tags.isAdding}
-          spinnerSize={24}
-        />
         <TextField
           ref="addTag"
           className={b("add-tag")()}
@@ -123,7 +116,7 @@ export class TagDrawerContainer extends Component {
           <ListItem
             key={entity.id}
             value={entity.id}
-            processing={entity.isDeleting || entity.isUpdating}
+            processing={!entity.isSaved || entity.isDeleting || entity.isUpdating}
             primary={entity.name}
             editable={true}
             onClick={this.handleTagClick}
