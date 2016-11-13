@@ -73,6 +73,11 @@ import type {
   RemoveItemTagSuccessAction,
   RemoveItemTagFailureAction,
 
+  RegisterItemTagSuccessPayload,
+  RegisterItemTagRequestAction,
+  RegisterItemTagSuccessAction,
+  RegisterItemTagFailureAction,
+
   MoveItemSelectBoardOpenAction,
   MoveItemSelectBoardCloseAction,
 
@@ -353,20 +358,23 @@ export const removeItemTagFailure =
 
 
 // Register tag
-export const REGISTER_ITEM_TAG_REQUEST: string = "REGISTER_ITEM_TAG_REQUEST";
-export const REGISTER_ITEM_TAG_SUCCESS: string = "REGISTER_ITEM_TAG_SUCCESS";
-export const REGISTER_ITEM_TAG_FAILURE: string = "REGISTER_ITEM_TAG_FAILURE";
+export const REGISTER_ITEM_TAG_REQUEST = "REGISTER_ITEM_TAG_REQUEST";
+export const REGISTER_ITEM_TAG_SUCCESS = "REGISTER_ITEM_TAG_SUCCESS";
+export const REGISTER_ITEM_TAG_FAILURE = "REGISTER_ITEM_TAG_FAILURE";
 
-export const registerItemTagRequest = createAction(REGISTER_ITEM_TAG_REQUEST,
-  (id: ItemId, label: string): Object => ({ id, label, tagId: uuid.v4() })
+export const registerItemTagRequest =
+  (id: ItemId, label: string): RegisterItemTagRequestAction => (
+  { type: REGISTER_ITEM_TAG_REQUEST, payload: { id, label, tagId: uuid.v4() } }
 );
-export const registerItemTagSuccess = createAction(REGISTER_ITEM_TAG_SUCCESS,
-  identity,
-  (normalized, payload): Object => ({ ...payload })
+
+export const registerItemTagSuccess =
+  (payload: RegisterItemTagSuccessPayload, tmpTagId: TagId): RegisterItemTagSuccessAction => (
+  { type: REGISTER_ITEM_TAG_SUCCESS, payload, meta: tmpTagId }
 );
-export const registerItemTagFailure = createAction(REGISTER_ITEM_TAG_FAILURE,
-  identity,
-  updateItemMetaCreator
+
+export const registerItemTagFailure =
+  (error: Error, payload: { id: ItemId; label: string; tagId: TagId; }): RegisterItemTagFailureAction => (
+  { type: REGISTER_ITEM_TAG_FAILURE, payload: error, error: true, meta: payload }
 );
 
 

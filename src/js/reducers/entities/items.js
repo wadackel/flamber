@@ -31,6 +31,9 @@ import type {
   RemoveItemTagRequestAction,
   RemoveItemTagSuccessAction,
   RemoveItemTagFailureAction,
+  RegisterItemTagRequestAction,
+  RegisterItemTagSuccessAction,
+  RegisterItemTagFailureAction,
   MoveItemSuccessAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
@@ -302,40 +305,37 @@ export default handleActions({
 
 
   // Register tag
-  [I.REGISTER_ITEM_TAG_REQUEST]: (state, { payload }) => (
-    mapValues(state, entity =>
-      entity.id !== payload.id ? entity : {
-        ...entity,
-        tags: [...entity.tags, payload.tagId],
-        isUpdating: true,
-        isTagAdding: true
-      }
-    )
+  [I.REGISTER_ITEM_TAG_REQUEST]:
+    (state: ItemEntitiesState, action: RegisterItemTagRequestAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: ItemEntity) => ({
+      ...entity,
+      Tags: [...entity.Tags, action.payload.tagId],
+      isUpdating: true,
+      isTagAdding: true
+    }))
   ),
 
-  [I.REGISTER_ITEM_TAG_SUCCESS]: (state, { payload, meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
-        ...entity,
-        tags: union(
-          without(entity.tags, meta.tagId),
-          payload.entities.items[payload.result.items[0]].tags
-        ),
-        isUpdating: false,
-        isTagAdding: false
-      }
-    )
+  [I.REGISTER_ITEM_TAG_SUCCESS]:
+    (state: ItemEntitiesState, action: RegisterItemTagSuccessAction): ItemEntitiesState => (
+    mapEntities(state, [action.payload.result.item], (entity: ItemEntity) => ({
+      ...entity,
+      Tags: union(
+        without(entity.Tags, action.meta),
+        action.payload.entities.items[action.payload.result.item].Tags
+      ),
+      isUpdating: false,
+      isTagAdding: false
+    }))
   ),
 
-  [I.REGISTER_ITEM_TAG_FAILURE]: (state, { meta }) => (
-    mapValues(state, entity =>
-      entity.id !== meta.id ? entity : {
-        ...entity,
-        tags: without(entity.tags, meta.tagId),
-        isUpdating: false,
-        isTagAdding: false
-      }
-    )
+  [I.REGISTER_ITEM_TAG_FAILURE]:
+    (state: ItemEntitiesState, action: RegisterItemTagFailureAction) => (
+    mapEntities(state, [action.meta.id], (entity: ItemEntity) => ({
+      ...entity,
+      Tags: without(entity.Tags, action.meta.tagId),
+      isUpdating: false,
+      isTagAdding: false
+    }))
   ),
 
 

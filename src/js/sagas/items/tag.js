@@ -17,11 +17,18 @@ import type {
   AddItemTagRequestAction,
   AddItemTagFailureAction,
   RemoveItemTagRequestAction,
-  RemoveItemTagFailureAction
+  RemoveItemTagFailureAction,
+  RegisterItemTagRequestAction,
+  RegisterItemTagFailureAction
 } from "../../types/item";
+import type {
+  AddTagSuccessAction,
+  AddTagFailureAction
+} from "../../types/tag";
 
 type ItemTagFailureAction = AddItemTagFailureAction
-  | RemoveItemTagFailureAction;
+  | RemoveItemTagFailureAction
+  | RegisterItemTagFailureAction;
 
 
 // Add tag
@@ -53,35 +60,41 @@ export function *handleRemoveItemTagRequest(action: RemoveItemTagRequestAction):
 }
 
 
-// // Register
-// export function *handleRegisterItemTagRequest({ payload }): Generator<any, *, *> {
-//   const entity = yield select(getItemEntityById, payload.id);
-//
-//   yield put(T.addTagRequest(payload.label));
-//   const res = yield take([T.ADD_TAG_SUCCESS, T.ADD_TAG_FAILURE]);
-//
-//   if (res.payload instanceof Error) {
-//     yield put(I.registerItemTagFailure(res.payload, payload));
-//   }
-//
-//   try {
-//     const newTagId = res.payload.result.tag;
-//     const newEntity = {
-//       ...entity,
-//       tags: entity.tags.map(id => id === payload.tagId ? newTagId : id)
-//     };
-//
-//     const response = yield call(Services.updateItems, [newEntity]);
-//     const normalized = normalize(response, {
-//       items: arrayOf(ItemSchema)
-//     });
-//
-//     yield put(I.registerItemTagSuccess(normalized, payload));
-//
-//   } catch (error) {
-//     yield put(I.registerItemTagFailure(error, payload));
-//   }
-// }
+// Register
+export function *handleRegisterItemTagRequest(action: RegisterItemTagRequestAction): Generator<any, *, *> {
+  const failureMessage = "タグの追加に失敗しました";
+
+  try {
+    const entity: ?ItemEntity = yield select(getItemEntityById, action.payload.id);
+    if (!entity) throw new Error(failureMessage);
+
+    yield put(T.addTagRequest(action.payload.label));
+    const res: ?AddTagSuccessAction | ?AddTagFailureAction = yield take([T.ADD_TAG_SUCCESS, T.ADD_TAG_FAILURE]);
+
+    if (!res || res.error) {
+      yield put(I.registerItemTagFailure(
+        new Error(failureMessage),
+        action.payload
+      ));
+
+      return;
+    }
+
+    const newEntity = {
+      ...entity,
+      Tags: entity.Tags.map(id => id === action.payload.tagId ? res.payload.result.tag : id)
+    };
+
+    yield callUpdateItem(
+      newEntity,
+      I.registerItemTagSuccess,
+      I.registerItemTagFailure
+    );
+
+  } catch (error) {
+    yield put(I.registerItemTagFailure(error, action.payload));
+  }
+}
 
 
 function *handleItemTagFailureAction(action: ItemTagFailureAction): Generator<any, *, *> {
@@ -98,13 +111,14 @@ export default function *tagItemSaga(): Generator<any, *, *> {
     // Remove tag
     takeEvery(I.REMOVE_ITEM_TAG_REQUEST, handleRemoveItemTagRequest),
 
-    // // Register tag
-    // takeEvery(I.REGISTER_ITEM_TAG_REQUEST, handleRegisterItemTagRequest)
+    // Register tag
+    takeEvery(I.REGISTER_ITEM_TAG_REQUEST, handleRegisterItemTagRequest),
 
     // Error
     takeEvery([
       I.ADD_ITEM_TAG_FAILURE,
-      I.REMOVE_ITEM_TAG_FAILURE
+      I.REMOVE_ITEM_TAG_FAILURE,
+      I.REGISTER_ITEM_TAG_FAILURE
     ], handleItemTagFailureAction)
   ];
 }
