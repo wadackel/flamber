@@ -1,5 +1,5 @@
 // @flow
-import React from "react";
+import React, { Component } from "react";
 import RcSlider from "rc-slider";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -12,11 +12,15 @@ type HandleProps = {
   dragging?: boolean;
 };
 
-function Handle(props: HandleProps) {
-  const { offset, dragging } = props;
-  const style = { left: `${offset ? offset : 0}%` };
+class Handle extends Component {
+  props: HandleProps;
 
-  return <div className={b("handle", { dragging })} style={style} />;
+  render() {
+    const { offset, dragging } = this.props;
+    const style = { left: `${offset ? offset : 0}%` };
+
+    return <div className={b("handle", { dragging })} style={style} />;
+  }
 }
 
 
