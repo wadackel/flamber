@@ -1,8 +1,9 @@
 // @flow
-import { assign, mapValues, union, without, pickBy } from "lodash";
+import { assign, mapValues, without, pickBy } from "lodash";
 import { handleActions } from "redux-actions";
 import * as B from "../../actions/boards";
 import * as I from "../../actions/items";
+import * as T from "../../actions/tags";
 
 import type {
   ItemId,
@@ -31,9 +32,6 @@ import type {
   RemoveItemTagRequestAction,
   RemoveItemTagSuccessAction,
   RemoveItemTagFailureAction,
-  RegisterItemTagRequestAction,
-  RegisterItemTagSuccessAction,
-  RegisterItemTagFailureAction,
   MoveItemSuccessAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
@@ -47,6 +45,8 @@ import type {
   SelectedItemsDeleteSuccessAction,
   SelectedItemsDeleteFailureAction
 } from "../../types/item";
+import type { FetchBoardsSuccessAction } from "../../types/board";
+import type { DeleteTagSuccessAction } from "../../types/tag";
 
 
 function mergeEntities(state: ItemEntitiesState, entities: ItemEntitiesState): ItemEntitiesState {
@@ -431,7 +431,15 @@ export default handleActions({
 
 
   // Boards
-  [B.FETCH_BOARDS_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.items)
+  [B.FETCH_BOARDS_SUCCESS]: (state: ItemEntitiesState, action: FetchBoardsSuccessAction): ItemEntitiesState => (
+    mergeEntities(state, action.payload.entities.items)
+  ),
+
+  // Tags
+  [T.DELETE_TAG_SUCCESS]: (state: ItemEntitiesState, action: DeleteTagSuccessAction): ItemEntitiesState => (
+    mapValues(state, (entity: ItemEntity) => ({
+      ...entity,
+      Tags: without(entity.Tags, action.payload.result.tag)
+    }))
   )
 }, {});

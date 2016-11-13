@@ -1,8 +1,8 @@
 // @flow
 import type { TypeMap } from "./map";
 import type { Action, PayloadAction, ErrorAction, ErrorWithMetaAction } from "./action";
-import type { ArrayNormalized, SingleNormalized } from "./normalize";
-import type { ItemId } from "./item";
+import type { ItemId, ItemEntity } from "./item";
+import type { TagId, TagEntity } from "./tag";
 
 export type BoardId = string; // UUID
 
@@ -37,8 +37,27 @@ export type BoardState = {
 export type BoardEntitiesState = TypeMap<BoardId, BoardEntity>;
 
 
-type SingleBoard = SingleNormalized<"boards", "board", BoardEntity, BoardId>;
-type ArrayBoard = ArrayNormalized<"boards", BoardEntity, BoardId>;
+type SingleBoard = {
+  entities: {
+    boards: TypeMap<BoardId, BoardEntity>;
+    items: TypeMap<ItemId, ItemEntity>;
+    tags: TypeMap<TagId, TagEntity>;
+  };
+  result: {
+    board: BoardId;
+  }
+};
+
+type ArrayBoard = {
+  entities: {
+    boards: TypeMap<BoardId, BoardEntity>;
+    items: TypeMap<ItemId, ItemEntity>;
+    tags: TypeMap<TagId, TagEntity>;
+  };
+  result: {
+    boards: Array<BoardId>;
+  }
+};
 
 
 // Fetch

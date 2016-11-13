@@ -37,7 +37,11 @@ export default function(sequelize: any, DataTypes: any) {
       associate(models) {
         Item.belongsTo(models.User);
         Item.belongsTo(models.Board);
-        Item.belongsToMany(models.Tag, { through: models.ItemTags });
+        Item.belongsToMany(models.Tag, {
+          through: models.ItemTags,
+          onDelete: "cascade",
+          hooks: true
+        });
       },
       filterEditableAttributes(attributes: Object) {
         const readOnly = ["id", "user_id"];
@@ -117,40 +121,6 @@ export default function(sequelize: any, DataTypes: any) {
 
   return Item;
 }
-// import path from "path";
-// import Url from "url";
-// import _ from "lodash";
-// import imgur from "imgur";
-// import Board from "./board";
-// import { makeThumbnailURL } from "../utils/imgur";
-//
-// ItemSchema.statics.appendByUserAndFile = function(user, board, file, palette) {
-//   const base64 = file.buffer.toString("base64");
-//
-//   return imgur.uploadBase64(base64)
-//     .then(json => {
-//       const { data } = json;
-//       const entity = new this({
-//         user,
-//         board,
-//         palette,
-//         url: file.originalname,
-//         name: path.parse(file.originalname).name,
-//         file: data.id,
-//         width: data.width,
-//         height: data.height,
-//         image: data.link,
-//         thumbnail: makeThumbnailURL(data.link, "l"),
-//         size: data.size,
-//         type: data.type
-//       });
-//
-//       return entity.save();
-//     })
-//     .then(entity => this.populateEntity(entity));
-// };
-//
-//
 // ItemSchema.statics.appendByUserAndURL = function(user, board, file, palette, url) {
 //   const base64 = file.buffer.toString("base64");
 //
@@ -175,41 +145,4 @@ export default function(sequelize: any, DataTypes: any) {
 //       return entity.save();
 //     })
 //     .then(entity => this.populateEntity(entity));
-// };
-//
-//
-// ItemSchema.statics.updateImageByUserAndId = function(user, id, file) {
-//   const base64 = file.buffer.toString("base64");
-//
-//   return this.findByUserAndId(user, id)
-//     .then(entity =>
-//       imgur.uploadBase64(base64).then(json => ({ json, entity }))
-//     )
-//     .then(({ json, entity }) => {
-//       const { data } = json;
-//       entity.file = data.id;
-//       entity.image = data.link;
-//       entity.thumbnail = makeThumbnailURL(data.link, "l");
-//       entity.width = data.width;
-//       entity.height = data.height;
-//       entity.size = data.size;
-//       entity.type = data.type;
-//       return entity.save();
-//     })
-//     .then(entity => this.populateEntity(entity));
-//
-//
-// ItemSchema.statics.updateByUserFromArray = function(user, entities) {
-//   const promises = entities.map(entity =>
-//     () => this.updateByUserAndIdFromObject(user, entity.id, entity)
-//   );
-//
-//   const sequence = promises.reduce((prev, current) =>
-//     prev.then(current),
-//     promises.shift()()
-//   );
-//
-//   return sequence.then(() =>
-//     Promise.all(entities.map(entity => this.findOne({ user, _id: entity.id }).populate("board tags")))
-//   );
 // };

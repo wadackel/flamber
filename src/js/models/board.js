@@ -17,7 +17,10 @@ export default function(sequelize: any, DataTypes: any) {
     classMethods: {
       associate(models) {
         Board.belongsTo(models.User);
-        Board.hasMany(models.Item);
+        Board.hasMany(models.Item, {
+          onDelete: "cascade",
+          hooks: true
+        });
       },
       filterEditableAttributes(attributes: Object) {
         const readOnly = ["id", "user_id"];
