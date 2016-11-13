@@ -5,6 +5,7 @@ import passport from "passport";
 import GoogleStrategy from "passport-google-oauth20";
 import * as AuthProviders from "./constants/auth-providers";
 import models from "./models/";
+import defaultOptions from "./constants/default-options";
 
 const { User, Option } = models;
 
@@ -33,9 +34,7 @@ passport.use(new GoogleStrategy({
         installed: false,
         provider: AuthProviders.GOOGLE,
         provider_id: profile.id,
-        Option: {
-          theme: "dark"
-        }
+        Option: defaultOptions
       }, {
         include: [Option]
       });

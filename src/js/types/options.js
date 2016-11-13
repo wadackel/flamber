@@ -3,25 +3,28 @@ import type { PayloadAction, ErrorAction } from "./action";
 import type { User } from "./user";
 import type { Theme, BoardsLayout, ItemsLayout, OrderBy, Order } from "./prop-types";
 
-export type OptionsState = {
-  isProfileUpdating: boolean;
+export type Options = {
   theme: Theme;
-  isThemeUpdating: boolean;
   boardsLayout: BoardsLayout;
-  isBoardsLayoutUpdating: boolean;
   boardsOrderBy: OrderBy;
-  isBoardsOrderByUpdating: boolean;
   boardsOrder: Order;
-  isBoardsOrderUpdating: boolean;
   itemsLayout: ItemsLayout;
-  isItemsLayoutUpdating: boolean;
   itemsSize: number;
-  isItemsSizeUpdating: boolean;
   itemsOrderBy: OrderBy;
-  isItemsOrderByUpdating: boolean;
   itemsOrder: Order;
-  isItemsOrderUpdating: boolean;
 };
+
+export type OptionsState = $All<Options, {
+  isProfileUpdating: boolean;
+  isThemeUpdating: boolean;
+  isBoardsLayoutUpdating: boolean;
+  isBoardsOrderByUpdating: boolean;
+  isBoardsOrderUpdating: boolean;
+  isItemsLayoutUpdating: boolean;
+  isItemsSizeUpdating: boolean;
+  isItemsOrderByUpdating: boolean;
+  isItemsOrderUpdating: boolean;
+}>;
 
 
 // Update profile
