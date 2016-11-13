@@ -66,6 +66,7 @@ const HTML = ({ content, store }) => {
 
 
 // Express middleware
+app.disable("x-powered-by");
 app.use(compression());
 app.use(favicon(path.resolve(__dirname, "../public/favicon.ico")));
 app.use(express.static(path.resolve(__dirname, "../public")));
