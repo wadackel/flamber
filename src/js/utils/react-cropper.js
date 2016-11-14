@@ -1,6 +1,6 @@
 // @flow
 import { Component } from "react";
-import ExecutionEnvironment from "../constants/execution-environment";
+import ExecutionEnvironment from "exenv";
 
 /* eslint-disable no-unused-vars */
 type _Size = {

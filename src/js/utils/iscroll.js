@@ -1,5 +1,5 @@
 // @flow
-import ExecutionEnvironment from "../constants/execution-environment";
+import ExecutionEnvironment from "exenv";
 
 /* eslint-disable no-unused-vars */
 class IScrollMock {

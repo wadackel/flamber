@@ -1,6 +1,7 @@
 // @flow
 import autoBind from "auto-bind";
 import React, { Component } from "react";
+import ExecutionEnvironment from "exenv";
 import { connect } from "react-redux";
 import * as OptionActions from "../../../actions/options";
 import * as ItemActions from "../../../actions/items";
@@ -10,7 +11,6 @@ import {
   getSelectedItemEntities,
   getCurrentItem
 } from "../../../selectors/items";
-import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
 import {
   CardGroup,

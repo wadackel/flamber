@@ -2,7 +2,7 @@
 import queryString from "query-string";
 import libFetch from "isomorphic-fetch";
 import { API_ROOT } from "../constants/application";
-import ExecutionEnvironment from "../constants/execution-environment";
+import ExecutionEnvironment from "exenv";
 import { checkStatus } from "../utils/fetch";
 import * as cookie from "../utils/cookie";
 import ApiClient from "../utils/api-client";

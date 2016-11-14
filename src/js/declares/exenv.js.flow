@@ -1,0 +1,8 @@
+declare module "exenv" {
+  declare export default {
+    canUseDOM: boolean;
+    canUseWorkers: boolean;
+    canUseEventListeners: boolean;
+    canUseViewport: boolean;
+  };
+}

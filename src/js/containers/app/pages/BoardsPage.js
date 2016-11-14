@@ -1,10 +1,10 @@
 // @flow
 import autoBind from "auto-bind";
 import React, { Component } from "react";
+import ExecutionEnvironment from "exenv";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import bem from "../../../helpers/bem";
-import ExecutionEnvironment from "../../../constants/execution-environment";
 import * as OptionActions from "../../../actions/options";
 import * as BoardActions from "../../../actions/boards";
 import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/boards";
