@@ -91,6 +91,13 @@ export type SetItemVisibilityFilterAction = PayloadAction<"SET_ITEM_VISIBILITY_F
 export type SetItemImageEditingAction = PayloadAction<"SET_ITEM_IMAGE_EDITING", boolean>;
 
 
+// Fetch
+export type FetchItemsSuccessPayload = ArrayItem;
+export type FetchItemsRequestAction = Action<"FETCH_ITEMS_REQUEST">;
+export type FetchItemsSuccessAction = PayloadAction<"FETCH_ITEMS_SUCCESS", FetchItemsSuccessPayload>;
+export type FetchItemsFailureAction = ErrorAction<"FETCH_ITEMS_FAILURE", Error>;
+
+
 // Add from URL (UI)
 export type AddItemURLDialogOpenAction = Action<"ADD_ITEM_URL_DIALOG_OPEN">;
 export type AddItemURLDialogCloseAction = Action<"ADD_ITEM_URL_DIALOG_CLOSE">;

@@ -17,6 +17,11 @@ import type {
 
   SetItemImageEditingAction,
 
+  FetchItemsSuccessPayload,
+  FetchItemsRequestAction,
+  FetchItemsSuccessAction,
+  FetchItemsFailureAction,
+
   AddItemURLDialogOpenAction,
   AddItemURLDialogCloseAction,
 
@@ -149,13 +154,21 @@ export const setItemImageEditing = (isOpen: boolean): SetItemImageEditingAction 
 
 
 // Fetch
-export const FETCH_ITEMS_REQUEST: string = "FETCH_ITEMS_REQUEST";
-export const FETCH_ITEMS_SUCCESS: string = "FETCH_ITEMS_SUCCESS";
-export const FETCH_ITEMS_FAILURE: string = "FETCH_ITEMS_FAILURE";
+export const FETCH_ITEMS_REQUEST = "FETCH_ITEMS_REQUEST";
+export const FETCH_ITEMS_SUCCESS = "FETCH_ITEMS_SUCCESS";
+export const FETCH_ITEMS_FAILURE = "FETCH_ITEMS_FAILURE";
 
-export const fetchItemsRequest = createAction(FETCH_ITEMS_REQUEST);
-export const fetchItemsSuccess = createAction(FETCH_ITEMS_SUCCESS);
-export const fetchItemsFailure = createAction(FETCH_ITEMS_FAILURE);
+export const fetchItemsRequest = (): FetchItemsRequestAction => (
+  { type: FETCH_ITEMS_REQUEST }
+);
+
+export const fetchItemsSuccess = (payload: FetchItemsSuccessPayload): FetchItemsSuccessAction => (
+  { type: FETCH_ITEMS_SUCCESS, payload }
+);
+
+export const fetchItemsFailure = (error: Error): FetchItemsFailureAction => (
+  { type: FETCH_ITEMS_FAILURE, payload: error, error: true }
+);
 
 
 // Add from URL (UI)

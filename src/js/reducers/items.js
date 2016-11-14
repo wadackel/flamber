@@ -9,6 +9,7 @@ import type {
   SetCurrentItemAction,
   SetItemVisibilityFilterAction,
   SetItemImageEditingAction,
+  FetchItemsFailureAction,
   AddItemURLFailureAction,
   AddItemFileFailureAction,
   MoveItemSelectBoardOpenAction,
@@ -82,22 +83,22 @@ export default handleActions({
   }),
 
 
-  // // Fetch
-  // [I.FETCH_ITEMS_REQUEST]: state => ({
-  //   ...state,
-  //   isFetching: true
-  // }),
-  //
-  // [I.FETCH_ITEMS_SUCCESS]: (state, { payload }) => ({
-  //   ...state,
-  //   isFetching: false
-  // }),
-  //
-  // [I.FETCH_ITEMS_FAILURE]: (state, { payload }) => ({
-  //   ...state,
-  //   isFetching: false,
-  //   error: payload
-  // }),
+  // Fetch
+  [I.FETCH_ITEMS_REQUEST]: (state: ItemState): ItemState => ({
+    ...state,
+    isFetching: true
+  }),
+
+  [I.FETCH_ITEMS_SUCCESS]: (state: ItemState): ItemState => ({
+    ...state,
+    isFetching: false
+  }),
+
+  [I.FETCH_ITEMS_FAILURE]: (state: ItemState, action: FetchItemsFailureAction): ItemState => ({
+    ...state,
+    isFetching: false,
+    error: action.payload
+  }),
 
 
   // Add from URL (UI)

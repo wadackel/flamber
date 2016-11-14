@@ -9,6 +9,7 @@ import type {
   ItemId,
   ItemEntity,
   ItemEntitiesState,
+  FetchItemsSuccessAction,
   AddItemURLSuccessAction,
   AddItemFileSuccessAction,
   DeleteItemRequestAction,
@@ -68,8 +69,8 @@ function removeEntities(state: ItemEntitiesState, ids: Array<ItemId>): ItemEntit
 
 export default handleActions({
   // Fetch
-  [I.FETCH_ITEMS_SUCCESS]: (state, { payload }) => (
-    mergeEntities(state, payload.entities.items)
+  [I.FETCH_ITEMS_SUCCESS]: (state: ItemEntitiesState, action: FetchItemsSuccessAction): ItemEntitiesState => (
+    mergeEntities(state, action.payload.entities.items)
   ),
 
 
