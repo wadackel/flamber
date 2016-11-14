@@ -7,33 +7,40 @@
     "start": "npm-run-all --parallel server watch",
     "server": "supervisor -w lib lib/server",
     "clean": "rimraf lib public",
+
     "build": "npm-run-all clean build:dir --parallel build:assets build:js build:sass",
     "build:dir": "mkdirp lib public/css public/js",
     "build:assets": "cpx 'assets/**/*' public",
     "build:js": "npm-run-all --parallel build:js:*",
     "build:js:client": "browserify -e src/js/client.js -o public/js/client.bundle.js -t [ babelify ]",
-    "build:js:server": "cpx 'src/js/**/*.json' lib && babel src/js --out-dir lib",
+    "build:js:server": "cpx 'src/js/**/*.json' lib && babel src/js --out-dir lib --quiet",
     "build:sass": "npm-run-all build:sass:*",
     "build:sass:compile": "node-sass --output-style compressed -o public/css src/sass --importer node_modules/node-sass-json-importer/dist/node-sass-json-importer.js",
     "build:sass:autoprefixer": "postcss -u autoprefixer -r public/css/**/*.css",
-    "build:icon-index": "babel-node ./scripts/icon-index.js",
-    "build:ui-components-index": "babel-node ./scripts/ui-components-index.js",
+
     "watch": "npm-run-all --parallel watch:*",
     "watch:js": "npm-run-all --parallel watch:js:*",
     "watch:js:client": "watchify -e src/js/client.js -o public/js/client.bundle.js -t [ babelify ] -v -d",
-    "watch:js:server": "npm run build:js:server -- -w",
+    "watch:js:server": "npm run build:js:server -- -w --skip-initial-build",
     "watch:sass": "watch 'npm run build:sass' src/sass/",
     "watch:assets": "npm run build:assets -- -w",
     "watch:test": "npm run test:unit -- -w",
+
     "lint": "npm-run-all lint:*",
     "lint:js": "eslint src/js/**/*.js .eslintrc.js --no-ignore",
     "lint:sass": "stylelint 'src/sass/**/*.scss' --syntax scss",
+
     "test": "npm-run-all test:*",
     "test:typecheck": "flow; test $? -eq 0 -o $? -eq 2",
     "test:unit": "mocha test/**/*.spec.js --compilers js:babel-register --recursive --require test/.setup.js --require babel-polyfill",
-    "styleguide": "NODE_ENV=styleguide styleguidist server",
+
     "uglify": "uglifyjs public/js/client.bundle.js -o public/js/client.bundle.js",
-    "db:sync": "babel-node ./scripts/db-sync.js",
+
+    "styleguide": "NODE_ENV=styleguide styleguidist server",
+
+    "scripts:db-sync": "babel-node ./scripts/db-sync.js",
+    "scripts:icon-index": "babel-node ./scripts/icon-index.js",
+    "scripts:ui-components-index": "babel-node ./scripts/ui-components-index.js",
 
     "preinstall": "npm run build"
   },
