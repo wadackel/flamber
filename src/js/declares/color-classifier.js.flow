@@ -1,0 +1,20 @@
+type HEX = string;
+type RGB = { r: number; g: number; b: number; };
+type HSV = { h: number; s: number; v: number; };
+type ArgColor = HEX | RGB;
+
+declare module "color-classifier" {
+  declare export default class ColorClassifier {
+    constructor(palette: Array<HEX | RGB>, algorithmType?: string): this;
+
+    classify(color: ArgColor): HEX;
+    classify(color: ArgColor, format: "hex"): HEX;
+    classify(color: ArgColor, format: "rgb"): RGB;
+    classify(color: ArgColor, format: "hsv"): HSV;
+
+    classifyFromArray(colors: Array<ArgColor>): Array<{ palette: HEX; colors: Array<HEX>; }>;
+    classifyFromArray(colors: Array<ArgColor>, format: "hex"): Array<{ palette: HEX; colors: Array<HEX>; }>;
+    classifyFromArray(colors: Array<ArgColor>, format: "rgb"): Array<{ palette: HEX; colors: Array<RGB>; }>;
+    classifyFromArray(colors: Array<ArgColor>, format: "hsv"): Array<{ palette: HEX; colors: Array<HSV>; }>;
+  }
+}

@@ -23,6 +23,7 @@ const initialState: ItemState = {
   isAdding: false,
   isMoving: false,
   isImageEditing: false,
+  isScreenshotTaking: false,
   error: null,
   currentItem: null,
   currentColor: null,
@@ -102,26 +103,38 @@ export default handleActions({
 
 
   // Add from URL (UI)
-  [I.ADD_ITEM_URL_DIALOG_OPEN]: state => ({
+  [I.ADD_ITEM_URL_DIALOG_OPEN]: (state: ItemState): ItemState => ({
     ...state,
     addURLDialogOpen: true,
     addSnackbarOpen: false
   }),
 
-  [I.ADD_ITEM_URL_DIALOG_CLOSE]: state => ({
+  [I.ADD_ITEM_URL_DIALOG_CLOSE]: (state: ItemState): ItemState => ({
     ...state,
     addURLDialogOpen: false
   }),
 
 
+  // Taking screenshot
+  [I.TAKE_SCREENSHOT_START]: (state: ItemState): ItemState => ({
+    ...state,
+    isScreenshotTaking: true
+  }),
+
+  [I.TAKE_SCREENSHOT_END]: (state: ItemState): ItemState => ({
+    ...state,
+    isScreenshotTaking: false
+  }),
+
+
   // Add from File (UI)
-  [I.ADD_ITEM_FILE_DIALOG_OPEN]: state => ({
+  [I.ADD_ITEM_FILE_DIALOG_OPEN]: (state: ItemState): ItemState => ({
     ...state,
     addFileDialogOpen: true,
     addSnackbarOpen: false
   }),
 
-  [I.ADD_ITEM_FILE_DIALOG_CLOSE]: state => ({
+  [I.ADD_ITEM_FILE_DIALOG_CLOSE]: (state: ItemState): ItemState => ({
     ...state,
     addFileDialogOpen: false
   }),

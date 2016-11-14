@@ -3,6 +3,7 @@ import _ from "lodash";
 import autoBind from "auto-bind";
 import moment from "moment";
 import React, { Component, PropTypes } from "react";
+import ExecutionEnvironment from "exenv";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import * as OrderBy from "../../../constants/order-by";
@@ -16,7 +17,6 @@ import {
   getSelectedItemEntities,
   getCurrentItem
 } from "../../../selectors/items";
-import ExecutionEnvironment from "../../../constants/execution-environment";
 import bem from "../../../helpers/bem";
 import {
   ItemDetailMetaContainer,

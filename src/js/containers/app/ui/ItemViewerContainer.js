@@ -3,10 +3,9 @@ import _ from "lodash";
 import autoBind from "auto-bind";
 import uuid from "node-uuid";
 import React, { Component, PropTypes } from "react";
+import ExecutionEnvironment from "exenv";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { connect } from "react-redux";
-import ExecutionEnvironment from "../../../constants/execution-environment";
-const dataURLtoBlob = ExecutionEnvironment.canUseDOM ? require("blueimp-canvas-to-blob") : null;
 import shareConfig from "../../../share-config.json";
 import * as SettingActions from "../../../actions/settings";
 import * as BoardActions from "../../../actions/boards";
@@ -14,6 +13,7 @@ import * as ItemActions from "../../../actions/items";
 import { getCurrentItem } from "../../../selectors/items";
 import { hexToRgb } from "../../../helpers/color";
 import bem from "../../../helpers/bem";
+import { dataURLtoBlob } from "../../../utils/image";
 import FirstChild from "../../../components/ui/internal/FirstChild";
 import Overlay from "../../../components/ui/internal/Overlay";
 import { ItemDetailContainer } from "./";
@@ -133,7 +133,6 @@ export class ItemViewerContainer extends Component {
   handleEditComplete() {
     const { dispatch, currentItem } = this.props;
     const blob = dataURLtoBlob(this.refs.cropper.getCroppedCanvas().toDataURL());
-
     dispatch(ItemActions.updateItemImageRequest(currentItem.id, blob));
   }
 
@@ -391,8 +390,5 @@ export default connect(
   state => ({
     items: state.items,
     currentItem: getCurrentItem(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(ItemViewerContainer);

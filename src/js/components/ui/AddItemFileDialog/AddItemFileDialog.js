@@ -5,7 +5,7 @@ import React, { Component, PropTypes } from "react";
 import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
-import getImagePalette from "../../../utils/get-image-palette";
+import { getImagePalette } from "../../../utils/image";
 import {
   Dialog,
   DropDownMenu,

@@ -61,6 +61,7 @@ export type ItemState = {
   isAdding: boolean;
   isMoving: boolean;
   isImageEditing: boolean;
+  isScreenshotTaking: boolean;
   error: ?Error;
   currentItem: ?ItemId;
   currentColor: ?string;
@@ -101,6 +102,11 @@ export type FetchItemsFailureAction = ErrorAction<"FETCH_ITEMS_FAILURE", Error>;
 // Add from URL (UI)
 export type AddItemURLDialogOpenAction = Action<"ADD_ITEM_URL_DIALOG_OPEN">;
 export type AddItemURLDialogCloseAction = Action<"ADD_ITEM_URL_DIALOG_CLOSE">;
+
+
+// Taking screenshot
+export type TakeScreenshotStartAction = Action<"TAKE_SCREENSHOT_START">;
+export type TakeScreenshotEndAction = Action<"TAKE_SCREENSHOT_END">;
 
 
 // Add from File (UI)

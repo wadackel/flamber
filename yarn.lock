@@ -1600,12 +1600,6 @@ caniuse-db@^1.0.30000554:
   version "1.0.30000555"
   resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000555.tgz#12572c4e0111781c49b01e1fdcc455e7456b8ed4"
 
-canvas@~1.2.0:
-  version "1.2.11"
-  resolved "https://registry.yarnpkg.com/canvas/-/canvas-1.2.11.tgz#d12455864df5169c2a2be602fa8e0e4013a97140"
-  dependencies:
-    nan "^2.0.9"
-
 caseless@~0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.11.0.tgz#715b96ea9841593cc33067923f5ec60ebda4f7d7"
@@ -1828,11 +1822,9 @@ color-string@^0.3.0:
   dependencies:
     color-name "^1.0.0"
 
-color-thief@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/color-thief/-/color-thief-2.2.2.tgz#775e99a50f195b198f844b94b3f6c38deb1ca424"
-  dependencies:
-    canvas "~1.2.0"
+color-thief-browser:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/color-thief-browser/-/color-thief-browser-2.0.2.tgz#6fbe6af73717e706802cf01ed16647b2683ff0c2"
 
 color@^0.11.0:
   version "0.11.3"
@@ -4991,7 +4983,7 @@ mysql@^2.12.0:
     readable-stream "1.1.14"
     sqlstring "2.2.0"
 
-nan@^2.0.9, nan@^2.3.0, nan@^2.3.2, nan@~2.4.0:
+nan@^2.3.0, nan@^2.3.2, nan@~2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.4.0.tgz#fb3c59d45fe4effe215f0b890f8adf6eb32d2232"
 

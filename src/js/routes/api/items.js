@@ -35,11 +35,15 @@ router.post("/file", upload.single("file"), (req, res) => {
 
 
 router.post("/url", upload.single("file"), (req, res) => {
-  const { user, body, file } = req;
-  const { board, url } = body;
-  const palette = body.palette.split(",");
+  const { user, body: { board, url, palette }, file } = req;
 
-  Item.appendByUserAndURL(user.id, board, file, palette, url)
+  user.getBoards({ where: { id: board } })
+    .then(boardEntities => {
+      if (boardEntities.length === 0) throw new Error("Not found board");
+      return Promise.resolve();
+    })
+    .then(() => Item.createByURL(file, palette, url))
+    .then(entity => entity.update({ user_id: user.id, board_id: board }))
     .then(item => {
       res.json({ item });
     })

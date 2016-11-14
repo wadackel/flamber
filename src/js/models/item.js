@@ -1,5 +1,6 @@
 // @flow
 import * as path from "path";
+import * as Url from "url";
 import { pickBy } from "lodash";
 import Sequelize from "sequelize";
 import imgur from "imgur";
@@ -50,6 +51,27 @@ export default function(sequelize: any, DataTypes: any) {
         return pickBy(attributes, (value: any, key: string): boolean =>
           tableAttributes.indexOf(key) > -1
         );
+      },
+      createByURL(file: MulterMemoryFile, palette: string, url: string) {
+        return imgur.uploadBase64(file.buffer.toString("base64"))
+          .then(json => {
+            if (!json.success) throw new Error("Imgur API Error");
+
+            const { data } = json;
+
+            return Item.create({
+              file_id: data.id,
+              name: Url.parse(url).hostname,
+              width: data.width,
+              height: data.height,
+              image: data.link,
+              thumbnail: makeThumbnailURL(data.link, "l"),
+              size: data.size,
+              type: data.type,
+              url,
+              palette
+            });
+          });
       },
       createByFile(file: MulterMemoryFile, palette: string) {
         return imgur.uploadBase64(file.buffer.toString("base64"))
@@ -121,28 +143,3 @@ export default function(sequelize: any, DataTypes: any) {
 
   return Item;
 }
-// ItemSchema.statics.appendByUserAndURL = function(user, board, file, palette, url) {
-//   const base64 = file.buffer.toString("base64");
-//
-//   return imgur.uploadBase64(base64)
-//     .then(json => {
-//       const { data } = json;
-//       const entity = new this({
-//         user,
-//         board,
-//         palette,
-//         url,
-//         name: Url.parse(url).hostname,
-//         file: data.id,
-//         width: data.width,
-//         height: data.height,
-//         image: data.link,
-//         thumbnail: makeThumbnailURL(data.link, "l"),
-//         size: data.size,
-//         type: data.type
-//       });
-//
-//       return entity.save();
-//     })
-//     .then(entity => this.populateEntity(entity));
-// };

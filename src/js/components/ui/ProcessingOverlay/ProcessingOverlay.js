@@ -37,7 +37,6 @@ export default function ProcessingOverlay(props: Props) {
 }
 
 ProcessingOverlay.defaultProps = {
-  style: {},
   show: false,
   spinnerSize: 28
 };

@@ -1,13 +1,7 @@
 // @flow
 import queryString from "query-string";
-import libFetch from "isomorphic-fetch";
-import { API_ROOT } from "../constants/application";
-import ExecutionEnvironment from "exenv";
-import { checkStatus } from "../utils/fetch";
-import * as cookie from "../utils/cookie";
 import ApiClient from "../utils/api-client";
-const dataURLtoBlob = ExecutionEnvironment.canUseDOM ? require("blueimp-canvas-to-blob") : null;
-import getImagePalette from "../utils/get-image-palette";
+import { imageElementToBlob, getImagePalette } from "../utils/image";
 
 import type { BoardId } from "../types/board";
 import type { ItemId, Item, Items, ItemEntities } from "../types/item";
@@ -41,59 +35,15 @@ export function addItemByFile(board: BoardId, file: File, palette: Palette): Res
 }
 
 
-// TODO: Refactor
-function takeScreenshotAndPalette(url: string) {
-  return new Promise((resolve, reject) => {
-    const screenshotURL = `${API_ROOT}/screenshot/${encodeURIComponent(url)}`;
+export function addItemByURL(board: BoardId, image: HTMLImageElement, url: string): ResponseItem {
+  const palette = getImagePalette(image);
+  const data = new FormData();
+  data.append("file", imageElementToBlob(image));
+  data.append("url", url);
+  data.append("board", board);
+  data.append("palette", palette);
 
-    libFetch(screenshotURL, {
-      headers: {
-        Authorization: `Bearer ${cookie.loadToken()}`
-      }
-    })
-      .then(checkStatus)
-      .then(res => res.blob())
-      .then(blob => {
-        const image = new Image();
-
-        image.onload = () => {
-          const palette = getImagePalette(image);
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          if (!ctx) return reject();
-
-          canvas.width = image.naturalWidth;
-          canvas.height = image.naturalHeight;
-          ctx.fillStyle = "white";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(image, 0, 0);
-
-          resolve({
-            image: canvas.toDataURL("image/jpeg"),
-            palette
-          });
-        };
-
-        image.onerror = reject;
-
-        image.src = URL.createObjectURL(blob);
-      });
-  });
-}
-
-export function addItemByURL(board: BoardId, url: string) {
-  return takeScreenshotAndPalette(url)
-    .then(({ image, palette }) => {
-      if (typeof dataURLtoBlob !== "function") throw new Error("Please run in the browser");
-
-      const data = new FormData();
-      data.append("file", dataURLtoBlob(image));
-      data.append("url", url);
-      data.append("board", board);
-      data.append("palette", palette);
-
-      return apiClient.post("/url", { body: data });
-    });
+  return apiClient.post("/url", { body: data });
 }
 
 

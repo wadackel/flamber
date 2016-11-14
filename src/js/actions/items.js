@@ -25,6 +25,9 @@ import type {
   AddItemURLDialogOpenAction,
   AddItemURLDialogCloseAction,
 
+  TakeScreenshotStartAction,
+  TakeScreenshotEndAction,
+
   AddItemFileDialogOpenAction,
   AddItemFileDialogCloseAction,
 
@@ -202,6 +205,19 @@ export const addItemURLSuccess = (payload: AddItemURLSuccessPayload): AddItemURL
 
 export const addItemURLFailure = (error: Error): AddItemURLFailureAction => (
   { type: ADD_ITEM_URL_FAILURE, payload: error, error: true }
+);
+
+
+// Taking screenshot
+export const TAKE_SCREENSHOT_START = "TAKE_SCREENSHOT_START";
+export const TAKE_SCREENSHOT_END = "TAKE_SCREENSHOT_END";
+
+export const takeScreenshotStart = (): TakeScreenshotStartAction => (
+  { type: TAKE_SCREENSHOT_START }
+);
+
+export const takeScreenshotEnd = (): TakeScreenshotEndAction => (
+  { type: TAKE_SCREENSHOT_END }
 );
 
 
