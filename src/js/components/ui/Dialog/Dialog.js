@@ -18,7 +18,7 @@ const b = bem("dialog");
 type Props = {
   children?: React$Element<any>;
   className?: string;
-  processing: boolean;
+  processing: boolean | string;
   width: number;
   title?: string;
   titleIcon?: React$Element<any>;
@@ -94,10 +94,12 @@ class DialogInline extends Component {
     const { processing } = this.props;
 
     return <ProcessingOverlay
-      className={b("processing-overlay", { processing })()}
-      show={processing}
+      className={b("processing-overlay", { processing: !!processing })()}
+      show={!!processing}
       spinerSize={34}
-    />;
+    >
+      {typeof processing === "string" ? processing : null}
+    </ProcessingOverlay>;
   }
 
   renderHeader(): ?React$Element<any> {

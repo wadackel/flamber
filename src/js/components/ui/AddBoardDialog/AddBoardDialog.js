@@ -15,7 +15,7 @@ const b = bem("add-board-dialog");
 
 type Props = {
   className?: string;
-  processing: boolean;
+  processing?: string | boolean;
   width?: number;
   open: boolean;
   onRequestAdd?: Function;

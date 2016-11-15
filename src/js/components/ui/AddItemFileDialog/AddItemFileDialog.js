@@ -29,7 +29,7 @@ type SelectImage = {
 
 type Props = {
   className?: string;
-  processing: boolean;
+  processing?: string | boolean;
   width?: number;
   open: boolean;
   selectBoards: DropDownBoardValues;
