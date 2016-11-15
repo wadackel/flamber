@@ -205,11 +205,11 @@ export default class AddItemFileDialog extends Component {
         title="ファイルからアイテムを追加"
         titleIcon={<UploadIcon />}
         actions={[
-          <FlatButton type="primary" onClick={this.handleClose} disable={processing}>Cancel</FlatButton>,
+          <FlatButton type="primary" onClick={this.handleClose} disable={!!processing}>Cancel</FlatButton>,
           <FlatButton
             type="primary"
             onClick={this.handleAdd}
-            disable={processing || !selectImage.src || !selectBoard}
+            disable={!!processing || !selectImage.src || !selectBoard}
           >
             Add
           </FlatButton>

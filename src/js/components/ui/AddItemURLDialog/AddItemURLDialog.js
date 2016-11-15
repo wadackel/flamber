@@ -20,7 +20,7 @@ const b = bem("add-item-url-dialog");
 
 type Props = {
   className?: string;
-  processing: boolean;
+  processing?: string | boolean;
   width?: number;
   open: boolean;
   selectBoards: DropDownBoardValues;
@@ -134,11 +134,11 @@ export default class AddItemURLDialog extends Component {
         title="URLからアイテムを追加"
         titleIcon={<PictureLinkIcon />}
         actions={[
-          <FlatButton type="primary" onClick={this.handleClose} disable={processing}>Cancel</FlatButton>,
+          <FlatButton type="primary" onClick={this.handleClose} disable={!!processing}>Cancel</FlatButton>,
           <FlatButton
             type="primary"
             onClick={this.handleAdd}
-            disable={processing || !isValidURL || !selectBoard}
+            disable={!!processing || !isValidURL || !selectBoard}
           >
             Add
           </FlatButton>

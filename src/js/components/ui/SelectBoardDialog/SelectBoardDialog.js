@@ -21,7 +21,7 @@ const b = bem("select-board-dialog");
 type Props = {
   className?: string;
   open: boolean;
-  processing: boolean;
+  processing?: string | boolean;
   boards: DropDownBoardValues;
   onSelect?: Function;
   onRequestClose?: Function;
@@ -99,15 +99,15 @@ export default class SelectBoardDialog extends Component {
     return (
       <Dialog
         className={mergeClassNames(b(), className)}
-        processing={processing}
+        processing={!!processing}
         title="ボードを選択"
         titleIcon={<BoardIcon />}
         actions={[
-          <FlatButton type="primary" onClick={this.handleClose} disable={processing}>Cancel</FlatButton>,
+          <FlatButton type="primary" onClick={this.handleClose} disable={!!processing}>Cancel</FlatButton>,
           <FlatButton
             type="primary"
             onClick={this.handleSelect}
-            disable={processing || !value}
+            disable={!!processing || !value}
           >
             Select
           </FlatButton>

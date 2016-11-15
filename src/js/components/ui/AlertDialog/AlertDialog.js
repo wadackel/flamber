@@ -10,7 +10,7 @@ const b = bem("alert-dialog");
 type Props = {
   children?: React$Element<any>;
   className?: string;
-  processing: boolean;
+  processing?: string | boolean;
   title: React$Element<any>;
   actions: React$Element<any>;
   open: boolean;
