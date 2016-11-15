@@ -7,6 +7,7 @@ import { Spinner } from "../";
 const b = bem("processing-overlay");
 
 type Props = {
+  children: ?React$Element<any>;
   className?: string;
   style?: Object;
   show: boolean;
@@ -15,6 +16,7 @@ type Props = {
 
 export default function ProcessingOverlay(props: Props) {
   const {
+    children,
     className,
     style,
     show,
@@ -26,11 +28,13 @@ export default function ProcessingOverlay(props: Props) {
   return (
     <div className={mergeClassNames(b(modifier)(), className)} style={style}>
       {show &&
-        <Spinner
-          className={b("spinner", modifier)()}
-          size={spinnerSize}
-          style={{ position: "absolute" }}
-        />
+        <div>
+          <Spinner
+            className={b("spinner", modifier)()}
+            size={spinnerSize}
+          />
+          <div className={b("text", modifier)()}>{children}</div>
+        </div>
       }
     </div>
   );

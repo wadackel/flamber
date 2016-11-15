@@ -4,10 +4,14 @@
 
   @include absolute(0, 0, 0, 0, 10);
   @include size(100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition-duration: $enter-duration;
   transition-property: opacity, visibility;
   transition-timing-function: $transition-easing;
   background: rgba(#fff, .7);
+  text-align: center;
   opacity: 0;
   visibility: hidden;
 
@@ -17,8 +21,9 @@
     visibility: visible;
   }
 
-  &__spinner {
-    @include absolute(0, 0, 0, 0, 10);
-    margin: auto;
+  &__text {
+    margin: 1em 0 0;
+    color: #fff;
+    font-size: .85rem;
   }
 }
