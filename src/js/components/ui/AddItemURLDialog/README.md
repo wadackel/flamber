@@ -13,11 +13,15 @@ class AddItemURLDialogExample extends React.Component {
 
   handleAdd(url, selectBoard) {
     console.log(url, selectBoard);
-    this.setState({ processing: true });
+    this.setState({ processing: "Take screenshot..." });
+
+    setTimeout(() => {
+      this.setState({ processing: "Add item..." });
+    }, 1000);
 
     setTimeout(() => {
       this.setState({ processing: false, open: false });
-    }, 1000);
+    }, 2000);
   }
 
   render() {

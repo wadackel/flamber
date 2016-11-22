@@ -1,4 +1,4 @@
-// TODO
+// @flow
 import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
@@ -36,7 +36,8 @@ import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
 import type { AppState } from "../../../types/application";
 import type { AuthState } from "../../../types/auth";
-import type { BoardState, BoardId } from "../../../types/board";
+import type { BoardState, BoardId, BoardEntities } from "../../../types/board";
+import type { ItemState, ItemEntities } from "../../../types/item";
 import type { TagState } from "../../../types/tag";
 import type { Palette } from "../../../types/prop-types";
 
@@ -49,6 +50,11 @@ type Props = {
   children: React$Element<any>;
   auth: AuthState;
   boards: BoardState;
+  boardEntities: BoardEntities;
+  selectedBoardEntities: BoardEntities;
+  items: ItemState;
+  ItemEntities: ItemEntities;
+  selectedItemEntities: ItemEntities;
   tags: TagState;
 };
 
@@ -132,6 +138,24 @@ export class AppPage extends Component {
 
   handleAddItemURL(url: string, board: BoardId) {
     this.props.dispatch(ItemActions.addItemURLRequest(url, board));
+  }
+
+  isAddItemURLProccessing(): boolean | string {
+    const { boards, items } = this.props;
+
+    if (boards.isFetching) {
+      return true;
+    }
+
+    if (items.isScreenshotTaking) {
+      return "Screenshot taking...";
+    }
+
+    if (items.isAdding) {
+      return "Create item...";
+    }
+
+    return false;
   }
 
   // Add item
@@ -228,7 +252,7 @@ export class AppPage extends Component {
 
         {/* Add item */}
         <AddItemURLDialog
-          processing={boards.isFetching || items.isAdding}
+          processing={this.isAddItemURLProccessing()}
           open={items.addURLDialogOpen}
           selectBoards={selectBoards}
           defaultBoard={boards.currentId}
@@ -253,7 +277,6 @@ export class AppPage extends Component {
   render() {
     const {
       auth, // eslint-disable-line no-unused-vars
-      settings, // eslint-disable-line no-unused-vars
       dispatch, // eslint-disable-line no-unused-vars
       children, // eslint-disable-line no-unused-vars
       boards, // eslint-disable-line no-unused-vars
