@@ -1,0 +1,3 @@
+declare module "react-stack-grid" {
+  declare export default any;
+}
