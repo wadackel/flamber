@@ -1,5 +1,5 @@
 import autoBind from "auto-bind";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import bem from "../../../helpers/bem";
 import * as ItemVisibilityFilters from "../../../constants/item-visibility-filters";
@@ -9,13 +9,19 @@ import { ItemsContainer } from "../ui/";
 import { EmptyData, RaisedButton } from "../../../components/ui/";
 import { PictureLinkIcon } from "../../../components/svg-icons/";
 
+import type { Dispatch } from "redux";
+import type { BoardState } from "../../../types/board";
+
+
 const b = bem("all-items-page");
 
+type Props = {
+  dispatch: Dispatch;
+  boards: BoardState;
+};
+
 export class AllItemsPage extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func,
-    boards: PropTypes.object
-  };
+  props: Props;
 
   constructor(props, context) {
     super(props, context);
@@ -24,7 +30,7 @@ export class AllItemsPage extends Component {
 
   componentDidMount() {
     this.props.dispatch(ItemActions.setItemVisibilityFilter(
-      ItemVisibilityFilters.SHOW_ITEM_ALL
+      ItemVisibilityFilters.ALL
     ));
   }
 
@@ -80,8 +86,5 @@ export class AllItemsPage extends Component {
 export default connect(
   state => ({
     boards: state.boards
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(AllItemsPage);

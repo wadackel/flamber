@@ -35,6 +35,8 @@ export function getVisibleItemEntities(state: ConnectState): ItemEntities {
   entities = currentColor ? entities.filter(entity => entity.palette.indexOf(currentColor) > -1) : entities;
   entities = sortEntities(entities, itemsOrderBy, itemsOrder);
 
+  console.log(visibilityFilter);
+
   switch (visibilityFilter) {
     case ItemVisibilityFilters.ALL:
       return entities;
