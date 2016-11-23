@@ -100,9 +100,10 @@ export function getImageElementByFile(file: File): Promise<HTMLImageElement> {
 export function getImagePalette(image: HTMLImageElement): Array<string> {
   throwErrorIfServerSide(true);
 
+  const quality = 10;
   const colorThief = new ColorThief();
-  const color = colorThief.getColor(image);
-  const palette = colorThief.getPalette(image);
+  const color = colorThief.getColor(image, quality);
+  const palette = colorThief.getPalette(image, 6, quality);
 
   const colors = [color, ...palette].map(arr =>
     colorClassifier.classify({

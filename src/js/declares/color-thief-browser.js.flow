@@ -1,7 +1,9 @@
+type ColorThiefColor = [number, number, number];
+
 declare module "color-thief-browser" {
   declare export default class ColorThief {
     constructor(): this;
-    getColor(image: HTMLImageElement, quality?: number): { r: number; g: number; b: number; };
-    getPalette(image: HTMLImageElement, quality?: number): Array<[number, number, number]>;
+    getColor(image: HTMLImageElement, quality?: number): ColorThiefColor;
+    getPalette(image: HTMLImageElement, colorCount?: number, quality?: number): Array<ColorThiefColor>;
   }
 }
