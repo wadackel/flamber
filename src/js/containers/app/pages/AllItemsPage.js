@@ -1,3 +1,4 @@
+// @flow
 import autoBind from "auto-bind";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -10,6 +11,7 @@ import { EmptyData, RaisedButton } from "../../../components/ui/";
 import { PictureLinkIcon } from "../../../components/svg-icons/";
 
 import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
 import type { BoardState } from "../../../types/board";
 
 
@@ -23,7 +25,7 @@ type Props = {
 export class AllItemsPage extends Component {
   props: Props;
 
-  constructor(props, context) {
+  constructor(props: Props, context: Object) {
     super(props, context);
     autoBind(this);
   }
@@ -84,7 +86,7 @@ export class AllItemsPage extends Component {
 }
 
 export default connect(
-  state => ({
+  (state: ConnectState) => ({
     boards: state.boards
   })
 )(AllItemsPage);
