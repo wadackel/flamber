@@ -1,4 +1,7 @@
 .card-group-control {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   margin: 30px auto;
   padding: 0 20px;
   text-align: right;

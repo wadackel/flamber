@@ -7,6 +7,7 @@ export Avatar from "./Avatar/Avatar";
 export BoardCard from "./BoardCard/BoardCard";
 export CancelableEditText from "./CancelableEditText/CancelableEditText";
 export CardGroup from "./CardGroup/CardGroup";
+export CardGroupControl from "./CardGroupControl/CardGroupControl";
 export Checkbox from "./Checkbox/Checkbox";
 export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 export Chip from "./Chip/Chip";
