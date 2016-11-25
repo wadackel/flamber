@@ -587,16 +587,6 @@ export const selectedItemsDeleteFailure = (error: Error, entities: ?ItemEntities
 );
 
 
-// Fetch board items
-export const FETCH_BOARD_ITEMS_REQUEST: string = "FETCH_BOARD_ITEMS_REQUEST";
-export const FETCH_BOARD_ITEMS_SUCCESS: string = "FETCH_BOARD_ITEMS_SUCCESS";
-export const FETCH_BOARD_ITEMS_FAILURE: string = "FETCH_BOARD_ITEMS_FAILURE";
-
-export const fetchBoardItemsRequest = createAction(FETCH_BOARD_ITEMS_REQUEST);
-export const fetchBoardItemsSuccess = createAction(FETCH_BOARD_ITEMS_SUCCESS);
-export const fetchBoardItemsFailure = createAction(FETCH_BOARD_ITEMS_FAILURE);
-
-
 // Detail drawer
 export const ITEM_DETAIL_DRAWER_TOGGLE = "ITEM_DETAIL_DRAWER_TOGGLE";
 export const ITEM_DETAIL_DRAWER_OPEN = "ITEM_DETAIL_DRAWER_OPEN";
