@@ -7,6 +7,7 @@ import type {
   ItemState,
 
   SetCurrentItemAction,
+  SetItemCurrentColors,
   SetItemVisibilityFilterAction,
   SetItemImageEditingAction,
   FetchItemsFailureAction,
@@ -26,7 +27,7 @@ const initialState: ItemState = {
   isScreenshotTaking: false,
   error: null,
   currentItem: null,
-  currentColor: null,
+  currentColors: [],
   visibilityFilter: ItemVisibilityFilters.ALL,
   addFileDialogOpen: false,
   addURLDialogOpen: false,
@@ -45,10 +46,10 @@ export default handleActions({
   }),
 
 
-  // Set currentColor
-  [I.SET_ITEM_CURRENT_COLOR]: (state, { payload }) => ({
+  // Set currentColors
+  [I.SET_ITEM_CURRENT_COLORS]: (state: ItemState, action: SetItemCurrentColors): ItemState => ({
     ...state,
-    currentColor: payload
+    currentColors: action.payload
   }),
 
 

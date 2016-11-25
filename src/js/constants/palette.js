@@ -17,4 +17,15 @@ const palette = [
   "#ffffff"
 ];
 
+export const selectColors = palette.map(color => {
+  let obj = { color };
+
+  switch (color) {
+    case "#fffc00": obj = { ...obj, checkMarkColor: "#adab35" }; break;
+    case "#ffffff": obj = { ...obj, borderColor: "#bebebe", checkMarkColor: "#bebebe" }; break;
+  }
+
+  return obj;
+});
+
 export default palette;

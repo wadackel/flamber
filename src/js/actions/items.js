@@ -12,9 +12,8 @@ import type {
   ItemVisibilityFilter,
 
   SetCurrentItemAction,
-
+  SetItemCurrentColors,
   SetItemVisibilityFilterAction,
-
   SetItemImageEditingAction,
 
   FetchItemsSuccessPayload,
@@ -138,8 +137,10 @@ export const setCurrentItem = (id: ItemId): SetCurrentItemAction => (
 
 
 // Set color
-export const SET_ITEM_CURRENT_COLOR: string = "SET_ITEM_CURRENT_COLOR";
-export const setItemCurrentColor = createAction(SET_ITEM_CURRENT_COLOR);
+export const SET_ITEM_CURRENT_COLORS = "SET_ITEM_CURRENT_COLORS";
+export const setItemCurrentColors = (colors: Array<string>): SetItemCurrentColors => (
+  { type: SET_ITEM_CURRENT_COLORS, payload: colors }
+);
 
 
 // Set visibility filters

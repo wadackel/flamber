@@ -15,7 +15,7 @@ import type { Palette } from "./prop-types";
 
 export type ItemId = string;
 
-export type Item = {
+type ItemCommon = {
   id: ItemId;
   board_id: BoardId;
   file_id: string;
@@ -28,7 +28,6 @@ export type Item = {
   width: number;
   height: number;
   thumbnail: string;
-  palette: string;
   star: boolean;
   views: number;
   viewed_at: Date;
@@ -36,9 +35,14 @@ export type Item = {
   updated_at: Date;
 };
 
-export type ItemEntity = $All<Item, {
+export type Item = $All<ItemCommon, {
+  palette: string;
+}>;
+
+export type ItemEntity = $All<ItemCommon, {
   Tags: Array<TagId>;
   select: boolean;
+  palette: Array<string>;
   isUpdating: boolean;
   isMoving: boolean;
   isDeleting: boolean;
@@ -64,7 +68,7 @@ export type ItemState = {
   isScreenshotTaking: boolean;
   error: ?Error;
   currentItem: ?ItemId;
-  currentColor: ?string;
+  currentColors: Array<string>;
   visibilityFilter: ItemVisibilityFilter;
   addURLDialogOpen: boolean;
   addFileDialogOpen: boolean;
@@ -82,6 +86,10 @@ type ArrayItem = ArrayNormalized<"items", ItemEntity, ItemId>;
 
 // Set current
 export type SetCurrentItemAction = PayloadAction<"SET_CURRENT_ITEM", ItemId>;
+
+
+// Set currentColors
+export type SetItemCurrentColors = PayloadAction<"SET_ITEM_CURRENT_COLORS", Array<string>>;
 
 
 // Set item visibilityFilter

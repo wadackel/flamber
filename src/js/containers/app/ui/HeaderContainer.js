@@ -7,7 +7,6 @@ import { push } from "react-router-redux";
 import * as AuthActions from "../../../actions/auth";
 import * as OptionActions from "../../../actions/options";
 import * as BoardActions from "../../../actions/boards";
-import * as ItemActions from "../../../actions/items";
 import * as TagActions from "../../../actions/tags";
 import { getCurrentBoard, getSelectedBoardEntities } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
@@ -150,11 +149,6 @@ export class HeaderContainer extends Component {
     });
 
     this.props.dispatch(OptionActions.updateItemsSizeRequest(size));
-  }
-
-  // Update currentColor
-  handleColorChange(color: string) {
-    this.props.dispatch(ItemActions.setItemCurrentColor(color));
   }
 
   // Header props
@@ -347,7 +341,7 @@ export class HeaderContainer extends Component {
       <Header
         user={user}
         showColorBar={showColorBar}
-        color={items.currentColor}
+        colors={items.currentColors}
         navItems={[
           <NavItem
             active={activeNavItem === NavItemActive.BOARDS}
@@ -370,7 +364,6 @@ export class HeaderContainer extends Component {
         ]}
         onLogoClick={this.handleLogoClick}
         onOptionsClick={this.handleOptionsClick}
-        onColorChange={this.handleColorChange}
         onRequestSignOut={this.handleSignOut}
         {...headerProps}
       />

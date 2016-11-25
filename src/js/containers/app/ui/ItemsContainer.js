@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import ExecutionEnvironment from "exenv";
 import { connect } from "react-redux";
@@ -14,13 +13,13 @@ import {
 import bem from "../../../helpers/bem";
 import {
   CardGroup,
+  CardGroupControl,
   ItemCard,
   IconButton,
   SelectBoardDialog,
   ToolBox,
   IconMenu,
   MenuItem,
-  SortSwitcher,
   Spinner
 } from "../../../components/ui/";
 import {
@@ -29,6 +28,7 @@ import {
   StarIcon,
   MoreVertIcon
 } from "../../../components/svg-icons/";
+import { selectColors } from "../../../constants/palette";
 
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
@@ -60,48 +60,44 @@ type State = {
 
 export class ItemsContainer extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    selectMenuOpen: false,
+    selectMenuTrigger: null
+  };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      selectMenuOpen: false,
-      selectMenuTrigger: null
-    };
-
-    autoBind(this);
-  }
-
-  handleOrderByChange(orderBy: OrderBy) {
+  handleOrderByChange = (orderBy: OrderBy) => {
     this.props.dispatch(OptionActions.updateItemsOrderByRequest(orderBy));
   }
 
-  handleOrderChange(order: Order) {
+  handleOrderChange = (order: Order) => {
     this.props.dispatch(OptionActions.updateItemsOrderRequest(order));
   }
 
-  handleDetail(id: ItemId) {
+  handleColorComplete = (colors: Array<string>) => {
+    this.props.dispatch(ItemActions.setItemCurrentColors(colors));
+  }
+
+  handleDetail = (id: ItemId) => {
     this.props.dispatch(ItemActions.setCurrentItem(id));
   }
 
-  handleSelect(id: ItemId) {
+  handleSelect = (id: ItemId) => {
     this.props.dispatch(ItemActions.selectItemToggle(id));
   }
 
-  handleStar(id: ItemId) {
+  handleStar = (id: ItemId) => {
     this.props.dispatch(ItemActions.starItemToggleRequest(id));
   }
 
-  handleMove(id: ItemId) {
+  handleMove = (id: ItemId) => {
     this.props.dispatch(ItemActions.moveItemSelectBoardOpen(id));
   }
 
-  handleSelectMove() {
+  handleSelectMove = () => {
     this.props.dispatch(ItemActions.selectedItemsMoveOpen());
   }
 
-  handleSelectBoard(boardId: BoardId) {
+  handleSelectBoard = (boardId: BoardId) => {
     if (this.props.items.moveItems.length > 0) {
       this.props.dispatch(ItemActions.moveItemRequest(boardId));
     } else {
@@ -109,7 +105,7 @@ export class ItemsContainer extends Component {
     }
   }
 
-  handleSelectBoardDialogClose() {
+  handleSelectBoardDialogClose = () => {
     if (this.props.items.moveItems.length > 0) {
       this.props.dispatch(ItemActions.moveItemSelectBoardClose());
     } else {
@@ -117,21 +113,21 @@ export class ItemsContainer extends Component {
     }
   }
 
-  handleDelete(id: ItemId) {
+  handleDelete = (id: ItemId) => {
     this.props.dispatch(ItemActions.deleteItemRequest(id));
   }
 
-  handleSelectDelete() {
+  handleSelectDelete = () => {
     this.props.dispatch(ItemActions.selectedItemsDeleteRequest());
   }
 
-  handleSelectStar() {
+  handleSelectStar = () => {
     const { dispatch, selectedItemEntities } = this.props;
     const isAllStar = this.isAllStarByItemEntities(selectedItemEntities);
     dispatch(ItemActions.selectedItemsStarRequest(!isAllStar));
   }
 
-  handleSelectMenuItemClick(menuItem: MenuItem, value: Function) {
+  handleSelectMenuItemClick = (menuItem: MenuItem, value: Function) => {
     this.props.dispatch(value());
   }
 
@@ -206,20 +202,20 @@ export class ItemsContainer extends Component {
 
     return (
       <div className={`container ${b()}`}>
-        <div className="card-group-control">
-          <SortSwitcher
-            className="card-group-control__sort-switcher"
-            orderBy={itemsOrderBy}
-            order={itemsOrder}
-            types={[
-              { name: "名前", value: "name" },
-              { name: "作成", value: "created_at" },
-              { name: "最終閲覧", value: "viewed_at" }
-            ]}
-            onOrderByChange={this.handleOrderByChange}
-            onOrderChange={this.handleOrderChange}
-          />
-        </div>
+        <CardGroupControl
+          sortTypes={[
+            { name: "名前", value: "name" },
+            { name: "作成", value: "created_at" },
+            { name: "最終閲覧", value: "viewed_at" }
+          ]}
+          sortOrderBy={itemsOrderBy}
+          sortOrder={itemsOrder}
+          onSortOrderByChange={this.handleOrderByChange}
+          onSortOrderChange={this.handleOrderChange}
+          colors={selectColors}
+          selectColors={items.currentColors}
+          onColorComplete={this.handleColorComplete}
+        />
 
         {this.renderEmptyData()}
         {this.renderFetchingSpinner()}

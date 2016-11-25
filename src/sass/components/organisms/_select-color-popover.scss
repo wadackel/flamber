@@ -1,13 +1,16 @@
 .select-color-popover {
-
   &__body {
     width: 250px;
     padding: 25px;
     background: #fff;
   }
 
-  &__done {
+  &__color-group {
+    margin-bottom: 25px;
+  }
+
+  &__btn {
     display: block;
-    margin: 25px auto 0;
+    margin: 5px auto 0;
   }
 }

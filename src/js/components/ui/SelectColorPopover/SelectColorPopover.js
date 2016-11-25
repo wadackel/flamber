@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -58,8 +57,6 @@ export default class SelectColorPopover extends Component {
     this.state = {
       selectColors: props.selectColors
     };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -70,7 +67,7 @@ export default class SelectColorPopover extends Component {
     }
   }
 
-  handleColorClick(color: string) {
+  handleColorClick = (color: string) => {
     const { selectColors } = this.state;
     const newSelectColors = selectColors.indexOf(color) > -1
       ? selectColors.filter(o => o !== color)
@@ -79,15 +76,23 @@ export default class SelectColorPopover extends Component {
     this.setState({ selectColors: newSelectColors });
   }
 
-  handleComplete() {
-    if (typeof this.props.onComplete === "function") {
-      this.props.onComplete(this.state.selectColors);
+  handleComplete = () => {
+    this.callComplete(this.state.selectColors);
+  }
+
+  handleClear = () => {
+    this.callComplete([]);
+  }
+
+  handleRequestClose = () => {
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose();
     }
   }
 
-  handleRequestClose() {
-    if (typeof this.props.onRequestClose === "function") {
-      this.props.onRequestClose();
+  callComplete(colors: Array<string>) {
+    if (typeof this.props.onComplete === "function") {
+      this.props.onComplete(colors);
     }
   }
 
@@ -115,6 +120,7 @@ export default class SelectColorPopover extends Component {
       >
         <div className={b("body")()}>
           <SelectableColorGroup
+            className={b("color-group")()}
             colors={colors}
             selectColors={selectColors}
             onColorClick={this.handleColorClick}
@@ -125,12 +131,20 @@ export default class SelectColorPopover extends Component {
           </SelectableColorGroup>
 
           <FlatButton
-            className={b("done")()}
-            disable={!hasColor}
+            className={b("btn")()}
             type="primary"
             onClick={this.handleComplete}
           >
             Done
+          </FlatButton>
+
+          <FlatButton
+            className={b("btn")()}
+            disable={!hasColor}
+            type="primary"
+            onClick={this.handleClear}
+          >
+            Clear
           </FlatButton>
         </div>
       </Popover>

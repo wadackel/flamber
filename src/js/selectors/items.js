@@ -17,6 +17,12 @@ function sortEntities(entities: ItemEntities, by: OrderBy, order: Order): ItemEn
   return orderBy(entities, [by], [order]);
 }
 
+function filterColors(entities: ItemEntities, colors: Array<string>): ItemEntities {
+  return entities.filter((entity: ItemEntity) =>
+    entity.palette.some(color => colors.indexOf(color) > -1)
+  );
+}
+
 export function getItemEntityById(state: ConnectState, id: ?ItemId): ?ItemEntity {
   return id ? state.entities.items[id] : null;
 }
@@ -27,15 +33,13 @@ export function getItemEntities(state: ConnectState): ItemEntities {
 
 export function getVisibleItemEntities(state: ConnectState): ItemEntities {
   const { items, boards, tags, options } = state;
-  const { visibilityFilter, currentColor } = items;
+  const { visibilityFilter, currentColors } = items;
   const { currentId } = boards;
   const { currentTag } = tags;
   const { itemsOrderBy, itemsOrder } = options;
   let entities = getItemEntities(state);
-  entities = currentColor ? entities.filter(entity => entity.palette.indexOf(currentColor) > -1) : entities;
+  entities = currentColors.length > 0 ? filterColors(entities, currentColors) : entities;
   entities = sortEntities(entities, itemsOrderBy, itemsOrder);
-
-  console.log(visibilityFilter);
 
   switch (visibilityFilter) {
     case ItemVisibilityFilters.ALL:
