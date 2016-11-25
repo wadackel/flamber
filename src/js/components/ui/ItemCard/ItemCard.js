@@ -1,6 +1,5 @@
 // @flow
 import _ from "lodash";
-import autoBind from "auto-bind";
 import isURL from "validator/lib/isURL";
 import urlParse from "url-parse";
 import React from "react";
@@ -55,7 +54,7 @@ type Props = {
   onStar?: Function;
   onMove?: Function;
   onDelete?: Function;
-  onDetailClick?: Function;
+  onClick?: Function;
   onColorClick?: Function;
 };
 
@@ -69,47 +68,42 @@ export default class ItemCard extends React.Component {
     star: false
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
   shouldComponentUpdate(nextProps: Props) {
     return !_.isEqual(this.props, nextProps);
   }
 
-  handleUrlClick(e: SyntheticMouseEvent) {
+  handleUrlClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
   }
 
-  handleStarClick(e: SyntheticMouseEvent) {
+  handleStarClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
     if (typeof this.props.onStar === "function") {
       this.props.onStar(this.props.id);
     }
   }
 
-  handleDetailClick(e: SyntheticMouseEvent) {
+  handleClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
-    if (typeof this.props.onDetailClick === "function") {
-      this.props.onDetailClick(this.props.id);
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick(this.props.id);
     }
   }
 
-  handleSelect(value: any, checked: boolean) {
+  handleSelect = (value: any, checked: boolean) => {
     if (typeof this.props.onSelect === "function") {
       this.props.onSelect(this.props.id, checked);
     }
   }
 
-  handleMoveClick(e: SyntheticMouseEvent) {
+  handleMoveClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
     if (typeof this.props.onMove === "function") {
       this.props.onMove(this.props.id);
     }
   }
 
-  handleDeleteClick(e: SyntheticMouseEvent) {
+  handleDeleteClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
     if (typeof this.props.onDelete === "function") {
       this.props.onDelete(this.props.id);
@@ -157,7 +151,7 @@ export default class ItemCard extends React.Component {
         className={mergeClassNames(b(modifier)(), className)}
         style={style}
         processing={processing}
-        onClick={this.handleDetailClick}
+        onClick={this.handleClick}
       >
         <CardMedia
           baseClassName={baseClassName}
@@ -172,7 +166,7 @@ export default class ItemCard extends React.Component {
             selectable={true}
             selected={selected}
             moreActions={this.renderMoreActions()}
-            actions={<FlatButton onClick={this.handleDetailClick}>Detail</FlatButton>}
+            actions={<FlatButton onClick={this.handleClick}>Detail</FlatButton>}
             onSelect={this.handleSelect}
           />}
         />

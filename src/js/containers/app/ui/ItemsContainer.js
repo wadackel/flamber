@@ -77,8 +77,12 @@ export class ItemsContainer extends Component {
     this.props.dispatch(ItemActions.setItemCurrentColors(colors));
   }
 
-  handleDetail = (id: ItemId) => {
-    this.props.dispatch(ItemActions.setCurrentItem(id));
+  handleClick = (id: ItemId) => {
+    if (this.hasSelectedItems()) {
+      this.props.dispatch(ItemActions.selectItemToggle(id));
+    } else {
+      this.props.dispatch(ItemActions.setCurrentItem(id));
+    }
   }
 
   handleSelect = (id: ItemId) => {
@@ -135,6 +139,11 @@ export class ItemsContainer extends Component {
     return entities.every(entity => entity.star);
   }
 
+  hasSelectedItems(): boolean {
+    return this.props.selectedItemEntities.length > 0;
+  }
+
+
   renderEmptyData() {
     const {
       boards,
@@ -184,7 +193,7 @@ export class ItemsContainer extends Component {
       }
     } = this.props;
 
-    const hasSelectedItems = selectedItemEntities.length > 0;
+    const hasSelectedItems = this.hasSelectedItems();
     const isAllStar = this.isAllStarByItemEntities(selectedItemEntities);
     const selectBoards = rawBoardEntities
       .filter(entity => {
@@ -238,7 +247,7 @@ export class ItemsContainer extends Component {
               imageHeight={item.height}
               star={item.star}
               colors={item.palette}
-              onDetailClick={this.handleDetail}
+              onClick={this.handleClick}
               onSelect={this.handleSelect}
               onStar={this.handleStar}
               onMove={this.handleMove}
