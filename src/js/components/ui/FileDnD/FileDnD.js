@@ -1,6 +1,5 @@
 // @flow
 import _ from "lodash";
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../share-config.json";
@@ -29,19 +28,13 @@ type State = {
 
 export default class FileDnD extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    dragging: false
+  };
 
   static defaultProps = {
     overlay: <span />
   };
-
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = { dragging: false };
-
-    autoBind(this);
-  }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
@@ -72,14 +65,14 @@ export default class FileDnD extends Component {
     }
   }
 
-  handleDragEnter(e: DragEvent) {
+  handleDragEnter = (e: DragEvent) => {
     this.cancelEvent(e);
     if (typeof this.props.onDragEnter === "function") {
       this.props.onDragEnter(e);
     }
   }
 
-  handleDragLeave(e: DragEvent) {
+  handleDragLeave = (e: DragEvent) => {
     this.cancelEvent(e);
 
     if (typeof this.props.onDragLeave === "function") {
@@ -91,7 +84,7 @@ export default class FileDnD extends Component {
     }
   }
 
-  handleDragOver(e: DragEvent) {
+  handleDragOver = (e: DragEvent) => {
     this.cancelEvent(e);
     this.dragStart();
     if (typeof this.props.onDragOver === "function") {
@@ -99,7 +92,7 @@ export default class FileDnD extends Component {
     }
   }
 
-  handleDrop(e: DragEvent) {
+  handleDrop = (e: DragEvent) => {
     this.cancelEvent(e);
 
     const { dataTransfer } = e;

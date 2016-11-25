@@ -1,6 +1,5 @@
 // @flow
 import _ from "lodash";
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../share-config.json";
@@ -26,11 +25,6 @@ export default class ToolBox extends Component {
     text: "",
     actions: []
   };
-
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
 
   shouldComponentUpdate(nextProps: Props) {
     return !_.isEqual(this.props, nextProps);
@@ -58,20 +52,18 @@ export default class ToolBox extends Component {
     );
   }
 
-  renderLayer() {
-    return (
-      <div>
-        <ReactCSSTransitionGroup
-          component={FirstChild}
-          transitionName="open"
-          transitionEnterTimeout={shareConfig["tool-box-enter-duration"]}
-          transitionLeaveTimeout={shareConfig["tool-box-leave-duration"]}
-        >
-          {this.renderBox()}
-        </ReactCSSTransitionGroup>
-      </div>
-    );
-  }
+  renderLayer = () => (
+    <div>
+      <ReactCSSTransitionGroup
+        component={FirstChild}
+        transitionName="open"
+        transitionEnterTimeout={shareConfig["tool-box-enter-duration"]}
+        transitionLeaveTimeout={shareConfig["tool-box-leave-duration"]}
+      >
+        {this.renderBox()}
+      </ReactCSSTransitionGroup>
+    </div>
+  )
 
   render() {
     return <RenderToLayer

@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import bem from "../../../../helpers/bem";
@@ -35,39 +34,31 @@ type State = {
 
 export class OptionsAccountPage extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    accountDeletePopupOpen: false
+  };
 
   static contextTypes = {
     theme: PropTypes.string.isRequired
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      accountDeletePopupOpen: false
-    };
-
-    autoBind(this);
-  }
-
-  handleThemeChange(value: Theme) {
+  handleThemeChange = (value: Theme) => {
     this.props.dispatch(OptionActions.updateThemeRequest(value));
   }
 
-  handleDeleteAccountPopupOpen() {
+  handleDeleteAccountPopupOpen = () => {
     this.setState({
       accountDeletePopupOpen: true
     });
   }
 
-  handleDeleteAccountPopupClose() {
+  handleDeleteAccountPopupClose = () => {
     this.setState({
       accountDeletePopupOpen: false
     });
   }
 
-  handleDeleteAccount() {
+  handleDeleteAccount = () => {
     // TODO: Delete account
     this.setState({
       accountDeletePopupOpen: false
@@ -76,11 +67,7 @@ export class OptionsAccountPage extends Component {
 
   render() {
     const { theme } = this.context;
-
-    const {
-      accountDeletePopupOpen
-    } = this.state;
-
+    const { accountDeletePopupOpen } = this.state;
     const {
       auth: { user },
       options

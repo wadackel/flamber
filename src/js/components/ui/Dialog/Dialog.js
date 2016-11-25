@@ -1,6 +1,5 @@
 // @flow
 import _ from "lodash";
-import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
@@ -37,11 +36,6 @@ class DialogInline extends Component {
 
   afterRenderFocus: boolean = false;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
   shouldComponentUpdate(nextProps: Props) {
     return !_.isEqual(this.props, nextProps);
   }
@@ -65,7 +59,7 @@ class DialogInline extends Component {
     }
   }
 
-  handleKeyDown(e: SyntheticKeyboardEvent) {
+  handleKeyDown = (e: SyntheticKeyboardEvent) => {
     const { open } = this.props;
     const key = keycode(e);
 
@@ -74,13 +68,13 @@ class DialogInline extends Component {
     }
   }
 
-  handleCloseClick(e: SyntheticKeyboardEvent) {
+  handleCloseClick = (e: SyntheticKeyboardEvent) => {
     e.preventDefault();
     e.stopPropagation();
     this.requestClose();
   }
 
-  handleOverlayClick() {
+  handleOverlayClick = () => {
     this.requestClose();
   }
 
@@ -211,14 +205,9 @@ export default class Dialog extends React.Component {
     escClose: true
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  renderLayer(): React$Element<any> {
-    return <DialogInline {...this.props} />;
-  }
+  renderLayer = (): React$Element<any> => (
+    <DialogInline {...this.props} />
+  )
 
   render() {
     return <RenderToLayer

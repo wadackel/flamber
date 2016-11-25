@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -26,12 +25,7 @@ export default class FloatingMenu extends Component {
     open: false
   }
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleToggleClick() {
+  handleToggleClick = () => {
     if (this.props.open) {
       if (typeof this.props.onRequestClose === "function") {
         this.props.onRequestClose();

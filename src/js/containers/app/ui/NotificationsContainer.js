@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as NotificationActions from "../../../actions/notifications";
@@ -15,32 +14,30 @@ type Props = {
 };
 
 export class NotificationsContainer extends Component {
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
+  props: Props;
 
-  handleClose() {
+  handleClose = () => {
     this.props.dispatch(NotificationActions.hideNotify());
   }
 
-  handleActionClick() {
+  handleActionClick = () => {
     this.props.dispatch(NotificationActions.notifyAction());
   }
 
   render() {
     const { notifications: { message, action } } = this.props;
-    const props = {
+    let props = {
       open: !!message,
       onRequestClose: this.handleClose,
-      message: message || "",
-      action: null,
-      onActionClick: () => {}
+      message: message || ""
     };
 
     if (action) {
-      props.action = action.payload.text;
-      props.onActionClick = this.handleActionClick;
+      props = {
+        ...props,
+        action: action.payload.text,
+        onActionClick: this.handleActionClick
+      };
     }
 
     return (

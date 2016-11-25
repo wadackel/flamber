@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { PropTypes } from "react";
 import ReactDOM from "react-dom";
 import bem from "../../../helpers/bem";
@@ -28,7 +27,10 @@ type State = {
 
 export default class DropDownMenu extends React.Component {
   props: Props;
-  state: State;
+  state: State = {
+    open: false,
+    triggerElement: null
+  };
 
   static defaultProps = {
     type: "inline",
@@ -40,17 +42,6 @@ export default class DropDownMenu extends React.Component {
     theme: PropTypes.string.isRequired
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      open: false,
-      triggerElement: null
-    };
-
-    autoBind(this);
-  }
-
   componentDidMount() {
     this.setMenuWidth();
   }
@@ -59,7 +50,7 @@ export default class DropDownMenu extends React.Component {
     this.setMenuWidth();
   }
 
-  handleTriggerClick(e: SyntheticMouseEvent) {
+  handleTriggerClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
 
     this.setState({
@@ -68,14 +59,14 @@ export default class DropDownMenu extends React.Component {
     });
   }
 
-  handleItemClick(menuItem: MenuItem, value: any) {
+  handleItemClick = (menuItem: MenuItem, value: any) => {
     this.setState({ open: false });
     if (typeof this.props.onChange === "function") {
       this.props.onChange(value);
     }
   }
 
-  handleRequestClose() {
+  handleRequestClose = () => {
     this.setState({ open: false });
   }
 

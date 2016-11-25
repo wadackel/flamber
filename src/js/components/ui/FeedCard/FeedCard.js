@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import urlParse from "url-parse";
 import React, { Component } from "react";
 import * as Layout from "../../../constants/layouts";
@@ -46,20 +45,15 @@ export default class FeedCard extends Component {
     layout: Layout.GRID
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleAddItem() {
+  handleAddItem = () => {
     // TODO
   }
 
-  handleMouseLeave() {
+  handleMouseLeave = () => {
     // TODO
   }
 
-  handleDetailClick() {
+  handleDetailClick = () => {
     // TODO
   }
 

@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -22,12 +21,7 @@ export default class CheckboxGroup extends React.Component {
     onChange: () => {}
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleCheck(value: any, checked: boolean) {
+  handleCheck = (value: any, checked: boolean) => {
     let newValue = [];
 
     if (checked) {

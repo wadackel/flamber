@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React from "react";
 
 const Status = {
@@ -39,10 +38,9 @@ export default class ImageLoader extends React.Component {
 
   constructor(props: Props, context: Object) {
     super(props, context);
-
-    this.state = { status: props.src ? Status.LOADING : Status.PENDING };
-
-    autoBind(this);
+    this.state = {
+      status: props.src ? Status.LOADING : Status.PENDING
+    };
   }
 
   componentDidMount() {
@@ -69,7 +67,7 @@ export default class ImageLoader extends React.Component {
     this.destroyLoader();
   }
 
-  handleLoaded(e: Event) {
+  handleLoaded = (e: Event) => {
     this.destroyLoader();
     this.setState({ status: Status.LOADED });
     if (typeof this.props.onLoad === "function") {
@@ -77,7 +75,7 @@ export default class ImageLoader extends React.Component {
     }
   }
 
-  handleError(e: Event) {
+  handleError = (e: Event) => {
     this.destroyLoader();
     this.setState({ status: Status.FAILED });
     if (typeof this.props.onError === "function") {

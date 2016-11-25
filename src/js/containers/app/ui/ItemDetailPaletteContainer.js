@@ -1,5 +1,4 @@
 /* eslint-disable */
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import palette from "../../../constants/palette";
@@ -36,24 +35,12 @@ const paletteColors = palette.map(color => {
 
 
 export class ItemDetailPaletteContainer extends Component {
-  static propTypes = {
+  state = {
+    popoverOpen: false,
+    popoverTriggerElement: null
   };
 
-  static defaultProps = {
-  };
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      popoverOpen: false,
-      popoverTriggerElement: null
-    };
-
-    autoBind(this);
-  }
-
-  handleColorBarClick(e) {
+  handleColorBarClick = (e) => {
     e.stopPropagation();
 
     this.setState({
@@ -62,7 +49,7 @@ export class ItemDetailPaletteContainer extends Component {
     });
   }
 
-  handlePopoverComplete(newPalette) {
+  handlePopoverComplete = (newPalette) => {
     const { dispatch, currentItem } = this.props;
 
     dispatch(ItemActions.updateItemPaletteRequest(
@@ -73,7 +60,7 @@ export class ItemDetailPaletteContainer extends Component {
     this.setState({ popoverOpen: false });
   }
 
-  handlePopoverClose() {
+  handlePopoverClose = () => {
     this.setState({ popoverOpen: false });
   }
 

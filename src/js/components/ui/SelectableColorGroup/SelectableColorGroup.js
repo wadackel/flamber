@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component, isValidElement } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import shareConfig from "../../../share-config.json";
@@ -22,12 +21,7 @@ export default class SelectableColorGroup extends Component {
     selectColors: []
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleColorClick(e: SyntheticMouseEvent, color: string) {
+  handleColorClick = (e: SyntheticMouseEvent, color: string) => {
     if (typeof this.props.onColorClick === "function") {
       this.props.onColorClick(color);
     }

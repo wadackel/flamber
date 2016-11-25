@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -15,12 +14,9 @@ type Props = {
 };
 
 export default class RadioGroup extends Component {
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
+  props: Props;
 
-  handleCheck(value: any, checked: boolean) {
+  handleCheck = (value: any, checked: boolean) => {
     if (checked && typeof this.props.onChange === "function") {
       this.props.onChange(value);
     }
@@ -34,7 +30,7 @@ export default class RadioGroup extends Component {
       value
     } = this.props;
 
-    const cloneChildren = children.map(child =>
+    const cloneChildren = React.Children.map(children, child =>
       React.cloneElement(child, {
         key: child.props.value,
         checked: value === child.props.value,

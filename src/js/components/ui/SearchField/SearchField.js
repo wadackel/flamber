@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -25,10 +24,7 @@ export default class SearchField extends Component {
 
   constructor(props: Props, context: Object) {
     super(props, context);
-
     this.state = { value: props.value };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -37,15 +33,15 @@ export default class SearchField extends Component {
     }
   }
 
-  handleClick() {
+  handleClick = () => {
     this.requestSearch();
   }
 
-  handleChange(e: SyntheticInputEvent, value: string) {
+  handleChange = (e: SyntheticInputEvent, value: string) => {
     this.setState({ value });
   }
 
-  handleEnter() {
+  handleEnter = () => {
     this.requestSearch();
   }
 

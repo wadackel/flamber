@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -26,12 +25,7 @@ export class OptionsPage extends Component {
     theme: PropTypes.string.isRequired
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleItemClick(href: string, target: string) {
+  handleItemClick = (href: string, target: string) => {
     if (target === "_blank") {
       window.open().location.href = href;
     } else {

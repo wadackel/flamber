@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -24,11 +23,6 @@ export default class Overlay extends Component {
 
   scrollbarWidth: number = 0;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
   componentWillMount() {
     this.scrollbarWidth = measureScrollbarWidth();
   }
@@ -47,7 +41,7 @@ export default class Overlay extends Component {
     this.unScrollLock();
   }
 
-  handleClick(e: SyntheticMouseEvent) {
+  handleClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
     if (typeof this.props.onClick === "function") {
       this.props.onClick();

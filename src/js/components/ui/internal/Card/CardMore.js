@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../../helpers/bem";
 import mergeClassNames from "../../../../helpers/merge-class-names";
@@ -20,25 +19,19 @@ type State = {
 
 export default class CardMore extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    show: false
+  };
 
   static defaultProps = {
     selected: false
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = { show: false };
-
-    autoBind(this);
-  }
-
-  handleMouseLeave() {
+  handleMouseLeave = () => {
     this.setState({ show: false });
   }
 
-  handleMouseEnter(e: SyntheticMouseEvent) {
+  handleMouseEnter = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ show: true });

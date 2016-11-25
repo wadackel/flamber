@@ -1,5 +1,4 @@
 /* eslint-disable */
-import autoBind from "auto-bind";
 import isURL from "validator/lib/isURL";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
@@ -18,24 +17,12 @@ import {
 const b = bem("item-detail-meta-container");
 
 export class ItemDetailPaletteContainer extends Component {
-  static propTypes = {
-  };
-
-  static defaultProps = {
-  };
-
-  constructor(props, context) {
-    super(props, context);
-
-    autoBind(this);
-  }
-
-  handleItemNameComplete(value) {
+  handleItemNameComplete = (value) => {
     const { dispatch, currentItem } = this.props;
     dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
   }
 
-  handleItemDescriptionComplete(value) {
+  handleItemDescriptionComplete = (value) => {
     const { dispatch, currentItem } = this.props;
     dispatch(ItemActions.updateItemDescriptionRequest(currentItem.id, value));
   }

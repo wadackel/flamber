@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -35,24 +34,19 @@ export default class UserDropDown extends React.Component {
     }
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleRequestClose() {
+  handleRequestClose = () => {
     if (typeof this.props.onRequestClose === "function") {
       this.props.onRequestClose();
     }
   }
 
-  handleOptionsClick() {
+  handleOptionsClick = () => {
     if (typeof this.props.onRequestOptions === "function") {
       this.props.onRequestOptions();
     }
   }
 
-  handleSignOutClick() {
+  handleSignOutClick = () => {
     if (typeof this.props.onRequestSignOut === "function") {
       this.props.onRequestSignOut();
     }

@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -21,12 +20,7 @@ type Props = {
 export default class FeedListItem extends Component {
   props: Props;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleDeleteClick() {
+  handleDeleteClick = () => {
     if (typeof this.props.onDelete === "function") {
       this.props.onDelete(this, this.props.value, this.props.index);
     }

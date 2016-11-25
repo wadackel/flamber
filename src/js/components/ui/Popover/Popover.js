@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React from "react";
 import EventListener, { withOptions } from "react-event-listener";
 import shareConfig from "../../../share-config.json";
@@ -69,8 +68,6 @@ export default class Popover extends React.Component {
       open: props.open,
       closing: false
     };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -99,13 +96,13 @@ export default class Popover extends React.Component {
     clearTimeout(this.timer);
   }
 
-  handleClickAway() {
+  handleClickAway = () => {
     if (typeof this.props.onRequestClose === "function") {
       this.props.onRequestClose("clickAway");
     }
   }
 
-  handleClose(e: Event) {
+  handleClose = (e: Event) => {
     this.setPositions();
     if (typeof this.props.onRequestClose === "function") {
       this.props.onRequestClose(e.type);
@@ -171,7 +168,7 @@ export default class Popover extends React.Component {
     };
   }
 
-  renderLayer(): React$Element<any> {
+  renderLayer = (): React$Element<any> => {
     const {
       children,
       className,

@@ -1,6 +1,5 @@
 // @flow
 import _ from "lodash";
-import autoBind from "auto-bind";
 import keycode from "keycode";
 import React from "react";
 import Textarea from "react-textarea-autosize";
@@ -63,8 +62,6 @@ export default class TextField extends React.Component {
       isFocused: false,
       hasValue: isValid(props.defaultValue) || isValid(props.value)
     };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -76,7 +73,7 @@ export default class TextField extends React.Component {
     }
   }
 
-  handleChange(e: SyntheticInputEvent) {
+  handleChange = (e: SyntheticInputEvent) => {
     const target = e.target;
     const value = typeof target.value === "string" ? target.value : "";
 
@@ -87,7 +84,7 @@ export default class TextField extends React.Component {
     }
   }
 
-  handleEnter(e: SyntheticInputEvent) {
+  handleEnter = (e: SyntheticInputEvent) => {
     const target = e.target;
     const value = typeof target.value === "string" ? target.value : "";
 
@@ -98,7 +95,7 @@ export default class TextField extends React.Component {
     }
   }
 
-  handleKeyUp(e: SyntheticKeyboardEvent) {
+  handleKeyUp = (e: SyntheticKeyboardEvent) => {
     if (typeof this.props.onKeyUp === "function") {
       this.props.onKeyUp(e);
     }
@@ -108,14 +105,14 @@ export default class TextField extends React.Component {
     }
   }
 
-  handleFocus(e: SyntheticFocusEvent) {
+  handleFocus = (e: SyntheticFocusEvent) => {
     this.setState({ isFocused: true });
     if (typeof this.props.onFocus === "function") {
       this.props.onFocus(e);
     }
   }
 
-  handleBlur(e: SyntheticFocusEvent) {
+  handleBlur = (e: SyntheticFocusEvent) => {
     this.setState({ isFocused: false });
     if (typeof this.props.onBlur === "function") {
       this.props.onBlur(e);

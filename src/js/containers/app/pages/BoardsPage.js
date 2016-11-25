@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import ExecutionEnvironment from "exenv";
 import { connect } from "react-redux";
@@ -40,36 +39,33 @@ type Props = {
 };
 
 export class BoardsPage extends Component {
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
+  props: Props;
 
-  handleEdit(id: BoardId) {
+  handleEdit = (id: BoardId) => {
     this.props.dispatch(push(`/app/board/${id}`));
   }
 
-  handleSelect(id: BoardId) {
+  handleSelect = (id: BoardId) => {
     this.props.dispatch(BoardActions.selectBoardToggle(id));
   }
 
-  handleDelete(id: BoardId) {
+  handleDelete = (id: BoardId) => {
     this.props.dispatch(BoardActions.deleteBoardRequest(id));
   }
 
-  handleSelectDelete() {
+  handleSelectDelete = () => {
     this.props.dispatch(BoardActions.selectedBoardsDeleteRequest());
   }
 
-  handleOrderByChange(orderBy: OrderBy) {
+  handleOrderByChange = (orderBy: OrderBy) => {
     this.props.dispatch(OptionActions.updateBoardsOrderByRequest(orderBy));
   }
 
-  handleOrderChange(order: Order) {
+  handleOrderChange = (order: Order) => {
     this.props.dispatch(OptionActions.updateBoardsOrderRequest(order));
   }
 
-  handleAddBoardClick() {
+  handleAddBoardClick = () => {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 

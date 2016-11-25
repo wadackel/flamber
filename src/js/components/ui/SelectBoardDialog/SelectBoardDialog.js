@@ -1,6 +1,5 @@
 // @flow
 import deepEqual from "deep-equal";
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
@@ -56,8 +55,6 @@ export default class SelectBoardDialog extends Component {
     this.state = {
       value: props.boards[0] && props.boards[0].value
     };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -70,19 +67,19 @@ export default class SelectBoardDialog extends Component {
     }
   }
 
-  handleClose() {
+  handleClose = () => {
     if (typeof this.props.onRequestClose === "function") {
       this.props.onRequestClose();
     }
   }
 
-  handleSelect() {
+  handleSelect = () => {
     if (typeof this.props.onSelect === "function") {
       this.props.onSelect(this.state.value);
     }
   }
 
-  handleChange(value: any) {
+  handleChange = (value: any) => {
     this.setState({ value });
   }
 

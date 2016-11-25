@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import { push } from "react-router-redux";
 import { connect } from "react-redux";
@@ -37,21 +36,15 @@ type State = {
 
 export class TagDrawerContainer extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    addTagName: ""
+  };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = { addTagName: "" };
-
-    autoBind(this);
-  }
-
-  handleAddTagChange(e: SyntheticInputEvent, value: string) {
+  handleAddTagChange = (e: SyntheticInputEvent, value: string) => {
     this.setState({ addTagName: value });
   }
 
-  handleAddTagEnter() {
+  handleAddTagEnter = () => {
     const { addTag } = this.refs;
     const { addTagName } = this.state;
     const finalAddTagName = addTagName.trim();
@@ -63,15 +56,15 @@ export class TagDrawerContainer extends Component {
     }
   }
 
-  handleTagUpdate(item: ListItem, text: string) {
+  handleTagUpdate = (item: ListItem, text: string) => {
     this.props.dispatch(TagActions.updateTagIfNeeded(item.props.value, text));
   }
 
-  handleTagDelete(item: ListItem) {
+  handleTagDelete = (item: ListItem) => {
     this.props.dispatch(TagActions.deleteTagRequest(item.props.value));
   }
 
-  handleTagClick(item: ListItem, id: TagId) {
+  handleTagClick = (item: ListItem, id: TagId) => {
     this.props.dispatch(push(`/app/tag/${id}`));
   }
 
@@ -147,8 +140,5 @@ export default connect(
   (state: ConnectState) => ({
     tags: state.tags,
     tagEntities: getTagEntities(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(TagDrawerContainer);

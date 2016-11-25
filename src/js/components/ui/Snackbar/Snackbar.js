@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -19,6 +18,8 @@ type Props = {
 };
 
 export default class Snackbar extends Component {
+  props: Props;
+
   static defaultProps = {
     open: false,
     hideDuration: 6000,
@@ -27,11 +28,6 @@ export default class Snackbar extends Component {
   };
 
   timer: number = 0;
-
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.open !== this.props.open && nextProps.open) {
@@ -46,20 +42,24 @@ export default class Snackbar extends Component {
     clearTimeout(this.timer);
   }
 
-  handleActionClick(e: SyntheticMouseEvent) {
-    this.props.onActionClick(e);
+  handleActionClick = (e: SyntheticMouseEvent) => {
+    if (typeof this.props.onActionClick === "function") {
+      this.props.onActionClick(e);
+    }
   }
 
-  handleTimeout(): void {
+  handleTimeout = (): void => {
     this.requestClose();
   }
 
-  handleCloseClick(): void {
+  handleCloseClick = (): void => {
     this.requestClose();
   }
 
-  requestClose(): void {
-    this.props.onRequestClose();
+  requestClose = (): void => {
+    if (typeof this.props.onRequestClose === "function") {
+      this.props.onRequestClose();
+    }
   }
 
   render() {
@@ -70,9 +70,7 @@ export default class Snackbar extends Component {
       action
     } = this.props;
 
-    const modifier = {
-      open
-    };
+    const modifier = { open };
 
     const actionElement = action
       ? <FlatButton

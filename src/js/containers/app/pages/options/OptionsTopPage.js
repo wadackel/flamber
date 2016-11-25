@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -46,8 +45,6 @@ export class OptionsTopPage extends Component {
         error: null
       }
     };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -66,7 +63,7 @@ export class OptionsTopPage extends Component {
     }
   }
 
-  handlePhotoChange(e: SyntheticInputEvent) {
+  handlePhotoChange = (e: SyntheticInputEvent) => {
     if (e.currentTarget instanceof HTMLInputElement) {
       const { files } = e.currentTarget;
       const file = files[0];
@@ -86,11 +83,11 @@ export class OptionsTopPage extends Component {
     }
   }
 
-  handlePhotoClick() {
+  handlePhotoClick = () => {
     this.refs.photo.click();
   }
 
-  handleUserNameChange(e: SyntheticInputEvent, value: string) {
+  handleUserNameChange = (e: SyntheticInputEvent, value: string) => {
     this.setState({
       userName: {
         error: value === "" ? "必須項目です" : null,
@@ -99,7 +96,7 @@ export class OptionsTopPage extends Component {
     });
   }
 
-  handleSave() {
+  handleSave = () => {
     const { auth: { user } } = this.props;
 
     const {

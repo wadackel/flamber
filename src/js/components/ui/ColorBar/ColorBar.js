@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -16,12 +15,7 @@ type ItemProps = {
 class ColorBarItem extends Component {
   props: ItemProps;
 
-  constructor(props: ItemProps, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleClick() {
+  handleClick = () => {
     this.props.onClick(this.props.color);
   }
 

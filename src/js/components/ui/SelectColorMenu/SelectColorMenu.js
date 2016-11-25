@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -26,20 +25,12 @@ type State = {
 
 export default class SelectColorMenu extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    open: false,
+    triggerElement: null
+  };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      open: false,
-      triggerElement: null
-    };
-
-    autoBind(this);
-  }
-
-  handleIconClick(e: SyntheticMouseEvent) {
+  handleIconClick = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     this.setState({
       open: true,
@@ -47,14 +38,14 @@ export default class SelectColorMenu extends Component {
     });
   }
 
-  handleComplete(colors: Array<string>) {
+  handleComplete = (colors: Array<string>) => {
     this.setState({ open: false });
     if (typeof this.props.onComplete === "function") {
       this.props.onComplete(colors);
     }
   }
 
-  handleRequestClose() {
+  handleRequestClose = () => {
     this.setState({ open: false });
   }
 

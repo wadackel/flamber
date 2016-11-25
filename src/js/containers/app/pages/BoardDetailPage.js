@@ -1,6 +1,5 @@
 /* eslint-disable */
 import _ from "lodash";
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import bem from "../../../helpers/bem";
@@ -14,17 +13,6 @@ import { PictureLinkIcon } from "../../../components/svg-icons/";
 const b = bem("board-detail-page");
 
 export class BoardDetailPage extends Component {
-  static propTypes = {
-  };
-
-  static defaultProps = {
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    autoBind(this);
-  }
-
   componentDidMount() {
     this.props.dispatch(BoardActions.setCurrentBoard(this.props.params.id));
   }
@@ -41,7 +29,7 @@ export class BoardDetailPage extends Component {
     this.props.dispatch(BoardActions.setCurrentBoard(null));
   }
 
-  handleAddItemClick() {
+  handleAddItemClick = () => {
     this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 
@@ -66,8 +54,5 @@ export class BoardDetailPage extends Component {
 export default connect(
   state => ({
     currentBoard: getCurrentBoard(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(BoardDetailPage);

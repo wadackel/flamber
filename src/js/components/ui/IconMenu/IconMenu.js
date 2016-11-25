@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -27,7 +26,10 @@ type State = {
 
 export default class IconMenu extends React.Component {
   props: Props;
-  state: State;
+  state: State = {
+    open: false,
+    triggerElement: null
+  };
 
   static defaultProps = {
     origin: {
@@ -40,32 +42,21 @@ export default class IconMenu extends React.Component {
     }
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      open: false,
-      triggerElement: null
-    };
-
-    autoBind(this);
-  }
-
-  handleIconClick(e: SyntheticMouseEvent) {
+  handleIconClick = (e: SyntheticMouseEvent) => {
     this.setState({
       open: true,
       triggerElement: e.currentTarget instanceof HTMLElement ? e.currentTarget : null
     });
   }
 
-  handleItemClick(menuItem: MenuItem, value: any, index: number) {
+  handleItemClick = (menuItem: MenuItem, value: any, index: number) => {
     this.setState({ open: false });
     if (typeof this.props.onItemClick === "function") {
       this.props.onItemClick(menuItem, value, index);
     }
   }
 
-  handleRequestClose() {
+  handleRequestClose = () => {
     this.setState({
       open: false
     });

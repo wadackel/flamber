@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React from "react";
 import EventListener from "react-event-listener";
 import bem from "../../../helpers/bem";
@@ -23,11 +22,6 @@ export default class Drawer extends React.Component {
     open: false
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
   componentDidMount() {
     this.updateScrollHeight();
   }
@@ -36,16 +30,12 @@ export default class Drawer extends React.Component {
     this.updateScrollHeight();
   }
 
-  handleResize() {
+  handleResize = () => {
     this.updateScrollHeight();
   }
 
   updateScrollHeight(): void {
-    const {
-      drawer,
-      scrollContainer,
-      footer
-    } = this.refs;
+    const { drawer, scrollContainer, footer } = this.refs;
 
     const { top, bottom } = drawer.getBoundingClientRect();
     const maxHeight = Math.min(bottom, window.innerHeight) - Math.max(0, top);
@@ -72,10 +62,7 @@ export default class Drawer extends React.Component {
 
     return (
       <div ref="drawer" className={mergeClassNames(b(modifier)(), className)}>
-        <EventListener
-          target="window"
-          onResize={this.handleResize}
-        />
+        <EventListener target="window" onResize={this.handleResize} />
         <div ref="scrollContainer" className={b("scroll-container")()}>
           <div className={b("container")()}>
             {children}

@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component, isValidElement } from "react";
 import shareConfig from "../../../share-config.json";
@@ -56,8 +55,6 @@ export default class Menu extends Component {
       isKeyboardFocused: props.initiallyKeyboardFocused,
       focusIndex
     };
-
-    autoBind(this);
   }
 
   componentDidMount() {
@@ -79,14 +76,14 @@ export default class Menu extends Component {
     }
   }
 
-  handleItemClick(menuItem: MenuItem, value: any, index: number) {
+  handleItemClick = (menuItem: MenuItem, value: any, index: number) => {
     this.setState({ value });
     if (typeof this.props.onItemClick === "function") {
       this.props.onItemClick(menuItem, value, index);
     }
   }
 
-  handleKeyDown(e: SyntheticKeyboardEvent) {
+  handleKeyDown = (e: SyntheticKeyboardEvent) => {
     const { focusedItem } = this.refs;
     const key = keycode(e);
 

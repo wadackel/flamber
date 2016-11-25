@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
@@ -30,7 +29,10 @@ type State = {
 
 export default class EditableText extends Component {
   props: EditableTextProps;
-  state: State;
+  state: State = {
+    isEditing: false,
+    isHover: false
+  };
 
   static defaultProps = {
     multiLine: false,
@@ -39,45 +41,34 @@ export default class EditableText extends Component {
 
   _isEnter: boolean = false;
 
-  constructor(props: EditableTextProps, context: Object) {
-    super(props, context);
-
-    this.state = {
-      isEditing: false,
-      isHover: false
-    };
-
-    autoBind(this);
-  }
-
-  handleClick() {
+  handleClick = () => {
     this.setState({ isEditing: true }, () => {
       this.refs.textField.focus();
       this.refs.textField.select();
     });
   }
 
-  handleMouseEnter(e: SyntheticMouseEvent) {
+  handleMouseEnter = (e: SyntheticMouseEvent) => {
     this.setState({ isHover: true });
     if (typeof this.props.onMouseEnter === "function") {
       this.props.onMouseEnter(e);
     }
   }
 
-  handleMouseLeave(e: SyntheticMouseEvent) {
+  handleMouseLeave = (e: SyntheticMouseEvent) => {
     this.setState({ isHover: false });
     if (typeof this.props.onMouseLeave === "function") {
       this.props.onMouseLeave(e);
     }
   }
 
-  handleEnter(e: SyntheticKeyboardEvent, value: any) {
+  handleEnter = (e: SyntheticKeyboardEvent, value: any) => {
     this._isEnter = true;
     this.triggerEnter(e, value);
     this.refs.textField.blur();
   }
 
-  handleKeyDown(e: SyntheticKeyboardEvent) {
+  handleKeyDown = (e: SyntheticKeyboardEvent) => {
     if (typeof this.props.onKeyDown === "function") {
       this.props.onKeyDown(e);
     }
@@ -93,14 +84,14 @@ export default class EditableText extends Component {
     }
   }
 
-  handleElementFocus(e: SyntheticFocusEvent) {
+  handleElementFocus = (e: SyntheticFocusEvent) => {
     this.setState({ isEditing: true }, () => {
       this.refs.textField.focus();
       this.refs.textField.select(e);
     });
   }
 
-  handleBlur(e: SyntheticFocusEvent) {
+  handleBlur = (e: SyntheticFocusEvent) => {
     this.setState({ isEditing: false });
 
     if (typeof this.props.onBlur === "function") {

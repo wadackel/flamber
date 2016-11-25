@@ -1,6 +1,5 @@
 // @flow
 import keycode from "keycode";
-import autoBind from "auto-bind";
 import React from "react";
 import ReactDOM from "react-dom";
 import bem from "../../../helpers/bem";
@@ -95,8 +94,6 @@ export default class AutoComplete extends React.Component {
       triggerElement: null,
       focusTextField: true
     };
-
-    autoBind(this);
   }
 
   componentDidMount() {
@@ -119,7 +116,7 @@ export default class AutoComplete extends React.Component {
     }
   }
 
-  handleChange(e: SyntheticInputEvent, value: any) {
+  handleChange = (e: SyntheticInputEvent, value: any) => {
     if (value === this.state.searchText) {
       return;
     }
@@ -136,7 +133,7 @@ export default class AutoComplete extends React.Component {
     });
   }
 
-  handleFocus(e: SyntheticFocusEvent) {
+  handleFocus = (e: SyntheticFocusEvent) => {
     this.setState({
       focusTextField: true,
       open: this.props.openOnFocus,
@@ -148,7 +145,7 @@ export default class AutoComplete extends React.Component {
     }
   }
 
-  handleBlur(e: SyntheticFocusEvent) {
+  handleBlur = (e: SyntheticFocusEvent) => {
     if (this.state.focusTextField && !this.timerMenuItemClickClose) {
       this.close();
     }
@@ -158,7 +155,7 @@ export default class AutoComplete extends React.Component {
     }
   }
 
-  handleKeyDown(e: SyntheticKeyboardEvent) {
+  handleKeyDown = (e: SyntheticKeyboardEvent) => {
     const key = keycode(e);
 
     if (typeof this.props.onKeyDown === "function") {
@@ -181,7 +178,7 @@ export default class AutoComplete extends React.Component {
     }
   }
 
-  handleEnter() {
+  handleEnter = () => {
     const { searchText } = this.state;
     const finalSearchText = searchText.trim();
 
@@ -190,7 +187,7 @@ export default class AutoComplete extends React.Component {
     }
   }
 
-  handleMenuItemClick(menuItem: MenuItem, value: any, index: number) {
+  handleMenuItemClick = (menuItem: MenuItem, value: any, index: number) => {
     const { menuCloseDelay } = this.props;
 
     this.timerMenuItemClickClose = setTimeout(() => {
@@ -202,15 +199,15 @@ export default class AutoComplete extends React.Component {
     }, menuCloseDelay);
   }
 
-  handleMenuMouseDown(e: SyntheticMouseEvent) {
+  handleMenuMouseDown = (e: SyntheticMouseEvent) => {
     e.preventDefault();
   }
 
-  handleEscKeyDown() {
+  handleEscKeyDown = () => {
     this.close();
   }
 
-  handleUpdateFocusIndex(index: number) {
+  handleUpdateFocusIndex = (index: number) => {
     const maxIndex = this.refs.menu.props.children.length - 1;
 
     if (index < 0 || index > maxIndex) {
@@ -220,7 +217,7 @@ export default class AutoComplete extends React.Component {
     }
   }
 
-  handleRequestClose(type: string) {
+  handleRequestClose = (type: string) => {
     if (!this.state.focusTextField || type === "scroll" || type === "resize") {
       this.close();
     }

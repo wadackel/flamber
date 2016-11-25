@@ -1,6 +1,5 @@
 // @flow
 import _ from "lodash";
-import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
@@ -28,7 +27,9 @@ type State = {
 
 export default class Chip extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    focused: false
+  };
 
   static defaultProps = {
     processing: false,
@@ -37,36 +38,28 @@ export default class Chip extends Component {
     onBlur: () => {}
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = { focused: false };
-
-    autoBind(this);
-  }
-
-  handleClick(e: SyntheticMouseEvent) {
+  handleClick = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     if (typeof this.props.onClick === "function") {
       this.props.onClick(e, this.props.value);
     }
   }
 
-  handleFocus(e: SyntheticFocusEvent) {
+  handleFocus = (e: SyntheticFocusEvent) => {
     if (typeof this.props.onFocus === "function") {
       this.props.onFocus(e, this.props.value);
     }
     this.setState({ focused: true });
   }
 
-  handleBlur(e: SyntheticFocusEvent) {
+  handleBlur = (e: SyntheticFocusEvent) => {
     if (typeof this.props.onBlur === "function") {
       this.props.onBlur(e, this.props.value);
     }
     this.setState({ focused: false });
   }
 
-  handleDelete(e: SyntheticMouseEvent) {
+  handleDelete = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (typeof this.props.onDelete === "function") {
@@ -74,7 +67,7 @@ export default class Chip extends Component {
     }
   }
 
-  handleKeyDown(e: SyntheticKeyboardEvent) {
+  handleKeyDown = (e: SyntheticKeyboardEvent) => {
     const key = keycode(e);
 
     switch (key) {

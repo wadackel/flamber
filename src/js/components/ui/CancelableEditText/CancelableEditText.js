@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -28,8 +27,6 @@ export default class CancelableEditText extends Component {
     super(props, context);
 
     this.state = { value: props.value };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -38,7 +35,7 @@ export default class CancelableEditText extends Component {
     }
   }
 
-  handleBlur(e: SyntheticFocusEvent, isEnter: boolean) {
+  handleBlur = (e: SyntheticFocusEvent, isEnter: boolean) => {
     if (!isEnter) {
       this.setState({ value: this.props.value });
     }
@@ -48,11 +45,11 @@ export default class CancelableEditText extends Component {
     }
   }
 
-  handleChange(e: SyntheticInputEvent, value: any) {
+  handleChange = (e: SyntheticInputEvent, value: any) => {
     this.setState({ value });
   }
 
-  handleEnter(e: SyntheticKeyboardEvent, value: any) {
+  handleEnter = (e: SyntheticKeyboardEvent, value: any) => {
     if (typeof this.props.onComplete === "function") {
       this.props.onComplete(value);
     }
@@ -60,8 +57,8 @@ export default class CancelableEditText extends Component {
 
   render() {
     const {
-      value: _value, // eslint-disable-line no-unused-vars
       className,
+      value: _value, // eslint-disable-line no-unused-vars
       onBlur, // eslint-disable-line no-unused-vars
       ...props
     } = this.props;

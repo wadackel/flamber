@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -26,12 +25,7 @@ export default class SelectableColor extends Component {
     checkMarkColor: "#fff"
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleClick(e: SyntheticMouseEvent) {
+  handleClick = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (typeof this.props.onClick === "function") {

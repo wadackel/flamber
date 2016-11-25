@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import bem from "../../../helpers/bem";
@@ -25,22 +24,17 @@ type Props = {
 export class AllItemsPage extends Component {
   props: Props;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
   componentDidMount() {
     this.props.dispatch(ItemActions.setItemVisibilityFilter(
       ItemVisibilityFilters.ALL
     ));
   }
 
-  handleAddBoardClick() {
+  handleAddBoardClick = () => {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 
-  handleAddItemClick() {
+  handleAddItemClick = () => {
     this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 

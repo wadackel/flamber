@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import shareConfig from "../../../share-config.json";
 
@@ -17,7 +16,9 @@ type State = {
 
 export default class Ripple extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    show: true
+  };
 
   static defaultProps = {
     className: "",
@@ -26,16 +27,6 @@ export default class Ripple extends Component {
   };
 
   timer: ?number = null;
-
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      show: true
-    };
-
-    autoBind(this);
-  }
 
   componentDidMount() {
     this.timer = setTimeout(this.handleTimeout, RIPPLE_DURATION);
@@ -47,7 +38,7 @@ export default class Ripple extends Component {
     this.setState({ show: true });
   }
 
-  handleTimeout() {
+  handleTimeout = () => {
     clearTimeout(this.timer);
     this.timer = null;
     this.setState({ show: false });
@@ -55,14 +46,8 @@ export default class Ripple extends Component {
   }
 
   render() {
-    const {
-      className,
-      style
-    } = this.props;
-
-    const {
-      show
-    } = this.state;
+    const { className, style } = this.props;
+    const { show } = this.state;
 
     if (!show) return null;
 

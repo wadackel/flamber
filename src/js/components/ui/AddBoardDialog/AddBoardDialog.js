@@ -1,6 +1,5 @@
 // @flow
 import React, { Component, PropTypes } from "react";
-import autoBind from "auto-bind";
 import * as Themes from "../../../constants/themes";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -28,7 +27,9 @@ type State = {
 
 export default class AddBoardDialog extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    value: ""
+  };
 
   static defaultProps = {
     processing: false
@@ -44,30 +45,20 @@ export default class AddBoardDialog extends Component {
     };
   }
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      value: ""
-    };
-
-    autoBind(this);
-  }
-
   componentWillReceiveProps(nextProps: Props) {
     if (this.props.open && !nextProps.open) {
       this.setState({ value: "" });
     }
   }
 
-  handleClose() {
+  handleClose = () => {
     const { onRequestClose } = this.props;
     if (typeof onRequestClose === "function") {
       onRequestClose();
     }
   }
 
-  handleAdd() {
+  handleAdd = () => {
     const { value } = this.state;
     const trimmedBoardName = value.trim();
 
@@ -76,13 +67,13 @@ export default class AddBoardDialog extends Component {
     }
   }
 
-  handleBoardNameChange(e: SyntheticInputEvent, value: string) {
+  handleBoardNameChange = (e: SyntheticInputEvent, value: string) => {
     if (!this.props.processing) {
       this.setState({ value });
     }
   }
 
-  handleAfterOpen() {
+  handleAfterOpen = () => {
     this.refs.boardName.focus();
   }
 

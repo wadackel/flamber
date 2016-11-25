@@ -102,7 +102,6 @@
     "why-did-you-update": "0.0.8"
   },
   "dependencies": {
-    "auto-bind": "^0.1.0",
     "babel-core": "^6.18.2",
     "babel-polyfill": "^6.16.0",
     "bem-cn": "^2.1.3",

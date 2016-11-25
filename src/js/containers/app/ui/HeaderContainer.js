@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -73,8 +72,6 @@ export class HeaderContainer extends Component {
       boardName: "",
       itemsSize: props.options.itemsSize
     };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -90,40 +87,40 @@ export class HeaderContainer extends Component {
   }
 
   // Navigation
-  handleBoardsClick() {
+  handleBoardsClick = () => {
     this.push("/app/");
   }
 
-  handleAllItemsClick() {
+  handleAllItemsClick = () => {
     this.push("/app/items");
   }
 
-  handleFeedsClick() {
+  handleFeedsClick = () => {
     this.push("/app/feeds");
   }
 
-  handleLogoClick() {
+  handleLogoClick = () => {
     this.push("/app/");
   }
 
-  handleOptionsClick() {
+  handleOptionsClick = () => {
     this.push("/app/options/");
   }
 
-  handleTagDrawerToggle() {
+  handleTagDrawerToggle = () => {
     this.props.dispatch(TagActions.tagDrawerToggle());
   }
 
-  handleStarClick() {
+  handleStarClick = () => {
     this.push("/app/stars");
   }
 
-  handleSignOut() {
+  handleSignOut = () => {
     this.props.dispatch(AuthActions.signOutRequest());
   }
 
   // Update board
-  handleBoardNameComplete(name: string) {
+  handleBoardNameComplete = (name: string) => {
     const { currentBoard } = this.props;
     const board: BoardEntity = {
       ...currentBoard,
@@ -135,15 +132,15 @@ export class HeaderContainer extends Component {
   }
 
   // Update layouts
-  handleBoardsLayoutChange(layout: BoardsLayout) {
+  handleBoardsLayoutChange = (layout: BoardsLayout) => {
     this.props.dispatch(OptionActions.updateBoardsLayoutRequest(layout));
   }
 
-  handleItemsLayoutChange(layout: ItemsLayout) {
+  handleItemsLayoutChange = (layout: ItemsLayout) => {
     this.props.dispatch(OptionActions.updateItemsLayoutRequest(layout));
   }
 
-  handleItemsSizeChange(size: number) {
+  handleItemsSizeChange = (size: number) => {
     this.setState({
       itemsSize: size
     });

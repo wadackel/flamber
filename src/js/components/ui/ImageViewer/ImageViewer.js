@@ -1,6 +1,5 @@
 // @flow
 import _ from "lodash";
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import sizeMe from "react-sizeMe";
 import IScroll from "../../../utils/iscroll";
@@ -44,7 +43,13 @@ type State = $All<ImageSize, {
 
 class ImageViewerInline extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    status: Status.LOADING,
+    width: 0,
+    height: 0,
+    naturalWidth: 0,
+    naturalHeight: 0
+  };
 
   static defaultProps = {
     zoom: 1,
@@ -63,20 +68,6 @@ class ImageViewerInline extends Component {
 
   _isMounted: boolean = false;
   iScroll: ?IScroll = null;
-
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      status: Status.LOADING,
-      width: 0,
-      height: 0,
-      naturalWidth: 0,
-      naturalHeight: 0
-    };
-
-    autoBind(this);
-  }
 
   componentDidMount() {
     const { iScrollOptions, image } = this.props;
@@ -134,7 +125,7 @@ class ImageViewerInline extends Component {
     }
   }
 
-  handleClick(e: SyntheticMouseEvent) {
+  handleClick = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (typeof this.props.onClick === "function") {
@@ -142,7 +133,7 @@ class ImageViewerInline extends Component {
     }
   }
 
-  handleDoubleClick(e: SyntheticMouseEvent) {
+  handleDoubleClick = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (typeof this.props.onDoubleClick === "function") {

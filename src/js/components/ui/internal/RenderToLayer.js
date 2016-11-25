@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import { Component } from "react";
 import { unstable_renderSubtreeIntoContainer, unmountComponentAtNode } from "react-dom"; // eslint-disable-line
 import elementClosest from "../../../utils/element-closest";
@@ -23,11 +22,6 @@ export default class RenderToLayer extends Component {
   layer: ?HTMLElement = null;
   layerElement: ?React$Component<*, *, *> = null;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
   componentDidMount() {
     this.renderLayer();
   }
@@ -40,7 +34,7 @@ export default class RenderToLayer extends Component {
     this.unrenderLayer();
   }
 
-  onClickAway(e: Event) {
+  onClickAway = (e: Event) => {
     if (e.defaultPrevented) return;
     if (!this.props.componentClickAway) return;
     if (!this.props.open) return;

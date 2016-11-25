@@ -1,5 +1,4 @@
 /* eslint-disable */
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import * as Themes from "../../../constants/themes";
@@ -18,26 +17,15 @@ import { fetchSettingsRequest, updateThemeRequest } from "../../../actions/setti
 const b = bem("settings-page");
 
 export class SettingsPage extends Component {
-  static propTypes = {
-  };
-
-  static defaultProps = {
-  };
-
   static contextTypes = {
     theme: PropTypes.string.isRequired
   };
 
-  constructor(props, context) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleThemeChange(theme) {
+  handleThemeChange = (theme) => {
     this.props.dispatch(updateThemeRequest(theme));
   }
 
-  handleDeleteClick() {
+  handleDeleteClick = () => {
     this.props.dispatch(deleteAppRequest());
   }
 
@@ -112,8 +100,5 @@ export default connect(
   state => ({
     auth: state.auth,
     settings: state.settings
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(SettingsPage);

@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
@@ -49,7 +48,10 @@ const b = bem("tag-input");
 
 export default class TagInput extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    searchText: "",
+    focused: false
+  };
 
   static defaultProps = {
     tags: [],
@@ -58,26 +60,15 @@ export default class TagInput extends Component {
 
   chipFocusIndex: number = -1;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      searchText: "",
-      focused: false
-    };
-
-    autoBind(this);
-  }
-
-  handleClick() {
+  handleClick = () => {
     this.refs.control.focus();
   }
 
-  handleChange(value: string) {
+  handleChange = (value: string) => {
     this.setState({ searchText: value });
   }
 
-  handleInputFocus(e: SyntheticFocusEvent) {
+  handleInputFocus = (e: SyntheticFocusEvent) => {
     this.setState({ focused: true });
 
     if (typeof this.props.onFocus === "function") {
@@ -85,7 +76,7 @@ export default class TagInput extends Component {
     }
   }
 
-  handleInputBlur(e: SyntheticFocusEvent) {
+  handleInputBlur = (e: SyntheticFocusEvent) => {
     this.setState({ focused: false });
 
     if (typeof this.props.onBlur === "function") {
@@ -93,7 +84,7 @@ export default class TagInput extends Component {
     }
   }
 
-  handleInputKeyDown(e: SyntheticKeyboardEvent) {
+  handleInputKeyDown = (e: SyntheticKeyboardEvent) => {
     const { tags } = this.props;
     const value = e.target instanceof HTMLInputElement ? e.target.value : "";
     const key = keycode(e);
@@ -115,7 +106,7 @@ export default class TagInput extends Component {
     }
   }
 
-  handleChipKeyDown(e: SyntheticKeyboardEvent) {
+  handleChipKeyDown = (e: SyntheticKeyboardEvent) => {
     const key = keycode(e);
 
     switch (key) {
@@ -133,7 +124,7 @@ export default class TagInput extends Component {
     }
   }
 
-  handleChipFocus(e: SyntheticFocusEvent, value: any) {
+  handleChipFocus = (e: SyntheticFocusEvent, value: any) => {
     let index = -1;
 
     this.props.tags.forEach((tag, i) => {
@@ -147,7 +138,7 @@ export default class TagInput extends Component {
     }
   }
 
-  handleNewRequest(value: any, index: number) {
+  handleNewRequest = (value: any, index: number) => {
     if (index > -1) {
       const tag = this.findTagByValue(value);
 
@@ -161,8 +152,12 @@ export default class TagInput extends Component {
     this.setState({ searchText: "" });
   }
 
-  handleDelete(value: any) {
+  handleDelete = (value: any) => {
     this.requestRemoveTag(value);
+  }
+
+  handleTagClick = (e: SyntheticMouseEvent) => {
+    e.stopPropagation();
   }
 
   findTagByValue(value: any) {
@@ -175,10 +170,6 @@ export default class TagInput extends Component {
     if (tag && typeof this.props.onRemoveTag === "function") {
       this.props.onRemoveTag(tag);
     }
-  }
-
-  handleTagClick(e: SyntheticMouseEvent) {
-    e.stopPropagation();
   }
 
   moveChipFocus(index: number): void {
@@ -233,14 +224,8 @@ export default class TagInput extends Component {
       ...props
     } = this.props;
 
-    const {
-      searchText,
-      focused
-    } = this.state;
-
-    const modifier = {
-      focused
-    };
+    const { searchText, focused } = this.state;
+    const modifier = { focused };
 
     const filteredDataSource = dataSource.filter(tag =>
       !tags.some(o => o.value === tag.value)

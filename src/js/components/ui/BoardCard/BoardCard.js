@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import moment from "moment";
 import React, { Component } from "react";
 import * as Layout from "../../../constants/layouts";
@@ -54,35 +53,30 @@ export default class BoardCard extends Component {
     itemCount: 0
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleClick() {
+  handleClick = () => {
     if (typeof this.props.onClick === "function") {
       this.props.onClick(this.props.id);
     }
   }
 
-  handleSelectClick(e: SyntheticMouseEvent) {
+  handleSelectClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
   }
 
-  handleSelect() {
+  handleSelect = () => {
     if (typeof this.props.onSelect === "function") {
       this.props.onSelect(this.props.id);
     }
   }
 
-  handleEditClick(e: SyntheticMouseEvent) {
+  handleEditClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
     if (typeof this.props.onEdit === "function") {
       this.props.onEdit(this.props.id);
     }
   }
 
-  handleDeleteClick(e: SyntheticMouseEvent) {
+  handleDeleteClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
     if (typeof this.props.onDelete === "function") {
       this.props.onDelete(this.props.id);

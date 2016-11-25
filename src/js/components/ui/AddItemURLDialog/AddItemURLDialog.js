@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import isURL from "validator/lib/isURL";
 import React, { Component, PropTypes } from "react";
@@ -60,8 +59,6 @@ export default class AddItemURLDialog extends Component {
       url: "",
       selectBoard: this.getInitialBoard(props)
     };
-
-    autoBind(this);
   }
 
   getInitialBoard(props: Props): any {
@@ -87,17 +84,17 @@ export default class AddItemURLDialog extends Component {
     }
   }
 
-  handleAfterOpen() {
+  handleAfterOpen = () => {
     this.refs.url.focus();
   }
 
-  handleClose() {
+  handleClose = () => {
     if (typeof this.props.onRequestClose === "function") {
       this.props.onRequestClose();
     }
   }
 
-  handleAdd() {
+  handleAdd = () => {
     const { url, selectBoard } = this.state;
 
     if (typeof this.props.onRequestAdd === "function") {
@@ -108,11 +105,11 @@ export default class AddItemURLDialog extends Component {
     }
   }
 
-  handleURLChange(e: SyntheticInputEvent, value: string) {
+  handleURLChange = (e: SyntheticInputEvent, value: string) => {
     this.setState({ url: value });
   }
 
-  handleBoardChange(value: any) {
+  handleBoardChange = (value: any) => {
     this.setState({ selectBoard: value });
   }
 

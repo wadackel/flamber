@@ -1,4 +1,3 @@
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -24,11 +23,6 @@ export class TagsPage extends Component {
     currentTag: PropTypes.object
   };
 
-  constructor(props, context) {
-    super(props, context);
-    autoBind(this);
-  }
-
   componentDidMount() {
     const { dispatch, params } = this.props;
 
@@ -45,15 +39,15 @@ export class TagsPage extends Component {
     }
   }
 
-  handleAddBoardClick() {
+  handleAddBoardClick = () => {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 
-  handleAddItemClick() {
+  handleAddItemClick = () => {
     this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 
-  handleViewAllItemsClick() {
+  handleViewAllItemsClick = () => {
     this.props.dispatch(push("/app/items"));
   }
 
@@ -121,8 +115,5 @@ export default connect(
     boards: state.boards,
     rawItemEntities: getItemEntities(state),
     currentTag: getCurrentTag(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(TagsPage);

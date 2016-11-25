@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import {
@@ -34,35 +33,27 @@ type State = {
 
 export default class Header extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    userDropDownOpen: false,
+    userDropDownTrigger: null
+  };
 
   static defaultProps = {
     colors: []
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      userDropDownOpen: false,
-      userDropDownTrigger: null
-    };
-
-    autoBind(this);
-  }
-
-  handleUserDropDownClick(e: SyntheticMouseEvent) {
+  handleUserDropDownClick = (e: SyntheticMouseEvent) => {
     this.setState({
       userDropDownOpen: !this.state.userDropDownOpen,
       userDropDownTrigger: e.currentTarget instanceof HTMLElement ? e.currentTarget : null
     });
   }
 
-  handleUserDropDownRequestClose() {
+  handleUserDropDownRequestClose = () => {
     this.userDropDownClose();
   }
 
-  handleSignOut() {
+  handleSignOut = () => {
     this.userDropDownClose(() => {
       if (typeof this.props.onSignOutClick === "function") {
         this.props.onSignOutClick();
@@ -70,7 +61,7 @@ export default class Header extends Component {
     });
   }
 
-  handleOptionsClick() {
+  handleOptionsClick = () => {
     this.userDropDownClose(() => {
       if (typeof this.props.onOptionsClick === "function") {
         this.props.onOptionsClick();

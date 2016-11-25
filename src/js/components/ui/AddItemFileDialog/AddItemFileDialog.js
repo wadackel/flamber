@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import deepEqual from "deep-equal";
 import React, { Component, PropTypes } from "react";
 import * as Themes from "../../../constants/themes";
@@ -65,7 +64,6 @@ export default class AddItemFileDialog extends Component {
 
   constructor(props: Props, context: Object) {
     super(props, context);
-
     this.state = {
       selectImage: {
         file: null,
@@ -74,8 +72,6 @@ export default class AddItemFileDialog extends Component {
       },
       selectBoard: this.getInitialBoard(props)
     };
-
-    autoBind(this);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -105,13 +101,13 @@ export default class AddItemFileDialog extends Component {
     }
   }
 
-  handleClose() {
+  handleClose = () => {
     if (typeof this.props.onRequestClose === "function") {
       this.props.onRequestClose();
     }
   }
 
-  handleAdd() {
+  handleAdd = () => {
     const { selectImage, selectBoard } = this.state;
 
     if (typeof this.props.onRequestAdd === "function") {
@@ -123,7 +119,7 @@ export default class AddItemFileDialog extends Component {
     }
   }
 
-  handleFileChange() {
+  handleFileChange = () => {
     const { files } = this.refs.file;
 
     if (files.length > 0) {
@@ -131,7 +127,7 @@ export default class AddItemFileDialog extends Component {
     }
   }
 
-  handlePreviewCloseClick(e: SyntheticMouseEvent) {
+  handlePreviewCloseClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
 
     this.setState({
@@ -143,7 +139,7 @@ export default class AddItemFileDialog extends Component {
     });
   }
 
-  handleBoardChange(value: any) {
+  handleBoardChange = (value: any) => {
     this.setState({ selectBoard: value });
   }
 

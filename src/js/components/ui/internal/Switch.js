@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -33,23 +32,15 @@ type State = {
 
 export default class Checkbox extends Component {
   props: SwitchProps;
-  state: State;
+  state: State = {
+    ripples: []
+  };
 
   static defaultProps = {
     checked: false,
     indeterminate: false,
     inline: false
   };
-
-  constructor(props: SwitchProps, context: Object) {
-    super(props, context);
-
-    this.state = {
-      ripples: []
-    };
-
-    autoBind(this);
-  }
 
   componentWillReceiveProps(nextProps: SwitchProps) {
     if (nextProps.checked !== this.props.checked && nextProps.checked) {
@@ -68,7 +59,7 @@ export default class Checkbox extends Component {
     }
   }
 
-  handleChange(e: SyntheticInputEvent) {
+  handleChange = (e: SyntheticInputEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (typeof this.props.onCheck === "function") {
@@ -76,7 +67,7 @@ export default class Checkbox extends Component {
     }
   }
 
-  handleRippleHide() {
+  handleRippleHide = () => {
     const ripples = this.state.ripples.slice(1);
     this.setState({ ripples });
   }

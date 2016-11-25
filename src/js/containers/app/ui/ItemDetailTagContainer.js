@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as ItemActions from "../../../actions/items";
@@ -33,26 +32,21 @@ type TagValue = {
 export class ItemDetailTagContainer extends Component {
   props: Props;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleAddTag(tag: TagValue) {
+  handleAddTag = (tag: TagValue) => {
     const { dispatch, currentItem } = this.props;
     if (currentItem) {
       dispatch(ItemActions.addItemTagIfNeeded(currentItem.id, tag.value));
     }
   }
 
-  handleNewTag(label: string) {
+  handleNewTag = (label: string) => {
     const { dispatch, currentItem } = this.props;
     if (currentItem) {
       dispatch(ItemActions.registerItemTagRequest(currentItem.id, label));
     }
   }
 
-  handleRemoveTag(tag: TagValue) {
+  handleRemoveTag = (tag: TagValue) => {
     const { dispatch, currentItem } = this.props;
     if (currentItem) {
       dispatch(ItemActions.removeItemTagRequest(currentItem.id, tag.value));

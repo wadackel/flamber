@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import * as AppActions from "../../../actions/application";
@@ -65,46 +64,38 @@ type State = {
 
 export class AppPage extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    dropFile: null,
+    dragging: false
+  };
 
   static contextTypes = {
     theme: PropTypes.string.isRequired
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      dropFile: null,
-      dragging: false
-    };
-
-    autoBind(this);
-  }
-
   // Menu
-  handleMenuOpen() {
+  handleMenuOpen = () => {
     this.props.dispatch(AppActions.appMenuOpen());
   }
 
-  handleMenuClose() {
+  handleMenuClose = () => {
     this.props.dispatch(AppActions.appMenuClose());
   }
 
   // Dragging
-  handleDragStart() {
+  handleDragStart = () => {
     if (this.props.auth.authenticated && !this.state.dragging) {
       this.setState({ dragging: true });
     }
   }
 
-  handleDragEnd() {
+  handleDragEnd = () => {
     if (this.props.auth.authenticated && this.state.dragging) {
       this.setState({ dragging: false });
     }
   }
 
-  handleDrop(dataTransfer: DataTransfer) {
+  handleDrop = (dataTransfer: DataTransfer) => {
     const { files } = dataTransfer;
 
     if (files.length > 0) {
@@ -114,29 +105,29 @@ export class AppPage extends Component {
   }
 
   // Add board
-  handleAddBoardOpen() {
+  handleAddBoardOpen = () => {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 
-  handleAddBoardClose() {
+  handleAddBoardClose = () => {
     this.props.dispatch(BoardActions.addBoardDialogClose());
   }
 
-  handleAddBoard(boardName: string) {
+  handleAddBoard = (boardName: string) => {
     // TODO: Secret
     this.props.dispatch(BoardActions.addBoardRequest(boardName, true));
   }
 
   // Add item (link)
-  handleAddItemURLOpen() {
+  handleAddItemURLOpen = () => {
     this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 
-  handleAddItemURLClose() {
+  handleAddItemURLClose = () => {
     this.props.dispatch(ItemActions.addItemURLDialogClose());
   }
 
-  handleAddItemURL(url: string, board: BoardId) {
+  handleAddItemURL = (url: string, board: BoardId) => {
     this.props.dispatch(ItemActions.addItemURLRequest(url, board));
   }
 
@@ -159,15 +150,15 @@ export class AppPage extends Component {
   }
 
   // Add item
-  handleAddItemFileOpen() {
+  handleAddItemFileOpen = () => {
     this.props.dispatch(ItemActions.addItemFileDialogOpen());
   }
 
-  handleAddItemFileClose() {
+  handleAddItemFileClose = () => {
     this.props.dispatch(ItemActions.addItemFileDialogClose());
   }
 
-  handleAddItemFile(file: File, palette: Palette, board: BoardId) {
+  handleAddItemFile = (file: File, palette: Palette, board: BoardId) => {
     this.props.dispatch(ItemActions.addItemFileRequest(board, file, palette));
   }
 

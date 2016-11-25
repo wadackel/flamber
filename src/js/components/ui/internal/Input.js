@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 
 const ENTER_KEY = 13;
@@ -21,13 +20,7 @@ export default class Input extends Component {
     onKeyUp: () => {}
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    autoBind(this);
-  }
-
-  handleKeyPress(e: SyntheticKeyboardEvent) {
+  handleKeyPress = (e: SyntheticKeyboardEvent) => {
     this.props.onKeyPress(e);
 
     if (e.which === ENTER_KEY) {
@@ -35,7 +28,7 @@ export default class Input extends Component {
     }
   }
 
-  handleKeyUp(e: SyntheticKeyboardEvent) {
+  handleKeyUp = (e: SyntheticKeyboardEvent) => {
     this.props.onKeyUp(e);
 
     if (e.which === ENTER_KEY && this.keyPressed) {

@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -56,8 +55,6 @@ export default class ListItem extends Component {
       primary: props.primary,
       isEditing: false
     };
-
-    autoBind(this);
   }
 
   componentWillUpdate(nextProps: Props, nextState: State) {
@@ -72,7 +69,7 @@ export default class ListItem extends Component {
     }
   }
 
-  handleClick(e: SyntheticMouseEvent) {
+  handleClick = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (typeof this.props.onClick === "function") {
@@ -80,37 +77,37 @@ export default class ListItem extends Component {
     }
   }
 
-  handleChange(e: SyntheticInputEvent, primary: string) {
+  handleChange = (e: SyntheticInputEvent, primary: string) => {
     this.setState({ primary });
     if (typeof this.props.onChange === "function") {
       this.props.onChange(this, primary, this.props.index);
     }
   }
 
-  handleEnter(e: SyntheticInputEvent, primary: string) {
+  handleEnter = (e: SyntheticInputEvent, primary: string) => {
     if (typeof this.props.onEnter === "function") {
       this.props.onEnter(this, primary, this.props.index);
     }
     this.refs.control.blur();
   }
 
-  handleBlur() {
+  handleBlur = () => {
     this.setState({ isEditing: false });
   }
 
-  handleComplete() {
+  handleComplete = () => {
     if (typeof this.props.onComplete === "function") {
       this.props.onComplete(this, this.state.primary, this.props.index);
     }
   }
 
-  handleEditClick(e: SyntheticMouseEvent) {
+  handleEditClick = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ isEditing: !this.state.isEditing });
   }
 
-  handleTrashClick(e: SyntheticMouseEvent) {
+  handleTrashClick = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (typeof this.props.onDelete === "function") {

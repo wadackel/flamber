@@ -1,4 +1,3 @@
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -20,11 +19,6 @@ export class StarsPage extends Component {
     rawItemEntities: PropTypes.array
   };
 
-  constructor(props, context) {
-    super(props, context);
-    autoBind(this);
-  }
-
   componentDidMount() {
     this.props.dispatch(ItemActions.setItemVisibilityFilter(
       ItemVisibilityFilters.SHOW_ITEM_STAR
@@ -37,15 +31,15 @@ export class StarsPage extends Component {
     ));
   }
 
-  handleAddBoardClick() {
+  handleAddBoardClick = () => {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 
-  handleAddItemClick() {
+  handleAddItemClick = () => {
     this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 
-  handleViewAllItemsClick() {
+  handleViewAllItemsClick = () => {
     this.props.dispatch(push("/app/items"));
   }
 
@@ -110,8 +104,5 @@ export default connect(
   state => ({
     boards: state.boards,
     rawItemEntities: getItemEntities(state)
-  }),
-  null,
-  null,
-  { pure: false }
+  })
 )(StarsPage);

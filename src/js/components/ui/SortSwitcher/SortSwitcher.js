@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -34,12 +33,7 @@ export default class SortSwitcher extends Component {
     onOrderChange: () => {}
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleOrderByChange(orderBy: OrderBy) {
+  handleOrderByChange = (orderBy: OrderBy) => {
     if (typeof this.props.onOrderByChange === "function") {
       this.props.onOrderByChange(orderBy);
     }
@@ -47,7 +41,7 @@ export default class SortSwitcher extends Component {
     this.triggerChange(orderBy, this.props.order);
   }
 
-  handleOrderChange() {
+  handleOrderChange = () => {
     const nextOrder = this.props.order === "asc" ? "desc" : "asc";
 
     if (typeof this.props.onOrderChange === "function") {

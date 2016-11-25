@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React, { Component } from "react";
 import ReactCropper from "../../../utils/react-cropper";
 import bem from "../../../helpers/bem";
@@ -37,12 +36,7 @@ export default class Cropper extends Component {
 
   cropper: ?ReactCropper = null;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleReady() {
+  handleReady = () => {
     const { zoomTo } = this.props;
 
     if (typeof zoomTo === "number" && !isNaN(zoomTo)) {

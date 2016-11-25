@@ -1,6 +1,5 @@
 // @flow
 import _ from "lodash";
-import autoBind from "auto-bind";
 import keycode from "keycode";
 import React, { Component } from "react";
 import Ripple from "./Ripple";
@@ -50,7 +49,10 @@ type State = {
 
 export default class Button extends Component {
   props: ButtonProps;
-  state: State;
+  state: State = {
+    ripples: [],
+    showTooltip: false
+  };
 
   static defaultProps = {
     type: "default",
@@ -71,22 +73,11 @@ export default class Button extends Component {
     textAlign: "center"
   };
 
-  constructor(props: ButtonProps, context: Object) {
-    super(props, context);
-
-    this.state = {
-      ripples: [],
-      showTooltip: false
-    };
-
-    autoBind(this);
-  }
-
   shouldComponentUpdate(nextProps: ButtonProps, nextState: State) {
     return !_.isEqual(this.props, nextProps) || !_.isEqual(this.state, nextState);
   }
 
-  handleMouseDown(e: SyntheticMouseEvent) {
+  handleMouseDown = (e: SyntheticMouseEvent) => {
     const { top, left, width, height } = this.refs.element.getBoundingClientRect();
     const mouseX = e.pageX - (left + window.pageXOffset);
     const mouseY = e.pageY - (top + window.pageYOffset);
@@ -104,7 +95,7 @@ export default class Button extends Component {
     }
   }
 
-  handleMouseEnter(e: SyntheticMouseEvent) {
+  handleMouseEnter = (e: SyntheticMouseEvent) => {
     if (this.props.tooltip) {
       this.setState({ showTooltip: true });
     }
@@ -114,7 +105,7 @@ export default class Button extends Component {
     }
   }
 
-  handleMouseLeave(e: SyntheticMouseEvent) {
+  handleMouseLeave = (e: SyntheticMouseEvent) => {
     if (this.props.tooltip) {
       this.setState({ showTooltip: false });
     }
@@ -124,7 +115,7 @@ export default class Button extends Component {
     }
   }
 
-  handleKeyDown(e: SyntheticKeyboardEvent) {
+  handleKeyDown = (e: SyntheticKeyboardEvent) => {
     const key = keycode(e);
 
     if (typeof this.props.onKeyDown === "function") {
@@ -138,7 +129,7 @@ export default class Button extends Component {
     }
   }
 
-  handleRippleHide() {
+  handleRippleHide = () => {
     const ripples = this.state.ripples.slice(1);
     this.setState({ ripples });
   }

@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import isURL from "validator/lib/isURL";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
@@ -37,24 +36,16 @@ type State = {
 
 export class OptionsFeedPage extends Component {
   props: Props;
-  state: State;
+  state: State = {
+    feedURL: {
+      value: "",
+      error: null
+    }
+  };
 
   static contextTypes = {
     theme: PropTypes.string.isRequired
   };
-
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = {
-      feedURL: {
-        value: "",
-        error: null
-      }
-    };
-
-    autoBind(this);
-  }
 
   componentDidMount() {
     this.props.dispatch(FeedActions.fetchFeedsRequest());
@@ -68,7 +59,7 @@ export class OptionsFeedPage extends Component {
     }
   }
 
-  handleFeedURLChange(e: SyntheticInputEvent, value: string) {
+  handleFeedURLChange = (e: SyntheticInputEvent, value: string) => {
     this.setState({
       feedURL: {
         error: null,
@@ -77,7 +68,7 @@ export class OptionsFeedPage extends Component {
     });
   }
 
-  handleFeedURLSubmit() {
+  handleFeedURLSubmit = () => {
     const { feedURL } = this.state;
     const value = feedURL.value || "";
 
@@ -91,7 +82,7 @@ export class OptionsFeedPage extends Component {
     this.props.dispatch(FeedActions.addFeedRequest(value));
   }
 
-  handleFeedListItemDelete(listItem: FeedListItem, id: FeedId) {
+  handleFeedListItemDelete = (listItem: FeedListItem, id: FeedId) => {
     this.props.dispatch(FeedActions.deleteFeedRequest(id));
   }
 

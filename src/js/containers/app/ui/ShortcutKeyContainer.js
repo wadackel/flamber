@@ -1,6 +1,5 @@
 /* eslint-disable */
 import _ from "lodash";
-import autoBind from "auto-bind";
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
@@ -13,12 +12,6 @@ import bem from "../../../helpers/bem";
 const b = bem("shortcut-key-container");
 
 export class ShortcutKeyContainer extends Component {
-  static propTypes = {
-  };
-
-  static defaultProps = {
-  };
-
   constructor(props, context) {
     super(props, context);
 
@@ -47,27 +40,27 @@ export class ShortcutKeyContainer extends Component {
     }
   }
 
-  handleHelp() {
+  handleHelp = () => {
     console.log("TODO: Help");
   }
 
-  handleAddBoard() {
+  handleAddBoard = () => {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 
-  handleAddItemFile() {
+  handleAddItemFile = () => {
     this.props.dispatch(ItemActions.addItemFileDialogOpen());
   }
 
-  handleAddItem() {
+  handleAddItem = () => {
     this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 
-  handleSettings() {
+  handleSettings = () => {
     this.props.dispatch(push("/app/settings"));
   }
 
-  handleTagDrawerToggle() {
+  handleTagDrawerToggle = () => {
     this.props.dispatch(TagActions.tagDrawerToggle());
   }
 
@@ -81,8 +74,5 @@ export class ShortcutKeyContainer extends Component {
 }
 
 export default connect(
-  state => state,
-  null,
-  null,
-  { pure: false }
+  state => state
 )(ShortcutKeyContainer);

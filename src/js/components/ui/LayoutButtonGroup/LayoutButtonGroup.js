@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React from "react";
 import bem from "../../../helpers/bem";
 import mergeClassNames from "../../../helpers/merge-class-names";
@@ -16,12 +15,7 @@ type Props = {
 export default class LayoutButtonGroup extends React.Component {
   props: Props;
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-    autoBind(this);
-  }
-
-  handleButtonClick(value: any) {
+  handleButtonClick = (value: any) => {
     if (this.props.value !== value && typeof this.props.onChange === "function") {
       this.props.onChange(value);
     }

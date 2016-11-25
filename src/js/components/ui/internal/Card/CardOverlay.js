@@ -1,5 +1,4 @@
 // @flow
-import autoBind from "auto-bind";
 import React from "react";
 import bem from "../../../../helpers/bem";
 import { Checkbox } from "../../";
@@ -21,7 +20,9 @@ type State = {
 
 export default class CardOverlay extends React.Component {
   props: Props;
-  state: State;
+  state: State = {
+    show: false
+  };
 
   static defaultProps = {
     style: {},
@@ -30,27 +31,19 @@ export default class CardOverlay extends React.Component {
     onSelect: () => {}
   };
 
-  constructor(props: Props, context: Object) {
-    super(props, context);
-
-    this.state = { show: false };
-
-    autoBind(this);
-  }
-
-  handleSelectClick(e: SyntheticMouseEvent) {
+  handleSelectClick = (e: SyntheticMouseEvent) => {
     e.stopPropagation();
   }
 
-  handleMouseEnter() {
+  handleMouseEnter = () => {
     this.setState({ show: true });
   }
 
-  handleMouseLeave() {
+  handleMouseLeave = () => {
     this.setState({ show: false });
   }
 
-  handleMouseMove() {
+  handleMouseMove = () => {
     if (this.state.show === false) {
       this.setState({ show: true });
     }
