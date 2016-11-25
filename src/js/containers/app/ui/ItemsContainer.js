@@ -1,6 +1,10 @@
 // @flow
+import { difference, uniq } from "lodash";
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import ExecutionEnvironment from "exenv";
+import KeyHandler from "react-key-handler";
+import { SelectableGroup, createSelectable } from "react-selectable";
 import { connect } from "react-redux";
 import * as OptionActions from "../../../actions/options";
 import * as ItemActions from "../../../actions/items";
@@ -11,6 +15,7 @@ import {
   getCurrentItem
 } from "../../../selectors/items";
 import bem from "../../../helpers/bem";
+import elementClosest from "../../../utils/element-closest";
 import {
   CardGroup,
   CardGroupControl,
@@ -22,12 +27,7 @@ import {
   MenuItem,
   Spinner
 } from "../../../components/ui/";
-import {
-  FolderIcon,
-  TrashIcon,
-  StarIcon,
-  MoreVertIcon
-} from "../../../components/svg-icons/";
+import { FolderIcon, TrashIcon, StarIcon, MoreVertIcon } from "../../../components/svg-icons/";
 import { selectColors } from "../../../constants/palette";
 
 import type { Dispatch } from "redux";
@@ -39,6 +39,7 @@ import type { Order, OrderBy } from "../../../types/prop-types";
 
 
 const b = bem("items-container");
+const SelectableItemCard = createSelectable(ItemCard);
 
 type Props = {
   dispatch: Dispatch;
@@ -56,13 +57,15 @@ type Props = {
 type State = {
   selectMenuOpen: boolean;
   selectMenuTrigger: ?HTMLElement;
+  mergeSelection: boolean;
 };
 
 export class ItemsContainer extends Component {
   props: Props;
   state: State = {
     selectMenuOpen: false,
-    selectMenuTrigger: null
+    selectMenuTrigger: null,
+    mergeSelection: false
   };
 
   handleOrderByChange = (orderBy: OrderBy) => {
@@ -95,6 +98,23 @@ export class ItemsContainer extends Component {
 
   handleMove = (id: ItemId) => {
     this.props.dispatch(ItemActions.moveItemSelectBoardOpen(id));
+  }
+
+  handleSelection = (ids: Array<ItemId>) => {
+    const { selectedItemEntities } = this.props;
+    const { mergeSelection } = this.state;
+    const selectedIds = selectedItemEntities.map(entity => entity.id);
+    const selectIds = mergeSelection
+      ? uniq([...selectedIds, ...ids])
+      : difference(ids, selectedIds);
+
+    this.props.dispatch(ItemActions.setSelectItems(selectIds));
+  }
+
+  handleClearSelection = (e: SyntheticKeyboardEvent) => {
+    if (e.target instanceof HTMLElement && !elementClosest(ReactDOM.findDOMNode(this.refs.selectable), e.target)) {
+      this.props.dispatch(ItemActions.unselectAllItem());
+    }
   }
 
   handleSelectMove = () => {
@@ -135,6 +155,14 @@ export class ItemsContainer extends Component {
     this.props.dispatch(value());
   }
 
+  enableMergeSelection = () => {
+    this.setState({ mergeSelection: true });
+  }
+
+  disableMergeSelection = () => {
+    this.setState({ mergeSelection: false });
+  }
+
   isAllStarByItemEntities(entities: ItemEntities): boolean {
     return entities.every(entity => entity.star);
   }
@@ -142,7 +170,6 @@ export class ItemsContainer extends Component {
   hasSelectedItems(): boolean {
     return this.props.selectedItemEntities.length > 0;
   }
-
 
   renderEmptyData() {
     const {
@@ -210,7 +237,19 @@ export class ItemsContainer extends Component {
       }));
 
     return (
-      <div className={`container ${b()}`}>
+      <SelectableGroup
+        ref="selectable"
+        className={`container ${b()}`}
+        onSelection={this.handleSelection}
+        tolerance={0}
+        selectOnMouseMove={false}
+      >
+        {/* Events */}
+        <KeyHandler keyEventName="keydown" keyValue="Escape" onKeyHandle={this.handleClearSelection} />
+        <KeyHandler keyEventName="keydown" keyValue="Shift" onKeyHandle={this.enableMergeSelection} />
+        <KeyHandler keyEventName="keyup" keyValue="Shift" onKeyHandle={this.disableMergeSelection} />
+
+        {/* Components */}
         <CardGroupControl
           sortTypes={[
             { name: "名前", value: "name" },
@@ -234,8 +273,9 @@ export class ItemsContainer extends Component {
           layout={itemsLayout}
         >
           {itemEntities.map(item =>
-            <ItemCard
+            <SelectableItemCard
               key={item.id}
+              selectableKey={item.id}
               id={item.id}
               processing={item.isUpdating || item.isMoving || item.isDeleting}
               selected={item.select}
@@ -298,8 +338,7 @@ export class ItemsContainer extends Component {
             </IconMenu>
           ]}
         />
-
-      </div>
+      </SelectableGroup>
     );
   }
 }

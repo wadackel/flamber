@@ -34,6 +34,7 @@ import type {
   RemoveItemTagSuccessAction,
   RemoveItemTagFailureAction,
   MoveItemSuccessAction,
+  SetSelectItemsAction,
   SelectItemToggleAction,
   SelectAllItemExecAction,
   UnselectAllItemExecAction,
@@ -308,6 +309,15 @@ export default handleActions({
   // Move
   [I.MOVE_ITEM_SUCCESS]: (state: ItemEntitiesState, action: MoveItemSuccessAction): ItemEntitiesState => (
     mergeEntities(state, action.payload.entities.items)
+  ),
+
+
+  // Set select items
+  [I.SET_SELECT_ITEMS]: (state: ItemEntitiesState, action: SetSelectItemsAction): ItemEntitiesState => (
+    mapValues(state, (entity: ItemEntity) => ({
+      ...entity,
+      select: action.payload.indexOf(entity.id) > -1
+    }))
   ),
 
 

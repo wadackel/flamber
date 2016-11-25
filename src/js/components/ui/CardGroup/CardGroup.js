@@ -8,7 +8,7 @@ import type { GridLayout, GalleryLayout, ListLayout } from "../../../types/prop-
 
 const b = bem("card-group");
 
-type Props = {
+export type Props = {
   children?: React$Element<any>;
   className?: string;
   layout: GridLayout | GalleryLayout | ListLayout;

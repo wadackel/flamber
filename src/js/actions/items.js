@@ -94,6 +94,8 @@ import type {
 
   GotoAfterMoveItemBoardAction,
 
+  SetSelectItemsAction,
+
   SelectItemToggleAction,
 
   SelectAllItemExecAction,
@@ -465,6 +467,13 @@ export const deleteItemSuccess = (payload: DeleteItemSuccessPayload): DeleteItem
 );
 export const deleteItemFailure = (error: Error, entity: ?ItemEntity): DeleteItemFailureAction => (
   { type: DELETE_ITEM_FAILURE, payload: error, error: true, meta: entity }
+);
+
+
+// Set select items
+export const SET_SELECT_ITEMS = "SET_SELECT_ITEMS";
+export const setSelectItems = (ids: Array<ItemId>): SetSelectItemsAction => (
+  { type: SET_SELECT_ITEMS, payload: ids }
 );
 
 

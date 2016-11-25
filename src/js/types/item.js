@@ -227,6 +227,10 @@ export type MoveItemFailureAction = ErrorWithMetaAction<"MOVE_ITEM_FAILURE", Err
 export type GotoAfterMoveItemBoardAction = PayloadAction<"GOTO_AFTER_MOVE_ITEM_BOARD", BoardId>;
 
 
+// Set select items
+export type SetSelectItemsAction = PayloadAction<"SET_SELECT_ITEMS", Array<ItemId>>;
+
+
 // Select
 export type SelectItemToggleAction = PayloadAction<"SELECT_ITEM_TOGGLE", ItemId>;
 

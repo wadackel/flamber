@@ -1,5 +1,5 @@
 @mixin card-base() {
-  @include transition(box-shadow, 120ms);
+  @include transition(box-shadow, 80ms);
   display: block;
   position: relative;
   border-radius: $card-border-radius;
@@ -39,10 +39,6 @@
       background-repeat: no-repeat;
       background-position: center center;
       background-size: cover;
-
-      &--selected {
-        filter: blur(5px);
-      }
     }
 
     &__spinner {

@@ -1,0 +1,4 @@
+declare module "react-selectable" {
+  declare var SelectableGroup: any;
+  declare var createSelectable: any;
+}
