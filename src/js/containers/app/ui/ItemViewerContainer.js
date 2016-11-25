@@ -1,14 +1,10 @@
-/* eslint-disable */
-import _ from "lodash";
-import autoBind from "auto-bind";
+// @flow
 import uuid from "node-uuid";
-import React, { Component, PropTypes } from "react";
-import ExecutionEnvironment from "exenv";
+import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import KeyHandler from "react-key-handler";
 import { connect } from "react-redux";
 import shareConfig from "../../../share-config.json";
-import * as SettingActions from "../../../actions/settings";
-import * as BoardActions from "../../../actions/boards";
 import * as ItemActions from "../../../actions/items";
 import { getCurrentItem } from "../../../selectors/items";
 import { hexToRgb } from "../../../helpers/color";
@@ -47,27 +43,33 @@ import {
   RotateRightIcon
 } from "../../../components/svg-icons/";
 
+import type { Dispatch } from "redux";
+import type { ConnectState } from "../../../types/redux";
+import type { ItemState, ItemEntity } from "../../../types/item";
+
+
 const b = bem("item-viewer-container");
 
+
+type Props = {
+  dispatch: Dispatch;
+  items: ItemState;
+  currentItem: ?ItemEntity;
+};
+
+type State = {
+  zoom: number;
+  imageSuffix: string;
+};
+
 export class ItemViewerContainer extends Component {
-  static propTypes = {
+  props: Props;
+  state: State = {
+    zoom: 1,
+    imageSuffix: ""
   };
 
-  static defaultProps = {
-  };
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      zoom: 1,
-      imageSuffix: ""
-    };
-
-    autoBind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { currentItem } = this.props;
     const { currentItem: _currentItem } = nextProps;
 
@@ -76,90 +78,100 @@ export class ItemViewerContainer extends Component {
     }
 
     if (
-      currentItem
-      && _currentItem
-      && currentItem.isImageUpdating
-      && !_currentItem.isImageUpdating
+      currentItem &&
+      _currentItem &&
+      currentItem.isImageUpdating &&
+      !_currentItem.isImageUpdating
     ) {
       this.setState({ imageSuffix: uuid.v4() });
     }
   }
 
-  handleClose() {
+  handleClose = () => {
     this.props.dispatch(ItemActions.setCurrentItem(null));
     this.setState({ zoom: 1 });
   }
 
-  handleZoomChange(zoom) {
+  handleZoomChange = (zoom: number) => {
     this.setState({ zoom });
   }
 
-  handleImageDoubleClick() {
+  handleImageDoubleClick = () => {
     this.setState({ zoom: 1 });
   }
 
-  handleStarClick() {
+  handleStarClick = () => {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.starItemToggleRequest(currentItem.id));
+    if (currentItem) {
+      dispatch(ItemActions.starItemToggleRequest(currentItem.id));
+    }
   }
 
-  handleEditClick() {
+  handleEditClick = () => {
     this.props.dispatch(ItemActions.setItemImageEditing(true));
   }
 
-  handleMoreMenuClick(menuItem, value) {
+  handleMoreMenuClick = (menuItem: MenuItem, value: Function) => {
     value();
   }
 
-  handleMove() {
+  handleMove = () => {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.moveItemSelectBoardOpen(currentItem.id));
+    if (currentItem) {
+      dispatch(ItemActions.moveItemSelectBoardOpen(currentItem.id));
+    }
   }
 
-  handleDelete() {
+  handleDelete = () => {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.deleteItemRequest(currentItem.id));
+    if (currentItem) {
+      dispatch(ItemActions.deleteItemRequest(currentItem.id));
+    }
   }
 
-  handleDrawerToggle() {
+  handleDrawerToggle = () => {
     this.props.dispatch(ItemActions.itemDetailDrawerToggle());
   }
 
-  handleItemNameComplete(value) {
+  handleItemNameComplete = (value: string) => {
     const { dispatch, currentItem } = this.props;
-    dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
+    if (currentItem) {
+      dispatch(ItemActions.updateItemNameIfNeeded(currentItem.id, value));
+    }
   }
 
-  handleEditComplete() {
+  handleEditComplete = () => {
     const { dispatch, currentItem } = this.props;
     const blob = dataURLtoBlob(this.refs.cropper.getCroppedCanvas().toDataURL());
-    dispatch(ItemActions.updateItemImageRequest(currentItem.id, blob));
+    if (currentItem) {
+      dispatch(ItemActions.updateItemImageRequest(currentItem.id, blob));
+    }
   }
 
-  handleEditCancel() {
+  handleEditCancel = () => {
     this.props.dispatch(ItemActions.setItemImageEditing(false));
   }
 
-  handleEditReset(e) {
+  handleEditReset = (e: SyntheticMouseEvent) => {
     e.preventDefault();
     this.refs.cropper.reset();
   }
 
-  handleRotateLeft() {
+  handleRotateLeft = () => {
     this.refs.cropper.rotate(-45);
   }
 
-  handleRotateRight() {
+  handleRotateRight = () => {
     this.refs.cropper.rotate(45);
   }
 
-  handleSwapVertical() {
+  handleSwapVertical = () => {
     const { cropper } = this.refs;
     const { scaleY } = cropper.getData();
     cropper.scaleY(scaleY * -1);
   }
 
-  handleSwapHorizontal() {
+  handleSwapHorizontal = () => {
     const { cropper } = this.refs;
     const { scaleX } = cropper.getData();
     cropper.scaleX(scaleX * -1);
@@ -176,6 +188,8 @@ export class ItemViewerContainer extends Component {
 
   renderNormalToolBar() {
     const { currentItem } = this.props;
+
+    if (!currentItem) return null;
 
     return (
       <ToolBar
@@ -240,6 +254,8 @@ export class ItemViewerContainer extends Component {
   renderEditingToolBar() {
     const { currentItem } = this.props;
 
+    if (!currentItem) return null;
+
     return (
       <ToolBar
         className={b("tool-bar")()}
@@ -302,7 +318,7 @@ export class ItemViewerContainer extends Component {
               tooltipOrigin={{ vertical: "bottom", horizontal: "center" }}
               onClick={this.handleSwapHorizontal}
             />
-          </ToolBarItem>,
+          </ToolBarItem>
         ]}
       />
     );
@@ -316,9 +332,12 @@ export class ItemViewerContainer extends Component {
 
   render() {
     const { items, currentItem } = this.props;
-    const { zoom, imageSuffix } = this.state;
+    const { zoom } = this.state;
     const { isImageEditing } = items;
     const modifier = this.getModifier();
+
+    if (!currentItem) return null;
+
     const firstColor = modifier.show ? hexToRgb(currentItem.palette[0]) || {} : null;
 
     return (
@@ -330,6 +349,8 @@ export class ItemViewerContainer extends Component {
       >
         {modifier.show && <div className={b(modifier)()}>
           {this.renderToolBar()}
+
+          <KeyHandler keyEventName="keydown" keyValue="Escape" onKeyHandle={this.handleClose} />
 
           <div className={b("body", modifier)()}>
             {!isImageEditing && <Slider
@@ -377,7 +398,9 @@ export class ItemViewerContainer extends Component {
             className={b("overlay")()}
             show={true}
             style={{
-              backgroundColor: `rgba(${firstColor.r}, ${firstColor.g}, ${firstColor.b}, .9)`
+              backgroundColor: firstColor
+                ? `rgba(${firstColor.r}, ${firstColor.g}, ${firstColor.b}, .9)`
+                : "rgba(0, 0, 0, .9)"
             }}
           />
         </div>}
@@ -387,7 +410,7 @@ export class ItemViewerContainer extends Component {
 }
 
 export default connect(
-  state => ({
+  (state: ConnectState) => ({
     items: state.items,
     currentItem: getCurrentItem(state)
   })

@@ -245,9 +245,13 @@ export class ItemsContainer extends Component {
         selectOnMouseMove={false}
       >
         {/* Events */}
-        <KeyHandler keyEventName="keydown" keyValue="Escape" onKeyHandle={this.handleClearSelection} />
-        <KeyHandler keyEventName="keydown" keyValue="Shift" onKeyHandle={this.enableMergeSelection} />
-        <KeyHandler keyEventName="keyup" keyValue="Shift" onKeyHandle={this.disableMergeSelection} />
+        {!items.currentItem &&
+          <span style={{ display: "none" }}>
+            <KeyHandler keyEventName="keydown" keyValue="Escape" onKeyHandle={this.handleClearSelection} />
+            <KeyHandler keyEventName="keydown" keyValue="Shift" onKeyHandle={this.enableMergeSelection} />
+            <KeyHandler keyEventName="keyup" keyValue="Shift" onKeyHandle={this.disableMergeSelection} />
+          </span>
+        }
 
         {/* Components */}
         <CardGroupControl

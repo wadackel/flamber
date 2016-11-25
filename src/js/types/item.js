@@ -85,7 +85,7 @@ type ArrayItem = ArrayNormalized<"items", ItemEntity, ItemId>;
 
 
 // Set current
-export type SetCurrentItemAction = PayloadAction<"SET_CURRENT_ITEM", ItemId>;
+export type SetCurrentItemAction = PayloadAction<"SET_CURRENT_ITEM", ?ItemId>;
 
 
 // Set currentColors
@@ -177,10 +177,10 @@ export type UpdateItemDescriptionFailureAction = ErrorWithMetaAction<"UPDATE_ITE
 
 // Update image
 export type UpdateItemImageSuccessPayload = SingleItem;
-export type UpdateItemImageRequestAction = PayloadAction<"UPDATE_ITEM_IMAGE_REQUEST", { id: ItemId; image: File; }>;
+export type UpdateItemImageRequestAction = PayloadAction<"UPDATE_ITEM_IMAGE_REQUEST", { id: ItemId; image: Blob; }>;
 export type UpdateItemImageSuccessAction = PayloadAction<"UPDATE_ITEM_IMAGE_SUCCESS", UpdateItemImageSuccessPayload>;
 export type UpdateItemImageFailureAction = ErrorWithMetaAction<"UPDATE_ITEM_IMAGE_FAILURE",
-  Error, { id: ItemId; image: File; }>;
+  Error, { id: ItemId; image: Blob; }>;
 
 
 // Add item tag

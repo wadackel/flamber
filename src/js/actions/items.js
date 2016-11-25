@@ -133,7 +133,7 @@ import type {
 
 // Set current
 export const SET_CURRENT_ITEM = "SET_CURRENT_ITEM";
-export const setCurrentItem = (id: ItemId): SetCurrentItemAction => (
+export const setCurrentItem = (id: ?ItemId): SetCurrentItemAction => (
   { type: SET_CURRENT_ITEM, payload: id }
 );
 
@@ -336,7 +336,7 @@ export const UPDATE_ITEM_IMAGE_REQUEST = "UPDATE_ITEM_IMAGE_REQUEST";
 export const UPDATE_ITEM_IMAGE_SUCCESS = "UPDATE_ITEM_IMAGE_SUCCESS";
 export const UPDATE_ITEM_IMAGE_FAILURE = "UPDATE_ITEM_IMAGE_FAILURE";
 
-export const updateItemImageRequest = (id: ItemId, image: File): UpdateItemImageRequestAction => (
+export const updateItemImageRequest = (id: ItemId, image: Blob): UpdateItemImageRequestAction => (
   { type: UPDATE_ITEM_IMAGE_REQUEST, payload: { id, image } }
 );
 
@@ -345,7 +345,7 @@ export const updateItemImageSuccess = (payload: UpdateItemImageSuccessPayload): 
 );
 
 export const updateItemImageFailure =
-  (error: Error, payload: { id: ItemId; image: File; }): UpdateItemImageFailureAction => (
+  (error: Error, payload: { id: ItemId; image: Blob; }): UpdateItemImageFailureAction => (
   { type: UPDATE_ITEM_IMAGE_FAILURE, payload: error, error: true, meta: payload }
 );
 
