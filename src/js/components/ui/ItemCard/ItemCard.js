@@ -42,6 +42,7 @@ type Props = {
   layout: GalleryLayout | GridLayout | ListLayout;
   processing: boolean;
   star: boolean;
+  selectable: boolean;
   selected: boolean;
   id: ItemId;
   url: string;
@@ -64,6 +65,7 @@ export default class ItemCard extends React.Component {
   static defaultProps = {
     layout: Layout.GRID,
     procssing: false,
+    selectable: false,
     selected: false,
     star: false
   };
@@ -118,8 +120,8 @@ export default class ItemCard extends React.Component {
       : <span>{url}</span>;
   }
 
-  renderMoreActions(): Array<React$Element<any>> {
-    return [
+  renderMoreActions(): ?Array<React$Element<any>> {
+    return this.props.selectable ? null : [
       <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />,
       <IconButton icon={<FolderIcon />} tooltip="移動する" onClick={this.handleMoveClick} />
     ];
@@ -130,6 +132,7 @@ export default class ItemCard extends React.Component {
       className,
       style,
       processing,
+      selectable,
       selected,
       star,
       title,
@@ -166,7 +169,7 @@ export default class ItemCard extends React.Component {
             selectable={true}
             selected={selected}
             moreActions={this.renderMoreActions()}
-            actions={<FlatButton onClick={this.handleClick}>Detail</FlatButton>}
+            actions={!selectable ? <FlatButton onClick={this.handleClick}>Detail</FlatButton> : null}
             onSelect={this.handleSelect}
           />}
         />
@@ -179,13 +182,14 @@ export default class ItemCard extends React.Component {
             <StarButton
               className={b("star")()}
               active={star}
+              disable={selectable}
               tooltip={star ? "スターを外す" : "スターを付ける"}
               onClick={this.handleStarClick}
             />
           </CardAction>
         </CardBody>
         <ColorBar
-          itemClickable
+          itemClickable={!selectable}
           className={b("colors")()}
           palette={colors}
         />
@@ -197,6 +201,7 @@ export default class ItemCard extends React.Component {
     const {
       className,
       processing,
+      selectable,
       selected,
       star,
       title,
@@ -232,6 +237,7 @@ export default class ItemCard extends React.Component {
           <StarButton
             className={b("star")()}
             active={star}
+            disable={selectable}
             tooltip={star ? "スターを外す" : "スターを付ける"}
             onClick={this.handleStarClick}
           />

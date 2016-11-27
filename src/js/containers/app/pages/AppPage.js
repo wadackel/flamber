@@ -11,34 +11,25 @@ import {
 } from "../../../selectors/boards";
 import { getSelectedItemEntities } from "../../../selectors/items";
 import {
+  AddBoardDialogContainer,
+  AddItemFileDialogContainer,
+  AddItemURLDialogContainer,
   HeaderContainer,
   ItemViewerContainer,
   ShortcutKeyContainer,
   NotificationsContainer,
   TagDrawerContainer
 } from "../ui/";
-import {
-  AddBoardDialog,
-  AddItemFileDialog,
-  AddItemURLDialog,
-  FileDnD,
-  FloatingMenu,
-  FloatingButton
-} from "../../../components/ui/";
-import {
-  BoardIcon,
-  PictureLinkIcon,
-  UploadIcon
-} from "../../../components/svg-icons/";
+import { FileDnD, FloatingMenu, FloatingButton } from "../../../components/ui/";
+import { BoardIcon, PictureLinkIcon, UploadIcon } from "../../../components/svg-icons/";
 
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
 import type { AppState } from "../../../types/application";
 import type { AuthState } from "../../../types/auth";
-import type { BoardState, BoardId, BoardEntities } from "../../../types/board";
-import type { ItemState, ItemEntities } from "../../../types/item";
+import type { BoardState, BoardEntities } from "../../../types/board";
+import type { ItemEntities } from "../../../types/item";
 import type { TagState } from "../../../types/tag";
-import type { Palette } from "../../../types/prop-types";
 
 
 const b = bem("app-page");
@@ -51,7 +42,6 @@ type Props = {
   boards: BoardState;
   boardEntities: BoardEntities;
   selectedBoardEntities: BoardEntities;
-  items: ItemState;
   ItemEntities: ItemEntities;
   selectedItemEntities: ItemEntities;
   tags: TagState;
@@ -99,67 +89,24 @@ export class AppPage extends Component {
     const { files } = dataTransfer;
 
     if (files.length > 0) {
-      this.setState({ dropFile: files[0] });
-      this.props.dispatch(ItemActions.addItemFileDialogOpen());
+      // TODO
+      console.log("TODO: Drop file to AddItemDialog component.", files[0]);
+      // this.setState({ dropFile: files[0] });
+      // this.props.dispatch(ItemActions.addItemFileDialogOpen());
     }
   }
 
-  // Add board
+  // Dialog
   handleAddBoardOpen = () => {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 
-  handleAddBoardClose = () => {
-    this.props.dispatch(BoardActions.addBoardDialogClose());
-  }
-
-  handleAddBoard = (boardName: string) => {
-    // TODO: Secret
-    this.props.dispatch(BoardActions.addBoardRequest(boardName, true));
-  }
-
-  // Add item (link)
-  handleAddItemURLOpen = () => {
-    this.props.dispatch(ItemActions.addItemURLDialogOpen());
-  }
-
-  handleAddItemURLClose = () => {
-    this.props.dispatch(ItemActions.addItemURLDialogClose());
-  }
-
-  handleAddItemURL = (url: string, board: BoardId) => {
-    this.props.dispatch(ItemActions.addItemURLRequest(url, board));
-  }
-
-  isAddItemURLProccessing(): boolean | string {
-    const { boards, items } = this.props;
-
-    if (boards.isFetching) {
-      return true;
-    }
-
-    if (items.isScreenshotTaking) {
-      return "Screenshot taking...";
-    }
-
-    if (items.isAdding) {
-      return "Create item...";
-    }
-
-    return false;
-  }
-
-  // Add item
   handleAddItemFileOpen = () => {
     this.props.dispatch(ItemActions.addItemFileDialogOpen());
   }
 
-  handleAddItemFileClose = () => {
-    this.props.dispatch(ItemActions.addItemFileDialogClose());
-  }
-
-  handleAddItemFile = (file: File, palette: Palette, board: BoardId) => {
-    this.props.dispatch(ItemActions.addItemFileRequest(board, file, palette));
+  handleAddItemURLOpen = () => {
+    this.props.dispatch(ItemActions.addItemURLDialogOpen());
   }
 
   // Render
@@ -169,9 +116,7 @@ export class AppPage extends Component {
       auth: { authenticated, hasJwtToken },
       children,
       boards,
-      boardEntities,
       selectedBoardEntities,
-      items,
       selectedItemEntities,
       tags
     } = this.props;
@@ -182,20 +127,12 @@ export class AppPage extends Component {
       return null;
     }
 
-    // contents
-    const { dropFile } = this.state;
-
     const floatingButtonTooltipOrigin = {
       vertical: "middle",
       horizontal: "left"
     };
 
     const hasSelectedEntity = selectedItemEntities.length > 0 || selectedBoardEntities.length > 0;
-
-    const selectBoards = boardEntities.map(board => ({
-      name: board.name,
-      value: board.id
-    }));
 
     return (
       <div>
@@ -217,50 +154,26 @@ export class AppPage extends Component {
             tooltipOrigin={floatingButtonTooltipOrigin}
             onClick={this.handleAddBoardOpen}
           />
-          <FloatingButton
+          {boards.results.length > 0 && <FloatingButton
             type="primary"
             icon={<PictureLinkIcon />}
             tooltip="URLからアイテムを追加"
             tooltipOrigin={floatingButtonTooltipOrigin}
             onClick={this.handleAddItemURLOpen}
-          />
-          <FloatingButton
+          />}
+          {boards.results.length > 0 && <FloatingButton
             type="primary"
             icon={<UploadIcon />}
             tooltip="ファイルからアイテムを追加"
             tooltipOrigin={floatingButtonTooltipOrigin}
             onClick={this.handleAddItemFileOpen}
-          />
+          />}
         </FloatingMenu>
 
-        {/* Add board */}
-        <AddBoardDialog
-          processing={boards.isAdding}
-          open={boards.addDialogOpen}
-          onRequestClose={this.handleAddBoardClose}
-          onRequestAdd={this.handleAddBoard}
-        />
-
-        {/* Add item */}
-        <AddItemURLDialog
-          processing={this.isAddItemURLProccessing()}
-          open={items.addURLDialogOpen}
-          selectBoards={selectBoards}
-          defaultBoard={boards.currentId}
-          onRequestClose={this.handleAddItemURLClose}
-          onRequestAdd={this.handleAddItemURL}
-        />
-
-        {/* Add item file */}
-        <AddItemFileDialog
-          processing={boards.isFetching || items.isAdding}
-          open={items.addFileDialogOpen}
-          file={dropFile}
-          selectBoards={selectBoards}
-          defaultBoard={boards.currentId}
-          onRequestClose={this.handleAddItemFileClose}
-          onRequestAdd={this.handleAddItemFile}
-        />
+        {/* Add board & item dialog */}
+        <AddBoardDialogContainer />
+        <AddItemFileDialogContainer />
+        <AddItemURLDialogContainer />
       </div>
     );
   }
@@ -273,7 +186,6 @@ export class AppPage extends Component {
       boards, // eslint-disable-line no-unused-vars
       boardEntities, // eslint-disable-line no-unused-vars
       selectedBoardEntities, // eslint-disable-line no-unused-vars
-      items, // eslint-disable-line no-unused-vars
       selectedItemEntities, // eslint-disable-line no-unused-vars
       tags, // eslint-disable-line no-unused-vars
       ...routerParams
@@ -323,7 +235,6 @@ export default connect(
     boards: state.boards,
     boardEntities: getBoardEntities(state),
     selectedBoardEntities: getSelectedBoardEntities(state),
-    items: state.items,
     selectedItemEntities: getSelectedItemEntities(state),
     tags: state.tags
   })

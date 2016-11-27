@@ -44,6 +44,7 @@ export class SelectCoverItemDialogContainer extends Component {
       processing={entity ? entity.isUpdating : false}
       open={boards.selectCoverItemDialogOpen}
       items={items}
+      selectedId={entity ? entity.Cover : null}
       onRequestClose={this.handleClose}
       onComplete={this.handleComplete}
     />;

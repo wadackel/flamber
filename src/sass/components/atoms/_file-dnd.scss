@@ -6,7 +6,6 @@
 
     &--dragging {
       transition-duration: #{$file-dnd-overlay-enter-duration}ms;
-      filter: blur(10px);
     }
   }
 
@@ -26,24 +25,20 @@
     &.drop-overlay {
       &-enter {
         opacity: .01;
-        filter: blur(10px);
       }
 
       &-enter-active {
         transition-duration: #{$file-dnd-overlay-enter-duration}ms;
         opacity: 1;
-        filter: blur(0);
       }
 
       &-leave {
         opacity: 1;
-        filter: blur(0);
       }
 
       &-leave-active {
         transition-duration: #{$file-dnd-overlay-leave-duration}ms;
         opacity: .01;
-        filter: blur(10px);
       }
     }
   }

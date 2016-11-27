@@ -280,9 +280,10 @@ export class ItemsContainer extends Component {
             <SelectableItemCard
               key={item.id}
               selectableKey={item.id}
+              selectable={hasSelectedItems}
+              selected={item.select}
               id={item.id}
               processing={item.isUpdating || item.isMoving || item.isDeleting}
-              selected={item.select}
               layout={itemsLayout}
               title={item.name}
               url={item.url}
