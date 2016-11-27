@@ -1,9 +1,6 @@
 // @flow
-// import { difference, uniq } from "lodash";
 import React, { Component } from "react";
-// import ReactDOM from "react-dom";
 import ExecutionEnvironment from "exenv";
-// import KeyHandler from "react-key-handler";
 import { SelectableGroup, createSelectable } from "react-selectable";
 import { connect } from "react-redux";
 import * as OptionActions from "../../../actions/options";
@@ -15,7 +12,6 @@ import {
   getCurrentItem
 } from "../../../selectors/items";
 import bem from "../../../helpers/bem";
-// import elementClosest from "../../../utils/element-closest";
 import { createMultipleSelectableGroup } from "../../../components/hoc/";
 import {
   CardGroup,
@@ -208,7 +204,6 @@ export class ItemsContainer extends Component {
 
     return (
       <MultipleSelectableGroup
-        ref="selectable"
         className={`container ${b()}`}
         selectedKeys={selectedItemEntities.map(o => o.id)}
         onSelection={this.handleSelection}
@@ -241,7 +236,6 @@ export class ItemsContainer extends Component {
             <SelectableItemCard
               key={item.id}
               selectableKey={item.id}
-              selectable={hasSelectedItems}
               selected={item.select}
               id={item.id}
               processing={item.isUpdating || item.isMoving || item.isDeleting}

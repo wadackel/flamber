@@ -17,6 +17,7 @@ import type {
   DeleteBoardRequestAction,
   DeleteBoardSuccessAction,
   DeleteBoardFailureAction,
+  SetSelectBoardsAction,
   SelectBoardToggleAction,
   SelectCoverItemRequestAction,
   SelectCoverItemSuccessAction,
@@ -106,6 +107,15 @@ export default handleActions({
         isDeleting: false
       }))
       : state
+  ),
+
+
+  // Set select
+  [B.SET_SELECT_BOARDS]: (state: BoardEntitiesState, action: SetSelectBoardsAction): BoardEntitiesState => (
+    mapValues(state, (entity: BoardEntity) => ({
+      ...entity,
+      select: action.payload.indexOf(entity.id) > -1
+    }))
   ),
 
 

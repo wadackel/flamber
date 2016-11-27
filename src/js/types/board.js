@@ -111,6 +111,10 @@ export type DeleteBoardFailureAction = ErrorWithMetaAction<"DELETE_BOARD_FAILURE
 export type SetCurrentBoardAction = PayloadAction<"SET_CURRENT_BOARD", BoardId>;
 
 
+// Set select
+export type SetSelectBoardsAction = PayloadAction<"SET_SELECT_BOARDS", Array<BoardId>>;
+
+
 // Select toggle
 export type SelectBoardToggleAction = PayloadAction<"SELECT_BOARD_TOGGLE", BoardId>;
 

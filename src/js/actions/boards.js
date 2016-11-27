@@ -36,6 +36,7 @@ import type {
 
   SetCurrentBoardAction,
 
+  SetSelectBoardsAction,
   SelectBoardToggleAction,
 
   SelectedBoardsDeleteSuccessPayload,
@@ -170,6 +171,13 @@ export const deleteBoardFailure = (error: Error, entity: ?BoardEntity): DeleteBo
 export const SET_CURRENT_BOARD = "SET_CURRENT_BOARD";
 export const setCurrentBoard = (id: BoardId): SetCurrentBoardAction => (
   { type: SET_CURRENT_BOARD, payload: id }
+);
+
+
+// Set select
+export const SET_SELECT_BOARDS = "SET_SELECT_BOARDS";
+export const setSelectBoards = (ids: Array<BoardId>): SetSelectBoardsAction => (
+  { type: SET_SELECT_BOARDS, payload: ids }
 );
 
 

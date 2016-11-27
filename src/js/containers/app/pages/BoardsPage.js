@@ -3,10 +3,12 @@ import React, { Component } from "react";
 import ExecutionEnvironment from "exenv";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
+import { SelectableGroup, createSelectable } from "react-selectable";
 import bem from "../../../helpers/bem";
 import * as OptionActions from "../../../actions/options";
 import * as BoardActions from "../../../actions/boards";
 import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/boards";
+import { createMultipleSelectableGroup } from "../../../components/hoc/";
 import { TrashIcon, BoardIcon } from "../../../components/svg-icons/";
 import {
   CardGroup,
@@ -29,6 +31,8 @@ import type { OrderBy, Order } from "../../../types/prop-types";
 
 
 const b = bem("boards-page");
+const MultipleSelectableGroup = createMultipleSelectableGroup(SelectableGroup);
+const SelectableBoard = createSelectable(BoardCard);
 
 type Props = {
   dispatch: Dispatch;
@@ -74,6 +78,10 @@ export class BoardsPage extends Component {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
   }
 
+  handleSelection = (ids: Array<BoardId>) => {
+    this.props.dispatch(BoardActions.setSelectBoards(ids));
+  }
+
   renderEmptyData() {
     const { boards } = this.props;
 
@@ -117,7 +125,13 @@ export class BoardsPage extends Component {
     const hasSelectedBoard = selectedBoardEntities.length > 0;
 
     return (
-      <div className={`container ${b()}`}>
+      <MultipleSelectableGroup
+        className={`container ${b()}`}
+        selectedKeys={selectedBoardEntities.map(o => o.id)}
+        onSelection={this.handleSelection}
+        tolerance={5}
+        selectOnMouseMove={false}
+      >
         <CardGroupControl
           sortTypes={[
             { name: "名前", value: "name" },
@@ -138,11 +152,13 @@ export class BoardsPage extends Component {
           layout={boardsLayout}
         >
           {boardEntities.map(board => (
-            <BoardCard
+            <SelectableBoard
               key={board.id}
               id={board.id}
-              processing={board.isDeleting}
+              selectableKey={board.id}
+              selectable={hasSelectedBoard}
               selected={board.select}
+              processing={board.isDeleting}
               title={board.name}
               image={board.coverImage ? board.coverImage : "/images/default.png"}
               layout={boardsLayout}
@@ -171,7 +187,7 @@ export class BoardsPage extends Component {
         />
 
         <SelectCoverItemDialogContainer />
-      </div>
+      </MultipleSelectableGroup>
     );
   }
 }

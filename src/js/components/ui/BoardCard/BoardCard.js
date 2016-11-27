@@ -28,6 +28,7 @@ type Props = {
   style?: Object;
   id: BoardId;
   processing: boolean;
+  selectable: boolean;
   selected: boolean;
   title: string;
   image: string;
@@ -47,24 +48,23 @@ export default class BoardCard extends Component {
   static defaultProps = {
     layout: Layout.GRID,
     processing: false,
+    selectable: false,
     selected: false,
     itemCount: 0
   };
 
   handleClick = () => {
-    if (typeof this.props.onClick === "function") {
-      this.props.onClick(this.props.id);
+    if (!this.props.selectable) {
+      if (typeof this.props.onClick === "function") {
+        this.props.onClick(this.props.id);
+      }
+    } else {
+      this.callSelect();
     }
-  }
-
-  handleSelectClick = (e: SyntheticMouseEvent) => {
-    e.stopPropagation();
   }
 
   handleSelect = () => {
-    if (typeof this.props.onSelect === "function") {
-      this.props.onSelect(this.props.id);
-    }
+    this.callSelect();
   }
 
   handleEditClick = (e: SyntheticMouseEvent) => {
@@ -88,8 +88,14 @@ export default class BoardCard extends Component {
     }
   }
 
-  renderMoreActions(): Array<React$Element<any>> {
-    return [
+  callSelect() {
+    if (typeof this.props.onSelect === "function") {
+      this.props.onSelect(this.props.id);
+    }
+  }
+
+  renderMoreActions(): ?Array<React$Element<any>> {
+    return this.props.selectable ? null : [
       <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />,
       <IconButton
         icon={<PicturesIcon />}
@@ -154,6 +160,7 @@ export default class BoardCard extends Component {
       className,
       style,
       processing,
+      selectable,
       selected,
       title,
       image,
@@ -180,8 +187,7 @@ export default class BoardCard extends Component {
             selectable={true}
             selected={selected}
             moreActions={this.renderMoreActions()}
-            actions={<FlatButton onClick={this.handleEditClick}>Edit board</FlatButton>}
-            onClick={this.handleSelectClick}
+            actions={!selectable ? <FlatButton>Edit board</FlatButton> : null}
             onSelect={this.handleSelect}
           />}
         >
