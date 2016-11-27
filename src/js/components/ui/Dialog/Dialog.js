@@ -145,6 +145,7 @@ class DialogInline extends Component {
       className,
       processing,
       open,
+      width,
       onDragEnter,
       onDragOver,
       onDragLeave
@@ -167,6 +168,7 @@ class DialogInline extends Component {
                   ref="dialog"
                   tabIndex="-1"
                   className={mergeClassNames(b(modifier)(), className)}
+                  style={{ width }}
                   onKeyDown={this.handleKeyDown}
                   onDragEnter={onDragEnter}
                   onDragOver={onDragOver}

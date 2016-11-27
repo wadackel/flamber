@@ -241,7 +241,7 @@ export class ItemsContainer extends Component {
         ref="selectable"
         className={`container ${b()}`}
         onSelection={this.handleSelection}
-        tolerance={0}
+        tolerance={5}
         selectOnMouseMove={false}
       >
         {/* Events */}

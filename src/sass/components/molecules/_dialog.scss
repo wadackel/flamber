@@ -3,6 +3,7 @@
   @include transition(all);
   display: block;
   width: 440px;
+  max-width: 100%;
   border-radius: 2px;
   background: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .22), 0 2px 6px rgba(0, 0, 0, .22);
@@ -89,6 +90,7 @@
 
   &__horizontal,
   &__vertical {
+    max-width: 100%;
     transition-property: all;
     transition-timing-function: $transition-easing;
   }
@@ -127,6 +129,8 @@
   }
 
   &__vertical {
+    margin-right: 15px;
+    margin-left: 15px;
     transform: scaleY(.4) translateY(40px);
     opacity: 0;
 

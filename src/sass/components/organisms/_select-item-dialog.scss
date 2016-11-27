@@ -1,0 +1,47 @@
+.select-item-dialog {
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0;
+  }
+
+  &__item {
+    @include size(90px);
+    @include transition(all, fast);
+
+    display: inline-block;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    cursor: pointer;
+
+    &:not(&--selected):hover {
+      transform: scale(.98);
+    }
+
+    &--selected {
+      transform: scale(.96);
+    }
+
+    .checkbox {
+      @include absolute(5px, null, null, 5px, 2);
+    }
+
+    .checkbox__checkbox {
+      border-color: #fff;
+    }
+  }
+
+  &__overlay {
+    @include absolute(0, 0, 0, 0, 1);
+    @include transition((border, background), fast);
+    border: 4px solid transparent;
+
+    &--selected {
+      border-color: $brand-secondary;
+      background: rgba(#000, .4);
+    }
+  }
+}
