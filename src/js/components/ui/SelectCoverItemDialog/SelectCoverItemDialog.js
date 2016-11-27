@@ -63,7 +63,7 @@ class SelectableItem extends PureComponent {
 }
 
 
-export default class SelectItemDialog extends Component {
+export default class SelectCoverItemDialog extends Component {
   props: Props;
   state: State;
 
@@ -118,7 +118,13 @@ export default class SelectItemDialog extends Component {
       className={mergeClassNames(b(), className)}
       actions={[
         <FlatButton type="primary" onClick={this.props.onRequestClose}>Cancel</FlatButton>,
-        <FlatButton type="primary" onClick={this.handleComplete}>Select</FlatButton>
+        <FlatButton
+          type="primary"
+          onClick={this.handleComplete}
+          disable={items.length === 0 || !selectId}
+        >
+          OK
+        </FlatButton>
       ]}
     >
       <ul className={b("list")()}>

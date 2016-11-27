@@ -10,10 +10,16 @@ import * as B from "../../actions/boards";
 import { getBoardEntityById } from "../../selectors/boards";
 
 import type {
+  Boards,
   UpdateBoardIfNeededAction,
   UpdateBoardRequestAction,
-  UpdateBoardFailureAction
+  UpdateBoardFailureAction,
+  SelectCoverItemRequestAction,
+  SelectCoverItemSuccessAction,
+  SelectCoverItemFailureAction
 } from "../../types/board";
+
+type FailureAction = UpdateBoardFailureAction | SelectCoverItemFailureAction;
 
 
 export function *handleUpdateBoardIfNeeded(action: UpdateBoardIfNeededAction): Generator<any, *, *> {
@@ -26,7 +32,7 @@ export function *handleUpdateBoardIfNeeded(action: UpdateBoardIfNeededAction): G
 
 export function *handleUpdateBoardRequest(action: UpdateBoardRequestAction): Generator<any, *, *> {
   try {
-    const response = yield call(Services.updateBoards, [action.payload]);
+    const response = yield call((): Promise<{ boards: Boards }> => Services.updateBoards([action.payload]));
     if (!response) throw new Error("ボードの更新に失敗しました");
 
     const normalized = normalize(response, { boards: arrayOf(BoardSchema) });
@@ -41,7 +47,34 @@ function *handleUpdateBoardSuccess(): Generator<any, *, *> {
   yield put(showNotify("ボードを更新しました"));
 }
 
-function *handleUpdateBoardFailure(action: UpdateBoardFailureAction): Generator<any, *, *> {
+
+export function *handleSelectCoverItemRequest(action: SelectCoverItemRequestAction): Generator<any, *, *> {
+  try {
+    const entity = yield select(getBoardEntityById, action.payload.id);
+    if (!entity) throw new Error("該当するボードが見つかりません");
+
+    const newEntity = { ...entity, Cover: action.payload.item };
+    const response = yield call((): Promise<{ boards: Boards }> => Services.updateBoards([newEntity]));
+    if (!response) throw new Error("カバー画像の変更に失敗しました");
+
+    const normalized = normalize({ board: response.boards[0] }, { board: BoardSchema });
+    yield put(B.selectCoverItemSuccess(normalized));
+
+  } catch (error) {
+    yield put(B.selectCoverItemFailure(error, action.payload.id));
+  }
+}
+
+function *handleSelectCoverItemSuccess(action: SelectCoverItemSuccessAction): Generator<any, *, *> {
+  const { entities, result } = action.payload;
+  const entity = entities.boards[result.board];
+
+  yield put(B.selectCoverItemDialogClose());
+  yield put(showNotify(`${entity.name} のカバー画像を変更しました`));
+}
+
+
+function *handleUpdateBoardFailure(action: FailureAction): Generator<any, *, *> {
   yield put(showNotify(action.payload.message));
 }
 
@@ -51,6 +84,13 @@ export default function *updateBoardSaga(): Generator<any, *, *> {
     takeEvery(B.UPDATE_BOARD_IF_NEEDED, handleUpdateBoardIfNeeded),
     takeEvery(B.UPDATE_BOARD_REQUEST, handleUpdateBoardRequest),
     takeEvery(B.UPDATE_BOARD_SUCCESS, handleUpdateBoardSuccess),
-    takeEvery(B.UPDATE_BOARD_FAILURE, handleUpdateBoardFailure)
+
+    takeEvery(B.SELECT_COVER_ITEM_REQUEST, handleSelectCoverItemRequest),
+    takeEvery(B.SELECT_COVER_ITEM_SUCCESS, handleSelectCoverItemSuccess),
+
+    takeEvery([
+      B.UPDATE_BOARD_FAILURE,
+      B.SELECT_COVER_ITEM_FAILURE
+    ], handleUpdateBoardFailure)
   ];
 }

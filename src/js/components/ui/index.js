@@ -54,7 +54,7 @@ export SelectableColorGroup from "./SelectableColorGroup/SelectableColorGroup";
 export SelectBoardDialog from "./SelectBoardDialog/SelectBoardDialog";
 export SelectColorMenu from "./SelectColorMenu/SelectColorMenu";
 export SelectColorPopover from "./SelectColorPopover/SelectColorPopover";
-export SelectItemDialog from "./SelectItemDialog/SelectItemDialog";
+export SelectCoverItemDialog from "./SelectCoverItemDialog/SelectCoverItemDialog";
 export Slider from "./Slider/Slider";
 export Snackbar from "./Snackbar/Snackbar";
 export SortSwitcher from "./SortSwitcher/SortSwitcher";

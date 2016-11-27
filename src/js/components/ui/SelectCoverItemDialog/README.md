@@ -16,7 +16,7 @@ const selectItems = [
   { id: 11, image: "/images/feed-card-sample1.png" }
 ];
 
-class SelectItemDialogExample extends React.Component {
+class SelectCoverItemDialogExample extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -42,7 +42,7 @@ class SelectItemDialogExample extends React.Component {
       <div>
         <RaisedButton onClick={() => this.setState({ open: true })} type="primary">Open</RaisedButton>
 
-        <SelectItemDialog
+        <SelectCoverItemDialog
           processing={this.state.processing}
           selectedId={this.state.selectedId}
           open={this.state.open}
@@ -55,5 +55,5 @@ class SelectItemDialogExample extends React.Component {
   }
 }
 
-<SelectItemDialogExample />
+<SelectCoverItemDialogExample />
 ```

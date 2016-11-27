@@ -6,5 +6,6 @@ export ItemDetailTagContainer from "./ItemDetailTagContainer";
 export ItemsContainer from "./ItemsContainer";
 export ItemViewerContainer from "./ItemViewerContainer";
 export NotificationsContainer from "./NotificationsContainer";
+export SelectCoverItemDialogContainer from "./SelectCoverItemDialogContainer";
 export ShortcutKeyContainer from "./ShortcutKeyContainer";
 export TagDrawerContainer from "./TagDrawerContainer";

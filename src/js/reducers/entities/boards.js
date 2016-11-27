@@ -17,7 +17,10 @@ import type {
   DeleteBoardRequestAction,
   DeleteBoardSuccessAction,
   DeleteBoardFailureAction,
-  SelectBoardToggleAction
+  SelectBoardToggleAction,
+  SelectCoverItemRequestAction,
+  SelectCoverItemSuccessAction,
+  SelectCoverItemFailureAction
 } from "../../types/board";
 import type {
   DeleteItemSuccessAction,
@@ -132,6 +135,29 @@ export default handleActions({
         isDeleting: false
       }
     )
+  ),
+
+
+  // Select cover item
+  [B.SELECT_COVER_ITEM_REQUEST]:
+    (state: BoardEntitiesState, action: SelectCoverItemRequestAction): BoardEntitiesState => (
+    mapEntities(state, [action.payload.id], (entity: BoardEntity) => ({
+      ...entity,
+      isUpdating: true
+    }))
+  ),
+
+  [B.SELECT_COVER_ITEM_SUCCESS]:
+    (state: BoardEntitiesState, action: SelectCoverItemSuccessAction): BoardEntitiesState => (
+    mergeEntities(state, action.payload.entities.boards)
+  ),
+
+  [B.SELECT_COVER_ITEM_FAILURE]:
+    (state: BoardEntitiesState, action: SelectCoverItemFailureAction): BoardEntitiesState => (
+    mapEntities(state, [action.meta], (entity: BoardEntity) => ({
+      ...entity,
+      isUpdating: false
+    }))
   ),
 
 

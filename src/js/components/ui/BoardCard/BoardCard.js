@@ -19,10 +19,7 @@ import {
   FlatButton,
   IconButton
 } from "../";
-import {
-  FilesIcon,
-  TrashIcon
-} from "../../svg-icons";
+import { FilesIcon, TrashIcon, PicturesIcon } from "../../svg-icons";
 import type { BoardId } from "../../../types/board";
 import type { GridLayout, ListLayout } from "../../../types/prop-types";
 
@@ -41,6 +38,7 @@ type Props = {
   onSelect?: Function;
   onEdit?: Function;
   onDelete?: Function;
+  onCover?: Function;
 };
 
 export default class BoardCard extends Component {
@@ -83,10 +81,23 @@ export default class BoardCard extends Component {
     }
   }
 
-  renderMoreActions(): React$Element<any> {
-    return (
-      <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />
-    );
+  handleCoverClick = (e: SyntheticMouseEvent) => {
+    e.stopPropagation();
+    if (typeof this.props.onCover === "function") {
+      this.props.onCover(this.props.id);
+    }
+  }
+
+  renderMoreActions(): Array<React$Element<any>> {
+    return [
+      <IconButton icon={<TrashIcon />} tooltip="削除する" onClick={this.handleDeleteClick} />,
+      <IconButton
+        icon={<PicturesIcon />}
+        tooltip="カバー画像の変更"
+        tooltipOrigin={{ vertical: "top", horizontal: "left" }}
+        onClick={this.handleCoverClick}
+      />
+    ];
   }
 
   renderList(): React$Element<any> {

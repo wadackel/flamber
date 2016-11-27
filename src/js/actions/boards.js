@@ -41,8 +41,16 @@ import type {
   SelectedBoardsDeleteSuccessPayload,
   SelectedBoardsDeleteRequestAction,
   SelectedBoardsDeleteSuccessAction,
-  SelectedBoardsDeleteFailureAction
+  SelectedBoardsDeleteFailureAction,
+
+  SelectCoverItemSuccessPayload,
+  SelectCoverItemDialogOpenAction,
+  SelectCoverItemDialogCloseAction,
+  SelectCoverItemRequestAction,
+  SelectCoverItemSuccessAction,
+  SelectCoverItemFailureAction
 } from "../types/board";
+import type { ItemId } from "../types/item";
 
 
 // Fetch
@@ -70,7 +78,7 @@ export const fetchBoardRequest = (id: BoardId): FetchBoardRequestAction => (
   { type: FETCH_BOARD_REQUEST, payload: id }
 );
 
-export const fetchBoardSuccess = (payload: FetchBoardSuccessPayload) => (
+export const fetchBoardSuccess = (payload: FetchBoardSuccessPayload): FetchBoardSuccessAction => (
   { type: FETCH_BOARD_SUCCESS, payload }
 );
 
@@ -189,4 +197,32 @@ export const selectedBoardsDeleteSuccess = (payload: SelectedBoardsDeleteSuccess
 
 export const selectedBoardsDeleteFailure = (error: Error): SelectedBoardsDeleteFailureAction => (
   { type: SELECTED_BOARDS_DELETE_FAILURE, payload: error, error: true }
+);
+
+
+// Select cover item
+export const SELECT_COVER_ITEM_DIALOG_OPEN = "SELECT_COVER_ITEM_DIALOG_OPEN";
+export const SELECT_COVER_ITEM_DIALOG_CLOSE = "SELECT_COVER_ITEM_DIALOG_CLOSE";
+export const SELECT_COVER_ITEM_REQUEST = "SELECT_COVER_ITEM_REQUEST";
+export const SELECT_COVER_ITEM_SUCCESS = "SELECT_COVER_ITEM_SUCCESS";
+export const SELECT_COVER_ITEM_FAILURE = "SELECT_COVER_ITEM_FAILURE";
+
+export const selectCoverItemDialogOpen = (id: BoardId): SelectCoverItemDialogOpenAction => (
+  { type: SELECT_COVER_ITEM_DIALOG_OPEN, payload: id }
+);
+
+export const selectCoverItemDialogClose = (): SelectCoverItemDialogCloseAction => (
+  { type: SELECT_COVER_ITEM_DIALOG_CLOSE }
+);
+
+export const selectCoverItemRequest = (id: BoardId, item: ItemId): SelectCoverItemRequestAction => (
+  { type: SELECT_COVER_ITEM_REQUEST, payload: { id, item } }
+);
+
+export const selectCoverItemSuccess = (payload: SelectCoverItemSuccessPayload): SelectCoverItemSuccessAction => (
+  { type: SELECT_COVER_ITEM_SUCCESS, payload }
+);
+
+export const selectCoverItemFailure = (error: Error, id: BoardId): SelectCoverItemFailureAction => (
+  { type: SELECT_COVER_ITEM_FAILURE, payload: error, error: true, meta: id }
 );

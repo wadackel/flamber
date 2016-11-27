@@ -18,6 +18,7 @@ import {
   RaisedButton,
   Spinner
 } from "../../../components/ui/";
+import { SelectCoverItemDialogContainer } from "../ui/";
 
 import type { Dispatch } from "redux";
 import type { ConnectState } from "../../../types/redux";
@@ -51,6 +52,10 @@ export class BoardsPage extends Component {
 
   handleDelete = (id: BoardId) => {
     this.props.dispatch(BoardActions.deleteBoardRequest(id));
+  }
+
+  handleCover = (id: BoardId) => {
+    this.props.dispatch(BoardActions.selectCoverItemDialogOpen(id));
   }
 
   handleSelectDelete = () => {
@@ -107,7 +112,6 @@ export class BoardsPage extends Component {
       },
       boardEntities,
       selectedBoardEntities
-      // itemEntities
     } = this.props;
 
     const hasSelectedBoard = selectedBoardEntities.length > 0;
@@ -136,18 +140,14 @@ export class BoardsPage extends Component {
           gutter={30}
           layout={boardsLayout}
         >
-          {boardEntities.map(board => {
-            // TODO: Cover image
-            // const firstItem = board.items.length > 0 ? itemEntities[board.items[0]] : null;
-            const firstItem = null;
-
-            return <BoardCard
+          {boardEntities.map(board => (
+            <BoardCard
               key={board.id}
               id={board.id}
               processing={board.isDeleting}
               selected={board.select}
               title={board.name}
-              image={firstItem ? firstItem.thumbnail : "/images/default.png"}
+              image={board.coverImage ? board.coverImage : "/images/default.png"}
               layout={boardsLayout}
               itemCount={board.Items.length}
               lastModified={new Date(board.updated_at)}
@@ -155,8 +155,9 @@ export class BoardsPage extends Component {
               onEdit={this.handleEdit}
               onSelect={this.handleSelect}
               onDelete={this.handleDelete}
-            />;
-          })}
+              onCover={this.handleCover}
+            />
+          ))}
         </CardGroup>
 
         <ToolBox
@@ -171,12 +172,14 @@ export class BoardsPage extends Component {
             />
           ]}
         />
+
+        <SelectCoverItemDialogContainer />
       </div>
     );
   }
 }
 
-// TODO
+
 export default connect(
   (state: ConnectState) => ({
     options: state.options,

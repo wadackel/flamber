@@ -14,6 +14,7 @@ export default function(sequelize: any, DataTypes: any) {
     tableName: "boards",
     timestamps: true,
     underscored: true,
+
     classMethods: {
       associate(models) {
         Board.belongsTo(models.User);
@@ -21,9 +22,16 @@ export default function(sequelize: any, DataTypes: any) {
           onDelete: "cascade",
           hooks: true
         });
+        Board.hasOne(models.Item, {
+          as: "Cover",
+          foreignKey: "cover_id",
+          onDelete: "cascade",
+          hooks: true
+        });
       },
+
       filterEditableAttributes(attributes: Object) {
-        const readOnly = ["id", "user_id"];
+        const readOnly = ["id", "user_id", "Cover"];
         const tableAttributes = Object.keys(Board.tableAttributes).filter(k => readOnly.indexOf(k) < 0);
 
         return pickBy(attributes, (value: any, key: string): boolean =>
@@ -31,6 +39,7 @@ export default function(sequelize: any, DataTypes: any) {
         );
       }
     },
+
     instanceMethods: {
       includeAll() {
         const { models } = this.sequelize;
@@ -43,9 +52,24 @@ export default function(sequelize: any, DataTypes: any) {
               include: [
                 models.Tag
               ]
+            },
+            {
+              model: models.Item,
+              as: "Cover"
             }
           ]
         });
+      },
+
+      updateFromAttributes(attributes: Object) {
+        const validAttributes = Board.filterEditableAttributes(attributes);
+
+        return this.update(validAttributes)
+          .then(entity =>
+            attributes.hasOwnProperty("Cover")
+              ? entity.setCover(null).then(() => entity.setCover(attributes.Cover).then(() => entity.reload()))
+              : entity
+          );
       }
     }
   });

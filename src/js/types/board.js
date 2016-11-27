@@ -16,6 +16,8 @@ export type Board = {
 
 export type BoardEntity = $All<Board, {
   Items: Array<ItemId>;
+  Cover: ?ItemEntity;
+  coverImage: ?string;
   select: boolean;
   isUpdating: boolean;
   isDeleting: boolean;
@@ -32,6 +34,8 @@ export type BoardState = {
   currentId: ?BoardId;
   error: ?Error;
   addDialogOpen: boolean;
+  selectCoverItemDialogOpen: boolean;
+  selectCoverItemBoard: ?BoardId;
 };
 
 export type BoardEntitiesState = TypeMap<BoardId, BoardEntity>;
@@ -117,3 +121,12 @@ export type SelectedBoardsDeleteRequestAction = Action<"SELECTED_BOARDS_DELETE_R
 export type SelectedBoardsDeleteSuccessAction = PayloadAction<"SELECTED_BOARDS_DELETE_SUCCESS",
   SelectedBoardsDeleteSuccessPayload>;
 export type SelectedBoardsDeleteFailureAction = ErrorAction<"SELECTED_BOARDS_DELETE_FAILURE", Error>;
+
+
+// Select item (cover)
+export type SelectCoverItemSuccessPayload = SingleBoard;
+export type SelectCoverItemDialogOpenAction = PayloadAction<"SELECT_COVER_ITEM_DIALOG_OPEN", BoardId>;
+export type SelectCoverItemDialogCloseAction = Action<"SELECT_COVER_ITEM_DIALOG_CLOSE">;
+export type SelectCoverItemRequestAction = PayloadAction<"SELECT_COVER_ITEM_REQUEST", { id: BoardId; item: ItemId; }>;
+export type SelectCoverItemSuccessAction = PayloadAction<"SELECT_COVER_ITEM_SUCCESS", SelectCoverItemSuccessPayload>;
+export type SelectCoverItemFailureAction = ErrorWithMetaAction<"SELECT_COVER_ITEM_FAILURE", Error, BoardId>;

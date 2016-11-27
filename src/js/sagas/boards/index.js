@@ -8,7 +8,8 @@ import updateBoardSaga from "./update";
 import deleteBoardSaga from "./delete";
 
 BoardSchema.define({
-  Items: arrayOf(ItemSchema)
+  Items: arrayOf(ItemSchema),
+  Cover: ItemSchema
 });
 
 export default function *boardsSaga() {

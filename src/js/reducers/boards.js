@@ -15,7 +15,8 @@ import type {
   DeleteBoardFailureAction,
   SetCurrentBoardAction,
   SelectedBoardsDeleteSuccessAction,
-  SelectedBoardsDeleteFailureAction
+  SelectedBoardsDeleteFailureAction,
+  SelectCoverItemDialogOpenAction
 } from "../types/board";
 
 
@@ -25,7 +26,9 @@ const initialState: BoardState = {
   results: [],
   currentId: null,
   error: null,
-  addDialogOpen: false
+  addDialogOpen: false,
+  selectCoverItemDialogOpen: false,
+  selectCoverItemBoard: null
 };
 
 export default handleActions({
@@ -135,5 +138,19 @@ export default handleActions({
     ...state,
     isDeleting: false,
     error: action.payload
+  }),
+
+
+  // Select cover item
+  [B.SELECT_COVER_ITEM_DIALOG_OPEN]: (state: BoardState, action: SelectCoverItemDialogOpenAction): BoardState => ({
+    ...state,
+    selectCoverItemDialogOpen: true,
+    selectCoverItemBoard: action.payload
+  }),
+
+  [B.SELECT_COVER_ITEM_DIALOG_CLOSE]: (state: BoardState): BoardState => ({
+    ...state,
+    selectCoverItemDialogOpen: false,
+    selectCoverItemBoard: null
   })
 }, initialState);

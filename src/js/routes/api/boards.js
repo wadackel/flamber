@@ -50,7 +50,7 @@ router.put("/", (req, res) => {
     Board.find({ where: { id: attributes.id, user_id: user.id } })
       .then(board => {
         if (!board) throw new Error("Not found board");
-        return board.update(Board.filterEditableAttributes(attributes));
+        return board.updateFromAttributes(attributes);
       })
       .then(board => board.includeAll())
   ))
