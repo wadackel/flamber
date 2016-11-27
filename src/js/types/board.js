@@ -119,6 +119,11 @@ export type SetSelectBoardsAction = PayloadAction<"SET_SELECT_BOARDS", Array<Boa
 export type SelectBoardToggleAction = PayloadAction<"SELECT_BOARD_TOGGLE", BoardId>;
 
 
+// Select & Unselect all
+export type SelectAllBoardAction = Action<"SELECT_ALL_BOARD">;
+export type UnselectAllBoardAction = Action<"UNSELECT_ALL_BOARD">;
+
+
 // Selected boards delete
 export type SelectedBoardsDeleteSuccessPayload = ArrayBoard;
 export type SelectedBoardsDeleteRequestAction = Action<"SELECTED_BOARDS_DELETE_REQUEST">;

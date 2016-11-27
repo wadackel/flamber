@@ -38,6 +38,8 @@ import type {
 
   SetSelectBoardsAction,
   SelectBoardToggleAction,
+  SelectAllBoardAction,
+  UnselectAllBoardAction,
 
   SelectedBoardsDeleteSuccessPayload,
   SelectedBoardsDeleteRequestAction,
@@ -185,6 +187,19 @@ export const setSelectBoards = (ids: Array<BoardId>): SetSelectBoardsAction => (
 export const SELECT_BOARD_TOGGLE = "SELECT_BOARD_TOGGLE";
 export const selectBoardToggle = (id: BoardId): SelectBoardToggleAction => (
   { type: SELECT_BOARD_TOGGLE, payload: id }
+);
+
+
+// Select & Unselect all
+export const SELECT_ALL_BOARD = "SELECT_ALL_BOARD";
+export const UNSELECT_ALL_BOARD = "UNSELECT_ALL_BOARD";
+
+export const selectAllBoard = (): SelectAllBoardAction => (
+  { type: SELECT_ALL_BOARD }
+);
+
+export const unselectAllBoard = (): UnselectAllBoardAction => (
+  { type: UNSELECT_ALL_BOARD }
 );
 
 

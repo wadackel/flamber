@@ -128,6 +128,24 @@ export default handleActions({
   ),
 
 
+  // Select all
+  [B.SELECT_ALL_BOARD]: (state: BoardEntitiesState): BoardEntitiesState => (
+    mapValues(state, (entity: BoardEntity) => ({
+      ...entity,
+      select: true
+    }))
+  ),
+
+
+  // Unselect all
+  [B.UNSELECT_ALL_BOARD]: (state: BoardEntitiesState): BoardEntitiesState => (
+    mapValues(state, (entity: BoardEntity) => ({
+      ...entity,
+      select: false
+    }))
+  ),
+
+
   // Select delete
   [B.SELECTED_BOARDS_DELETE_REQUEST]: (state: BoardEntitiesState): BoardEntitiesState => (
     mapValues(state, (entity: BoardEntity) =>

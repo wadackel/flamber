@@ -9,17 +9,19 @@ import * as OptionActions from "../../../actions/options";
 import * as BoardActions from "../../../actions/boards";
 import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/boards";
 import { createMultipleSelectableGroup } from "../../../components/hoc/";
-import { TrashIcon, BoardIcon } from "../../../components/svg-icons/";
 import {
   CardGroup,
   CardGroupControl,
   BoardCard,
+  IconMenu,
+  MenuItem,
   IconButton,
   EmptyData,
   ToolBox,
   RaisedButton,
   Spinner
 } from "../../../components/ui/";
+import { TrashIcon, BoardIcon, MoreVertIcon } from "../../../components/svg-icons/";
 import { SelectCoverItemDialogContainer } from "../ui/";
 
 import type { Dispatch } from "redux";
@@ -76,6 +78,10 @@ export class BoardsPage extends Component {
 
   handleAddBoardClick = () => {
     this.props.dispatch(BoardActions.addBoardDialogOpen());
+  }
+
+  handleSelectMenuItemClick = (menuItem: MenuItem, value: Function) => {
+    this.props.dispatch(value());
   }
 
   handleSelection = (ids: Array<BoardId>) => {
@@ -182,7 +188,19 @@ export class BoardsPage extends Component {
               tooltip="削除"
               icon={<TrashIcon />}
               onClick={this.handleSelectDelete}
-            />
+            />,
+            <IconMenu
+              icon={<IconButton icon={<MoreVertIcon />} />}
+              tooltip="選択"
+              origin={{ vertical: "bottom", horizontal: "right" }}
+              triggerOrigin={{ vertical: "bottom", horizontal: "right" }}
+              onItemClick={this.handleSelectMenuItemClick}
+            >
+              {boardEntities.length !== selectedBoardEntities.length &&
+                <MenuItem primary="すべて選択" value={BoardActions.selectAllBoard} />
+              }
+              <MenuItem primary="選択を解除" value={BoardActions.unselectAllBoard} />
+            </IconMenu>
           ]}
         />
 
