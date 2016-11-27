@@ -1,9 +1,9 @@
 // @flow
-import { difference, uniq } from "lodash";
+// import { difference, uniq } from "lodash";
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 import ExecutionEnvironment from "exenv";
-import KeyHandler from "react-key-handler";
+// import KeyHandler from "react-key-handler";
 import { SelectableGroup, createSelectable } from "react-selectable";
 import { connect } from "react-redux";
 import * as OptionActions from "../../../actions/options";
@@ -15,7 +15,8 @@ import {
   getCurrentItem
 } from "../../../selectors/items";
 import bem from "../../../helpers/bem";
-import elementClosest from "../../../utils/element-closest";
+// import elementClosest from "../../../utils/element-closest";
+import { createMultipleSelectableGroup } from "../../../components/hoc/";
 import {
   CardGroup,
   CardGroupControl,
@@ -39,6 +40,7 @@ import type { Order, OrderBy } from "../../../types/prop-types";
 
 
 const b = bem("items-container");
+const MultipleSelectableGroup = createMultipleSelectableGroup(SelectableGroup);
 const SelectableItemCard = createSelectable(ItemCard);
 
 type Props = {
@@ -54,15 +56,8 @@ type Props = {
   emptyComponent: React$Element<any>;
 };
 
-type State = {
-  mergeSelection: boolean;
-};
-
 export class ItemsContainer extends Component {
   props: Props;
-  state: State = {
-    mergeSelection: false
-  };
 
   handleOrderByChange = (orderBy: OrderBy) => {
     this.props.dispatch(OptionActions.updateItemsOrderByRequest(orderBy));
@@ -97,20 +92,7 @@ export class ItemsContainer extends Component {
   }
 
   handleSelection = (ids: Array<ItemId>) => {
-    const { selectedItemEntities } = this.props;
-    const { mergeSelection } = this.state;
-    const selectedIds = selectedItemEntities.map(entity => entity.id);
-    const selectIds = mergeSelection
-      ? uniq([...selectedIds, ...ids])
-      : difference(ids, selectedIds);
-
-    this.props.dispatch(ItemActions.setSelectItems(selectIds));
-  }
-
-  handleClearSelection = (e: SyntheticKeyboardEvent) => {
-    if (e.target instanceof HTMLElement && !elementClosest(ReactDOM.findDOMNode(this.refs.selectable), e.target)) {
-      this.props.dispatch(ItemActions.unselectAllItem());
-    }
+    this.props.dispatch(ItemActions.setSelectItems(ids));
   }
 
   handleSelectMove = () => {
@@ -149,14 +131,6 @@ export class ItemsContainer extends Component {
 
   handleSelectMenuItemClick = (menuItem: MenuItem, value: Function) => {
     this.props.dispatch(value());
-  }
-
-  enableMergeSelection = () => {
-    this.setState({ mergeSelection: true });
-  }
-
-  disableMergeSelection = () => {
-    this.setState({ mergeSelection: false });
   }
 
   isAllStarByItemEntities(entities: ItemEntities): boolean {
@@ -233,23 +207,14 @@ export class ItemsContainer extends Component {
       }));
 
     return (
-      <SelectableGroup
+      <MultipleSelectableGroup
         ref="selectable"
         className={`container ${b()}`}
+        selectedKeys={selectedItemEntities.map(o => o.id)}
         onSelection={this.handleSelection}
         tolerance={5}
         selectOnMouseMove={false}
       >
-        {/* Events */}
-        {!items.currentItem &&
-          <span style={{ display: "none" }}>
-            <KeyHandler keyEventName="keydown" keyValue="Escape" onKeyHandle={this.handleClearSelection} />
-            <KeyHandler keyEventName="keydown" keyValue="Shift" onKeyHandle={this.enableMergeSelection} />
-            <KeyHandler keyEventName="keyup" keyValue="Shift" onKeyHandle={this.disableMergeSelection} />
-          </span>
-        }
-
-        {/* Components */}
         <CardGroupControl
           sortTypes={[
             { name: "名前", value: "name" },
@@ -339,7 +304,7 @@ export class ItemsContainer extends Component {
             </IconMenu>
           ]}
         />
-      </SelectableGroup>
+      </MultipleSelectableGroup>
     );
   }
 }
