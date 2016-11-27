@@ -55,16 +55,12 @@ type Props = {
 };
 
 type State = {
-  selectMenuOpen: boolean;
-  selectMenuTrigger: ?HTMLElement;
   mergeSelection: boolean;
 };
 
 export class ItemsContainer extends Component {
   props: Props;
   state: State = {
-    selectMenuOpen: false,
-    selectMenuTrigger: null,
     mergeSelection: false
   };
 

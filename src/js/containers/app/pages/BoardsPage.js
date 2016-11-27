@@ -10,11 +10,11 @@ import { getBoardEntities, getSelectedBoardEntities } from "../../../selectors/b
 import { TrashIcon, BoardIcon } from "../../../components/svg-icons/";
 import {
   CardGroup,
+  CardGroupControl,
   BoardCard,
   IconButton,
   EmptyData,
   ToolBox,
-  SortSwitcher,
   RaisedButton,
   Spinner
 } from "../../../components/ui/";
@@ -118,19 +118,16 @@ export class BoardsPage extends Component {
 
     return (
       <div className={`container ${b()}`}>
-        <div className="card-group-control">
-          <SortSwitcher
-            className="card-group-control__sort-switcher"
-            orderBy={boardsOrderBy}
-            order={boardsOrder}
-            types={[
-              { name: "名前", value: "name" },
-              { name: "作成", value: "created_at" }
-            ]}
-            onOrderByChange={this.handleOrderByChange}
-            onOrderChange={this.handleOrderChange}
-          />
-        </div>
+        <CardGroupControl
+          sortTypes={[
+            { name: "名前", value: "name" },
+            { name: "作成", value: "created_at" }
+          ]}
+          sortOrderBy={boardsOrderBy}
+          sortOrder={boardsOrder}
+          onSortOrderByChange={this.handleOrderByChange}
+          onSortOrderChange={this.handleOrderChange}
+        />
 
         {this.renderEmptyData()}
         {this.renderFetchingSpinner()}
