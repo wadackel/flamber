@@ -58,6 +58,7 @@ export default class Popover extends React.Component {
     onRequestClose: () => {}
   };
 
+  _isMounted: boolean = false;
   timer: number = 0;
   triggerElement: ?HTMLElement = null;
 
@@ -70,6 +71,10 @@ export default class Popover extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.open !== this.state.open) {
       if (nextProps.open) {
@@ -79,6 +84,7 @@ export default class Popover extends React.Component {
       } else {
         this.setState({ closing: true });
         this.timer = setTimeout(() => {
+          if (!this._isMounted) return;
           this.setState({
             open: false,
             closing: false
@@ -94,6 +100,7 @@ export default class Popover extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this.timer);
+    this._isMounted = false;
   }
 
   handleClickAway = () => {
