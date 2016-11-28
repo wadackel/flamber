@@ -1,7 +1,5 @@
 import { Router } from "express";
-import models from "../../models/";
 
-const { Option } = models;
 const router = new Router();
 
 
@@ -20,14 +18,11 @@ router.put("/:key", (req, res) => {
   const { user, params: { key }, body } = req;
   const value = body.hasOwnProperty(key) ? body[key] : null;
 
-  Option.findOne({ where: { user_id: user.id } })
-    .then(entity => {
-      if (!entity || value == null || !Option.tableAttributes.hasOwnProperty(key)) {
-        throw new Error("Invalid parameter");
-      }
-      return entity;
+  user.getOptions({ where: { user_id: user.id, name: key } })
+    .then(entities => {
+      if (entities.length === 0) throw new Error("Invalid parameter");
+      return entities[0].update({ value });
     })
-    .then(entity => entity.update({ [key]: value }))
     .then(() => {
       res.json({ [key]: value });
     })
