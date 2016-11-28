@@ -1,16 +1,13 @@
 // @flow
-import _ from "lodash";
-import { normalize, arrayOf } from "normalizr";
 import { takeLatest, delay } from "redux-saga";
 import { fork, take, call, put, cancel } from "redux-saga/effects";
-import OptionSchema from "../../schemas/option";
 import * as Services from "../../services/options";
 import * as A from "../../actions/auth";
 import * as O from "../../actions/options";
+import normalizeOptions from "../../utils/normalize-options";
 
 import type {
   Options,
-  OptionValues,
   UpdateBoardsLayoutRequestAction,
   UpdateBoardsOrderByRequestAction,
   UpdateBoardsOrderRequestAction,
@@ -26,14 +23,8 @@ export function *handleFetchOptionsRequest(): Generator<any, *, *> {
     const response = yield call((): Promise<{ options: Options }> => Services.fetchOptions());
     if (!response) throw new Error("オプションの取得に失敗しました");
 
-    const normalized = normalize(response, { options: arrayOf(OptionSchema) });
-    const entities = normalized.entities.options;
-    const values: OptionValues = _.zipObject(
-      _.map(entities, entity => entity.name),
-      _.map(entities, entity => entity.value)
-    );
-
-    yield put(O.fetchOptionsSuccess(values));
+    const options = normalizeOptions(response);
+    yield put(O.fetchOptionsSuccess(options));
 
   } catch (error) {
     yield put(O.fetchOptionsFailure(error));

@@ -1,6 +1,4 @@
-import models from "../models/";
-
-const { Option } = models;
+import normalizeOptions from "../utils/normalize-options";
 
 export default function setupDataMiddleware(req, res, next) {
   const { preUser } = req;
@@ -10,9 +8,9 @@ export default function setupDataMiddleware(req, res, next) {
     return next();
   }
 
-  Option.findOne({ where: { user_id: preUser.id } })
-    .then(entity => {
-      req.options = entity;
+  preUser.getOptions()
+    .then(options => {
+      req.options = normalizeOptions({ options: options.map(o => o.get({ plain: true })) });
       next();
     })
     .catch(() => {
