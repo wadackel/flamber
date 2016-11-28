@@ -1,9 +1,18 @@
 // @flow
-import type { PayloadAction, ErrorAction } from "./action";
+import type { Action, PayloadAction, ErrorAction } from "./action";
 import type { User } from "./user";
 import type { Theme, BoardsLayout, ItemsLayout, OrderBy, Order } from "./prop-types";
 
-export type Options = {
+export type Option = {
+  id: string;
+  key: string;
+  value: any;
+  type: string;
+};
+
+export type Options = Array<Option>;
+
+export type OptionValues = {
   theme: Theme;
   boardsLayout: BoardsLayout;
   boardsOrderBy: OrderBy;
@@ -14,17 +23,16 @@ export type Options = {
   itemsOrder: Order;
 };
 
-export type OptionsState = $All<Options, {
+export type OptionsState = $All<OptionValues, {
   isProfileUpdating: boolean;
   isThemeUpdating: boolean;
-  isBoardsLayoutUpdating: boolean;
-  isBoardsOrderByUpdating: boolean;
-  isBoardsOrderUpdating: boolean;
-  isItemsLayoutUpdating: boolean;
-  isItemsSizeUpdating: boolean;
-  isItemsOrderByUpdating: boolean;
-  isItemsOrderUpdating: boolean;
 }>;
+
+
+// Fetch
+export type FetchOptionsRequestAction = Action<"FETCH_OPTIONS_REQUEST">;
+export type FetchOptionsSuccessAction = PayloadAction<"FETCH_OPTIONS_SUCCESS", OptionValues>;
+export type FetchOptionsFailureAction = ErrorAction<"FETCH_OPTIONS_FAILURE", Error>;
 
 
 // Update profile

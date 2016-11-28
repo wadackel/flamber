@@ -1,3 +1,4 @@
+// @flow
 import { Schema } from "normalizr";
 
 const ItemSchema = new Schema("items", {

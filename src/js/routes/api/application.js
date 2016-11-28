@@ -1,8 +1,8 @@
 import { Router } from "express";
-import User from "../../models/user";
-import Setting from "../../models/setting";
+import models from "../../models/";
 
-const router = Router();
+const { User } = models;
+const router = new Router();
 
 
 router.post("/", (req, res) => {
@@ -12,14 +12,14 @@ router.post("/", (req, res) => {
       if (!user) throw new Error("Not found user");
       return user;
     })
-    .then(user => {
-      const settings = new Setting({ user: user.id });
-      return settings.save().then(entity => ({ user, settings: entity }));
-    })
-    .then(({ user, settings }) => {
-      user.installed = true;
-      return user.save().then(entity => ({ user: entity, settings }));
-    })
+    // .then(user => {
+    //   const settings = new Setting({ user: user.id });
+    //   return settings.save().then(entity => ({ user, settings: entity }));
+    // })
+    // .then(({ user, settings }) => {
+    //   user.installed = true;
+    //   return user.save().then(entity => ({ user: entity, settings }));
+    // })
     .then(data => {
       res.json(data);
     })

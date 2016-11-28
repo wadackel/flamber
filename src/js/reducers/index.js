@@ -6,7 +6,6 @@ import auth from "./auth";
 import boards from "./boards";
 import items from "./items";
 import notifications from "./notifications";
-import settings from "./settings";
 import options from "./options";
 import tags from "./tags";
 import feeds from "./feeds";
@@ -19,7 +18,6 @@ const rootReducer = combineReducers({
   boards,
   items,
   notifications,
-  settings,
   options,
   tags,
   feeds

@@ -1,6 +1,12 @@
 // @flow
 import type { User } from "../types/user";
 import type {
+  OptionValues,
+
+  FetchOptionsRequestAction,
+  FetchOptionsSuccessAction,
+  FetchOptionsFailureAction,
+
   UpdateProfileRequestAction,
   UpdateProfileSuccessAction,
   UpdateProfileFailureAction,
@@ -39,6 +45,24 @@ import type {
   UpdateItemsOrderFailureAction
 } from "../types/options";
 import type { Theme, BoardsLayout, ItemsLayout, OrderBy, Order } from "../types/prop-types";
+
+
+// Fetch
+export const FETCH_OPTIONS_REQUEST = "FETCH_OPTIONS_REQUEST";
+export const FETCH_OPTIONS_SUCCESS = "FETCH_OPTIONS_SUCCESS";
+export const FETCH_OPTIONS_FAILURE = "FETCH_OPTIONS_FAILURE";
+
+export const fetchOptionsRequest = (): FetchOptionsRequestAction => (
+  { type: FETCH_OPTIONS_REQUEST }
+);
+
+export const fetchOptionsSuccess = (payload: OptionValues): FetchOptionsSuccessAction => (
+  { type: FETCH_OPTIONS_SUCCESS, payload }
+);
+
+export const fetchOptionsFailure = (error: Error): FetchOptionsFailureAction => (
+  { type: FETCH_OPTIONS_FAILURE, payload: error, error: true }
+);
 
 
 // Profile

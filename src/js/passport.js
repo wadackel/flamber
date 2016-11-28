@@ -34,9 +34,12 @@ passport.use(new GoogleStrategy({
         installed: false,
         provider: AuthProviders.GOOGLE,
         provider_id: profile.id,
-        Option: defaultOptions
+        Options: defaultOptions
       }, {
-        include: [Option]
+        include: [{
+          model: Option,
+          as: "Options"
+        }]
       });
     })
     .then(user => {

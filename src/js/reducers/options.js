@@ -3,6 +3,7 @@ import { handleActions } from "redux-actions";
 import * as O from "../actions/options";
 import type {
   OptionsState,
+  FetchOptionsSuccessAction,
   UpdateThemeSuccessAction,
   UpdateBoardsLayoutRequestAction,
   UpdateBoardsLayoutSuccessAction,
@@ -27,28 +28,21 @@ const initialState: OptionsState = {
   isThemeUpdating: false,
 
   boardsLayout: "grid",
-  isBoardsLayoutUpdating: false,
-
   boardsOrderBy: "created_at",
-  isBoardsOrderByUpdating: false,
-
   boardsOrder: "asc",
-  isBoardsOrderUpdating: false,
-
   itemsLayout: "gallery",
-  isItemsLayoutUpdating: false,
-
   itemsSize: 300,
-  isItemsSizeUpdating: false,
-
   itemsOrderBy: "created_at",
-  isItemsOrderByUpdating: false,
-
-  itemsOrder: "asc",
-  isItemsOrderUpdating: false
+  itemsOrder: "asc"
 };
 
 export default handleActions({
+  // Fetch
+  [O.FETCH_OPTIONS_SUCCESS]: (state: OptionsState, action: FetchOptionsSuccessAction) => ({
+    ...state,
+    ...action.payload
+  }),
+
   // Profile
   [O.UPDATE_PROFILE_REQUEST]: (state: OptionsState) => ({
     ...state,
@@ -87,132 +81,83 @@ export default handleActions({
   // Boards layout
   [O.UPDATE_BOARDS_LAYOUT_REQUEST]: (state: OptionsState, action: UpdateBoardsLayoutRequestAction) => ({
     ...state,
-    boardsLayout: action.payload,
-    isBoardsLayoutUpdating: true
+    boardsLayout: action.payload
   }),
 
   [O.UPDATE_BOARDS_LAYOUT_SUCCESS]: (state: OptionsState, action: UpdateBoardsLayoutSuccessAction) => ({
     ...state,
-    boardsLayout: action.payload,
-    isBoardsLayoutUpdating: false
-  }),
-
-  [O.UPDATE_BOARDS_LAYOUT_FAILURE]: (state: OptionsState) => ({
-    ...state,
-    isBoardsLayoutUpdating: false
+    boardsLayout: action.payload
   }),
 
 
   // Boards orderBy
   [O.UPDATE_BOARDS_ORDER_BY_REQUEST]: (state: OptionsState, action: UpdateBoardsOrderByRequestAction) => ({
     ...state,
-    boardsOrderBy: action.payload,
-    isBoardsOrderByUpdating: true
+    boardsOrderBy: action.payload
   }),
 
   [O.UPDATE_BOARDS_ORDER_BY_SUCCESS]: (state: OptionsState, action: UpdateBoardsOrderBySuccessAction) => ({
     ...state,
-    boardsOrderBy: action.payload,
-    isBoardsOrderByUpdating: false
-  }),
-
-  [O.UPDATE_BOARDS_ORDER_BY_FAILURE]: (state: OptionsState) => ({
-    ...state,
-    isBoardsOrderByUpdating: false
+    boardsOrderBy: action.payload
   }),
 
 
   // Boards order
   [O.UPDATE_BOARDS_ORDER_REQUEST]: (state: OptionsState, action: UpdateBoardsOrderRequestAction) => ({
     ...state,
-    boardsOrder: action.payload,
-    isBoardsOrderUpdating: true
+    boardsOrder: action.payload
   }),
 
   [O.UPDATE_BOARDS_ORDER_SUCCESS]: (state: OptionsState, action: UpdateBoardsOrderSuccessAction) => ({
     ...state,
-    boardsOrder: action.payload,
-    isBoardsOrderUpdating: false
-  }),
-
-  [O.UPDATE_BOARDS_ORDER_FAILURE]: (state: OptionsState) => ({
-    ...state,
-    isBoardsOrderUpdating: false
+    boardsOrder: action.payload
   }),
 
 
   // Items layout
   [O.UPDATE_ITEMS_LAYOUT_REQUEST]: (state: OptionsState, action: UpdateItemsLayoutRequestAction) => ({
     ...state,
-    itemsLayout: action.payload,
-    isItemsLayoutUpdating: true
+    itemsLayout: action.payload
   }),
 
   [O.UPDATE_ITEMS_LAYOUT_SUCCESS]: (state: OptionsState, action: UpdateItemsLayoutSuccessAction) => ({
     ...state,
-    itemsLayout: action.payload,
-    isItemsLayoutUpdating: false
-  }),
-
-  [O.UPDATE_ITEMS_LAYOUT_FAILURE]: (state: OptionsState) => ({
-    ...state,
-    isItemsLayoutUpdating: false
+    itemsLayout: action.payload
   }),
 
 
   // Items size
   [O.UPDATE_ITEMS_SIZE_REQUEST]: (state: OptionsState, action: UpdateItemsSizeRequestAction) => ({
     ...state,
-    itemsSize: action.payload,
-    isItemsSizeUpdating: true
+    itemsSize: action.payload
   }),
 
   [O.UPDATE_ITEMS_SIZE_SUCCESS]: (state: OptionsState, action: UpdateItemsSizeSuccessAction) => ({
     ...state,
-    itemsSize: action.payload,
-    isItemsSizeUpdating: false
-  }),
-
-  [O.UPDATE_ITEMS_SIZE_FAILURE]: (state: OptionsState) => ({
-    ...state,
-    isItemsSizeUpdating: false
+    itemsSize: action.payload
   }),
 
 
   // Items orderBy
   [O.UPDATE_ITEMS_ORDER_BY_REQUEST]: (state: OptionsState, action: UpdateItemsOrderByRequestAction) => ({
     ...state,
-    itemsOrderBy: action.payload,
-    isItemsOrderByUpdating: true
+    itemsOrderBy: action.payload
   }),
 
   [O.UPDATE_ITEMS_ORDER_BY_SUCCESS]: (state: OptionsState, action: UpdateItemsOrderBySuccessAction) => ({
     ...state,
-    itemsOrderBy: action.payload,
-    isItemsOrderByUpdating: false
-  }),
-
-  [O.UPDATE_ITEMS_ORDER_BY_FAILURE]: (state: OptionsState) => ({
-    ...state,
-    isItemsOrderByUpdating: false
+    itemsOrderBy: action.payload
   }),
 
 
   // Items order
   [O.UPDATE_ITEMS_ORDER_REQUEST]: (state: OptionsState, action: UpdateItemsOrderRequestAction) => ({
     ...state,
-    itemsOrder: action.payload,
-    isItemsOrderUpdating: true
+    itemsOrder: action.payload
   }),
 
   [O.UPDATE_ITEMS_ORDER_SUCCESS]: (state: OptionsState, action: UpdateItemsOrderSuccessAction) => ({
     ...state,
-    itemsOrder: action.payload,
-    isItemsOrderUpdating: false
-  }),
-
-  [O.UPDATE_ITEMS_ORDER_FAILURE]: (state: OptionsState) => ({
-    ...state,
-    isItemsOrderUpdating: false
+    itemsOrder: action.payload
   })
 }, initialState);

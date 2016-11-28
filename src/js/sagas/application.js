@@ -2,7 +2,6 @@ import { takeEvery } from "redux-saga";
 import { fork, take, put, call, select } from "redux-saga/effects";
 import * as App from "../actions/application";
 import * as Auth from "../actions/auth";
-import * as Tags from "../actions/tags";
 import { createApp, deleteApp } from "../services/application";
 import { getUser } from "../selectors/auth";
 
@@ -39,7 +38,6 @@ export function *watchCreateInitializeApp() {
 
 export function *handleInitializeApp() {
   yield put(Auth.fetchCurrentUserRequest());
-  yield put(Tags.fetchTagsRequest());
 }
 
 

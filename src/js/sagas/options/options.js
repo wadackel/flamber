@@ -1,10 +1,16 @@
 // @flow
+import _ from "lodash";
+import { normalize, arrayOf } from "normalizr";
 import { takeLatest, delay } from "redux-saga";
 import { fork, take, call, put, cancel } from "redux-saga/effects";
-import * as Services from "../../services/settings";
+import OptionSchema from "../../schemas/option";
+import * as Services from "../../services/options";
+import * as A from "../../actions/auth";
 import * as O from "../../actions/options";
 
 import type {
+  Options,
+  OptionValues,
   UpdateBoardsLayoutRequestAction,
   UpdateBoardsOrderByRequestAction,
   UpdateBoardsOrderRequestAction,
@@ -15,7 +21,27 @@ import type {
 } from "../../types/options";
 
 
-function *callUpdateSettings<T>(
+export function *handleFetchOptionsRequest(): Generator<any, *, *> {
+  try {
+    const response = yield call((): Promise<{ options: Options }> => Services.fetchOptions());
+    if (!response) throw new Error("オプションの取得に失敗しました");
+
+    const normalized = normalize(response, { options: arrayOf(OptionSchema) });
+    const entities = normalized.entities.options;
+    const values: OptionValues = _.zipObject(
+      _.map(entities, entity => entity.name),
+      _.map(entities, entity => entity.value)
+    );
+
+    yield put(O.fetchOptionsSuccess(values));
+
+  } catch (error) {
+    yield put(O.fetchOptionsFailure(error));
+  }
+}
+
+
+function *callUpdateOption<T>(
   key: string,
   value: T,
   success: Function,
@@ -23,7 +49,7 @@ function *callUpdateSettings<T>(
   errorMessage: string): Generator<any, *, *> {
 
   try {
-    const response = yield call((): Promise<{ [key: string]: T }> => Services.updateSettings(key, value));
+    const response = yield call((): Promise<{ [key: string]: T }> => Services.updateOption(key, value));
     if (!response) throw new Error(errorMessage);
     yield put(success(response[key]));
 
@@ -34,7 +60,7 @@ function *callUpdateSettings<T>(
 
 
 export function *handleBoardsLayoutRequest(action: UpdateBoardsLayoutRequestAction): Generator<any, *, *> {
-  yield callUpdateSettings(
+  yield callUpdateOption(
     "boardsLayout",
     action.payload,
     O.updateBoardsLayoutSuccess,
@@ -45,7 +71,7 @@ export function *handleBoardsLayoutRequest(action: UpdateBoardsLayoutRequestActi
 
 
 export function *handleBoardsOrderByRequest(action: UpdateBoardsOrderByRequestAction): Generator<any, *, *> {
-  yield callUpdateSettings(
+  yield callUpdateOption(
     "boardsOrderBy",
     action.payload,
     O.updateBoardsOrderBySuccess,
@@ -56,7 +82,7 @@ export function *handleBoardsOrderByRequest(action: UpdateBoardsOrderByRequestAc
 
 
 export function *handleBoardsOrderRequest(action: UpdateBoardsOrderRequestAction): Generator<any, *, *> {
-  yield callUpdateSettings(
+  yield callUpdateOption(
     "boardsOrder",
     action.payload,
     O.updateBoardsOrderSuccess,
@@ -67,7 +93,7 @@ export function *handleBoardsOrderRequest(action: UpdateBoardsOrderRequestAction
 
 
 export function *handleItemsLayoutRequest(action: UpdateItemsLayoutRequestAction): Generator<any, *, *> {
-  yield callUpdateSettings(
+  yield callUpdateOption(
     "itemsLayout",
     action.payload,
     O.updateItemsLayoutSuccess,
@@ -81,7 +107,7 @@ export function *handleItemsSizeRequestDebounced(size: number): Generator<any, *
   yield call(delay, 500);
   yield put(O.updateItemsSizeRequestDebounced(size));
 
-  yield callUpdateSettings(
+  yield callUpdateOption(
     "itemsSize",
     size,
     O.updateItemsSizeSuccess,
@@ -108,7 +134,7 @@ export function *watchItemsSize(): Generator<any, *, *> {
 
 
 export function *handleItemsOrderByRequest(action: UpdateItemsOrderByRequestAction): Generator<any, *, *> {
-  yield callUpdateSettings(
+  yield callUpdateOption(
     "itemsOrderBy",
     action.payload,
     O.updateItemsOrderBySuccess,
@@ -119,7 +145,7 @@ export function *handleItemsOrderByRequest(action: UpdateItemsOrderByRequestActi
 
 
 export function *handleItemsOrderRequest(action: UpdateItemsOrderRequestAction): Generator<any, *, *> {
-  yield callUpdateSettings(
+  yield callUpdateOption(
     "itemsOrder",
     action.payload,
     O.updateItemsOrderSuccess,
@@ -129,8 +155,13 @@ export function *handleItemsOrderRequest(action: UpdateItemsOrderRequestAction):
 }
 
 
-export default function *settingsSaga(): Generator<any, *, *> {
+export default function *optionsSaga(): Generator<any, *, *> {
   yield [
+    takeLatest([
+      A.FETCH_CURRENT_USER_SUCCESS,
+      O.FETCH_OPTIONS_REQUEST
+    ], handleFetchOptionsRequest),
+
     takeLatest(O.UPDATE_BOARDS_LAYOUT_REQUEST, handleBoardsLayoutRequest),
     takeLatest(O.UPDATE_BOARDS_ORDER_BY_REQUEST, handleBoardsOrderByRequest),
     takeLatest(O.UPDATE_BOARDS_ORDER_REQUEST, handleBoardsOrderRequest),

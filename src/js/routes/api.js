@@ -3,7 +3,7 @@ import models from "../models/";
 import application from "./api/application";
 import boards from "./api/boards";
 import items from "./api/items";
-import settings from "./api/settings";
+import options from "./api/options";
 import profile from "./api/profile";
 import account from "./api/account";
 import screenshot from "./api/screenshot";
@@ -34,7 +34,7 @@ router.use((req, res, next) => {
 router.use("/application", application);
 router.use("/boards", boards);
 router.use("/items", items);
-router.use("/settings", settings);
+router.use("/options", options);
 router.use("/profile", profile);
 router.use("/account", account);
 router.use("/screenshot", screenshot);

@@ -6,13 +6,13 @@ const router = new Router();
 
 
 router.get("/", (req, res) => {
-  // TODO
-  res.errorJSON("TODO");
-  // Setting.findByUser(req.user.id)
-  //   .then(settings => {
-  //     res.json(settings);
-  //   })
-  //   .catch(res.errorJSON);
+  const { user } = req;
+
+  user.getOptions()
+    .then(options => {
+      res.json({ options });
+    })
+    .catch(res.errorJSON);
 });
 
 

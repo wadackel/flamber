@@ -55,7 +55,10 @@ function *handleFetchBoardFailure(action: FetchBoardFailureAction): Generator<an
 
 export default function *fetchBoardSaga(): Generator<any, *, *> {
   yield [
-    takeEvery([A.FETCH_CURRENT_USER_SUCCESS, B.FETCH_BOARDS_REQUEST], handleFetchBoardsRequest),
+    takeEvery([
+      A.FETCH_CURRENT_USER_SUCCESS,
+      B.FETCH_BOARDS_REQUEST
+    ], handleFetchBoardsRequest),
     takeEvery(B.FETCH_BOARDS_FAILURE, handleFetchBoardsFailure),
     takeEvery(B.FETCH_BOARD_REQUEST, handleFetchBoardRequest),
     takeEvery(B.FETCH_BOARD_FAILURE, handleFetchBoardFailure)
