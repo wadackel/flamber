@@ -153,20 +153,23 @@ export default class AddItemURLDialog extends Component {
           onChange={this.handleURLChange}
         />
 
-        <DropDownMenu
-          type="block"
-          className={b("select-board")()}
-          value={selectBoard}
-          onChange={this.handleBoardChange}
-        >
-          {selectBoards.map(obj =>
-            <MenuItem
-              key={obj.value}
-              value={obj.value}
-              primary={obj.name}
-            />
-          )}
-        </DropDownMenu>
+        <div>
+          <label>追加先のボード</label>
+          <DropDownMenu
+            type="block"
+            className={b("select-board")()}
+            value={selectBoard}
+            onChange={this.handleBoardChange}
+          >
+            {selectBoards.map(obj =>
+              <MenuItem
+                key={obj.value}
+                value={obj.value}
+                primary={obj.name}
+              />
+            )}
+          </DropDownMenu>
+        </div>
       </Dialog>
     );
   }

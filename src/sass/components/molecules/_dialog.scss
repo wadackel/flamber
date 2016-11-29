@@ -207,6 +207,24 @@
     text-align: left;
     color: darken(#fff, 40%);
 
+    > * {
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+    }
+
     .drop-down-menu__trigger--block {
       border-bottom-color: $gray-lightest;
     }
@@ -218,6 +236,10 @@
     .text-field__control {
       border-bottom-color: $gray-lightest;
       color: $gray-dark;
+    }
+
+    .checkbox__checkbox {
+      border-color: $gray-lightest;
     }
   }
 

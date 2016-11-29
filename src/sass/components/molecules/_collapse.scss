@@ -1,0 +1,45 @@
+.collapse {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 5px 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
+  &__icon {
+    @include size(1em);
+    @include transition(transform, fast);
+    display: block;
+
+    &--open {
+      transform: rotate(-180deg);
+    }
+
+    svg {
+      @include size(100%);
+    }
+  }
+
+  &__body {
+    position: relative;
+    margin: 15px 0 0;
+    overflow: hidden;
+
+    > div > * {
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

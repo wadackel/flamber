@@ -11,6 +11,7 @@ export CardGroupControl from "./CardGroupControl/CardGroupControl";
 export Checkbox from "./Checkbox/Checkbox";
 export CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 export Chip from "./Chip/Chip";
+export Collapse from "./Collapse/Collapse";
 export ColorBar from "./ColorBar/ColorBar";
 export Cropper from "./Cropper/Cropper";
 export Dialog from "./Dialog/Dialog";

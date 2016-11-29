@@ -6,7 +6,8 @@ import mergeClassNames from "../../../helpers/merge-class-names";
 import {
   Dialog,
   FlatButton,
-  TextField
+  TextField,
+  Checkbox
 } from "../";
 import { BoardIcon } from "../../svg-icons/";
 
@@ -23,12 +24,14 @@ type Props = {
 
 type State = {
   value: string;
+  secret: boolean;
 };
 
 export default class AddBoardDialog extends Component {
   props: Props;
   state: State = {
-    value: ""
+    value: "",
+    secret: true
   };
 
   static defaultProps = {
@@ -59,11 +62,11 @@ export default class AddBoardDialog extends Component {
   }
 
   handleAdd = () => {
-    const { value } = this.state;
+    const { value, secret } = this.state;
     const trimmedBoardName = value.trim();
 
     if (trimmedBoardName !== "" && typeof this.props.onRequestAdd === "function") {
-      this.props.onRequestAdd(trimmedBoardName);
+      this.props.onRequestAdd(trimmedBoardName, secret);
     }
   }
 
@@ -77,6 +80,10 @@ export default class AddBoardDialog extends Component {
     this.refs.boardName.focus();
   }
 
+  handleSecretCheck = () => {
+    this.setState({ secret: !this.state.secret });
+  }
+
   render() {
     const {
       className,
@@ -84,7 +91,7 @@ export default class AddBoardDialog extends Component {
       ...props
     } = this.props;
 
-    const { value } = this.state;
+    const { value, secret } = this.state;
 
     return (
       <Dialog
@@ -107,9 +114,15 @@ export default class AddBoardDialog extends Component {
       >
         <TextField
           ref="boardName"
-          label="Type board name"
+          label="ボード名"
           onChange={this.handleBoardNameChange}
           onEnter={this.handleAdd}
+        />
+
+        <Checkbox
+          label="このボードを公開しない"
+          checked={secret}
+          onCheck={this.handleSecretCheck}
         />
       </Dialog>
     );
