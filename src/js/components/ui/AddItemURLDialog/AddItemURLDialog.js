@@ -9,11 +9,13 @@ import {
   Dialog,
   TextField,
   DropDownMenu,
+  Collapse,
   MenuItem,
   FlatButton
 } from "../";
 import { PictureLinkIcon } from "../../svg-icons/";
-import type { DropDownBoardValues } from "../../../types/prop-types";
+import type { DropDownBoardValues, ScreenshotFormat } from "../../../types/prop-types";
+
 
 const b = bem("add-item-url-dialog");
 
@@ -24,6 +26,8 @@ type Props = {
   open: boolean;
   selectBoards: DropDownBoardValues;
   defaultBoard: any;
+  defaultScreenshotFormat: ScreenshotFormat;
+  defaultScreenshotQuality: number;
   onRequestAdd?: Function;
   onRequestClose?: Function;
 };
@@ -31,6 +35,9 @@ type Props = {
 type State = {
   url: string;
   selectBoard: any;
+  optionsOpen: boolean;
+  screenshotFormat: ScreenshotFormat;
+  screenshotQuality: number;
 };
 
 export default class AddItemURLDialog extends Component {
@@ -39,7 +46,9 @@ export default class AddItemURLDialog extends Component {
 
   static defaultProps = {
     processing: false,
-    selectBoards: []
+    selectBoards: [],
+    defaultScreenshotFormat: "jpg",
+    defaultScreenshotQuality: 100
   };
 
   static childContextTypes = {
@@ -57,7 +66,10 @@ export default class AddItemURLDialog extends Component {
 
     this.state = {
       url: "",
-      selectBoard: this.getInitialBoard(props)
+      selectBoard: this.getInitialBoard(props),
+      optionsOpen: false,
+      screenshotFormat: props.defaultScreenshotFormat,
+      screenshotQuality: props.defaultScreenshotQuality
     };
   }
 
@@ -75,6 +87,14 @@ export default class AddItemURLDialog extends Component {
       this.setState({
         selectBoard: this.getInitialBoard(nextProps)
       });
+    }
+
+    if (props.defaultScreenshotFormat !== nextProps.defaultScreenshotFormat) {
+      this.setState({ screenshotFormat: nextProps.defaultScreenshotFormat });
+    }
+
+    if (props.defaultScreenshotQuality !== nextProps.defaultScreenshotQuality) {
+      this.setState({ screenshotQuality: nextProps.defaultScreenshotQuality });
     }
 
     if (props.open && !nextProps.open) {
@@ -95,12 +115,19 @@ export default class AddItemURLDialog extends Component {
   }
 
   handleAdd = () => {
-    const { url, selectBoard } = this.state;
+    const {
+      url,
+      selectBoard,
+      screenshotFormat,
+      screenshotQuality
+    } = this.state;
 
     if (typeof this.props.onRequestAdd === "function") {
       this.props.onRequestAdd(
         url,
-        selectBoard
+        selectBoard,
+        screenshotFormat,
+        screenshotQuality
       );
     }
   }
@@ -109,8 +136,20 @@ export default class AddItemURLDialog extends Component {
     this.setState({ url: value });
   }
 
-  handleBoardChange = (value: any) => {
-    this.setState({ selectBoard: value });
+  handleBoardChange = (selectBoard: any) => {
+    this.setState({ selectBoard });
+  }
+
+  handleOptionsToggle = () => {
+    this.setState({ optionsOpen: !this.state.optionsOpen });
+  }
+
+  handleScreenshotFormatChange = (screenshotFormat: ScreenshotFormat) => {
+    this.setState({ screenshotFormat });
+  }
+
+  handleScreenshotQualityChange = (screenshotQuality: number) => {
+    this.setState({ screenshotQuality });
   }
 
   render() {
@@ -121,7 +160,14 @@ export default class AddItemURLDialog extends Component {
       ...props
     } = this.props;
 
-    const { url, selectBoard } = this.state;
+    const {
+      url,
+      selectBoard,
+      optionsOpen,
+      screenshotFormat,
+      screenshotQuality
+    } = this.state;
+
     const isValidURL = isURL(url, { require_protocol: true }); // eslint-disable-line camelcase
 
     return (
@@ -170,6 +216,41 @@ export default class AddItemURLDialog extends Component {
             )}
           </DropDownMenu>
         </div>
+
+        <Collapse
+          open={optionsOpen}
+          label="Options"
+          onToggle={this.handleOptionsToggle}
+        >
+          <div>
+            <label>スクリーンショットのフォーマット</label>
+            <DropDownMenu
+              type="block"
+              value={screenshotFormat}
+              onChange={this.handleScreenshotFormatChange}
+            >
+              <MenuItem value="jpg" primary="JPG" />
+              <MenuItem value="png" primary="PNG" />
+            </DropDownMenu>
+          </div>
+
+          {screenshotFormat === "jpg" &&
+            <div>
+              <label>スクリーンショットの画質</label>
+              <DropDownMenu
+                type="block"
+                value={screenshotQuality}
+                onChange={this.handleScreenshotQualityChange}
+              >
+                <MenuItem value={60} primary="60%" />
+                <MenuItem value={70} primary="70%" />
+                <MenuItem value={80} primary="80%" />
+                <MenuItem value={90} primary="90%" />
+                <MenuItem value={100} primary="100%" />
+              </DropDownMenu>
+            </div>
+          }
+        </Collapse>
       </Dialog>
     );
   }

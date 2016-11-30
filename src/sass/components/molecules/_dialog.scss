@@ -212,11 +212,11 @@
       margin-bottom: 20px;
 
       &:first-child {
-        margin-top: 0;
+        margin-top: 0 !important;
       }
 
       &:last-child {
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
       }
     }
 
@@ -240,6 +240,30 @@
 
     .checkbox__checkbox {
       border-color: $gray-lightest;
+    }
+
+    .collapse {
+      margin: 30px 0;
+      font-size: .85em;
+
+      .checkbox__label {
+        font-size: 1em;
+      }
+
+      &__body {
+        > div > * {
+          margin-top: 20px;
+          margin-bottom: 20px;
+
+          &:first-child {
+            margin-top: 0 !important;
+          }
+
+          &:last-child {
+            margin-bottom: 0 !important;
+          }
+        }
+      }
     }
   }
 

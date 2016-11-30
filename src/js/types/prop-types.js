@@ -48,3 +48,5 @@ export type DropDownBoardValue = {
 export type DropDownBoardValues = Array<DropDownBoardValue>;
 
 export type Theme = "dark" | "light";
+
+export type ScreenshotFormat = "jpg" | "png";
